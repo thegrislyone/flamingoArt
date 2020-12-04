@@ -7,7 +7,9 @@
 </head>
 <body>
   <div id="app">
-    <router-view></router-view>
+    <app-header></app-header>
+    <router-view :key="$route.path"></router-view>
+    <app-footer></app-footer>
   </div>
 
   <script src="./js/app.js"></script>

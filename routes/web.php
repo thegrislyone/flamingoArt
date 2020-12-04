@@ -17,9 +17,13 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/{any}', function () {
+Route::get('/items_list', function () {
     return view('index');
-})->where('any', '.*');
+});
+
+// Route::get('/{any}', function () {
+//     return view('index');
+// })->where('any', '.*');
 
 // Auth::routes();
 

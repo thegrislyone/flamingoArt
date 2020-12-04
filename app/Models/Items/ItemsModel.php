@@ -17,4 +17,8 @@ class ItemsModel extends Model
         'thumbnail',
         'tags'
     ];
+
+    public static function getPage($page) {
+        return $page;
+    }
 }

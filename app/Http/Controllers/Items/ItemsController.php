@@ -9,7 +9,7 @@ use App\Models\Items\ItemsModel;
 class ItemsController extends Controller
 {
     public function items() {
-        print_r(utf8_encode(ItemsModel::get()));
-        return 5;
+        $page = $_REQUEST['page'];
+        return response()->json(ItemsModel::get(), 200);
     }
 }
