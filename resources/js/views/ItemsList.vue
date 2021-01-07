@@ -1,35 +1,64 @@
 <template>
   <div>
-    <div v-if="$isEmpty(itemsList)">
-      Загрузка
-    </div>
+    <h1>Лента товаров</h1>
+    <loader 
+      v-if="$isEmpty(itemsList)"
+    />
     <div v-else>
-      <div v-for="(item, index) in itemsList" :key="index">
-        <div>{{ item.name }}</div>
-        <div>{{ item.price }}</div>
-        <div>{{ item.description }}</div>
-        <div><img :src="item.thumbnail" alt=""></div>
-        <hr>
-      </div>
+      <item
+        v-for="(item, index) in itemsList"
+        :key="index"
+        :name="item.name"
+        :price="item.price"
+        :description="item.description"
+        :img="item.thumbnail"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import Item from '../components/Item.vue'
+import Loader from '../components/Loader.vue'
+
 export default {
+  components: {
+    Item,
+    Loader,
+  },
   data() {
     return {
-      itemsList: []
+      items: {
+        data: [],
+        meta: {}
+      }
+    }
+  },
+  computed: {
+    itemsList() {
+      return this.items.data
     }
   },
   created() {
-    this.$http.get('/api/items?page=1')
-    .then(response => {
-      this.itemsList = response.data
+
+    const url = new URL(`${window.location.origin}/api/items`)
+    url.searchParams.set('page', 1)
+
+    this.$http.get(url)
+    .then(response => {    
+      const data = response.data
+
+      this.items.data = data.data
+
+      for (const [key, value] of Object.entries(data)) {
+        if (key == 'data') continue
+        this.items.meta[key] = value
+      }
+
     })
     .catch(error => {
       console.log(error)
     })
   }
 }
-</script>>
+</script>

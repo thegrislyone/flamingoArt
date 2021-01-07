@@ -9,7 +9,7 @@ use App\Models\Items\ItemsModel;
 class ItemsController extends Controller
 {
     public function items() {
-        $page = $_REQUEST['page'];
-        return response()->json(ItemsModel::get(), 200);
+        $items = ItemsModel::paginate(5);
+        return response()->json($items, 200);
     }
 }
