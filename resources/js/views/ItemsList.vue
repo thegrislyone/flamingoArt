@@ -1,29 +1,38 @@
 <template>
-  <div>
-    <h1>Лента товаров</h1>
+  <div class="item-list">
     <loader 
       v-if="$isEmpty(itemsList)"
     />
-    <div v-else>
-      <item
-        v-for="(item, index) in itemsList"
-        :key="index"
-        :name="item.name"
-        :price="item.price"
-        :description="item.description"
-        :img="item.thumbnail"
+    <div
+      v-else
+      class="item-list__tiles-wrp"
+    >
+      <items-categories
+        :categoriesData="categoriesData"
       />
+      <div class="item-list__tiles">
+         <item-tile
+            v-for="(item, index) in itemsList"
+            :key="index"
+            :name="item.name"
+            :price="item.price"
+            :description="item.description"
+            :img="item.thumbnail"
+          />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Item from '../components/Item.vue'
+import ItemTile from '../components/ItemTile.vue'
+import ItemsCategories from '../components/ItemsCategories.vue'
 import Loader from '../components/Loader.vue'
 
 export default {
   components: {
-    Item,
+    ItemTile,
+    ItemsCategories,
     Loader,
   },
   data() {
@@ -37,6 +46,34 @@ export default {
   computed: {
     itemsList() {
       return this.items.data
+    },
+    categoriesData() {
+      return [
+        {
+          name: "популярное"
+        },
+        {
+          name: "новое"
+        },
+        {
+          name: "природа"
+        },
+        {
+          name: "искусство"
+        },
+        {
+          name: "аниме"
+        },
+        {
+          name: "технологии"
+        },
+        {
+          name: "искусство"
+        },
+        {
+          name: "категория"
+        },
+      ]
     }
   },
   created() {
