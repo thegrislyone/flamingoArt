@@ -2,7 +2,7 @@
   <div class="categories">
     <div class="categories-wrp">
       <swiper 
-        :options="swiperOption"
+        :options="swiperOptions"
       >
       <swiper-slide 
         v-for="(category, index) in categoriesData"
@@ -32,7 +32,7 @@ export default {
   }, 
   data() {
     return {
-      swiperOption: {
+      swiperOptions: {
         slidesPerView: 5,
         spaceBetween: 15,
         updateOnWindowResize: true
@@ -40,19 +40,20 @@ export default {
     }
   },
   watch: {
-    barWidth() {
+    windowWidth() {
       document.querySelector('.categories').classList.remove('categories_overflowed')
       setTimeout(() => {
         document.querySelector('.categories').classList.add('categories_overflowed')
       }, 1)
+
+      this.swiperOptions.slidesPerView = this.slidesQuantity()
     }
   },
   computed: {
-    barWidth() {
+    windowWidth() {
       return this.$store.getters.windowWidth
-    }
+    },
   },
-  created() {},
   mounted() {
     document.querySelector('.categories').classList.add('categories_overflowed')
   },

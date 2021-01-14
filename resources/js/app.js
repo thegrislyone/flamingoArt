@@ -27,12 +27,21 @@ const app = new Vue({
     components: { appHeader, appFooter },
     router,
     store,
+    data() {
+        return {
+
+        }
+    },
+    created() {
+        window.addEventListener('resize', this.onResize)
+    },
+    mounted() {
+        document.querySelector('#app').classList.add('app_' + this.$store.getters.themeMode)
+    },
     methods: {
         onResize() {
             this.$store.dispatch('windowResize')
         }
     },
-    created() {
-        window.addEventListener('resize', this.onResize)
-    }
+    
 })

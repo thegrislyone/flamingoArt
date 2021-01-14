@@ -5,15 +5,30 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    authorization: false,
+
+    themeModes: {
+      dark: true,
+      bright: false
+    },
+
     windowParameters: {
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth
     }
   },
   getters: {
+    isAuthorizate: state => state.authorization,
+
+    themeMode: state => {
+      for (const [key, value] of Object.entries(state.themeModes)) {
+        if (value) return key
+      }
+    },
+
     windowParameters: state => state.windowParameters,
     windowWidth: state => state.windowParameters.windowWidth,
-    windowHeight: state => state.windowParameters.windowHeight
+    windowHeight: state => state.windowParameters.windowHeight,
   },
   actions: {
     windowResize({commit}) {

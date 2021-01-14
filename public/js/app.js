@@ -2044,7 +2044,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      swiperOption: {
+      swiperOptions: {
         slidesPerView: 5,
         spaceBetween: 15,
         updateOnWindowResize: true
@@ -2052,19 +2052,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    barWidth: function barWidth() {
+    windowWidth: function windowWidth() {
       document.querySelector('.categories').classList.remove('categories_overflowed');
       setTimeout(function () {
         document.querySelector('.categories').classList.add('categories_overflowed');
       }, 1);
+      this.swiperOptions.slidesPerView = this.slidesQuantity();
     }
   },
   computed: {
-    barWidth: function barWidth() {
+    windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
     }
   },
-  created: function created() {},
   mounted: function mounted() {
     document.querySelector('.categories').classList.add('categories_overflowed');
   }
@@ -15108,7 +15108,7 @@ var render = function() {
       [
         _c(
           "swiper",
-          { attrs: { options: _vm.swiperOption } },
+          { attrs: { options: _vm.swiperOptions } },
           _vm._l(_vm.categoriesData, function(category, index) {
             return _c("swiper-slide", { key: index, staticClass: "category" }, [
               _vm._v("\n      " + _vm._s(category.name) + "\n    ")
@@ -31859,13 +31859,19 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   },
   router: _router___WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store___WEBPACK_IMPORTED_MODULE_2__["default"],
+  data: function data() {
+    return {};
+  },
+  created: function created() {
+    window.addEventListener('resize', this.onResize);
+  },
+  mounted: function mounted() {
+    document.querySelector('#app').classList.add('app_' + this.$store.getters.themeMode);
+  },
   methods: {
     onResize: function onResize() {
       this.$store.dispatch('windowResize');
     }
-  },
-  created: function created() {
-    window.addEventListener('resize', this.onResize);
   }
 });
 
@@ -32299,17 +32305,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
+    authorization: false,
+    themeModes: {
+      dark: true,
+      bright: false
+    },
     windowParameters: {
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth
     }
   },
   getters: {
+    isAuthorizate: function isAuthorizate(state) {
+      return state.authorization;
+    },
+    themeMode: function themeMode(state) {
+      for (var _i = 0, _Object$entries = Object.entries(state.themeModes); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        if (value) return key;
+      }
+    },
     windowParameters: function windowParameters(state) {
       return state.windowParameters;
     },
