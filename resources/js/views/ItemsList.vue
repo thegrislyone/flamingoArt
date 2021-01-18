@@ -18,6 +18,8 @@
             :price="item.price"
             :description="item.description"
             :img="item.thumbnail"
+            :likes="item.likes"
+            :author="item.author"
           />
       </div>
     </div>
@@ -40,46 +42,33 @@ export default {
       items: {
         data: [],
         meta: {}
-      }
+      },
+      categoriesData: {
+        categories: []
+      },
+      page: 1
     }
   },
   computed: {
     itemsList() {
       return this.items.data
     },
-    categoriesData() {
-      return [
-        {
-          name: "популярное"
-        },
-        {
-          name: "новое"
-        },
-        {
-          name: "природа"
-        },
-        {
-          name: "искусство"
-        },
-        {
-          name: "аниме"
-        },
-        {
-          name: "технологии"
-        },
-        {
-          name: "искусство"
-        },
-        {
-          name: "категория"
-        },
-      ]
-    }
   },
+  // asyncComputed: {
+  //   categoriesData () {
+  //     const url = new URL(`${window.location.origin}/api/categories`)
+  //     return this.$http.get(url)
+  //       .then(response => {
+  //         return {
+  //           categories: response.data
+  //         }
+  //       })
+  //   }
+  // },
   created() {
 
     const url = new URL(`${window.location.origin}/api/items`)
-    url.searchParams.set('page', 1)
+    url.searchParams.set('page', this.page)
 
     this.$http.get(url)
     .then(response => {    
@@ -92,9 +81,17 @@ export default {
         this.items.meta[key] = value
       }
 
+      this.page++
+
     })
     .catch(error => {
       console.log(error)
+    })
+
+    this.$http.get(new URL(`${window.location.origin}/api/categories`))
+    .then(response => {
+      const data = response.data
+      this.categoriesData.categories = data
     })
   }
 }

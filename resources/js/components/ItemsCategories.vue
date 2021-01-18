@@ -5,11 +5,11 @@
         :options="swiperOptions"
       >
       <swiper-slide 
-        v-for="(category, index) in categoriesData"
+        v-for="(category, index) in categoriesData.categories"
         :key="index"
         class="category"
       >
-        {{ category.name }}
+        {{ category.name | capitalize }}
       </swiper-slide>
       </swiper>
     </div>
@@ -26,15 +26,15 @@ export default {
   },
   props: {
     categoriesData: {
-      type: Array,
+      type: Object,
       required: true
     }
   }, 
   data() {
     return {
       swiperOptions: {
-        slidesPerView: 5,
-        spaceBetween: 15,
+        slidesPerView: 2,
+        spaceBetween: 10,
         updateOnWindowResize: true
       },
     }
@@ -45,8 +45,6 @@ export default {
       setTimeout(() => {
         document.querySelector('.categories').classList.add('categories_overflowed')
       }, 1)
-
-      this.swiperOptions.slidesPerView = this.slidesQuantity()
     }
   },
   computed: {

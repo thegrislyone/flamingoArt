@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- common css -->
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/adaptation.css">
+
+  <!-- plugins css -->
   <link rel="stylesheet" href="/css/plugins/swiper.min.css">
+
   <title>FlamingoArt</title>
 </head>
 <body>
