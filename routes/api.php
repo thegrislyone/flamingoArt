@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('items','App\Http\Controllers\Items\ItemsController@items');
+Route::get('categories','App\Http\Controllers\Categories\CategoriesController@categories');

@@ -1,17 +1,18 @@
 <template>
   <div class="categories">
     <div class="categories-wrp">
-      <swiper 
+      <!-- <swiper 
         :options="swiperOptions"
+        ref="swiper"
       >
       <swiper-slide 
-        v-for="(category, index) in categoriesData"
+        v-for="(category, index) in categoriesData.categories"
         :key="index"
         class="category"
       >
-        {{ category.name }}
+        {{ category.name | capitalize }}
       </swiper-slide>
-      </swiper>
+      </swiper> -->
     </div>
   </div>
 </template>
@@ -26,36 +27,49 @@ export default {
   },
   props: {
     categoriesData: {
-      type: Array,
+      type: Object,
       required: true
     }
   }, 
   data() {
     return {
       swiperOptions: {
-        slidesPerView: 5,
-        spaceBetween: 15,
+        slidesPerView: null,
+        spaceBetween: 10,
         updateOnWindowResize: true
       },
     }
   },
   watch: {
-    windowWidth() {
-      document.querySelector('.categories').classList.remove('categories_overflowed')
-      setTimeout(() => {
-        document.querySelector('.categories').classList.add('categories_overflowed')
-      }, 1)
-
-      this.swiperOptions.slidesPerView = this.slidesQuantity()
-    }
+    // windowWidth() {
+    //   console.log("fff")
+    //   if (this.swiperOptions.slidesPerView != this.getSlidesAmount()) {
+    //     this.swiperOptions.slidesPerView = this.getSlidesAmount()
+    //     // this.$refs.swiper.destroySwiper()
+    //     // this.$refs.swiper.initSwiper()
+    //     this.$refs.swiper.options = this.swiperOptions
+    //     this.$refs.swiper.updateSwiper()
+    //   }
+    // }
   },
   computed: {
     windowWidth() {
       return this.$store.getters.windowWidth
     },
   },
-  mounted() {
-    document.querySelector('.categories').classList.add('categories_overflowed')
+  created() {
+    this.swiperOptions.slidesPerView = this.getSlidesAmount()
   },
+  mounted() {
+  },
+  methods: {
+    getSlidesAmount() {
+      if (this.windowWidth < 500 && this.swiperOptions.slidesPerView != 2) return 2
+      else if (this.windowWidth > 500 && this.windowWidth < 640 && this.swiperOptions.slidesPerView != 3) return 3
+      else if (this.windowWidth > 640 && this.windowWidth < 720 && this.swiperOptions.slidesPerView != 4) return 4
+      else if (this.windowWidth > 720 && this.windowWidth < 960 && this.swiperOptions.slidesPerView != 5) return 5
+      else if (this.windowWidth > 960 && this.swiperOptions.slidesPerView != 6) return 6
+    }
+  }
 }
 </script>
