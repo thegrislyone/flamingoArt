@@ -14,6 +14,10 @@
   .header__user {
     display: block;
   }
+  .header__search-side,
+  .header__search-block {
+    flex-grow: 1;
+  }
   /* CATEGORIES */
   .item-list__tiles {
     grid-template-columns: repeat(2, 1fr);

@@ -125,6 +125,9 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.header__left-side {
+  padding: 0 15px 0 0;
+}
 .header__wrp > * {
   display: flex;
   align-items: center;
@@ -140,10 +143,6 @@ body {
 .header__search,
 .header__user {
   display: none;
-}
-.header__search-side,
-.header__search-block {
-  flex-grow: 1;
 }
 
 /* ITEMS LIST */
@@ -181,8 +180,12 @@ body {
 }
 .tile {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 .tile__thumbnail-wrp {
+  flex-grow: 1;
+  margin-bottom: 15px;
 }
 .tile__thumbnail {
   width: 100%;

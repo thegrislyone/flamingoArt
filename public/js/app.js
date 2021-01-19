@@ -2100,6 +2100,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2115,27 +2116,36 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       swiperOptions: {
-        slidesPerView: 2,
+        slidesPerView: null,
         spaceBetween: 10,
         updateOnWindowResize: true
       }
     };
   },
-  watch: {
-    windowWidth: function windowWidth() {
-      document.querySelector('.categories').classList.remove('categories_overflowed');
-      setTimeout(function () {
-        document.querySelector('.categories').classList.add('categories_overflowed');
-      }, 1);
-    }
+  watch: {// windowWidth() {
+    //   console.log("fff")
+    //   if (this.swiperOptions.slidesPerView != this.getSlidesAmount()) {
+    //     this.swiperOptions.slidesPerView = this.getSlidesAmount()
+    //     // this.$refs.swiper.destroySwiper()
+    //     // this.$refs.swiper.initSwiper()
+    //     this.$refs.swiper.options = this.swiperOptions
+    //     this.$refs.swiper.updateSwiper()
+    //   }
+    // }
   },
   computed: {
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
     }
   },
-  mounted: function mounted() {
-    document.querySelector('.categories').classList.add('categories_overflowed');
+  created: function created() {
+    this.swiperOptions.slidesPerView = this.getSlidesAmount();
+  },
+  mounted: function mounted() {},
+  methods: {
+    getSlidesAmount: function getSlidesAmount() {
+      if (this.windowWidth < 500 && this.swiperOptions.slidesPerView != 2) return 2;else if (this.windowWidth > 500 && this.windowWidth < 640 && this.swiperOptions.slidesPerView != 3) return 3;else if (this.windowWidth > 640 && this.windowWidth < 720 && this.swiperOptions.slidesPerView != 4) return 4;else if (this.windowWidth > 720 && this.windowWidth < 960 && this.swiperOptions.slidesPerView != 5) return 5;else if (this.windowWidth > 960 && this.swiperOptions.slidesPerView != 6) return 6;
+    }
   }
 });
 
@@ -15596,31 +15606,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "categories" }, [
-    _c(
-      "div",
-      { staticClass: "categories-wrp" },
-      [
-        _c(
-          "swiper",
-          { attrs: { options: _vm.swiperOptions } },
-          _vm._l(_vm.categoriesData.categories, function(category, index) {
-            return _c("swiper-slide", { key: index, staticClass: "category" }, [
-              _vm._v(
-                "\n      " +
-                  _vm._s(_vm._f("capitalize")(category.name)) +
-                  "\n    "
-              )
-            ])
-          }),
-          1
-        )
-      ],
-      1
-    )
-  ])
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "categories" }, [
+      _c("div", { staticClass: "categories-wrp" })
+    ])
+  }
+]
 render._withStripped = true
 
 
