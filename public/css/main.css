@@ -95,6 +95,16 @@ body {
   color: #000;
 }
 
+[type=text] {
+  border: none;
+  outline: none;
+  color: #fff;
+}
+
+button {
+  border: none;
+  outline: none;
+}
 
 /*------------------------------------*\
 	#STYLES
@@ -114,6 +124,141 @@ body {
   outline: none;
   border: none;
 }
+
+.text-input {
+  
+}
+.text-input input {
+  background: #171717;
+  padding: 15px 25px;
+  border-radius: 15px;
+  width: calc(100% - 50px);
+}
+
+/* buttons */
+
+.btn {
+  background-color: #ff6d88;
+  border-radius: 50px;
+  padding: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/**
+ * Checkboxes 
+ */
+
+ [type="checkbox"], 
+ [type="radio"] {
+   position: absolute;
+   left: -9999px;
+ }
+ 
+ [type="checkbox"] + label, 
+ [type="radio"] + label {
+   position: relative;
+   padding: 3px 0 3px 23px;
+   display: inline-block;
+   text-align: left;
+   height: 25px;
+   /* width: 25px; */
+   cursor: pointer;
+   font: 400 14px/18px 'Gotham Pro', sans-serif;
+   color: #222222;
+   -webkit-transition: all .1s ease-in-out;
+   -o-transition: all .1s ease-in-out;
+   transition: all .1s ease-in-out;
+ }
+ 
+ 
+ /**
+  * Checkbox aspect 
+  */
+ 
+ [type="checkbox"] + label:before, 
+ [type="radio"] + label:before {
+   content: '';
+   position: absolute;
+   top: 3px;
+   left: 0;
+   width: 25px;
+   height: 25px;
+   border: 1px solid #999999;
+   box-sizing: border-box;
+   border-radius: 5px;
+   -webkit-transition: all .1s ease-in-out;
+   -o-transition: all .1s ease-in-out;
+   transition: all .1s ease-in-out;
+ }
+ 
+ [type="radio"] + label:before {
+   border-radius: 50%;
+ }
+ 
+ [type="checkbox"]:hover + label:before, 
+ [type="radio"]:hover + label:before,
+ [type="checkbox"]:focus + label:before, 
+ [type="radio"]:focus + label:before {
+   /* border-color: #1C69D4; */
+ }
+ 
+ 
+ /**
+  * Checked mark aspect
+  */
+ 
+ [type="checkbox"] + label:after {
+   content: '';
+   position: absolute;   
+   top: 3px;
+   left: 0;
+   width: 25px;
+   height: 25px;
+   background: url(../images/i-check.svg) center center no-repeat;
+   -webkit-transition: all .1s ease-in-out;
+   -o-transition: all .1s ease-in-out;
+   transition: all .1s ease-in-out;
+ }
+ 
+ /**
+  * Checked mark aspect changes 
+  */
+ 
+ [type="checkbox"]:not(:checked) + label:after {
+   opacity: 0;
+ }
+ 
+ [type="checkbox"]:checked + label:before {
+   background: url(../assets/images/checkbox.png) no-repeat center;
+  background-size: 15px;
+ }
+ [type="radio"]:checked + label:before {
+   background: #ffffff;
+   border: 5px solid #1C69D4;
+ }
+ [type="checkbox"]:checked + label:after {
+   opacity: 1;
+ }
+ [type="checkbox"]:checked:hover + label:before, 
+ [type="radio"]:checked:hover + label:before {
+   opacity: .7;
+ }
+ 
+ /**
+  * Disabled checkbox
+  */
+ 
+ [type="checkbox"]:disabled + label, 
+ [type="radio"]:disabled + label {
+   cursor: default;
+   opacity: 0.5;
+ }
+ 
+ [type="checkbox"]:disabled + label:before, 
+ [type="radio"]:disabled + label:before {
+   border: 1px solid #999999;
+ }
 
 /* HEADER */
 
@@ -144,6 +289,59 @@ body {
 .header__user {
   display: none;
 }
+
+/* authorization form */
+
+.auth-form {
+  position: fixed;
+  background-color: #101010;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  padding: 20px;
+  min-width: 320px;
+}
+.auth-form__header {
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding: 0 15px;
+}
+.auth-form__close {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background: red;
+  top: 10px;
+  right: 25px;
+}
+.form {
+  height: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form__headline {
+  color: #ff6e8a;
+  text-align: center;
+}
+.form__field {
+  margin-bottom: 10px;
+  color: #fff;
+}
+.form__permission {
+  display: flex;
+  padding: 15px;
+  gap: 15px;
+}
+.form__btn-wrp {
+  text-align: center;
+}
+
 
 /* ITEMS LIST */
 

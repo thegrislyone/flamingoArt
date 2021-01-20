@@ -1,5 +1,11 @@
 <template>
   <div class="header">
+
+    <auth-form
+      v-if="formOpen"
+      @form-close="formOpen = false"
+    />
+
     <div class="header__wrp">
       <div class="header__left-side header__search-side">
         <div class="header__item">
@@ -36,6 +42,7 @@
           <img 
             src="../../../../public/assets/images/unknown-user.png"
             class="header__user-icon"
+            @click="formOpen = true"
           >
         </div>
       </div>
@@ -46,13 +53,16 @@
 
 <script>
 import Search from '../Search.vue'
+import AuthForm from '../AuthForm.vue'
 
 export default {
   components: {
-    Search
+    Search,
+    AuthForm
   },
   data() {
     return {
+      formOpen: true,
     }
   },
   computed: {
