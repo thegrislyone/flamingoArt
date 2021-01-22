@@ -1,9 +1,9 @@
 <template>
   <header class="header">
 
-    <auth-form
+    <sign-form
       v-if="formOpen"
-      @form-close="$store.commit('setFormOpenedStatus', false)"
+      @form-close="$store.commit('setSignFormOpenedStatus', false)"
     />
 
     <div 
@@ -54,7 +54,7 @@
         </div>
         <div class="header__group-itm header__user-itm">
           <img 
-            @click="$store.commit('setFormOpenedStatus', true)"
+            @click="$store.commit('setSignFormOpenedStatus', true)"
             class="header__user-img"
             src="assets/images/unknown-user.png"
           >
@@ -68,12 +68,12 @@
 
 <script>
 import Search from '../Search.vue'
-import AuthForm from '../AuthForm.vue'
+import SignForm from '../SignForm.vue'
 
 export default {
   components: {
     Search,
-    AuthForm
+    SignForm
   },
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
       return this.$store.getters.windowWidth
     },
     formOpen() {
-      return this.$store.getters.isFormOpened
+      return this.$store.getters.isSignFormOpened
     }
   },
   methods: {

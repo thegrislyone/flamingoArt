@@ -6,6 +6,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     authorization: false,
+
+    signForm: {
+      formOpened: false,
+      formMode: {
+        authorization: true,
+        registation: false
+      }
+    },
+
     authFormOpened: false,
 
     themeModes: {
@@ -20,7 +29,13 @@ export default new Vuex.Store({
   },
   getters: {
     isAuthorizate: state => state.authorization,
-    isFormOpened: state => state.authFormOpened,
+
+    isSignFormOpened: state => state.signForm.formOpened,
+    signFormMode: (state) => {
+      for (const [key, value] of Object.entries(state.signForm.formMode)) {
+        if (value) return key
+      }
+    },
 
     themeMode: state => {
       for (const [key, value] of Object.entries(state.themeModes)) {
@@ -45,8 +60,14 @@ export default new Vuex.Store({
       state.windowParameters.windowHeight = height
       state.windowParameters.windowWidth = width
     },
-    setFormOpenedStatus(state, status) {
-      state.authFormOpened = status
+    setSignFormOpenedStatus(state, status) {
+      state.signForm.formOpened = status
+    },
+    setSignFormMode(state, key) {
+      for (const index in state.signForm.formMode) {
+        state.signForm.formMode[index] = false
+      }
+      state.signForm.formMode[key] = true
     }
   }
 })

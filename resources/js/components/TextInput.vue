@@ -1,6 +1,8 @@
 <template>
   <div class="text-input">
-    <input :type="type" :placeholder="placeholder">
+    <input 
+      :placeholder="placeholder"
+    >
   </div>
 </template>
 
@@ -12,9 +14,9 @@ export default {
       type: String,
       default: ""
     },
-    type: {
-      type: String,
-      default: "text"
+    required: {
+      type: Boolean,
+      default: false
     }
   }
 }
