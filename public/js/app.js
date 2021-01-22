@@ -2080,6 +2080,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2089,7 +2151,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      formOpen: true
+      searchOpened: false,
+      formOpen: false
     };
   },
   computed: {
@@ -2254,6 +2317,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -2276,9 +2344,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    close: {
+      type: Boolean,
+      "default": false
+    },
     placeholder: String
+  },
+  methods: {
+    focus: function focus() {
+      if (event.target.classList.contains('search__close')) {
+        this.closing();
+        return;
+      }
+
+      document.querySelector('#search').focus();
+    },
+    closing: function closing() {
+      this.$emit("search-close");
+    }
   }
 });
 
@@ -15690,101 +15784,128 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "header",
     { staticClass: "header" },
     [
       _vm.formOpen
         ? _c("auth-form", {
             on: {
-              "form-close": function($event) {
+              formClose: function($event) {
                 _vm.formOpen = false
               }
             }
           })
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "header__wrp" }, [
-        _c("div", { staticClass: "header__left-side header__search-side" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
+      _vm.searchOpened
+        ? _c(
             "div",
-            { staticClass: "header__item header__search-block" },
+            { staticClass: "header__short-search" },
             [
-              _c("img", {
-                staticClass: "header__short-logo",
-                attrs: {
-                  src: __webpack_require__(/*! ../../../../public/assets/images/logo-icon.png */ "./public/assets/images/logo-icon.png"),
-                  alt: ""
-                }
-              }),
-              _vm._v(" "),
               _c("search", {
-                staticClass: "header__search",
-                attrs: { placeholder: "Поиск..." }
+                attrs: { close: true },
+                on: {
+                  "search-close": function($event) {
+                    _vm.searchOpened = false
+                  }
+                }
               })
             ],
             1
           )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "header__right-side" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "header__item" }, [
-            _c("img", {
-              staticClass: "header__user-icon",
-              attrs: {
-                src: __webpack_require__(/*! ../../../../public/assets/images/unknown-user.png */ "./public/assets/images/unknown-user.png")
-              },
-              on: {
-                click: function($event) {
-                  _vm.formOpen = true
-                }
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.searchOpened
+        ? _c(
+            "div",
+            {
+              staticClass: "header__wrp",
+              class: {
+                "header__wrp_search-opened": _vm.searchOpened
               }
-            })
-          ])
-        ])
-      ])
+            },
+            [
+              _c("div", { staticClass: "header__group header__left-group" }, [
+                _c(
+                  "div",
+                  { staticClass: "header__group-itm header__menu-itm" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "header__menu-icon" },
+                      _vm._l(3, function(index) {
+                        return _c("div", { key: index })
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c("img", {
+                      staticClass: "header__full-logo",
+                      attrs: { src: "assets/images/logo-word.png" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "header__group-itm header__short-logo-itm" },
+                  [
+                    _c("img", {
+                      staticClass: "header__short-logo",
+                      attrs: { src: "assets/images/logo-icon.png" }
+                    }),
+                    _vm._v(" "),
+                    _c("search", { staticClass: "header__search" })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "header__group header__right-group" }, [
+                _c(
+                  "div",
+                  { staticClass: "header__group-itm header__short-search-itm" },
+                  [
+                    _c("img", {
+                      staticClass: "header__search-icon",
+                      attrs: { src: "assets/images/search.png" },
+                      on: {
+                        click: function($event) {
+                          _vm.searchOpened = true
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "header__nickname" }, [
+                      _vm._v(_vm._s("Thegrislyone"))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "header__group-itm header__user-itm" },
+                  [
+                    _c("img", {
+                      staticClass: "header__user-img",
+                      attrs: { src: "assets/images/unknown-user.png" },
+                      on: {
+                        click: function($event) {
+                          _vm.formOpen = true
+                        }
+                      }
+                    })
+                  ]
+                )
+              ])
+            ]
+          )
+        : _vm._e()
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header__item" }, [
-      _c("img", {
-        staticClass: "header__menu-icon",
-        attrs: {
-          src: __webpack_require__(/*! ../../../../public/assets/images/menu-icon.png */ "./public/assets/images/menu-icon.png")
-        }
-      }),
-      _vm._v(" "),
-      _c("img", {
-        staticClass: "header__full-logo",
-        attrs: {
-          src: __webpack_require__(/*! ../../../../public/assets/images/logo-word.png */ "./public/assets/images/logo-word.png")
-        }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header__item" }, [
-      _c("img", {
-        staticClass: "header__short-search",
-        attrs: { src: __webpack_require__(/*! ../../../../public/assets/images/search.png */ "./public/assets/images/search.png") }
-      }),
-      _vm._v(" "),
-      _c("span", { staticClass: "header__user" }, [_vm._v("Thegrislyone")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -15874,7 +15995,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "categories" }, [
       _c("div", { staticClass: "categories-wrp" }, [
-        _c("h1", [_vm._v("Свайпер категорий временно убран")])
+        _c("h1", [
+          _vm._v(
+            "Свайпер категорий временно убран за отсутствием нормального плагина"
+          )
+        ])
       ])
     ])
   }
@@ -15900,9 +16025,24 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "loader" })
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "loader" }, [
+      _c("div"),
+      _vm._v(" "),
+      _c("div"),
+      _vm._v(" "),
+      _c("div"),
+      _vm._v(" "),
+      _c("div")
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -15924,8 +16064,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "search" }, [
-    _c("input", { attrs: { type: "text", placeholder: _vm.placeholder } })
+  return _c("div", { staticClass: "search", on: { click: _vm.focus } }, [
+    _c("input", {
+      attrs: {
+        type: "text",
+        id: "search",
+        placeholder: _vm.placeholder || "Поиск..."
+      }
+    }),
+    _vm._v(" "),
+    _vm.close ? _c("div", { staticClass: "search__close" }) : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -33608,17 +33756,6 @@ module.exports = "/images/item2.jpg?eb4e7a993f5fdd63d3945c07ff7fa07c";
 
 /***/ }),
 
-/***/ "./public/assets/images/logo-icon.png":
-/*!********************************************!*\
-  !*** ./public/assets/images/logo-icon.png ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/logo-icon.png?9580c366977fa9f6e62ed3b2a5c418aa";
-
-/***/ }),
-
 /***/ "./public/assets/images/logo-word.png":
 /*!********************************************!*\
   !*** ./public/assets/images/logo-word.png ***!
@@ -33627,39 +33764,6 @@ module.exports = "/images/logo-icon.png?9580c366977fa9f6e62ed3b2a5c418aa";
 /***/ (function(module, exports) {
 
 module.exports = "/images/logo-word.png?f8621fab69d4fd57433a16cadddecebc";
-
-/***/ }),
-
-/***/ "./public/assets/images/menu-icon.png":
-/*!********************************************!*\
-  !*** ./public/assets/images/menu-icon.png ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/menu-icon.png?7028ece0f2fa9f36e415fa249c826c1d";
-
-/***/ }),
-
-/***/ "./public/assets/images/search.png":
-/*!*****************************************!*\
-  !*** ./public/assets/images/search.png ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/search.png?f34f73538259164f7a1f508ae3f12b4d";
-
-/***/ }),
-
-/***/ "./public/assets/images/unknown-user.png":
-/*!***********************************************!*\
-  !*** ./public/assets/images/unknown-user.png ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/unknown-user.png?b628a5580b137f6676a376ace86e9f63";
 
 /***/ }),
 

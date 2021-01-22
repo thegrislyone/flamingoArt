@@ -1,7 +1,7 @@
 <template>
   <div class="categories">
     <div class="categories-wrp">
-      <h1>Свайпер категорий временно убран</h1>
+      <h1>Свайпер категорий временно убран за отсутствием нормального плагина</h1>
       <!-- <swiper 
         :options="swiperOptions"
         ref="swiper"
