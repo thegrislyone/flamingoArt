@@ -22,6 +22,9 @@
             :author="item.author"
           />
       </div>
+      <loader
+        v-if="!outOfItems"
+      />
     </div>
   </div>
 </template>
@@ -30,6 +33,8 @@
 import ItemTile from '../components/ItemTile.vue'
 import ItemsCategories from '../components/ItemsCategories.vue'
 import Loader from '../components/Loader.vue'
+
+import { debounce } from 'vue-debounce'
 
 export default {
   components: {
@@ -46,7 +51,10 @@ export default {
       categoriesData: {
         categories: []
       },
-      page: 1
+      
+      page: 1,
+      outOfItems: false,
+      loadMoreItemsDebounced: null
     }
   },
   computed: {
@@ -54,45 +62,63 @@ export default {
       return this.items.data
     },
   },
-  // asyncComputed: {
-  //   categoriesData () {
-  //     const url = new URL(`${window.location.origin}/api/categories`)
-  //     return this.$http.get(url)
-  //       .then(response => {
-  //         return {
-  //           categories: response.data
-  //         }
-  //       })
-  //   }
-  // },
+  methods: {
+    loadMoreItems(url) {
+      console.log(this.page)
+      
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          data.data.forEach((item) => {
+            this.items.data.push(item)
+          })
+
+          for (const [key, value] of Object.entries(data)) {
+            if (key == 'data') continue
+            this.items.meta[key] = value
+          }
+
+          this.page++
+        })
+
+        if (this.items.meta.last_page == this.items.meta.current_page + 1) {
+          this.outOfItems = true
+        }
+    },
+    scrollCheck() {
+      if (
+        (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight + 200) &&
+        !this.outOfItems &&
+        !this.$store.getters.isFormOpened
+      ) {
+        const url = new URL(`${window.location.origin}/api/items`)
+        url.searchParams.set('page', this.page)
+
+        this.loadMoreItemsDebounced(url)
+      }
+    }
+  },
   created() {
 
     const url = new URL(`${window.location.origin}/api/items`)
     url.searchParams.set('page', this.page)
 
-    this.$http.get(url)
-    .then(response => {    
-      const data = response.data
-
-      this.items.data = data.data
-
-      for (const [key, value] of Object.entries(data)) {
-        if (key == 'data') continue
-        this.items.meta[key] = value
-      }
-
-      this.page++
-
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    this.loadMoreItems(url)
+    this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
 
     this.$http.get(new URL(`${window.location.origin}/api/categories`))
     .then(response => {
       const data = response.data
       this.categoriesData.categories = data
     })
+
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollCheck)
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.scrollCheck)
   }
 }
 </script>

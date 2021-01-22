@@ -109,9 +109,10 @@ button {
 
 /* loader */
 .loader {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 25px;
+  margin: 0 auto;
   height: 25px;
 }
 .loader div {
@@ -175,7 +176,7 @@ button {
   cursor: pointer;
 }
 
-/*.text-input {
+.text-input {
   
 }
 .text-input input {
@@ -183,24 +184,24 @@ button {
   padding: 15px 25px;
   border-radius: 15px;
   width: calc(100% - 50px);
-} */
+}
 
 /* buttons */
 
-/* .btn {
+.btn {
   background-color: #ff6d88;
   border-radius: 50px;
   padding: 15px;
   font-weight: 800;
   cursor: pointer;
-} */
+}
 
 
 /**
  * Checkboxes 
  */
 
- /* [type="checkbox"], 
+ [type="checkbox"], 
  [type="radio"] {
    position: absolute;
    left: -9999px;
@@ -219,14 +220,14 @@ button {
    -webkit-transition: all .1s ease-in-out;
    -o-transition: all .1s ease-in-out;
    transition: all .1s ease-in-out;
- } */
+ }
  
  
  /**
   * Checkbox aspect 
   */
  
- /* [type="checkbox"] + label:before, 
+ [type="checkbox"] + label:before, 
  [type="radio"] + label:before {
    content: '';
    position: absolute;
@@ -251,14 +252,14 @@ button {
  [type="checkbox"]:focus + label:before, 
  [type="radio"]:focus + label:before {
    /* border-color: #1C69D4; 
- }*/
+ }
  
  
  /**
   * Checked mark aspect
   */
  
- /* [type="checkbox"] + label:after {
+ [type="checkbox"] + label:after {
    content: '';
    position: absolute;   
    top: 3px;
@@ -269,13 +270,13 @@ button {
    -webkit-transition: all .1s ease-in-out;
    -o-transition: all .1s ease-in-out;
    transition: all .1s ease-in-out;
- } */
+ }
  
  /**
   * Checked mark aspect changes 
   */
  
- /* [type="checkbox"]:not(:checked) + label:after {
+  [type="checkbox"]:not(:checked) + label:after {
    opacity: 0;
  }
  
@@ -293,13 +294,13 @@ button {
  [type="checkbox"]:checked:hover + label:before, 
  [type="radio"]:checked:hover + label:before {
    opacity: .7;
- } */
+ }
  
  /**
   * Disabled checkbox
   */
  
- /* [type="checkbox"]:disabled + label, 
+ [type="checkbox"]:disabled + label, 
  [type="radio"]:disabled + label {
    cursor: default;
    opacity: 0.5;
@@ -308,7 +309,7 @@ button {
  [type="checkbox"]:disabled + label:before, 
  [type="radio"]:disabled + label:before {
    border: 1px solid #999999;
- } */
+ }
 
 /* HEADER */
 
@@ -345,37 +346,10 @@ button {
 .header__full-logo {
   display: none;
 }
-/* .header {
-  color: #fff;
-  padding: 20px;
-}
-.header__wrp {
-  display: flex;
-  justify-content: space-between;
-}
-.header__left-side {
-  padding: 0 15px 0 0;
-}
-.header__wrp > * {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.header__item {
-  cursor: pointer;
-}
-.header__user-icon {
-  width: 30px;
-}
-.header__full-logo, 
-.header__search,
-.header__user {
-  display: none;
-} */
 
 /* authorization form */
 
-/* .auth-form {
+.auth-form {
   position: fixed;
   background-color: #101010;
   top: 0;
@@ -424,48 +398,67 @@ button {
 }
 .form__btn-wrp {
   text-align: center;
-} */
+}
 
 
 /* ITEMS LIST */
 
 /* categories */
 
-/* .categories {
-  position: relative;
-  height: 50px;
-}
-.categories_overflowed {
-  width: calc(100% + 25px);
-}
-.category {
-  cursor: pointer;
-  padding: 10px 0;
-  text-align: center;
-  background-color: coral;
-  border-radius: 5px;
-  color: white;
-}
-.swiper-container {
-  overflow: visible !important;
-} */
-
 /* list */
 
-/* .item-list__tiles {
+.item-list__tiles {
   padding: 15px 0;
   display: grid;
   flex-wrap: wrap;
-  grid-template-columns: 100% repeat(4, 1fr); 
+  grid-template-columns: 1fr; 
   justify-content: start;
   gap: 15px;
 }
-.tile {
+.tile__wrp {
   cursor: pointer;
   display: flex;
+  gap: 10px;
   flex-direction: column;
+  height: 100%;
 }
-.tile__thumbnail-wrp {
+.tile__thumbnail {
+  overflow: hidden;
+  border-radius: 5px;
+  flex-grow: 1;
+}
+.tile__thumbnail
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.tile__inf {
+  display: flex;
+  justify-content: space-between;
+}
+.tile__author {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+.tile__avatar-block {
+  width: 20px;
+  height: 20px;
+  border-radius: 55%;
+  overflow: hidden;
+}
+.tile__avatar-block
+img {
+  width: 100%;
+  height: 100%;
+}
+.tile__likes {
+  padding-left: 25px;
+  background: url('../assets/images/i-like.svg') no-repeat left center;
+}
+/* 
+.tile__thumbnail {
   flex-grow: 1;
   margin-bottom: 15px;
 }

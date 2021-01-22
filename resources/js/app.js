@@ -6,6 +6,7 @@ import axios from 'axios'
 //plugins
 import AsyncComputed from 'vue-async-computed'
 import Vuelidate from 'vuelidate'
+import vueDebounce from 'vue-debounce'
 
 //properties
 import { empty, exist } from './properties/'
@@ -32,6 +33,7 @@ Vue.filter('capitalize', capitalize)
 Vue.use(VueAwesomeSwiper)
 Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
+Vue.use(vueDebounce)
 
 
 const app = new Vue({
