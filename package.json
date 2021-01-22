@@ -28,7 +28,8 @@
   "dependencies": {
     "swiper": "^6.4.5",
     "vue-async-computed": "^3.9.0",
-    "vue-awesome-swiper": "^4.1.1"
+    "vue-awesome-swiper": "^4.1.1",
+    "vuelidate": "^0.7.6"
   },
   "name": "flamingo",
   "description": "",

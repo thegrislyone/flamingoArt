@@ -1,5 +1,10 @@
 <template>
-  <div class="loader"></div>
+  <div class="loader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </template>
 
 <script>
