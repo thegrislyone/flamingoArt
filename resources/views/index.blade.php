@@ -19,7 +19,7 @@
     <div class="main">
       <router-view :key="$route.path"></router-view>
     </div>
-    <app-footer></app-footer>
+    {{-- <app-footer></app-footer> --}}
   </div>
 
   <script src="./js/app.js"></script>

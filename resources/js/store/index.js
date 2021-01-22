@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     authorization: false,
+    authFormOpened: false,
 
     themeModes: {
       dark: true,
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   },
   getters: {
     isAuthorizate: state => state.authorization,
+    isFormOpened: state => state.authFormOpened,
 
     themeMode: state => {
       for (const [key, value] of Object.entries(state.themeModes)) {
@@ -42,6 +44,9 @@ export default new Vuex.Store({
     windowParametersChange(state, {width, height}) {
       state.windowParameters.windowHeight = height
       state.windowParameters.windowWidth = width
+    },
+    setFormOpenedStatus(state, status) {
+      state.authFormOpened = status
     }
   }
 })
