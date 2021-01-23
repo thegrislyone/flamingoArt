@@ -2311,6 +2311,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2319,6 +2345,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      formModel: {},
+      errors: [],
       form: {
         authForm: {
           headline: "вход",
@@ -2329,9 +2357,11 @@ __webpack_require__.r(__webpack_exports__);
             link: "регистрация"
           },
           fields: [{
+            name: "email",
             placeholder: "Email",
             required: true
           }, {
+            name: "password",
             placeholder: "Пароль",
             required: true
           }]
@@ -2345,21 +2375,29 @@ __webpack_require__.r(__webpack_exports__);
             link: "войти"
           },
           fields: [{
+            name: "email",
             placeholder: "Email",
             required: true
           }, {
+            name: "fullName",
             placeholder: "Имя и фамилия",
             required: true
           }, {
+            name: "nickName",
             placeholder: "Имя пользователя",
             required: true
           }, {
+            name: "password",
             placeholder: "Пароль",
             required: true
           }, {
+            name: "repeatPassword",
             placeholder: "Повторите пароль",
             required: true
-          }]
+          }],
+          permission: {
+            text: "Я принимаю условия пользовательского соглашения"
+          }
         }
       }
     };
@@ -2376,9 +2414,138 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  validations: {},
+  validations: function validations() {
+    var formModel = {},
+        validationModel = {};
+    this.activeForm.fields.forEach(function (item, index) {
+      formModel[item.name] = '';
+    });
+    this.formModel = Object.assign({}, formModel);
+
+    if (this.formMode === 'registration') {
+      validationModel = {
+        email: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["email"]
+        },
+        fullName: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(52)
+        },
+        nickName: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(8),
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+        },
+        password: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(8),
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+        },
+        repeatPassword: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(8),
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32),
+          sameAs: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["sameAs"])('password')
+        }
+      };
+    } else if (this.formMode === 'authorization') {
+      validationModel = {
+        email: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["email"]
+        },
+        password: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+          minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(8),
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+        }
+      };
+    }
+
+    return {
+      formModel: validationModel
+    };
+  },
   created: function created() {},
-  mounted: function mounted() {}
+  mounted: function mounted() {},
+  methods: {
+    buttonClick: function buttonClick() {
+      this.$v.$touch();
+      this.errors = [];
+
+      if (this.$v.$error) {
+        var validationModel = this.$v.formModel;
+
+        if (validationModel.email && !validationModel.email.required) {
+          this.errors.push({
+            text: "Почта обязательна для заполнения"
+          });
+        } else if (validationModel.email && !validationModel.email.email) {
+          this.errors.push({
+            text: "Неправильный формат почты"
+          });
+        }
+
+        if (validationModel.password && !validationModel.password.required) {
+          this.errors.push({
+            text: "Пароль обязателен для заполнения"
+          });
+        } else if (validationModel.password && !validationModel.password.minLength) {
+          this.errors.push({
+            text: "Пароль должен быть не менее 8 символов"
+          });
+        } else if (validationModel.password && !validationModel.password.maxLength) {
+          this.errors.push({
+            text: "Пароль должен быть не более 32 символов"
+          });
+        }
+
+        if (validationModel.repeatPassword && !validationModel.repeatPassword.required) {
+          this.errors.push({
+            text: "Введите пароль повторно"
+          });
+        } else if (validationModel.repeatPassword && !validationModel.repeatPassword.sameAs) {
+          this.errors.push({
+            text: "Пароли не совпадают"
+          });
+        }
+
+        if (validationModel.fullName && !validationModel.fullName.required) {
+          this.errors.push({
+            text: "Имя и фамилия обязательны для заполнения"
+          });
+        } else if (validationModel.fullName && !validationModel.fullName.minLength) {
+          this.errors.push({
+            text: "Имя и фамилия должны быть не менее 8 символов"
+          });
+        } else if (validationModel.fullName && !validationModel.fullName.maxLength) {
+          this.errors.push({
+            text: "Имя и фамилия должны быть не более 32 символов"
+          });
+        }
+
+        if (validationModel.nickname && !validationModel.nickname.required) {
+          this.errors.push({
+            text: "Имя пользователя обязательено для заполнения"
+          });
+        } else if (validationModel.nickname && !validationModel.nickname.minLength) {
+          this.errors.push({
+            text: "Имя пользователя должно быть не менее 8 символов"
+          });
+        } else if (validationModel.nickname && !validationModel.nickname.maxLength) {
+          this.errors.push({
+            text: "Имя пользователя должно быть не более 32 символов"
+          });
+        }
+      } else {// отправка формы
+      }
+    },
+    changeFormMode: function changeFormMode(mode) {
+      this.errors = [];
+      this.$store.commit('setSignFormMode', mode);
+    }
+  }
 });
 
 /***/ }),
@@ -2400,6 +2567,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -2409,6 +2585,18 @@ __webpack_require__.r(__webpack_exports__);
     required: {
       type: Boolean,
       "default": false
+    },
+    v: Object
+  },
+  data: function data() {
+    return {
+      value: ""
+    };
+  },
+  created: function created() {},
+  methods: {
+    input: function input() {
+      this.$emit('input', this.value);
     }
   }
 });
@@ -2592,7 +2780,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     loadMoreItems: function loadMoreItems(url) {
       var _this = this;
 
-      console.log(this.page);
       this.$http.get(url).then(function (response) {
         var data = response.data;
         data.data.forEach(function (item) {
@@ -16040,17 +16227,37 @@ var render = function() {
                 key: index,
                 attrs: {
                   placeholder: field.placeholder,
-                  required: field.required
+                  required: field.required,
+                  v: _vm.$v.formModel[field.name]
+                },
+                model: {
+                  value: _vm.$v.formModel[field.name].$model,
+                  callback: function($$v) {
+                    _vm.$set(_vm.$v.formModel[field.name], "$model", $$v)
+                  },
+                  expression: "$v.formModel[field.name].$model"
                 }
               })
             }),
             1
           ),
           _vm._v(" "),
+          _vm.activeForm.permission
+            ? _c("div", { staticClass: "sign-form__permission" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "sign-form__permission-text" }, [
+                  _vm._v(_vm._s(_vm.activeForm.permission.text))
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c("div", { staticClass: "sign-form__button" }, [
-            _c("button", { staticClass: "btn" }, [
-              _vm._v(_vm._s(_vm._f("capitalize")(_vm.activeForm.buttonText)))
-            ])
+            _c(
+              "button",
+              { staticClass: "btn", on: { click: _vm.buttonClick } },
+              [_vm._v(_vm._s(_vm._f("capitalize")(_vm.activeForm.buttonText)))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "sign-form__link-block" }, [
@@ -16066,10 +16273,7 @@ var render = function() {
                 staticClass: "link",
                 on: {
                   click: function($event) {
-                    return _vm.$store.commit(
-                      "setSignFormMode",
-                      _vm.activeForm.changeKey
-                    )
+                    return _vm.changeFormMode(_vm.activeForm.changeKey)
                   }
                 }
               },
@@ -16080,7 +16284,20 @@ var render = function() {
                 )
               ]
             )
-          ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "sign-form__validation" },
+            _vm._l(_vm.errors, function(error, index) {
+              return _c(
+                "div",
+                { key: index, staticClass: "sign-form__validation-error" },
+                [_vm._v(_vm._s(_vm._f("capitalize")(error.text)))]
+              )
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -16095,6 +16312,16 @@ var staticRenderFns = [
       _c("img", {
         attrs: { src: __webpack_require__(/*! ../../../public/assets/images/logo-word.png */ "./public/assets/images/logo-word.png") }
       })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("input", { attrs: { type: "checkbox", id: "permission" } }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "permission" } })
     ])
   }
 ]
@@ -16120,7 +16347,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "text-input" }, [
-    _c("input", { attrs: { placeholder: _vm.placeholder } })
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.value,
+          expression: "value"
+        }
+      ],
+      attrs: { placeholder: _vm.placeholder },
+      domProps: { value: _vm.value },
+      on: {
+        input: [
+          function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.value = $event.target.value
+          },
+          _vm.input
+        ]
+      }
+    }),
+    _vm._v(" "),
+    _vm.v.$error && !_vm.v.required
+      ? _c("img", {
+          staticClass: "text-input__error-icon",
+          attrs: { src: "assets/images/required-field.png" }
+        })
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

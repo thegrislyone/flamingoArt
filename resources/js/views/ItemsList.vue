@@ -64,7 +64,6 @@ export default {
   },
   methods: {
     loadMoreItems(url) {
-      console.log(this.page)
       
       this.$http.get(url)
         .then(response => {

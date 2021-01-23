@@ -1,7 +1,16 @@
 <template>
-  <div class="text-input">
+  <div 
+    class="text-input"
+  >
     <input 
       :placeholder="placeholder"
+      v-model="value"
+      @input="input"
+    >
+    <img 
+      v-if="v.$error && !v.required"
+      class="text-input__error-icon"
+      src="assets/images/required-field.png"
     >
   </div>
 </template>
@@ -17,6 +26,19 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    v: Object
+  },
+  data() {
+    return {
+      value: ""
+    }
+  },
+  created() {
+  },
+  methods: {
+    input() {
+      this.$emit('input', this.value)
     }
   }
 }

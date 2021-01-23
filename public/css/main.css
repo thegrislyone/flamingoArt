@@ -186,19 +186,22 @@ h6 {}
 }
 
 .text-input {
-  
+  position: relative;
 }
 .text-input input {
-  background: #171717;
+  background-color: #171717;
   padding: 15px 25px;
   border-radius: 15px;
   width: calc(100% - 50px);
+}
+.text-input__error-icon {
+  position: absolute;
 }
 
 /* buttons */
 
 .btn {
-  background-color: #ff6d88;
+  background: linear-gradient(#ff7688, #ff95a9);;
   border-radius: 50px;
   padding: 10px 25px;
   font-weight: 800;
@@ -253,7 +256,8 @@ a {
  [type="checkbox"] + label, 
  [type="radio"] + label {
    position: relative;
-   padding: 3px 0 3px 23px;
+   width: 25px;
+   height: 25px;
    display: inline-block;
    text-align: left;
    height: 25px;
@@ -274,7 +278,6 @@ a {
  [type="radio"] + label:before {
    content: '';
    position: absolute;
-   top: 3px;
    left: 0;
    width: 25px;
    height: 25px;
@@ -382,6 +385,7 @@ a {
 }
 .header__user-img {
   width: 30px;
+  border-radius: 55%;
 }
 
 .header__nickname,
@@ -393,6 +397,7 @@ a {
 /* sign form */
 .sign-form {
   background-color: #000;
+  min-width: 320px;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -418,7 +423,6 @@ a {
   align-items: center;
 }
 .sign-form__block {
-  max-width: 320px;
   flex-grow: 1;
 }
 .sign-form__headline {
@@ -436,9 +440,16 @@ a {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 320px;
 }
-
-
+.sign-form__permission {
+  display: flex;
+  gap: 10px;
+}
+.sign-form__validation-error {
+  color: #c43434;
+  text-align: center;
+}
 
 /* ITEMS LIST */
 
