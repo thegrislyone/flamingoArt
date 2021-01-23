@@ -157,11 +157,16 @@ button {
   padding: 15px 15px 15px 50px;
   background-image: url(../assets/images/search.png);
   background-repeat: no-repeat;
-  border-radius: 50px;
+  border-radius: 25px;
   background-position: 15px;
   cursor: text;
   display: flex;
   justify-content: space-between;
+  position: relative;
+  transition: all .35s;
+}
+.search_opened {
+  border-radius: 5px 5px 0 0;
 }
 .search input[type=text] {
   background: none;
@@ -173,6 +178,24 @@ button {
   height: 20px;
   background: url(../assets/images/i-close_white.svg) no-repeat center center;
   background-size: 10px;
+  cursor: pointer;
+}
+.search__results {
+  position: absolute;
+  width: calc(100% - 50px);
+  left: 0;
+  padding-left: 50px;
+  top: 50px;
+  z-index: 5;
+  border-radius: 0 0 5px 5px;
+  background-color: #232323;
+
+  
+}
+.search__result {
+  margin-bottom: 10px;
+}
+.search__result-text {
   cursor: pointer;
 }
 

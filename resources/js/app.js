@@ -7,6 +7,7 @@ import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
 import Vuelidate from 'vuelidate'
 import vueDebounce from 'vue-debounce'
+import vClickOutside from 'v-click-outside'
 
 //properties
 import { empty, exist } from './properties/'
@@ -34,7 +35,7 @@ Vue.use(VueAwesomeSwiper)
 Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
 Vue.use(vueDebounce)
-
+Vue.use(vClickOutside)
 
 const app = new Vue({
     el: '#app',
