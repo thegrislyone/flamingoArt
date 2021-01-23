@@ -85,6 +85,9 @@ export default {
     return {
       formModel: {},
       errors: [],
+
+      // TODO: закинуть на апи адрес, чтобы не грузить если не надо
+
       form: {
         authForm: {
           headline: "вход",
@@ -227,6 +230,8 @@ export default {
       this.errors = []
       if (this.$v.$error) {
         const validationModel = this.$v.formModel
+
+        // TODO: это точно переделать - дать имена полям и выводить у всех одну и ту же ошибку
 
         if (validationModel.email && !validationModel.email.required) {
           this.errors.push({

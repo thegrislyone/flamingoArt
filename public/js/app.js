@@ -2347,6 +2347,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       formModel: {},
       errors: [],
+      // TODO: закинуть на апи адрес, чтобы не грузить если не надо
       form: {
         authForm: {
           headline: "вход",
@@ -2475,7 +2476,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errors = [];
 
       if (this.$v.$error) {
-        var validationModel = this.$v.formModel;
+        var validationModel = this.$v.formModel; // TODO: это точно переделать - дать имена полям и выводить у всех одну и ту же ошибку
 
         if (validationModel.email && !validationModel.email.required) {
           this.errors.push({
