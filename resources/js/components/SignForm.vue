@@ -93,6 +93,7 @@ export default {
           headline: "вход",
           changeKey: "registration",
           buttonText: "войти",
+          sendApi: "/api/auth/login",
           lowerText: {
             text: "нет аккаунта?",
             link: "регистрация"
@@ -113,6 +114,7 @@ export default {
           headline: "регистрация",
           changeKey: "authorization",
           buttonText: "зарегестрироваться",
+          sendApi: "/api/auth/register",
           lowerText: {
             text: "есть аккаунт?",
             link: "войти"
@@ -233,41 +235,56 @@ export default {
       this.$v.$touch()
       this.errors = []
 
-      if (this.$v.$error) {
-        const validationModel = this.$v.formModel
-
-        for (const [key, field] of Object.entries(this.formModel)) {
-          
-          if (validationModel[key].required !== undefined && !validationModel[key].required) {
-            this.errors.push({
-              text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
-            })
-          } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
-            this.errors.push({
-              text: 'Неправильный формат почты'
-            })
-          } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
-            this.errors.push({
-              text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
-            })
-          } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
-            this.errors.push({
-              text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
-            })
-          } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
-            this.errors.push({
-              text: `Пароли не совпадают`
-            })
-          }
-        }
-
-
-      } else {
+      // if (this.$v.$error) {
+      //   this.formValidation()
+      // } else {
         this.formSend()
-      }
+      // }
+      
     },
     formSend() {
-      this.$http.post('', this.formModel)
+      // TODO: переделать на пост, который какого-то хера пустой
+      let url = new URL(window.location.origin + this.activeForm.sendApi)
+
+      for (const [key, item] of Object.entries(this.formModel)) {
+        url.searchParams.set(key, item)
+      }
+
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          console.log(data)
+        })
+    },
+    formValidation() {
+      const validationModel = this.$v.formModel
+
+      for (const [key, field] of Object.entries(this.formModel)) {
+        
+        if (validationModel[key].required !== undefined && !validationModel[key].required) {
+          this.errors.push({
+            text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
+          })
+        } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
+          this.errors.push({
+            text: 'Неправильный формат почты'
+          })
+        } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
+          this.errors.push({
+            text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
+          })
+        } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
+          this.errors.push({
+            text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
+          })
+        } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
+          this.errors.push({
+            text: `Пароли не совпадают`
+          })
+        }
+
+      }
     },
     changeFormMode(mode) {
       this.errors = []

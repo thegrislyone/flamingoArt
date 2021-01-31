@@ -2365,6 +2365,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           headline: "вход",
           changeKey: "registration",
           buttonText: "войти",
+          sendApi: "/api/auth/login",
           lowerText: {
             text: "нет аккаунта?",
             link: "регистрация"
@@ -2385,6 +2386,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           headline: "регистрация",
           changeKey: "authorization",
           buttonText: "зарегестрироваться",
+          sendApi: "/api/auth/register",
           lowerText: {
             text: "есть аккаунт?",
             link: "войти"
@@ -2502,44 +2504,59 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   methods: {
     buttonClick: function buttonClick() {
       this.$v.$touch();
-      this.errors = [];
+      this.errors = []; // if (this.$v.$error) {
+      //   this.formValidation()
+      // } else {
 
-      if (this.$v.$error) {
-        var validationModel = this.$v.formModel;
-
-        for (var _i2 = 0, _Object$entries2 = Object.entries(this.formModel); _i2 < _Object$entries2.length; _i2++) {
-          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-              key = _Object$entries2$_i[0],
-              field = _Object$entries2$_i[1];
-
-          if (validationModel[key].required !== undefined && !validationModel[key].required) {
-            this.errors.push({
-              text: "\u041F\u043E\u043B\u0435 ".concat(this.activeForm.fields[key].caption, " \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F")
-            });
-          } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
-            this.errors.push({
-              text: 'Неправильный формат почты'
-            });
-          } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
-            this.errors.push({
-              text: "\u041C\u0438\u043D\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].min_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
-            });
-          } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
-            this.errors.push({
-              text: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].max_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
-            });
-          } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
-            this.errors.push({
-              text: "\u041F\u0430\u0440\u043E\u043B\u0438 \u043D\u0435 \u0441\u043E\u0432\u043F\u0430\u0434\u0430\u044E\u0442"
-            });
-          }
-        }
-      } else {
-        this.formSend();
-      }
+      this.formSend(); // }
     },
     formSend: function formSend() {
-      this.$http.post('', this.formModel);
+      // TODO: переделать на пост, который какого-то хера пустой
+      var url = new URL(window.location.origin + this.activeForm.sendApi);
+
+      for (var _i2 = 0, _Object$entries2 = Object.entries(this.formModel); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            item = _Object$entries2$_i[1];
+
+        url.searchParams.set(key, item);
+      }
+
+      this.$http.get(url).then(function (response) {
+        var data = response.data;
+        console.log(data);
+      });
+    },
+    formValidation: function formValidation() {
+      var validationModel = this.$v.formModel;
+
+      for (var _i3 = 0, _Object$entries3 = Object.entries(this.formModel); _i3 < _Object$entries3.length; _i3++) {
+        var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+            key = _Object$entries3$_i[0],
+            field = _Object$entries3$_i[1];
+
+        if (validationModel[key].required !== undefined && !validationModel[key].required) {
+          this.errors.push({
+            text: "\u041F\u043E\u043B\u0435 ".concat(this.activeForm.fields[key].caption, " \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F")
+          });
+        } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
+          this.errors.push({
+            text: 'Неправильный формат почты'
+          });
+        } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
+          this.errors.push({
+            text: "\u041C\u0438\u043D\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].min_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
+          });
+        } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
+          this.errors.push({
+            text: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].max_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
+          });
+        } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
+          this.errors.push({
+            text: "\u041F\u0430\u0440\u043E\u043B\u0438 \u043D\u0435 \u0441\u043E\u0432\u043F\u0430\u0434\u0430\u044E\u0442"
+          });
+        }
+      }
     },
     changeFormMode: function changeFormMode(mode) {
       this.errors = [];
