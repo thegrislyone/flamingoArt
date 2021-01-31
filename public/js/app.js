@@ -2262,6 +2262,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TextInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextInput.vue */ "./resources/js/components/TextInput.vue");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -2357,15 +2369,17 @@ __webpack_require__.r(__webpack_exports__);
             text: "нет аккаунта?",
             link: "регистрация"
           },
-          fields: [{
-            name: "email",
-            placeholder: "Email",
-            required: true
-          }, {
-            name: "password",
-            placeholder: "Пароль",
-            required: true
-          }]
+          fields: {
+            email: {
+              caption: "Email",
+              required: true
+            },
+            password: {
+              caption: "Пароль",
+              min_length: 8,
+              required: true
+            }
+          }
         },
         registrationForm: {
           headline: "регистрация",
@@ -2375,27 +2389,36 @@ __webpack_require__.r(__webpack_exports__);
             text: "есть аккаунт?",
             link: "войти"
           },
-          fields: [{
-            name: "email",
-            placeholder: "Email",
-            required: true
-          }, {
-            name: "fullName",
-            placeholder: "Имя и фамилия",
-            required: true
-          }, {
-            name: "nickName",
-            placeholder: "Имя пользователя",
-            required: true
-          }, {
-            name: "password",
-            placeholder: "Пароль",
-            required: true
-          }, {
-            name: "repeatPassword",
-            placeholder: "Повторите пароль",
-            required: true
-          }],
+          fields: {
+            email: {
+              caption: "Email",
+              required: true
+            },
+            fullName: {
+              caption: "Имя и фамилия",
+              min_length: 8,
+              max_length: 32,
+              required: true
+            },
+            nickName: {
+              caption: "Имя пользователя",
+              max_length: 32,
+              required: true
+            },
+            password: {
+              caption: "Пароль",
+              min_length: 8,
+              max_length: 32,
+              required: true
+            },
+            repeatPassword: {
+              caption: "Повторите пароль",
+              min_length: 8,
+              max_length: 32,
+              required: true,
+              same_as: 'password'
+            }
+          },
           permission: {
             text: "Я принимаю условия пользовательского соглашения"
           }
@@ -2418,10 +2441,16 @@ __webpack_require__.r(__webpack_exports__);
   validations: function validations() {
     var formModel = {},
         validationModel = {};
-    this.activeForm.fields.forEach(function (item, index) {
-      formModel[item.name] = '';
-    });
-    this.formModel = Object.assign({}, formModel);
+
+    for (var _i = 0, _Object$entries = Object.entries(this.activeForm.fields); _i < _Object$entries.length; _i++) {
+      var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+          index = _Object$entries$_i[0],
+          item = _Object$entries$_i[1];
+
+      formModel[index] = '';
+    }
+
+    this.formModel = Object.assign({}, formModel); // TODO: динамическая сборка объекта валидации
 
     if (this.formMode === 'registration') {
       validationModel = {
@@ -2476,71 +2505,41 @@ __webpack_require__.r(__webpack_exports__);
       this.errors = [];
 
       if (this.$v.$error) {
-        var validationModel = this.$v.formModel; // TODO: это точно переделать - дать имена полям и выводить у всех одну и ту же ошибку
+        var validationModel = this.$v.formModel;
 
-        if (validationModel.email && !validationModel.email.required) {
-          this.errors.push({
-            text: "Почта обязательна для заполнения"
-          });
-        } else if (validationModel.email && !validationModel.email.email) {
-          this.errors.push({
-            text: "Неправильный формат почты"
-          });
-        }
+        for (var _i2 = 0, _Object$entries2 = Object.entries(this.formModel); _i2 < _Object$entries2.length; _i2++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              key = _Object$entries2$_i[0],
+              field = _Object$entries2$_i[1];
 
-        if (validationModel.password && !validationModel.password.required) {
-          this.errors.push({
-            text: "Пароль обязателен для заполнения"
-          });
-        } else if (validationModel.password && !validationModel.password.minLength) {
-          this.errors.push({
-            text: "Пароль должен быть не менее 8 символов"
-          });
-        } else if (validationModel.password && !validationModel.password.maxLength) {
-          this.errors.push({
-            text: "Пароль должен быть не более 32 символов"
-          });
+          if (validationModel[key].required !== undefined && !validationModel[key].required) {
+            this.errors.push({
+              text: "\u041F\u043E\u043B\u0435 ".concat(this.activeForm.fields[key].caption, " \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F")
+            });
+          } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
+            this.errors.push({
+              text: 'Неправильный формат почты'
+            });
+          } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
+            this.errors.push({
+              text: "\u041C\u0438\u043D\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].min_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
+            });
+          } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
+            this.errors.push({
+              text: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0434\u043B\u0438\u043D\u0430 \u043F\u043E\u043B\u044F ".concat(this.activeForm.fields[key].caption, " - ").concat(this.activeForm.fields[key].max_length, " \u0441\u0438\u043C\u0432\u043E\u043B\u043E\u0432")
+            });
+          } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
+            this.errors.push({
+              text: "\u041F\u0430\u0440\u043E\u043B\u0438 \u043D\u0435 \u0441\u043E\u0432\u043F\u0430\u0434\u0430\u044E\u0442"
+            });
+          }
         }
-
-        if (validationModel.repeatPassword && !validationModel.repeatPassword.required) {
-          this.errors.push({
-            text: "Введите пароль повторно"
-          });
-        } else if (validationModel.repeatPassword && !validationModel.repeatPassword.sameAs) {
-          this.errors.push({
-            text: "Пароли не совпадают"
-          });
-        }
-
-        if (validationModel.fullName && !validationModel.fullName.required) {
-          this.errors.push({
-            text: "Имя и фамилия обязательны для заполнения"
-          });
-        } else if (validationModel.fullName && !validationModel.fullName.minLength) {
-          this.errors.push({
-            text: "Имя и фамилия должны быть не менее 8 символов"
-          });
-        } else if (validationModel.fullName && !validationModel.fullName.maxLength) {
-          this.errors.push({
-            text: "Имя и фамилия должны быть не более 32 символов"
-          });
-        }
-
-        if (validationModel.nickname && !validationModel.nickname.required) {
-          this.errors.push({
-            text: "Имя пользователя обязательено для заполнения"
-          });
-        } else if (validationModel.nickname && !validationModel.nickname.minLength) {
-          this.errors.push({
-            text: "Имя пользователя должно быть не менее 8 символов"
-          });
-        } else if (validationModel.nickname && !validationModel.nickname.maxLength) {
-          this.errors.push({
-            text: "Имя пользователя должно быть не более 32 символов"
-          });
-        }
-      } else {// отправка формы
+      } else {
+        this.formSend();
       }
+    },
+    formSend: function formSend() {
+      this.$http.post('', this.formModel);
     },
     changeFormMode: function changeFormMode(mode) {
       this.errors = [];
@@ -16227,16 +16226,16 @@ var render = function() {
               return _c("text-input", {
                 key: index,
                 attrs: {
-                  placeholder: field.placeholder,
+                  placeholder: field.caption,
                   required: field.required,
-                  v: _vm.$v.formModel[field.name]
+                  v: _vm.$v.formModel[index]
                 },
                 model: {
-                  value: _vm.$v.formModel[field.name].$model,
+                  value: _vm.$v.formModel[index].$model,
                   callback: function($$v) {
-                    _vm.$set(_vm.$v.formModel[field.name], "$model", $$v)
+                    _vm.$set(_vm.$v.formModel[index], "$model", $$v)
                   },
-                  expression: "$v.formModel[field.name].$model"
+                  expression: "$v.formModel[index].$model"
                 }
               })
             }),
@@ -16372,7 +16371,7 @@ var render = function() {
       }
     }),
     _vm._v(" "),
-    _vm.v.$error && !_vm.v.required
+    _vm.v.$error
       ? _c("img", {
           staticClass: "text-input__error-icon",
           attrs: { src: "assets/images/required-field.png" }

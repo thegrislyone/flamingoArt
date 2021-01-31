@@ -8,7 +8,7 @@
       @input="input"
     >
     <img 
-      v-if="v.$error && !v.required"
+      v-if="v.$error"
       class="text-input__error-icon"
       src="assets/images/required-field.png"
     >

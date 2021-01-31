@@ -24,10 +24,10 @@
             <text-input
               v-for="(field, index) in activeForm.fields"
               :key="index"
-              :placeholder="field.placeholder"
+              :placeholder="field.caption"
               :required="field.required"
-              :v="$v.formModel[field.name]"
-              v-model="$v.formModel[field.name].$model"
+              :v="$v.formModel[index]"
+              v-model="$v.formModel[index].$model"
             />
           </div>
 
@@ -97,18 +97,17 @@ export default {
             text: "нет аккаунта?",
             link: "регистрация"
           },
-          fields: [
-            {
-              name: "email",
-              placeholder: "Email",
+          fields: {
+            email: {
+              caption: "Email",
               required: true
             },
-            {
-              name: "password",
-              placeholder: "Пароль",
+            password: {
+              caption: "Пароль",
+              min_length: 8,
               required: true
             }
-          ]
+          }
         },
         registrationForm: {
           headline: "регистрация",
@@ -118,33 +117,36 @@ export default {
             text: "есть аккаунт?",
             link: "войти"
           },
-          fields: [
-            {
-              name: "email",
-              placeholder: "Email",
+          fields: {
+            email: {
+              caption: "Email",
               required: true
             },
-            {
-              name: "fullName",
-              placeholder: "Имя и фамилия",
+            fullName: {
+              caption: "Имя и фамилия",
+              min_length: 8,
+              max_length: 32,
               required: true
             },
-            {
-              name: "nickName",
-              placeholder: "Имя пользователя",
+            nickName: {
+              caption: "Имя пользователя",
+              max_length: 32,
               required: true
             },
-            {
-              name: "password",
-              placeholder: "Пароль",
+            password: {
+              caption: "Пароль",
+              min_length: 8,
+              max_length: 32,
               required: true
             },
-            {
-              name: "repeatPassword",
-              placeholder: "Повторите пароль",
-              required: true
+            repeatPassword: {
+              caption: "Повторите пароль",
+              min_length: 8,
+              max_length: 32,
+              required: true,
+              same_as: 'password'
             }
-          ],
+          },
           permission: {
             text: "Я принимаю условия пользовательского соглашения"
           }
@@ -162,18 +164,20 @@ export default {
       } else if (this.formMode === 'authorization') {
         return this.form.authForm
       }
-    }
+    },
   },
   validations() {
 
     let formModel = {},
         validationModel = {}
 
-    this.activeForm.fields.forEach((item, index) => {
-      formModel[item.name] = ''
-    })
+    for (const [index, item] of Object.entries(this.activeForm.fields)) {
+      formModel[index] = ''
+    }
 
     this.formModel = Object.assign({}, formModel)
+
+    // TODO: динамическая сборка объекта валидации
 
     if (this.formMode === 'registration') {
       validationModel = {
@@ -228,76 +232,42 @@ export default {
     buttonClick() {
       this.$v.$touch()
       this.errors = []
+
       if (this.$v.$error) {
         const validationModel = this.$v.formModel
 
-        // TODO: это точно переделать - дать имена полям и выводить у всех одну и ту же ошибку
-
-        if (validationModel.email && !validationModel.email.required) {
-          this.errors.push({
-            text: "Почта обязательна для заполнения"
-          })
-        } else if (validationModel.email && !validationModel.email.email) {
-          this.errors.push({
-            text: "Неправильный формат почты"
-          })
+        for (const [key, field] of Object.entries(this.formModel)) {
+          
+          if (validationModel[key].required !== undefined && !validationModel[key].required) {
+            this.errors.push({
+              text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
+            })
+          } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
+            this.errors.push({
+              text: 'Неправильный формат почты'
+            })
+          } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
+            this.errors.push({
+              text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
+            })
+          } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
+            this.errors.push({
+              text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
+            })
+          } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
+            this.errors.push({
+              text: `Пароли не совпадают`
+            })
+          }
         }
 
-        if (validationModel.password && !validationModel.password.required) {
-          this.errors.push({
-            text: "Пароль обязателен для заполнения"
-          })
-        } else if (validationModel.password && !validationModel.password.minLength) {
-          this.errors.push({
-            text: "Пароль должен быть не менее 8 символов"
-          })
-        } else if (validationModel.password && !validationModel.password.maxLength) {
-          this.errors.push({
-            text: "Пароль должен быть не более 32 символов"
-          })
-        }
-
-        if (validationModel.repeatPassword && !validationModel.repeatPassword.required) {
-          this.errors.push({
-            text: "Введите пароль повторно"
-          })
-        } else if (validationModel.repeatPassword && !validationModel.repeatPassword.sameAs) {
-          this.errors.push({
-            text: "Пароли не совпадают"
-          })
-        }
-
-        if (validationModel.fullName && !validationModel.fullName.required) {
-          this.errors.push({
-            text: "Имя и фамилия обязательны для заполнения"
-          })
-        } else if (validationModel.fullName && !validationModel.fullName.minLength) {
-          this.errors.push({
-            text: "Имя и фамилия должны быть не менее 8 символов"
-          })
-        } else if (validationModel.fullName && !validationModel.fullName.maxLength) {
-          this.errors.push({
-            text: "Имя и фамилия должны быть не более 32 символов"
-          })
-        }
-
-        if (validationModel.nickname && !validationModel.nickname.required) {
-          this.errors.push({
-            text: "Имя пользователя обязательено для заполнения"
-          })
-        } else if (validationModel.nickname && !validationModel.nickname.minLength) {
-          this.errors.push({
-            text: "Имя пользователя должно быть не менее 8 символов"
-          })
-        } else if (validationModel.nickname && !validationModel.nickname.maxLength) {
-          this.errors.push({
-            text: "Имя пользователя должно быть не более 32 символов"
-          })
-        }
 
       } else {
-        // отправка формы
+        this.formSend()
       }
+    },
+    formSend() {
+      this.$http.post('', this.formModel)
     },
     changeFormMode(mode) {
       this.errors = []
