@@ -18,22 +18,21 @@ class CreateFirstDbKit extends Migration
             $table->char('name', 50);
             $table->float('price', 10, 2);
             $table->text('description');
-            $table->binary('thumbnail');
+            $table->text('thumbnail');
             $table->text('tags');
+            $table->integer('likes');
+            $table->integer('author');
         });
 
         Schema::create('custom_users', function(Blueprint $table) {
             $table->increments('id_user');
             $table->char('name', 50);
-            $table->integer('role');
             $table->char('nickname', 50);
-            $table->binary('avatar');
+            $table->text('password');
+            $table->text('email');
+            $table->text('avatar');
         });
 
-        Schema::create('roles', function(Blueprint $table) {
-            $table->increments('id_role');
-            $table->char('role_name', 50);
-        });
     }
 
     /**
