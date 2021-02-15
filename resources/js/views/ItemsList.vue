@@ -1,5 +1,14 @@
 <template>
   <div class="item-list">
+
+    <div
+      v-if="errorPage"
+      class="item-list__error-block"
+    >
+      <h1>Не удалось найти эту страницу</h1>
+      <h2>Здесь нужно что-то написать</h2>
+    </div>
+
     <loader 
       v-if="$isEmpty(itemsList)"
     />
@@ -58,13 +67,15 @@ export default {
     }
   },
   computed: {
+    errorPage() {
+      return this.$route.meta.error || false
+    },
     itemsList() {
       return this.items.data
     },
   },
   methods: {
     loadMoreItems(url) {
-      console.log(this.page)
       
       this.$http.get(url)
         .then(response => {

@@ -403,6 +403,11 @@ button {
 
 /* ITEMS LIST */
 
+.item-list__error-block {
+  text-align: center;
+  padding: 25px;
+}
+
 /* categories */
 
 /* list */
@@ -457,31 +462,3 @@ img {
   padding-left: 25px;
   background: url('../assets/images/i-like.svg') no-repeat left center;
 }
-/* 
-.tile__thumbnail {
-  flex-grow: 1;
-  margin-bottom: 15px;
-}
-.tile__thumbnail {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-}
-.tile__inf {
-  display: flex;
-  justify-content: space-between;
-}
-.tile__left-side {
-  display: flex;
-  gap: 10px;
-}
-.tile__author-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 55%;
-  overflow: hidden;
-}
-.tile__author-avatar img {
-  width: 100%;
-  height: 100%;
-} */

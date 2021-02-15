@@ -3,7 +3,6 @@ import Vue from 'vue'
 
 //components
 import Index from '../views/Index.vue'
-import ErrorPage from '../views/ErrorPage.vue'
 import Contacts from '../views/Contacts.vue'
 import ItemList from '../views/ItemsList.vue'
 import Item from '../views/Item.vue'
@@ -29,7 +28,10 @@ const routes = [
   },
   {
     path: "*",
-    component: ErrorPage
+    meta: {
+      error: true
+    },
+    component: ItemList
   }
 ]
 
