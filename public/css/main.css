@@ -406,6 +406,16 @@ button {
 .item-list__error-block {
   text-align: center;
   padding: 25px;
+  position: relative;
+}
+.item-list__error-close {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  background-image: url('../assets/images/i-close_white.svg');
 }
 
 /* categories */

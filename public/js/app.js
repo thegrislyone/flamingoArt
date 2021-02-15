@@ -2494,6 +2494,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 
 
 
@@ -2506,6 +2507,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   data: function data() {
     return {
+      errorBannerShow: false,
       items: {
         data: [],
         meta: {}
@@ -2519,9 +2521,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   computed: {
-    errorPage: function errorPage() {
-      return this.$route.meta.error || false;
-    },
     itemsList: function itemsList() {
       return this.items.data;
     }
@@ -2562,6 +2561,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   created: function created() {
     var _this2 = this;
+
+    if (this.$route.meta.error) {
+      this.errorBannerShow = true;
+    }
 
     var url = new URL("".concat(window.location.origin, "/api/items"));
     url.searchParams.set('page', this.page);
@@ -16189,8 +16192,18 @@ var render = function() {
     "div",
     { staticClass: "item-list" },
     [
-      _vm.errorPage
+      _vm.errorBannerShow
         ? _c("div", { staticClass: "item-list__error-block" }, [
+            _c("div", {
+              staticClass: "item-list__error-close",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.errorBannerShow = false
+                }
+              }
+            }),
+            _vm._v(" "),
             _c("h1", [_vm._v("Не удалось найти эту страницу")]),
             _vm._v(" "),
             _c("h2", [_vm._v("Здесь нужно что-то написать")])
