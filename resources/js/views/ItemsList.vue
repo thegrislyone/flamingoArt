@@ -1,6 +1,6 @@
 <template>
   <div class="item-list">
-
+  
     <div
       v-if="errorBannerShow"
       class="item-list__error-block"

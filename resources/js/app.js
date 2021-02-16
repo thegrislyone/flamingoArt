@@ -20,6 +20,7 @@ import appFooter from './components/Footer/appFooter.vue'
 
 //components
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import VModal from 'vue-js-modal'
 
 //class prototype inicialization
 Vue.prototype.$http = axios
@@ -34,6 +35,7 @@ Vue.use(VueAwesomeSwiper)
 Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
 Vue.use(vueDebounce)
+Vue.use(VModal)
 
 
 const app = new Vue({

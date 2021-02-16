@@ -190,12 +190,14 @@ button {
 
 .btn {
   background-color: #ff6d88;
-  border-radius: 50px;
-  padding: 15px;
+  border-radius: 2em;
+  padding: 10px 2em;
   font-weight: 800;
   cursor: pointer;
 }
-
+.btn_red {
+  background-color: #ff3f3d;
+}
 
 /**
  * Checkboxes 
@@ -400,6 +402,30 @@ button {
   text-align: center;
 }
 
+/* error modal */
+
+.error-modal {}
+.status-modal {
+  background-color: #232323 !important;
+  border-radius: 1em !important;
+}
+.error-modal__window {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  padding: 15px;
+  text-align: center;
+}
+.error-modal__window img {
+  width: 100px;
+  border-radius: 55%;
+  cursor: pointer;
+}
+.error-modal__window h2,
+.error-modal__window h4 {
+  margin: 0;
+}
 
 /* ITEMS LIST */
 
