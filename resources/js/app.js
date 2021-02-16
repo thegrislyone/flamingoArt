@@ -15,8 +15,8 @@ import { empty, exist } from './properties/'
 import { capitalize } from './filters/capitalize.filter'
 
 //common components
-import appHeader from './components/Header/appHeader.vue'
-import appFooter from './components/Footer/appFooter.vue'
+import AppHeader from './components/Header/AppHeader.vue'
+import AppFooter from './components/Footer/AppFooter.vue'
 
 //components
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -40,7 +40,7 @@ Vue.use(VModal)
 
 const app = new Vue({
     el: '#app',
-    components: { appHeader, appFooter },
+    components: { AppHeader, AppFooter },
     router,
     store,
     data() {
