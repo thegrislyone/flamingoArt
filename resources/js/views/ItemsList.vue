@@ -1,5 +1,15 @@
 <template>
   <div class="item-list">
+  
+    <div
+      v-if="errorBannerShow"
+      class="item-list__error-block"
+    >
+      <div class="item-list__error-close" @click.prevent="errorBannerShow = false"></div>
+      <h1>Не удалось найти эту страницу</h1>
+      <h2>Здесь нужно что-то написать</h2>
+    </div>
+
     <loader 
       v-if="$isEmpty(itemsList)"
     />
@@ -44,6 +54,8 @@ export default {
   },
   data() {
     return {
+      errorBannerShow: false,
+
       items: {
         data: [],
         meta: {}
@@ -99,6 +111,10 @@ export default {
     }
   },
   created() {
+
+    if (this.$route.meta.error) {
+      this.errorBannerShow = true
+    }
 
     const url = new URL(`${window.location.origin}/api/items`)
     url.searchParams.set('page', this.page)

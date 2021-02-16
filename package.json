@@ -31,6 +31,7 @@
     "vue-async-computed": "^3.9.0",
     "vue-awesome-swiper": "^4.1.1",
     "vue-debounce": "^2.6.0",
+    "vue-js-modal": "^2.0.0-rc.6",
     "vuelidate": "^0.7.6"
   },
   "name": "flamingo",

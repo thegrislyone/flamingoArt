@@ -235,11 +235,11 @@ export default {
       this.$v.$touch()
       this.errors = []
 
-      // if (this.$v.$error) {
-      //   this.formValidation()
-      // } else {
+      if (this.$v.$error) {
+        this.formValidation()
+      } else {
         this.formSend()
-      // }
+      }
       
     },
     formSend() {
