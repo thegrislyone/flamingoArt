@@ -26,5 +26,8 @@ Route::get('categories','App\Http\Controllers\Categories\CategoriesController@ca
 */
 
 Route::get('auth/login','App\Http\Controllers\Auth\AuthController@login');
+Route::post('auth/login','App\Http\Controllers\Auth\AuthController@login');
+Route::get('auth/logout','App\Http\Controllers\Auth\AuthController@logout');
+
 Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
-Route::post('auth/verified','App\Http\Controllers\Auth\AuthController@verified');
+Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
