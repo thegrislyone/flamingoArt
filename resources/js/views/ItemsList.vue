@@ -13,44 +13,40 @@
     <loader 
       v-if="$isEmpty(itemsList)"
     />
+
     <div
       v-else
       class="item-list__tiles-wrp"
     >
+    
       <items-categories
         :categoriesData="categoriesData"
       />
-      <div class="item-list__tiles">
-         <item-tile
-            v-for="(item, index) in itemsList"
-            :key="index"
-            :name="item.name"
-            :price="item.price"
-            :description="item.description"
-            :img="item.thumbnail"
-            :likes="item.likes"
-            :author="item.author"
-          />
-      </div>
-      <loader
-        v-if="!outOfItems"
+      
+      <items-tiles-list
+        :tilesList="itemsList"
+        :outOfItems="outOfItems"
       />
+
     </div>
   </div>
 </template>
 
 <script>
-import ItemTile from '../components/ItemTile.vue'
+import ItemsTilesList from '../components/ItemsTilesList.vue'
 import ItemsCategories from '../components/ItemsCategories.vue'
+
 import Loader from '../components/Loader.vue'
 
 import { debounce } from 'vue-debounce'
 
 export default {
   components: {
-    ItemTile,
+    ItemsTilesList,
     ItemsCategories,
+
     Loader,
+    ItemsTilesList,
   },
   data() {
     return {

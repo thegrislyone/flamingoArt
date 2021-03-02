@@ -7,6 +7,7 @@ import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
 import Vuelidate from 'vuelidate'
 import vueDebounce from 'vue-debounce'
+import vClickOutside from 'v-click-outside'
 
 //properties
 import { empty, exist } from './properties/'
@@ -19,7 +20,6 @@ import AppHeader from './components/Header/AppHeader.vue'
 import AppFooter from './components/Footer/AppFooter.vue'
 
 //components
-import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VModal from 'vue-js-modal'
 
 //class prototype inicialization
@@ -31,12 +31,11 @@ Vue.prototype.$isExist = exist
 Vue.filter('capitalize', capitalize)
 
 //plugins registration
-Vue.use(VueAwesomeSwiper)
 Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
 Vue.use(vueDebounce)
 Vue.use(VModal)
-
+Vue.use(vClickOutside)
 
 const app = new Vue({
     el: '#app',

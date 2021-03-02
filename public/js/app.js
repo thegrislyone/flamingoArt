@@ -2104,8 +2104,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-awesome-swiper */ "./node_modules/vue-awesome-swiper/dist/vue-awesome-swiper.js");
-/* harmony import */ var vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2128,10 +2134,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    Swiper: vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_0__["Swiper"],
-    SwiperSlide: vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_0__["SwiperSlide"]
-  },
   props: {
     categoriesData: {
       type: Object,
@@ -2140,38 +2142,105 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      swiperOptions: {
-        slidesPerView: null,
-        spaceBetween: 10,
-        updateOnWindowResize: true
-      }
+      slider: {}
     };
   },
-  watch: {// windowWidth() {
-    //   console.log("fff")
-    //   if (this.swiperOptions.slidesPerView != this.getSlidesAmount()) {
-    //     this.swiperOptions.slidesPerView = this.getSlidesAmount()
-    //     // this.$refs.swiper.destroySwiper()
-    //     // this.$refs.swiper.initSwiper()
-    //     this.$refs.swiper.options = this.swiperOptions
-    //     this.$refs.swiper.updateSwiper()
-    //   }
-    // }
+  watch: {
+    slidesAmount: function slidesAmount() {
+      this.slider.destroy(true, true);
+      this.slider = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.categories__wrp', {
+        direction: 'horizontal',
+        spaceBetween: 15,
+        slidesPerView: this.slidesAmount,
+        freeMode: true,
+        loop: false,
+        observer: true
+      });
+    }
   },
   computed: {
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
+    },
+    categoriesList: function categoriesList() {
+      return this.categoriesData.categories;
+    },
+    slidesAmount: function slidesAmount() {
+      if (this.windowWidth < 500) return 2.2;else if (this.windowWidth > 500 && this.windowWidth < 640) return 3.2;else if (this.windowWidth > 640 && this.windowWidth < 720) return 4.2;else if (this.windowWidth > 720 && this.windowWidth < 960) return 5.2;else if (this.windowWidth > 960) return 6.2;
     }
   },
-  created: function created() {
-    this.swiperOptions.slidesPerView = this.getSlidesAmount();
+  mounted: function mounted() {
+    this.slider = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.categories__wrp', {
+      direction: 'horizontal',
+      spaceBetween: 15,
+      slidesPerView: this.slidesAmount,
+      freeMode: true,
+      loop: false,
+      observer: true
+    });
+    this.slider.init();
   },
-  mounted: function mounted() {},
-  methods: {
-    getSlidesAmount: function getSlidesAmount() {
-      if (this.windowWidth < 500 && this.swiperOptions.slidesPerView != 2) return 2;else if (this.windowWidth > 500 && this.windowWidth < 640 && this.swiperOptions.slidesPerView != 3) return 3;else if (this.windowWidth > 640 && this.windowWidth < 720 && this.swiperOptions.slidesPerView != 4) return 4;else if (this.windowWidth > 720 && this.windowWidth < 960 && this.swiperOptions.slidesPerView != 5) return 5;else if (this.windowWidth > 960 && this.swiperOptions.slidesPerView != 6) return 6;
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ItemTile_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemTile.vue */ "./resources/js/components/ItemTile.vue");
+/* harmony import */ var _Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Loader.vue */ "./resources/js/components/Loader.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ItemTile: _ItemTile_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Loader: _Loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    tilesList: {
+      type: Array,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      "default": false
+    },
+    outOfItems: {
+      type: Boolean,
+      "default": false
     }
-  }
+  },
+  created: function created() {}
 });
 
 /***/ }),
@@ -2225,6 +2294,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     close: {
@@ -2232,6 +2316,11 @@ __webpack_require__.r(__webpack_exports__);
       "default": false
     },
     placeholder: String
+  },
+  data: function data() {
+    return {
+      searchResults: []
+    };
   },
   methods: {
     focus: function focus() {
@@ -2241,9 +2330,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       document.querySelector('#search').focus();
+      this.searchResults = ["результат 1", "результат 2", "результат 3"];
     },
     closing: function closing() {
       this.$emit("search-close");
+    },
+    closeSearch: function closeSearch() {
+      this.searchResults = [];
     }
   }
 });
@@ -2697,7 +2790,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_ItemTile_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemTile.vue */ "./resources/js/components/ItemTile.vue");
+/* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
 /* harmony import */ var _components_ItemsCategories_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/ItemsCategories.vue */ "./resources/js/components/ItemsCategories.vue");
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
@@ -2714,13 +2807,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
-//
-//
-//
-//
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2760,11 +2848,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    ItemTile: _components_ItemTile_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+  components: _defineProperty({
+    ItemsTilesList: _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ItemsCategories: _components_ItemsCategories_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  },
+  }, "ItemsTilesList", _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__["default"]),
   data: function data() {
     return {
       errorBannerShow: false,
@@ -6116,53 +6204,55 @@ function checkOverflow() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return addClasses; });
+function prepareClasses(entries, prefix) {
+  var resultClasses = [];
+  entries.forEach(function (item) {
+    if (typeof item === 'object') {
+      Object.entries(item).forEach(function (_ref) {
+        var classNames = _ref[0],
+            condition = _ref[1];
+
+        if (condition) {
+          resultClasses.push(prefix + classNames);
+        }
+      });
+    } else if (typeof item === 'string') {
+      resultClasses.push(prefix + item);
+    }
+  });
+  return resultClasses;
+}
+
 function addClasses() {
   var swiper = this;
   var classNames = swiper.classNames,
       params = swiper.params,
       rtl = swiper.rtl,
       $el = swiper.$el,
-      device = swiper.device;
-  var suffixes = [];
-  suffixes.push('initialized');
-  suffixes.push(params.direction);
+      device = swiper.device,
+      support = swiper.support; // prettier-ignore
 
-  if (params.freeMode) {
-    suffixes.push('free-mode');
-  }
-
-  if (params.autoHeight) {
-    suffixes.push('autoheight');
-  }
-
-  if (rtl) {
-    suffixes.push('rtl');
-  }
-
-  if (params.slidesPerColumn > 1) {
-    suffixes.push('multirow');
-
-    if (params.slidesPerColumnFill === 'column') {
-      suffixes.push('multirow-column');
-    }
-  }
-
-  if (device.android) {
-    suffixes.push('android');
-  }
-
-  if (device.ios) {
-    suffixes.push('ios');
-  }
-
-  if (params.cssMode) {
-    suffixes.push('css-mode');
-  }
-
-  suffixes.forEach(function (suffix) {
-    classNames.push(params.containerModifierClass + suffix);
-  });
-  $el.addClass(classNames.join(' '));
+  var suffixes = prepareClasses(['initialized', params.direction, {
+    'pointer-events': support.pointerEvents && !support.touch
+  }, {
+    'free-mode': params.freeMode
+  }, {
+    'autoheight': params.autoHeight
+  }, {
+    'rtl': rtl
+  }, {
+    'multirow': params.slidesPerColumn > 1
+  }, {
+    'multirow-column': params.slidesPerColumn > 1 && params.slidesPerColumnFill === 'column'
+  }, {
+    'android': device.android
+  }, {
+    'ios': device.ios
+  }, {
+    'css-mode': params.cssMode
+  }], params.containerModifierClass);
+  classNames.push.apply(classNames, suffixes);
+  $el.addClass([].concat(classNames).join(' '));
   swiper.emitContainerClasses();
 }
 
@@ -6302,7 +6392,19 @@ var Swiper = /*#__PURE__*/function () {
 
     if (!params) params = {};
     params = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["extend"])({}, params);
-    if (el && !params.el) params.el = el; // Swiper Instance
+    if (el && !params.el) params.el = el;
+
+    if (params.el && Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(params.el).length > 1) {
+      var swipers = [];
+      Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(params.el).each(function (containerEl) {
+        var newParams = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["extend"])({}, params, {
+          el: containerEl
+        });
+        swipers.push(new Swiper(newParams));
+      });
+      return swipers;
+    } // Swiper Instance
+
 
     var swiper = this;
     swiper.support = Object(_utils_get_support__WEBPACK_IMPORTED_MODULE_2__["getSupport"])();
@@ -6360,46 +6462,10 @@ var Swiper = /*#__PURE__*/function () {
     } // Save Dom lib
 
 
-    swiper.$ = _utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"]; // Find el
-
-    var $el = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(swiper.params.el);
-    el = $el[0];
-
-    if (!el) {
-      return undefined;
-    }
-
-    if ($el.length > 1) {
-      var swipers = [];
-      $el.each(function (containerEl) {
-        var newParams = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["extend"])({}, params, {
-          el: containerEl
-        });
-        swipers.push(new Swiper(newParams));
-      });
-      return swipers;
-    }
-
-    el.swiper = swiper; // Find Wrapper
-
-    var $wrapperEl;
-
-    if (el && el.shadowRoot && el.shadowRoot.querySelector) {
-      $wrapperEl = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(el.shadowRoot.querySelector("." + swiper.params.wrapperClass)); // Children needs to return slot items
-
-      $wrapperEl.children = function (options) {
-        return $el.children(options);
-      };
-    } else {
-      $wrapperEl = $el.children("." + swiper.params.wrapperClass);
-    } // Extend Swiper
-
+    swiper.$ = _utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"]; // Extend Swiper
 
     Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["extend"])(swiper, {
-      $el: $el,
       el: el,
-      $wrapperEl: $wrapperEl,
-      wrapperEl: $wrapperEl[0],
       // Classes
       classNames: [],
       // Slides
@@ -6414,10 +6480,6 @@ var Swiper = /*#__PURE__*/function () {
       isVertical: function isVertical() {
         return swiper.params.direction === 'vertical';
       },
-      // RTL
-      rtl: el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl',
-      rtlTranslate: swiper.params.direction === 'horizontal' && (el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl'),
-      wrongRTL: $wrapperEl.css('display') === '-webkit-box',
       // Indexes
       activeIndex: 0,
       realIndex: 0,
@@ -6523,10 +6585,16 @@ var Swiper = /*#__PURE__*/function () {
   _proto.emitSlidesClasses = function emitSlidesClasses() {
     var swiper = this;
     if (!swiper.params._emitClasses || !swiper.el) return;
+    var updates = [];
     swiper.slides.each(function (slideEl) {
       var classNames = swiper.getSlideClasses(slideEl);
+      updates.push({
+        slideEl: slideEl,
+        classNames: classNames
+      });
       swiper.emit('_slideClass', slideEl, classNames);
     });
+    swiper.emit('_slideClasses', updates);
   };
 
   _proto.slidesPerViewDynamic = function slidesPerViewDynamic() {
@@ -6650,9 +6718,50 @@ var Swiper = /*#__PURE__*/function () {
     return swiper;
   };
 
-  _proto.init = function init() {
+  _proto.mount = function mount(el) {
     var swiper = this;
-    if (swiper.initialized) return;
+    if (swiper.mounted) return true; // Find el
+
+    var $el = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(el || swiper.params.el);
+    el = $el[0];
+
+    if (!el) {
+      return false;
+    }
+
+    el.swiper = swiper; // Find Wrapper
+
+    var $wrapperEl;
+
+    if (el && el.shadowRoot && el.shadowRoot.querySelector) {
+      $wrapperEl = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(el.shadowRoot.querySelector("." + swiper.params.wrapperClass)); // Children needs to return slot items
+
+      $wrapperEl.children = function (options) {
+        return $el.children(options);
+      };
+    } else {
+      $wrapperEl = $el.children("." + swiper.params.wrapperClass);
+    }
+
+    Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["extend"])(swiper, {
+      $el: $el,
+      el: el,
+      $wrapperEl: $wrapperEl,
+      wrapperEl: $wrapperEl[0],
+      mounted: true,
+      // RTL
+      rtl: el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl',
+      rtlTranslate: swiper.params.direction === 'horizontal' && (el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl'),
+      wrongRTL: $wrapperEl.css('display') === '-webkit-box'
+    });
+    return true;
+  };
+
+  _proto.init = function init(el) {
+    var swiper = this;
+    if (swiper.initialized) return swiper;
+    var mounted = swiper.mount(el);
+    if (mounted === false) return swiper;
     swiper.emit('beforeInit'); // Set breakpoint
 
     if (swiper.params.breakpoints) {
@@ -6698,6 +6807,7 @@ var Swiper = /*#__PURE__*/function () {
 
     swiper.emit('init');
     swiper.emit('afterInit');
+    return swiper;
   };
 
   _proto.destroy = function destroy(deleteInstance, cleanStyles) {
@@ -7981,7 +8091,11 @@ function onTouchStart(event) {
   var edgeSwipeThreshold = params.edgeSwipeThreshold || params.iOSEdgeSwipeThreshold;
 
   if (edgeSwipeDetection && (startX <= edgeSwipeThreshold || startX >= window.innerWidth - edgeSwipeThreshold)) {
-    return;
+    if (edgeSwipeDetection === 'prevent') {
+      event.preventDefault();
+    } else {
+      return;
+    }
   }
 
   Object(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["extend"])(data, {
@@ -8916,7 +9030,17 @@ function slideTo(index, speed, runCallbacks, internal) {
 
   if (params.normalizeSlideIndex) {
     for (var i = 0; i < slidesGrid.length; i += 1) {
-      if (-Math.floor(translate * 100) >= Math.floor(slidesGrid[i] * 100)) {
+      var normalizedTranslate = -Math.floor(translate * 100);
+      var normalizedGird = Math.floor(slidesGrid[i] * 100);
+      var normalizedGridNext = Math.floor(slidesGrid[i + 1] * 100);
+
+      if (typeof slidesGrid[i + 1] !== 'undefined') {
+        if (normalizedTranslate >= normalizedGird && normalizedTranslate < normalizedGridNext - (normalizedGridNext - normalizedGird) / 2) {
+          slideIndex = i;
+        } else if (normalizedTranslate >= normalizedGird && normalizedTranslate < normalizedGridNext) {
+          slideIndex = i + 1;
+        }
+      } else if (normalizedTranslate >= normalizedGird) {
         slideIndex = i;
       }
     }
@@ -9923,6 +10047,29 @@ __webpack_require__.r(__webpack_exports__);
 
 function updateSlides() {
   var swiper = this;
+
+  var getDirectionLabel = function getDirectionLabel(property) {
+    if (swiper.isHorizontal()) {
+      return property;
+    } // prettier-ignore
+
+
+    return {
+      'width': 'height',
+      'margin-top': 'margin-left',
+      'margin-bottom ': 'margin-right',
+      'margin-left': 'margin-top',
+      'margin-right': 'margin-bottom',
+      'padding-left': 'padding-top',
+      'padding-right': 'padding-bottom',
+      'marginRight': 'marginBottom'
+    }[property];
+  };
+
+  var getDirectionPropertyValue = function getDirectionPropertyValue(node, label) {
+    return parseFloat(node.getPropertyValue(getDirectionLabel(label)) || 0);
+  };
+
   var window = Object(ssr_window__WEBPACK_IMPORTED_MODULE_0__["getWindow"])();
   var params = swiper.params;
   var $wrapperEl = swiper.$wrapperEl,
@@ -10044,7 +10191,7 @@ function updateSlides() {
         column = i - row * slidesPerRow;
       }
 
-      slide.css("margin-" + (swiper.isHorizontal() ? 'top' : 'left'), row !== 0 && params.spaceBetween && params.spaceBetween + "px");
+      slide.css(getDirectionLabel('margin-top'), row !== 0 && params.spaceBetween && params.spaceBetween + "px");
     }
 
     if (slide.css('display') === 'none') continue; // eslint-disable-line
@@ -10066,39 +10213,20 @@ function updateSlides() {
         slideSize = swiper.isHorizontal() ? slide.outerWidth(true) : slide.outerHeight(true);
       } else {
         // eslint-disable-next-line
-        if (swiper.isHorizontal()) {
-          var width = parseFloat(slideStyles.getPropertyValue('width') || 0);
-          var paddingLeft = parseFloat(slideStyles.getPropertyValue('padding-left') || 0);
-          var paddingRight = parseFloat(slideStyles.getPropertyValue('padding-right') || 0);
-          var marginLeft = parseFloat(slideStyles.getPropertyValue('margin-left') || 0);
-          var marginRight = parseFloat(slideStyles.getPropertyValue('margin-right') || 0);
-          var boxSizing = slideStyles.getPropertyValue('box-sizing');
+        var width = getDirectionPropertyValue(slideStyles, 'width');
+        var paddingLeft = getDirectionPropertyValue(slideStyles, 'padding-left');
+        var paddingRight = getDirectionPropertyValue(slideStyles, 'padding-right');
+        var marginLeft = getDirectionPropertyValue(slideStyles, 'margin-left');
+        var marginRight = getDirectionPropertyValue(slideStyles, 'margin-right');
+        var boxSizing = slideStyles.getPropertyValue(slideStyles, 'box-sizing');
 
-          if (boxSizing && boxSizing === 'border-box') {
-            slideSize = width + marginLeft + marginRight;
-          } else {
-            var _slide$ = slide[0],
-                clientWidth = _slide$.clientWidth,
-                offsetWidth = _slide$.offsetWidth;
-            slideSize = width + paddingLeft + paddingRight + marginLeft + marginRight + (offsetWidth - clientWidth);
-          }
+        if (boxSizing && boxSizing === 'border-box') {
+          slideSize = width + marginLeft + marginRight;
         } else {
-          var height = parseFloat(slideStyles.getPropertyValue('height') || 0);
-          var paddingTop = parseFloat(slideStyles.getPropertyValue('padding-top') || 0);
-          var paddingBottom = parseFloat(slideStyles.getPropertyValue('padding-bottom') || 0);
-          var marginTop = parseFloat(slideStyles.getPropertyValue('margin-top') || 0);
-          var marginBottom = parseFloat(slideStyles.getPropertyValue('margin-bottom') || 0);
-
-          var _boxSizing = slideStyles.getPropertyValue('box-sizing');
-
-          if (_boxSizing && _boxSizing === 'border-box') {
-            slideSize = height + marginTop + marginBottom;
-          } else {
-            var _slide$2 = slide[0],
-                clientHeight = _slide$2.clientHeight,
-                offsetHeight = _slide$2.offsetHeight;
-            slideSize = height + paddingTop + paddingBottom + marginTop + marginBottom + (offsetHeight - clientHeight);
-          }
+          var _slide$ = slide[0],
+              clientWidth = _slide$.clientWidth,
+              offsetWidth = _slide$.offsetWidth;
+          slideSize = width + paddingLeft + paddingRight + marginLeft + marginRight + (offsetWidth - clientWidth);
         }
       }
 
@@ -10116,11 +10244,7 @@ function updateSlides() {
       if (params.roundLengths) slideSize = Math.floor(slideSize);
 
       if (slides[i]) {
-        if (swiper.isHorizontal()) {
-          slides[i].style.width = slideSize + "px";
-        } else {
-          slides[i].style.height = slideSize + "px";
-        }
+        slides[i].style[getDirectionLabel('width')] = slideSize + "px";
       }
     }
 
@@ -10160,21 +10284,17 @@ function updateSlides() {
   }
 
   if (params.setWrapperSize) {
-    if (swiper.isHorizontal()) $wrapperEl.css({
-      width: swiper.virtualSize + params.spaceBetween + "px"
-    });else $wrapperEl.css({
-      height: swiper.virtualSize + params.spaceBetween + "px"
-    });
+    var _$wrapperEl$css;
+
+    $wrapperEl.css((_$wrapperEl$css = {}, _$wrapperEl$css[getDirectionLabel('width')] = swiper.virtualSize + params.spaceBetween + "px", _$wrapperEl$css));
   }
 
   if (params.slidesPerColumn > 1) {
+    var _$wrapperEl$css2;
+
     swiper.virtualSize = (slideSize + params.spaceBetween) * slidesNumberEvenToRows;
     swiper.virtualSize = Math.ceil(swiper.virtualSize / params.slidesPerColumn) - params.spaceBetween;
-    if (swiper.isHorizontal()) $wrapperEl.css({
-      width: swiper.virtualSize + params.spaceBetween + "px"
-    });else $wrapperEl.css({
-      height: swiper.virtualSize + params.spaceBetween + "px"
-    });
+    $wrapperEl.css((_$wrapperEl$css2 = {}, _$wrapperEl$css2[getDirectionLabel('width')] = swiper.virtualSize + params.spaceBetween + "px", _$wrapperEl$css2));
 
     if (params.centeredSlides) {
       newSlidesGrid = [];
@@ -10212,15 +10332,10 @@ function updateSlides() {
   if (snapGrid.length === 0) snapGrid = [0];
 
   if (params.spaceBetween !== 0) {
-    if (swiper.isHorizontal()) {
-      if (rtl) slides.filter(slidesForMargin).css({
-        marginLeft: spaceBetween + "px"
-      });else slides.filter(slidesForMargin).css({
-        marginRight: spaceBetween + "px"
-      });
-    } else slides.filter(slidesForMargin).css({
-      marginBottom: spaceBetween + "px"
-    });
+    var _slides$filter$css;
+
+    var key = swiper.isHorizontal() && rtl ? 'marginLeft' : getDirectionLabel('marginRight');
+    slides.filter(slidesForMargin).css((_slides$filter$css = {}, _slides$filter$css[key] = spaceBetween + "px", _slides$filter$css));
   }
 
   if (params.centeredSlides && params.centeredSlidesBounds) {
@@ -12563,6 +12678,10 @@ var Pagination = {
     if (params.type === 'bullets') {
       var numberOfBullets = swiper.params.loop ? Math.ceil((slidesLength - swiper.loopedSlides * 2) / swiper.params.slidesPerGroup) : swiper.snapGrid.length;
 
+      if (swiper.params.freeMode && !swiper.params.loop && numberOfBullets > slidesLength) {
+        numberOfBullets = slidesLength;
+      }
+
       for (var i = 0; i < numberOfBullets; i += 1) {
         if (params.renderBullet) {
           paginationHTML += params.renderBullet.call(swiper, i, params.bulletClass);
@@ -13120,6 +13239,7 @@ var Scrollbar = {
       passive: true,
       capture: false
     } : false;
+    if (!target) return;
 
     if (!support.touch) {
       target.addEventListener(touchEventsDesktop.start, swiper.scrollbar.onDragStart, activeListener);
@@ -13150,6 +13270,7 @@ var Scrollbar = {
       passive: true,
       capture: false
     } : false;
+    if (!target) return;
 
     if (!support.touch) {
       target.removeEventListener(touchEventsDesktop.start, swiper.scrollbar.onDragStart, activeListener);
@@ -13757,9 +13878,11 @@ var Virtual = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/dom */ "./node_modules/swiper/esm/utils/dom.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/utils */ "./node_modules/swiper/esm/utils/utils.js");
+/* harmony import */ var ssr_window__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ssr-window */ "./node_modules/ssr-window/ssr-window.esm.js");
+/* harmony import */ var _utils_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/dom */ "./node_modules/swiper/esm/utils/dom.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/utils */ "./node_modules/swiper/esm/utils/utils.js");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 
 
 
@@ -13794,7 +13917,7 @@ var Zoom = {
     }
 
     if (!gesture.$slideEl || !gesture.$slideEl.length) {
-      gesture.$slideEl = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_0__["default"])(e.target).closest("." + swiper.params.slideClass);
+      gesture.$slideEl = Object(_utils_dom__WEBPACK_IMPORTED_MODULE_1__["default"])(e.target).closest("." + swiper.params.slideClass);
       if (gesture.$slideEl.length === 0) gesture.$slideEl = swiper.slides.eq(swiper.activeIndex);
       gesture.$imageEl = gesture.$slideEl.find('img, svg, canvas, picture, .swiper-zoom-target');
       gesture.$imageWrapEl = gesture.$imageEl.parent("." + params.containerClass);
@@ -13903,8 +14026,8 @@ var Zoom = {
     if (!image.isMoved) {
       image.width = gesture.$imageEl[0].offsetWidth;
       image.height = gesture.$imageEl[0].offsetHeight;
-      image.startX = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["getTranslate"])(gesture.$imageWrapEl[0], 'x') || 0;
-      image.startY = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["getTranslate"])(gesture.$imageWrapEl[0], 'y') || 0;
+      image.startX = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["getTranslate"])(gesture.$imageWrapEl[0], 'x') || 0;
+      image.startY = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["getTranslate"])(gesture.$imageWrapEl[0], 'y') || 0;
       gesture.slideWidth = gesture.$slideEl[0].offsetWidth;
       gesture.slideHeight = gesture.$slideEl[0].offsetHeight;
       gesture.$imageWrapEl.transition(0);
@@ -14051,6 +14174,7 @@ var Zoom = {
   },
   in: function _in(e) {
     var swiper = this;
+    var window = Object(ssr_window__WEBPACK_IMPORTED_MODULE_0__["getWindow"])();
     var zoom = swiper.zoom;
     var params = swiper.params.zoom;
     var gesture = zoom.gesture,
@@ -14102,8 +14226,8 @@ var Zoom = {
     if (e) {
       slideWidth = gesture.$slideEl[0].offsetWidth;
       slideHeight = gesture.$slideEl[0].offsetHeight;
-      offsetX = gesture.$slideEl.offset().left;
-      offsetY = gesture.$slideEl.offset().top;
+      offsetX = gesture.$slideEl.offset().left + window.scrollX;
+      offsetY = gesture.$slideEl.offset().top + window.scrollY;
       diffX = offsetX + slideWidth / 2 - touchX;
       diffY = offsetY + slideHeight / 2 - touchY;
       imageWidth = gesture.$imageEl[0].offsetWidth;
@@ -14266,7 +14390,7 @@ var Zoom = {
   },
   create: function create() {
     var swiper = this;
-    Object(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["bindModuleMethods"])(swiper, {
+    Object(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["bindModuleMethods"])(swiper, {
       zoom: _extends({
         enabled: false,
         scale: 1,
@@ -14959,15 +15083,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Thumbs", function() { return _esm_components_thumbs_thumbs__WEBPACK_IMPORTED_MODULE_19__["default"]; });
 
 /**
- * Swiper 6.4.5
+ * Swiper 6.4.15
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
  *
- * Copyright 2014-2020 Vladimir Kharlampidi
+ * Copyright 2014-2021 Vladimir Kharlampidi
  *
  * Released under the MIT License
  *
- * Released on: December 18, 2020
+ * Released on: February 18, 2021
  */
 
 
@@ -14989,12 +15113,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-// Swiper Class
-var components = [];
-_esm_components_core_core_class__WEBPACK_IMPORTED_MODULE_0__["default"].use(components);
 
 
 /***/ }),
@@ -15071,6 +15189,19 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (this && this.clearImmediate);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/v-click-outside/dist/v-click-outside.umd.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-click-outside/dist/v-click-outside.umd.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,n){ true?module.exports=n():undefined}(this,function(){var e="undefined"!=typeof window,n="undefined"!=typeof navigator,t=e&&("ontouchstart"in window||n&&navigator.msMaxTouchPoints>0)?["touchstart"]:["click"];function i(e){var n=e.event,t=e.handler;(0,e.middleware)(n)&&t(n)}function r(e,n){var r=function(e){var n="function"==typeof e;if(!n&&"object"!=typeof e)throw new Error("v-click-outside: Binding value must be a function or an object");return{handler:n?e:e.handler,middleware:e.middleware||function(e){return e},events:e.events||t,isActive:!(!1===e.isActive),detectIframe:!(!1===e.detectIframe)}}(n.value),d=r.handler,o=r.middleware,a=r.detectIframe;if(r.isActive){if(e["__v-click-outside"]=r.events.map(function(n){return{event:n,srcTarget:document.documentElement,handler:function(n){return function(e){var n=e.el,t=e.event,r=e.handler,d=e.middleware,o=t.path||t.composedPath&&t.composedPath();(o?o.indexOf(n)<0:!n.contains(t.target))&&i({event:t,handler:r,middleware:d})}({el:e,event:n,handler:d,middleware:o})}}}),a){var c={event:"blur",srcTarget:window,handler:function(n){return function(e){var n=e.el,t=e.event,r=e.handler,d=e.middleware;setTimeout(function(){var e=document.activeElement;e&&"IFRAME"===e.tagName&&!n.contains(e)&&i({event:t,handler:r,middleware:d})},0)}({el:e,event:n,handler:d,middleware:o})}};e["__v-click-outside"]=[].concat(e["__v-click-outside"],[c])}e["__v-click-outside"].forEach(function(n){var t=n.event,i=n.srcTarget,r=n.handler;return setTimeout(function(){e["__v-click-outside"]&&i.addEventListener(t,r,!1)},0)})}}function d(e){(e["__v-click-outside"]||[]).forEach(function(e){return e.srcTarget.removeEventListener(e.event,e.handler,!1)}),delete e["__v-click-outside"]}var o=e?{bind:r,update:function(e,n){var t=n.value,i=n.oldValue;JSON.stringify(t)!==JSON.stringify(i)&&(d(e),r(e,{value:t}))},unbind:d}:{};return{install:function(e){e.directive("click-outside",o)},directive:o}});
+//# sourceMappingURL=v-click-outside.umd.js.map
+
 
 /***/ }),
 
@@ -15366,495 +15497,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-awesome-swiper/dist/vue-awesome-swiper.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-awesome-swiper/dist/vue-awesome-swiper.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/*!
- * vue-awesome-swiper v4.1.1
- * Copyright (c) Surmon. All rights reserved.
- * Released under the MIT License.
- * Surmon <https://github.com/surmon-china>
- */
-
-(function(g,f){ true?f(exports,__webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js"),__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js")):undefined;}(this,(function(exports, SwiperClass, Vue){'use strict';SwiperClass=SwiperClass&&Object.prototype.hasOwnProperty.call(SwiperClass,'default')?SwiperClass['default']:SwiperClass;Vue=Vue&&Object.prototype.hasOwnProperty.call(Vue,'default')?Vue['default']:Vue;/**
- * @file vue-awesome-swiper
- * @module constants
- * @author Surmon <https://github.com/surmon-china>
- */
-var CoreNames;
-(function (CoreNames) {
-    CoreNames["SwiperComponent"] = "Swiper";
-    CoreNames["SwiperSlideComponent"] = "SwiperSlide";
-    CoreNames["SwiperDirective"] = "swiper";
-    CoreNames["SwiperInstance"] = "$swiper";
-})(CoreNames || (CoreNames = {}));
-var DEFAULT_CLASSES = Object.freeze({
-    containerClass: 'swiper-container',
-    wrapperClass: 'swiper-wrapper',
-    slideClass: 'swiper-slide'
-});
-var ComponentEvents;
-(function (ComponentEvents) {
-    ComponentEvents["Ready"] = "ready";
-    ComponentEvents["ClickSlide"] = "clickSlide";
-})(ComponentEvents || (ComponentEvents = {}));
-var ComponentPropNames;
-(function (ComponentPropNames) {
-    ComponentPropNames["AutoUpdate"] = "autoUpdate";
-    ComponentPropNames["AutoDestroy"] = "autoDestroy";
-    ComponentPropNames["DeleteInstanceOnDestroy"] = "deleteInstanceOnDestroy";
-    ComponentPropNames["CleanupStylesOnDestroy"] = "cleanupStylesOnDestroy";
-})(ComponentPropNames || (ComponentPropNames = {}));
-// https://swiperjs.com/api/#events
-var SWIPER_EVENTS = [
-    'init',
-    'beforeDestroy',
-    'slideChange',
-    'slideChangeTransitionStart',
-    'slideChangeTransitionEnd',
-    'slideNextTransitionStart',
-    'slideNextTransitionEnd',
-    'slidePrevTransitionStart',
-    'slidePrevTransitionEnd',
-    'transitionStart',
-    'transitionEnd',
-    'touchStart',
-    'touchMove',
-    'touchMoveOpposite',
-    'sliderMove',
-    'touchEnd',
-    'click',
-    'tap',
-    'doubleTap',
-    'imagesReady',
-    'progress',
-    'reachBeginning',
-    'reachEnd',
-    'fromEdge',
-    'setTranslate',
-    'setTransition',
-    'resize',
-    'observerUpdate',
-    'beforeLoopFix',
-    'loopFix'
-];/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-}/**
- * @file vue-awesome-swiper
- * @module utils
- * @author Surmon <https://github.com/surmon-china>
- */
-var kebabcase = function (string) {
-    return string
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .replace(/\s+/g, '-')
-        .toLowerCase();
-};/**
- * @file vue-awesome-swiper
- * @module event
- * @author Surmon <https://github.com/surmon-china>
- */
-var handleClickSlideEvent = function (swiper, event, emit) {
-    var _a, _b, _c;
-    if (swiper && !(swiper.destroyed)) {
-        var eventPath = ((_a = event.composedPath) === null || _a === void 0 ? void 0 : _a.call(event)) || event.path;
-        if ((event === null || event === void 0 ? void 0 : event.target) && eventPath) {
-            var slides_1 = Array.from(swiper.slides);
-            var paths = Array.from(eventPath);
-            // Click slide || slide[children]
-            if (slides_1.includes(event.target) || paths.some(function (item) { return slides_1.includes(item); })) {
-                var clickedIndex = swiper.clickedIndex;
-                var reallyIndex = Number((_c = (_b = swiper.clickedSlide) === null || _b === void 0 ? void 0 : _b.dataset) === null || _c === void 0 ? void 0 : _c.swiperSlideIndex);
-                var reallyIndexValue = Number.isInteger(reallyIndex) ? reallyIndex : null;
-                emit(ComponentEvents.ClickSlide, clickedIndex, reallyIndexValue);
-                emit(kebabcase(ComponentEvents.ClickSlide), clickedIndex, reallyIndexValue);
-            }
-        }
-    }
-};
-var bindSwiperEvents = function (swiper, emit) {
-    SWIPER_EVENTS.forEach(function (eventName) {
-        swiper.on(eventName, function () {
-            var arguments$1 = arguments;
-
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments$1[_i];
-            }
-            emit.apply(void 0, __spreadArrays([eventName], args));
-            var kebabcaseName = kebabcase(eventName);
-            if (kebabcaseName !== eventName) {
-                emit.apply(void 0, __spreadArrays([kebabcaseName], args));
-            }
-        });
-    });
-};/**
- * @file vue-awesome-swiper
- * @module directive
- * @author Surmon <https://github.com/surmon-china>
- */
-var INSTANCE_NAME_KEY = 'instanceName';
-function getDirective(SwiperClass, globalOptions) {
-    var getStandardisedOptionByAttrs = function (vnode, key) {
-        var _a, _b, _c, _d;
-        var value = (_b = (_a = vnode.data) === null || _a === void 0 ? void 0 : _a.attrs) === null || _b === void 0 ? void 0 : _b[key];
-        return value !== undefined
-            ? value
-            : (_d = (_c = vnode.data) === null || _c === void 0 ? void 0 : _c.attrs) === null || _d === void 0 ? void 0 : _d[kebabcase(key)];
-    };
-    // Get swiper instace name in directive
-    var getSwiperInstanceName = function (element, binding, vnode) {
-        return (binding.arg ||
-            getStandardisedOptionByAttrs(vnode, INSTANCE_NAME_KEY) ||
-            element.id ||
-            CoreNames.SwiperInstance);
-    };
-    var getSwiperInstance = function (element, binding, vnode) {
-        var instanceName = getSwiperInstanceName(element, binding, vnode);
-        return vnode.context[instanceName] || null;
-    };
-    var getSwipeOptions = function (binding) {
-        return binding.value || globalOptions;
-    };
-    var getBooleanValueByInput = function (input) {
-        return [true, undefined, null, ''].includes(input);
-    };
-    // Emit event in Vue directive
-    var getEventEmiter = function (vnode) {
-        var _a, _b;
-        var handlers = ((_a = vnode.data) === null || _a === void 0 ? void 0 : _a.on) || ((_b = vnode.componentOptions) === null || _b === void 0 ? void 0 : _b.listeners);
-        return function (name) {
-            var arguments$1 = arguments;
-
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments$1[_i];
-            }
-            var _a;
-            var handle = (_a = handlers) === null || _a === void 0 ? void 0 : _a[name];
-            if (handle) {
-                handle.fns.apply(handle, args);
-            }
-        };
-    };
-    return {
-        // Init
-        bind: function (element, binding, vnode) {
-            // auto class name
-            if (element.className.indexOf(DEFAULT_CLASSES.containerClass) === -1) {
-                element.className += ((element.className ? ' ' : '') + DEFAULT_CLASSES.containerClass);
-            }
-            // bind click event
-            element.addEventListener('click', function (event) {
-                var emitEvent = getEventEmiter(vnode);
-                var swiper = getSwiperInstance(element, binding, vnode);
-                handleClickSlideEvent(swiper, event, emitEvent);
-            });
-        },
-        // DOM inserted
-        inserted: function (element, binding, vnode) {
-            var context = vnode.context;
-            var swiperOptions = getSwipeOptions(binding);
-            var instanceName = getSwiperInstanceName(element, binding, vnode);
-            var emitEvent = getEventEmiter(vnode);
-            var vueContext = context;
-            var swiper = vueContext === null || vueContext === void 0 ? void 0 : vueContext[instanceName];
-            // Swiper will destroy but not delete instance, when used <keep-alive>
-            if (!swiper || swiper.destroyed) {
-                swiper = new SwiperClass(element, swiperOptions);
-                vueContext[instanceName] = swiper;
-                bindSwiperEvents(swiper, emitEvent);
-                emitEvent(ComponentEvents.Ready, swiper);
-                // MARK: Reinstance when the nexttick with <keep-alive>
-                // Vue.nextTick(instancing) | setTimeout(instancing)
-            }
-        },
-        // On options changed or DOM updated
-        componentUpdated: function (element, binding, vnode) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
-            var autoUpdate = getStandardisedOptionByAttrs(vnode, ComponentPropNames.AutoUpdate);
-            if (getBooleanValueByInput(autoUpdate)) {
-                var swiper = getSwiperInstance(element, binding, vnode);
-                if (swiper) {
-                    var swiperOptions = getSwipeOptions(binding);
-                    var isLoop = swiperOptions.loop;
-                    if (isLoop) {
-                        (_b = (_a = swiper) === null || _a === void 0 ? void 0 : _a.loopDestroy) === null || _b === void 0 ? void 0 : _b.call(_a);
-                    }
-                    (_c = swiper === null || swiper === void 0 ? void 0 : swiper.update) === null || _c === void 0 ? void 0 : _c.call(swiper);
-                    (_e = (_d = swiper.navigation) === null || _d === void 0 ? void 0 : _d.update) === null || _e === void 0 ? void 0 : _e.call(_d);
-                    (_g = (_f = swiper.pagination) === null || _f === void 0 ? void 0 : _f.render) === null || _g === void 0 ? void 0 : _g.call(_f);
-                    (_j = (_h = swiper.pagination) === null || _h === void 0 ? void 0 : _h.update) === null || _j === void 0 ? void 0 : _j.call(_h);
-                    if (isLoop) {
-                        (_l = (_k = swiper) === null || _k === void 0 ? void 0 : _k.loopCreate) === null || _l === void 0 ? void 0 : _l.call(_k);
-                        (_m = swiper === null || swiper === void 0 ? void 0 : swiper.update) === null || _m === void 0 ? void 0 : _m.call(swiper);
-                    }
-                }
-            }
-        },
-        // Destroy this directive
-        unbind: function (element, binding, vnode) {
-            var _a;
-            var autoDestroy = getStandardisedOptionByAttrs(vnode, ComponentPropNames.AutoDestroy);
-            if (getBooleanValueByInput(autoDestroy)) {
-                var swiper = getSwiperInstance(element, binding, vnode);
-                if (swiper && swiper.initialized) {
-                    (_a = swiper === null || swiper === void 0 ? void 0 : swiper.destroy) === null || _a === void 0 ? void 0 : _a.call(swiper, getBooleanValueByInput(getStandardisedOptionByAttrs(vnode, ComponentPropNames.DeleteInstanceOnDestroy)), getBooleanValueByInput(getStandardisedOptionByAttrs(vnode, ComponentPropNames.CleanupStylesOnDestroy)));
-                }
-            }
-        }
-    };
-}/**
- * @file vue-awesome-swiper
- * @module SwiperComponent
- * @author Surmon <https://github.com/surmon-china>
- */
-var SlotNames;
-(function (SlotNames) {
-    SlotNames["ParallaxBg"] = "parallax-bg";
-    SlotNames["Pagination"] = "pagination";
-    SlotNames["Scrollbar"] = "scrollbar";
-    SlotNames["PrevButton"] = "button-prev";
-    SlotNames["NextButton"] = "button-next";
-})(SlotNames || (SlotNames = {}));
-function getSwiperComponent(SwiperClass) {
-    var _a;
-    return Vue.extend({
-        name: CoreNames.SwiperComponent,
-        props: (_a = {
-                defaultOptions: {
-                    type: Object,
-                    required: false,
-                    default: function () { return ({}); }
-                },
-                // eslint-disable-next-line vue/require-default-prop
-                options: {
-                    type: Object,
-                    required: false
-                }
-            },
-            _a[ComponentPropNames.AutoUpdate] = {
-                type: Boolean,
-                default: true
-            },
-            // https://github.com/surmon-china/vue-awesome-swiper/pull/550/files
-            _a[ComponentPropNames.AutoDestroy] = {
-                type: Boolean,
-                default: true
-            },
-            // https://github.com/surmon-china/vue-awesome-swiper/pull/388
-            _a[ComponentPropNames.DeleteInstanceOnDestroy] = {
-                type: Boolean,
-                required: false,
-                default: true
-            },
-            _a[ComponentPropNames.CleanupStylesOnDestroy] = {
-                type: Boolean,
-                required: false,
-                default: true
-            },
-            _a),
-        data: function () {
-            var _a;
-            return _a = {},
-                _a[CoreNames.SwiperInstance] = null,
-                _a;
-        },
-        computed: {
-            swiperInstance: {
-                cache: false,
-                set: function (swiper) {
-                    this[CoreNames.SwiperInstance] = swiper;
-                },
-                get: function () {
-                    return this[CoreNames.SwiperInstance];
-                }
-            },
-            swiperOptions: function () {
-                return this.options || this.defaultOptions;
-            },
-            wrapperClass: function () {
-                return this.swiperOptions.wrapperClass || DEFAULT_CLASSES.wrapperClass;
-            }
-        },
-        methods: {
-            // Feature: click event
-            handleSwiperClick: function (event) {
-                handleClickSlideEvent(this.swiperInstance, event, this.$emit.bind(this));
-            },
-            autoReLoopSwiper: function () {
-                var _a, _b;
-                if (this.swiperInstance && this.swiperOptions.loop) {
-                    // https://github.com/surmon-china/vue-awesome-swiper/issues/593
-                    // https://github.com/surmon-china/vue-awesome-swiper/issues/544
-                    // https://github.com/surmon-china/vue-awesome-swiper/pull/545/files
-                    var swiper = this.swiperInstance;
-                    (_a = swiper === null || swiper === void 0 ? void 0 : swiper.loopDestroy) === null || _a === void 0 ? void 0 : _a.call(swiper);
-                    (_b = swiper === null || swiper === void 0 ? void 0 : swiper.loopCreate) === null || _b === void 0 ? void 0 : _b.call(swiper);
-                }
-            },
-            updateSwiper: function () {
-                var _a, _b, _c, _d, _e, _f, _g, _h;
-                if (this[ComponentPropNames.AutoUpdate] && this.swiperInstance) {
-                    this.autoReLoopSwiper();
-                    (_b = (_a = this.swiperInstance) === null || _a === void 0 ? void 0 : _a.update) === null || _b === void 0 ? void 0 : _b.call(_a);
-                    (_d = (_c = this.swiperInstance.navigation) === null || _c === void 0 ? void 0 : _c.update) === null || _d === void 0 ? void 0 : _d.call(_c);
-                    (_f = (_e = this.swiperInstance.pagination) === null || _e === void 0 ? void 0 : _e.render) === null || _f === void 0 ? void 0 : _f.call(_e);
-                    (_h = (_g = this.swiperInstance.pagination) === null || _g === void 0 ? void 0 : _g.update) === null || _h === void 0 ? void 0 : _h.call(_g);
-                }
-            },
-            destroySwiper: function () {
-                var _a, _b;
-                if (this[ComponentPropNames.AutoDestroy] && this.swiperInstance) {
-                    // https://github.com/surmon-china/vue-awesome-swiper/pull/341
-                    // https://github.com/surmon-china/vue-awesome-swiper/issues/340
-                    if (this.swiperInstance.initialized) {
-                        (_b = (_a = this.swiperInstance) === null || _a === void 0 ? void 0 : _a.destroy) === null || _b === void 0 ? void 0 : _b.call(_a, this[ComponentPropNames.DeleteInstanceOnDestroy], this[ComponentPropNames.CleanupStylesOnDestroy]);
-                    }
-                }
-            },
-            initSwiper: function () {
-                this.swiperInstance = new SwiperClass(this.$el, this.swiperOptions);
-                bindSwiperEvents(this.swiperInstance, this.$emit.bind(this));
-                this.$emit(ComponentEvents.Ready, this.swiperInstance);
-            }
-        },
-        mounted: function () {
-            if (!this.swiperInstance) {
-                this.initSwiper();
-            }
-        },
-        // Update swiper when the parent component activated with `keep-alive`.
-        activated: function () {
-            this.updateSwiper();
-        },
-        updated: function () {
-            this.updateSwiper();
-        },
-        beforeDestroy: function () {
-            // https://github.com/surmon-china/vue-awesome-swiper/commit/2924a9d4d3d1cf51c0d46076410b1f804b2b8a43#diff-7f4e0261ac562c0f354cb91a1ca8864f
-            this.$nextTick(this.destroySwiper);
-        },
-        render: function (createElement) {
-            return createElement('div', {
-                staticClass: DEFAULT_CLASSES.containerClass,
-                on: {
-                    click: this.handleSwiperClick
-                }
-            }, [
-                this.$slots[SlotNames.ParallaxBg],
-                createElement('div', {
-                    class: this.wrapperClass
-                }, this.$slots.default),
-                this.$slots[SlotNames.Pagination],
-                this.$slots[SlotNames.PrevButton],
-                this.$slots[SlotNames.NextButton],
-                this.$slots[SlotNames.Scrollbar]
-            ]);
-        }
-    });
-}/**
- * @file vue-awesome-swiper
- * @module SwiperSlideComponent
- * @author Surmon <https://github.com/surmon-china>
- */
-var SwiperSlideComponent = Vue.extend({
-    name: CoreNames.SwiperSlideComponent,
-    computed: {
-        slideClass: function () {
-            var _a, _b;
-            return ((_b = (_a = this.$parent) === null || _a === void 0 ? void 0 : _a.swiperOptions) === null || _b === void 0 ? void 0 : _b.slideClass) || DEFAULT_CLASSES.slideClass;
-        }
-    },
-    methods: {
-        update: function () {
-            var _a;
-            var parent = this.$parent;
-            // https://github.com/surmon-china/vue-awesome-swiper/issues/632
-            if (parent[ComponentPropNames.AutoUpdate]) {
-                (_a = parent === null || parent === void 0 ? void 0 : parent.swiperInstance) === null || _a === void 0 ? void 0 : _a.update();
-            }
-        }
-    },
-    mounted: function () {
-        this.update();
-    },
-    updated: function () {
-        this.update();
-    },
-    render: function (createElement) {
-        return createElement('div', {
-            class: this.slideClass
-        }, this.$slots.default);
-    }
-});/**
- * @file vue-awesome-swiper
- * @module exporter
- * @author Surmon <https://github.com/surmon-china>
- */
-var getInstaller = function (SwiperClass) {
-    var install = function (Vue, globalOptions) {
-        if (install.installed)
-            { return; }
-        var SwiperComponent = getSwiperComponent(SwiperClass);
-        if (globalOptions) {
-            SwiperComponent.options.props.defaultOptions.default = function () { return globalOptions; };
-        }
-        Vue.component(CoreNames.SwiperComponent, SwiperComponent);
-        Vue.component(CoreNames.SwiperSlideComponent, SwiperSlideComponent);
-        Vue.directive(CoreNames.SwiperDirective, getDirective(SwiperClass, globalOptions));
-        install.installed = true;
-    };
-    return install;
-};
-function exporter(SwiperClass) {
-    var _a;
-    return _a = {
-            version: '4.1.1',
-            install: getInstaller(SwiperClass),
-            directive: getDirective(SwiperClass)
-        },
-        _a[CoreNames.SwiperComponent] = getSwiperComponent(SwiperClass),
-        _a[CoreNames.SwiperSlideComponent] = SwiperSlideComponent,
-        _a;
-}/**
- * @file vue-awesome-swiper
- * @module default-export
- * @author Surmon <https://github.com/surmon-china>
- */
-var VueAwesomeSwiper = exporter(SwiperClass);
-var version = VueAwesomeSwiper.version;
-var install = VueAwesomeSwiper.install;
-var directive = VueAwesomeSwiper.directive;
-var Swiper = VueAwesomeSwiper.Swiper;
-var SwiperSlide = VueAwesomeSwiper.SwiperSlide;exports.Swiper=Swiper;exports.SwiperSlide=SwiperSlide;exports.default=VueAwesomeSwiper;exports.directive=directive;exports.install=install;exports.version=version;Object.defineProperty(exports,'__esModule',{value:true});})));
-
-/***/ }),
-
 /***/ "./node_modules/vue-debounce/dist/vue-debounce.min.js":
 /*!************************************************************!*\
   !*** ./node_modules/vue-debounce/dist/vue-debounce.min.js ***!
@@ -16111,24 +15753,93 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "categories" }, [
-      _c("div", { staticClass: "categories-wrp" }, [
-        _c("h1", [
-          _vm._v(
-            "Свайпер категорий временно убран за отсутствием нормального плагина"
+  return _c("div", { staticClass: "categories" }, [
+    _c("div", { staticClass: "categories__wrp swiper-container" }, [
+      _c(
+        "div",
+        { staticClass: "categories__slider swiper-wrapper" },
+        _vm._l(_vm.categoriesList, function(category) {
+          return _c(
+            "div",
+            {
+              key: category.id_categorie,
+              staticClass: "categories__category swiper-slide",
+              style: {
+                backgroundImage: "url(" + category.background_img + ")"
+              }
+            },
+            [
+              _c("div", {
+                staticClass: "categories__bg",
+                style: {
+                  backgroundColor: category.background_color
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "categories__text" }, [
+                _vm._v(_vm._s(_vm._f("capitalize")(category.name)))
+              ])
+            ]
           )
-        ])
-      ])
+        }),
+        0
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "items-tiles-list" },
+    [
+      !_vm.$isEmpty(_vm.tilesList)
+        ? _c(
+            "div",
+            { staticClass: "item-list__tiles" },
+            _vm._l(_vm.tilesList, function(item, index) {
+              return _c("item-tile", {
+                key: index,
+                attrs: {
+                  name: item.name,
+                  price: item.price,
+                  description: item.description,
+                  img: item.thumbnail,
+                  likes: item.likes,
+                  author: item.author
+                }
+              })
+            }),
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.outOfItems ? _c("loader") : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -16189,17 +15900,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "search", on: { click: _vm.focus } }, [
-    _c("input", {
-      attrs: {
-        type: "text",
-        id: "search",
-        placeholder: _vm.placeholder || "Поиск..."
-      }
-    }),
-    _vm._v(" "),
-    _vm.close ? _c("div", { staticClass: "search__close" }) : _vm._e()
-  ])
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "click-outside",
+          rawName: "v-click-outside",
+          value: _vm.closeSearch,
+          expression: "closeSearch"
+        }
+      ],
+      staticClass: "search",
+      class: {
+        search_opened: !_vm.$isEmpty(_vm.searchResults)
+      },
+      on: { click: _vm.focus }
+    },
+    [
+      _c("input", {
+        attrs: {
+          type: "text",
+          id: "search",
+          placeholder: _vm.placeholder || "Поиск..."
+        }
+      }),
+      _vm._v(" "),
+      _vm.close ? _c("div", { staticClass: "search__close" }) : _vm._e(),
+      _vm._v(" "),
+      !_vm.$isEmpty(_vm.searchResults)
+        ? _c(
+            "div",
+            { staticClass: "search__results" },
+            _vm._l(_vm.searchResults, function(result, index) {
+              return _c("div", { key: index, staticClass: "search__result" }, [
+                _c("span", { staticClass: "search__result-text" }, [
+                  _vm._v(_vm._s(result))
+                ])
+              ])
+            }),
+            0
+          )
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -16554,26 +16298,9 @@ var render = function() {
                 attrs: { categoriesData: _vm.categoriesData }
               }),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "item-list__tiles" },
-                _vm._l(_vm.itemsList, function(item, index) {
-                  return _c("item-tile", {
-                    key: index,
-                    attrs: {
-                      name: item.name,
-                      price: item.price,
-                      description: item.description,
-                      img: item.thumbnail,
-                      likes: item.likes,
-                      author: item.author
-                    }
-                  })
-                }),
-                1
-              ),
-              _vm._v(" "),
-              !_vm.outOfItems ? _c("loader") : _vm._e()
+              _c("items-tiles-list", {
+                attrs: { tilesList: _vm.itemsList, outOfItems: _vm.outOfItems }
+              })
             ],
             1
           )
@@ -35029,18 +34756,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _properties___WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./properties/ */ "./resources/js/properties/index.js");
-/* harmony import */ var _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./filters/capitalize.filter */ "./resources/js/filters/capitalize.filter.js");
-/* harmony import */ var _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Header/AppHeader.vue */ "./resources/js/components/Header/AppHeader.vue");
-/* harmony import */ var _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Footer/AppFooter.vue */ "./resources/js/components/Footer/AppFooter.vue");
-/* harmony import */ var vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-awesome-swiper */ "./node_modules/vue-awesome-swiper/dist/vue-awesome-swiper.js");
-/* harmony import */ var vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var v_click_outside__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! v-click-outside */ "./node_modules/v-click-outside/dist/v-click-outside.umd.js");
+/* harmony import */ var v_click_outside__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(v_click_outside__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _properties___WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./properties/ */ "./resources/js/properties/index.js");
+/* harmony import */ var _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./filters/capitalize.filter */ "./resources/js/filters/capitalize.filter.js");
+/* harmony import */ var _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Header/AppHeader.vue */ "./resources/js/components/Header/AppHeader.vue");
+/* harmony import */ var _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/Footer/AppFooter.vue */ "./resources/js/components/Footer/AppFooter.vue");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_13__);
 
 
 
  //plugins
+
 
 
 
@@ -35053,25 +34781,24 @@ __webpack_require__.r(__webpack_exports__);
 
  //components
 
-
  //class prototype inicialization
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = axios__WEBPACK_IMPORTED_MODULE_3___default.a;
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isEmpty = _properties___WEBPACK_IMPORTED_MODULE_7__["empty"];
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isExist = _properties___WEBPACK_IMPORTED_MODULE_7__["exist"]; //calss filters set
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isEmpty = _properties___WEBPACK_IMPORTED_MODULE_8__["empty"];
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isExist = _properties___WEBPACK_IMPORTED_MODULE_8__["exist"]; //calss filters set
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_8__["capitalize"]); //plugins registration
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_9__["capitalize"]); //plugins registration
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_awesome_swiper__WEBPACK_IMPORTED_MODULE_11___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_async_computed__WEBPACK_IMPORTED_MODULE_4__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_5___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_debounce__WEBPACK_IMPORTED_MODULE_6___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_12___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_13___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_click_outside__WEBPACK_IMPORTED_MODULE_7___default.a);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
-    AppHeader: _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    AppFooter: _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+    AppHeader: _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    AppFooter: _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   router: _router___WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store___WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -35364,6 +35091,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsCategories_vue_vue_type_template_id_4a4f0861___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsCategories_vue_vue_type_template_id_4a4f0861___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ItemsTilesList.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/ItemsTilesList.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemsTilesList.vue?vue&type=template&id=d3b2e0e4& */ "./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4&");
+/* harmony import */ var _ItemsTilesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ItemsTilesList.vue?vue&type=script&lang=js& */ "./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ItemsTilesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ItemsTilesList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsTilesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ItemsTilesList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ItemsTilesList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsTilesList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ItemsTilesList.vue?vue&type=template&id=d3b2e0e4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ItemsTilesList.vue?vue&type=template&id=d3b2e0e4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemsTilesList_vue_vue_type_template_id_d3b2e0e4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
