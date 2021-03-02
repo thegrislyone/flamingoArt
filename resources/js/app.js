@@ -20,7 +20,7 @@ import appHeader from './components/Header/appHeader.vue'
 import appFooter from './components/Footer/appFooter.vue'
 
 //components
-import VueAwesomeSwiper from 'vue-awesome-swiper'
+
 
 //class prototype inicialization
 Vue.prototype.$http = axios
@@ -31,7 +31,6 @@ Vue.prototype.$isExist = exist
 Vue.filter('capitalize', capitalize)
 
 //plugins registration
-Vue.use(VueAwesomeSwiper)
 Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
 Vue.use(vueDebounce)
