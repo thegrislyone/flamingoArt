@@ -18,41 +18,83 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\CodeController;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
 
     public function login(Request $request) {
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials, true)) {
+            return 'пользователь найден, аутентификация прошла успешно';
+        } else {
+            return "пользователь не найден";
+        }
+
+    }
+
+    public function logout() {
+
+        session_start();
+
+        if (Auth::user()) {
+            return "пользователь найден";
+        } else {
+            return "пользователь не найден";
+        }
+
+        // Auth::logout();
+    }
+
+    public function register(Request $request) {
+
         $validator = $this->validator($request->all());
-        // if ($validator->fails()) {          
-        //     return "ошибка";
-        // };
-        $user = User::create($request->all());
+
+        if ($validator->fails()) {          
+            $res = [
+                'errors' => ['Ошибка валидации']
+            ];
+            return response()->json($res, 200);
+        };
+
+        try {
+            $user = User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'nickname' => $request['nickname'],
+                'password' => Hash::make($request['password']),
+            ]);
+        } catch (Exception $e) {
+            $res = [
+                'errors' => ['Ошибка создания пользователя, ' . $e]
+            ];
+            return response()->json($res, 200);
+        }
+
+        
         $code = $this->generateCode(8);
         Code::create([
             'user_id' => $user->id,
             'code' => $code,
         ]);
-        //Генерируем ссылку и отправляем письмо на указанный адрес
-        // $url = url('/').'/auth/activate?id='.$user->id.'&code='.$code;   
-        // Mail::send('index', array('url' => $url), function($message) use ($request)
-        // {          
-        //     $message->to($request->email)->subject('Registration');
-        // });
-        
-        return 'Регистрация прошла успешно, на Ваш email отправлено письмо со ссылкой для активации аккаунта';
+
+        $success = [
+            'success' => 'Вы успешно зарегестрированы'
+        ];
+
+        return response()->json($success, 200);;
     }
 
-    protected function validator(array $data)
-    {
+    protected function validator(array $data) {
         return Validator::make($data, [
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
 
-    public static function generateCode($length = 10)
-    {
+    public static function generateCode($length = 10) {
         $num = range(0, 9);	   
         $alf = range('a', 'z');	   
         $_alf = range('A', 'Z');   
@@ -62,18 +104,6 @@ class AuthController extends Controller
         $code = implode("", $code_array);
     
         return $code;
-    }
-
-    public function logout() {
-        return 'logout';
-    }
-
-    public function register() {
-        return $_GET;
-    }
-
-    public function verified() {
-        return 'verified';
     }
 
 }

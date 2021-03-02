@@ -1,6 +1,12 @@
 <template>
   <div class="sign-form">
 
+    <status-modal
+      :mainHeadline="statusModal.headline"
+      :status="statusModal.status"
+      @close="$emit('form-close')"
+    />
+
     <div class="sign-form__header">
       <div class="sign-form__logo">
         <img src="../../../public/assets/images/logo-word.png">
@@ -75,16 +81,23 @@
 
 <script>
 import TextInput from './TextInput.vue'
+import StatusModal from './StatusModal.vue'
+
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 
 export default {
   components: {
-    TextInput
+    TextInput,
+    StatusModal
   },
   data() {
     return {
       formModel: {},
       errors: [],
+      statusModal: {
+        headline: '',
+        status: ''
+      },
 
       // TODO: закинуть на апи адрес, чтобы не грузить если не надо
 
@@ -124,13 +137,13 @@ export default {
               caption: "Email",
               required: true
             },
-            fullName: {
+            name: {
               caption: "Имя и фамилия",
               min_length: 8,
               max_length: 32,
               required: true
             },
-            nickName: {
+            nickname: {
               caption: "Имя пользователя",
               max_length: 32,
               required: true
@@ -141,7 +154,7 @@ export default {
               max_length: 32,
               required: true
             },
-            repeatPassword: {
+            password_confirmation: {
               caption: "Повторите пароль",
               min_length: 8,
               max_length: 32,
@@ -187,11 +200,11 @@ export default {
           required,
           email: email
         },
-        fullName: {
+        name: {
           required,
           maxLength: maxLength(52)
         },
-        nickName: {
+        nickname: {
           required,
           minLength: minLength(8),
           maxLength: maxLength(32)
@@ -201,7 +214,7 @@ export default {
           minLength: minLength(8),
           maxLength: maxLength(32)
         },
-        repeatPassword: {
+        password_confirmation : {
           required,
           minLength: minLength(8),
           maxLength: maxLength(32),
@@ -255,12 +268,27 @@ export default {
           const data = response.data
 
           console.log(data)
+
+          if (data.hasOwnProperty('errors')) {
+            this.statusModal.headline = data.errors[0]
+            this.statusModal.status = 'error'
+          } else if (data.hasOwnProperty('success')) {
+            this.statusModal.headline = data.success
+            this.statusModal.status = 'success'
+          }
+
+          this.$modal.show('status')
+
         })
     },
     formValidation() {
       const validationModel = this.$v.formModel
 
       for (const [key, field] of Object.entries(this.formModel)) {
+
+        if (this.errors.length == 2) {
+          return
+        }
         
         if (validationModel[key].required !== undefined && !validationModel[key].required) {
           this.errors.push({

@@ -1,7 +1,7 @@
 <template>
   <div class="error-modal">
     <modal 
-      name="error"
+      name="status"
       :classes="['status-modal']"
       :draggable="draggable"
       :width="320"
@@ -12,8 +12,14 @@
 
         <div>
           <img 
+            v-if="status === 'error'"
             src="/assets/images/error-modal.png"
-            @click.prevent="$modal.hide('error')"
+            @click.prevent="close"
+          >
+          <img
+            v-else-if="status === 'success'"
+            src="/assets/images/success-modal.png"
+            @click.prevent="close"
           >
         </div>
         
@@ -24,7 +30,7 @@
 
         <button
           class="btn btn_red"
-          @click.prevent="$modal.hide('error')"
+          @click.prevent="close"
         >{{ buttonText }}</button>
       </div>
     </modal>
@@ -46,13 +52,19 @@ export default {
       type: String,
       default: "Ок"
     },
-    img: {
+    status: {
       type: String,
-      default: ""
+      default: 'error'
     },
     draggable: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('close')
+      this.$modal.hide('status')
     }
   }
 }
