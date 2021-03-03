@@ -96,6 +96,10 @@ body {
 
 /* LITTLE COMPONENTS STYLES */
 
+a {
+  color: inherit;
+}
+
 input {
   border: none;
   outline: none;
@@ -416,7 +420,15 @@ a {
 }
 .header__user-img {
   width: 30px;
+  height: 30px;
   border-radius: 55%;
+}
+
+.header__user-itm {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
 }
 
 .header__nickname,

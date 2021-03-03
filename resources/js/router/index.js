@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Index from '../views/Index.vue'
 import Contacts from '../views/Contacts.vue'
 import ItemList from '../views/ItemsList.vue'
+import Profile from '../views/Profile.vue'
 import Item from '../views/Item.vue'
 
 Vue.use(vueRouter)
@@ -17,6 +18,10 @@ const routes = [
   {
     path: '/',
     component: ItemList
+  },
+  {
+    path: '/profile',
+    component: Profile
   },
   {
     path: '/contact',
