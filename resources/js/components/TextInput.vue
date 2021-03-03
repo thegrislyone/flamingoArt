@@ -19,6 +19,9 @@
 
 export default {
   props: {
+    name: {
+      type: String
+    },
     placeholder: {
       type: String,
       default: ""
@@ -39,6 +42,7 @@ export default {
   methods: {
     input() {
       this.$emit('input', this.value)
+      this.$emit('input-text', this.value, this.name)
     }
   }
 }

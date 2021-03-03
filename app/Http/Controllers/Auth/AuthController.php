@@ -52,11 +52,17 @@ class AuthController extends Controller
 
         $validator = $this->validator($request->all());
 
-        if ($validator->fails()) {          
-            $res = [
-                'errors' => ['Ошибка валидации']
-            ];
-            return response()->json($res, 200);
+        if ($validator->fails()) {   
+
+            $errors = $validator->messages();
+
+            // if (isset($errors['email'])) {
+            //     $res = [
+            //         'errors' => [$errors->email]
+            //     ];
+            // }
+
+            return response()->json($errors, 200);
         };
 
         try {
