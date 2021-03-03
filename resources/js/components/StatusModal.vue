@@ -63,7 +63,9 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('close')
+      if (this.status != 'error') {
+        this.$emit('close')
+      }
       this.$modal.hide('status')
     }
   }
