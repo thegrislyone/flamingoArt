@@ -1,6 +1,12 @@
 <template>
   <div class="sign-form">
 
+    <status-modal
+      :mainHeadline="statusModal.headline"
+      :status="statusModal.status"
+      @close="$emit('form-close')"
+    />
+
     <div class="sign-form__header">
       <div class="sign-form__logo">
         <img src="../../../public/assets/images/logo-word.png">
@@ -21,14 +27,31 @@
         <div class="sign-form__form">
 
           <div class="sign-form__fields">
-            <text-input
+            <div 
               v-for="(field, index) in activeForm.fields"
               :key="index"
-              :placeholder="field.caption"
-              :required="field.required"
-              :v="$v.formModel[index]"
-              v-model="$v.formModel[index].$model"
-            />
+              class="sign-form__field"
+            >
+              <text-input
+                v-if="field.type === 'text'"
+                :placeholder="field.caption"
+                :required="field.required"
+                :name="index"
+                :v="$v.formModel[index]"
+                @input-text="fieldInput"
+                v-model="$v.formModel[index].$model"
+              />
+              <password-input
+                v-if="field.type === 'password'"
+                :placeholder="field.caption"
+                :required="field.required"
+                :name="index"
+                :v="$v.formModel[index]"
+                @input-text="fieldInput"
+                v-model="$v.formModel[index].$model"
+              />
+            </div>
+            
           </div>
 
           <div 
@@ -39,6 +62,7 @@
               <input 
                 type="checkbox"
                 id="permission"
+                v-model="userPermission"
               >
               <label for="permission"></label>
             </div>
@@ -48,6 +72,7 @@
           <div class="sign-form__button">
             <button 
               class="btn"
+              :disabled="$v.$invalid || !userPermission"
               @click="buttonClick"
             >{{ activeForm.buttonText | capitalize }}</button>
           </div>
@@ -75,16 +100,30 @@
 
 <script>
 import TextInput from './TextInput.vue'
+import PasswordInput from './PasswordInput.vue'
+
+import StatusModal from './StatusModal.vue'
+
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
+
 
 export default {
   components: {
-    TextInput
+    TextInput,
+    StatusModal,
+    PasswordInput
   },
   data() {
     return {
+
+      userPermission: false,
+
       formModel: {},
       errors: [],
+      statusModal: {
+        headline: '',
+        status: ''
+      },
 
       // TODO: закинуть на апи адрес, чтобы не грузить если не надо
 
@@ -100,10 +139,12 @@ export default {
           },
           fields: {
             email: {
+              type: 'text',
               caption: "Email",
               required: true
             },
             password: {
+              type: 'password',
               caption: "Пароль",
               min_length: 8,
               required: true
@@ -121,27 +162,33 @@ export default {
           },
           fields: {
             email: {
+              type: 'text',
               caption: "Email",
               required: true
             },
-            fullName: {
+            name: {
+              type: 'text',
               caption: "Имя и фамилия",
               min_length: 8,
               max_length: 32,
               required: true
             },
-            nickName: {
+            nickname: {
+              type: 'text',
               caption: "Имя пользователя",
+              min_length: 6,
               max_length: 32,
               required: true
             },
             password: {
+              type: 'password',
               caption: "Пароль",
               min_length: 8,
               max_length: 32,
               required: true
             },
-            repeatPassword: {
+            password_confirmation: {
+              type: 'password',
               caption: "Повторите пароль",
               min_length: 8,
               max_length: 32,
@@ -162,8 +209,10 @@ export default {
     },
     activeForm() {
       if (this.formMode === 'registration') {
+        this.userPermission = false
         return this.form.registrationForm
       } else if (this.formMode === 'authorization') {
+        this.userPermission = true
         return this.form.authForm
       }
     },
@@ -187,13 +236,13 @@ export default {
           required,
           email: email
         },
-        fullName: {
+        name: {
           required,
           maxLength: maxLength(52)
         },
-        nickName: {
+        nickname: {
           required,
-          minLength: minLength(8),
+          minLength: minLength(6),
           maxLength: maxLength(32)
         },
         password: {
@@ -201,7 +250,7 @@ export default {
           minLength: minLength(8),
           maxLength: maxLength(32)
         },
-        repeatPassword: {
+        password_confirmation : {
           required,
           minLength: minLength(8),
           maxLength: maxLength(32),
@@ -254,41 +303,87 @@ export default {
         .then(response => {
           const data = response.data
 
-          console.log(data)
+          if (data.hasOwnProperty('errors') || data.hasOwnProperty('email')) {
+            this.statusModal.headline = (data.hasOwnProperty('errors')) ? data.errors[0] : data.email[0]
+            this.statusModal.status = 'error'
+          } else if (data.hasOwnProperty('success')) {
+            this.statusModal.headline = data.success
+            this.statusModal.status = 'success'
+          }
+
+          this.$modal.show('status')
+
         })
     },
-    formValidation() {
-      const validationModel = this.$v.formModel
-
-      for (const [key, field] of Object.entries(this.formModel)) {
+    formValidation(validationModel, key) {
         
-        if (validationModel[key].required !== undefined && !validationModel[key].required) {
-          this.errors.push({
-            text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
-          })
-        } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
-          this.errors.push({
-            text: 'Неправильный формат почты'
-          })
-        } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
-          this.errors.push({
-            text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
-          })
-        } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
-          this.errors.push({
-            text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
-          })
-        } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
-          this.errors.push({
-            text: `Пароли не совпадают`
-          })
-        }
+      if (validationModel.required !== undefined && !validationModel.required) {
 
+        return `Поле ${this.activeForm.fields[key].caption.toLowerCase()} обязательно для заполнения`
+
+      } else if (validationModel.email !== undefined && !validationModel.email) {
+
+        return 'Неправильный формат почты'
+
+      } else if (validationModel.minLength !== undefined && !validationModel.minLength) {
+
+        return `Минимальная длина поля ${this.activeForm.fields[key].caption.toLowerCase()} - ${this.activeForm.fields[key].min_length} символов`
+      
+      } else if (validationModel.maxLength !== undefined && !validationModel.maxLength) {
+
+        return `Максимальная длина поля ${this.activeForm.fields[key].caption.toLowerCase()} - ${this.activeForm.fields[key].max_length} символов`
+      
+      } else if (validationModel.sameAs !== undefined && !validationModel.sameAs) {
+        
+        return `Пароли не совпадают`
+
+      } else {
+        return false
       }
+
+      // const validationModel = this.$v.formModel
+
+      // for (const [key, field] of Object.entries(this.formModel)) {
+
+      //   if (this.errors.length == 2) {
+      //     return
+      //   }
+        
+      //   if (validationModel[key].required !== undefined && !validationModel[key].required) {
+      //     this.errors.push({
+      //       text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
+      //     })
+      //   } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
+      //     this.errors.push({
+      //       text: 'Неправильный формат почты'
+      //     })
+      //   } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
+      //     this.errors.push({
+      //       text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
+      //     })
+      //   } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
+      //     this.errors.push({
+      //       text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
+      //     })
+      //   } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
+      //     this.errors.push({
+      //       text: `Пароли не совпадают`
+      //     })
+      //   }
+
+      // }
     },
     changeFormMode(mode) {
       this.errors = []
       this.$store.commit('setSignFormMode', mode)
+    },
+    fieldInput(value, key) {
+      this.errors.pop()
+      if (this.formValidation(this.$v.formModel[key], key)) {
+        this.errors.push({
+          text: this.formValidation(this.$v.formModel[key], key)
+        })
+      }
     }
   }
 }

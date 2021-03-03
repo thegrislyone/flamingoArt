@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('nickname');
+            $table->text('avatar');
+            $table->text('banner');
         });
     }
 
