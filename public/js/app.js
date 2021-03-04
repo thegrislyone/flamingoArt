@@ -2038,6 +2038,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3185,13 +3188,145 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_ItemsTilesList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList */ "./resources/js/components/ItemsTilesList.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ItemsTilesList: _components_ItemsTilesList__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      items: {
+        data: [],
+        meta: {}
+      }
+    };
+  },
+  computed: {
+    itemsList: function itemsList() {
+      return this.items.data;
+    }
+  },
+  created: function created() {
+    var url = new URL("".concat(window.location.origin, "/api/items"));
+    url.searchParams.set('page', this.page);
+    this.loadMoreItems(url);
+  },
+  methods: {
+    loadMoreItems: function loadMoreItems(url) {
+      var _this = this;
+
+      this.$http.get(url).then(function (response) {
+        var data = response.data;
+        data.data.forEach(function (item) {
+          _this.items.data.push(item);
+        });
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          if (key == 'data') continue;
+          _this.items.meta[key] = value;
+        }
+
+        _this.page++;
+      });
+
+      if (this.items.meta.last_page == this.items.meta.current_page + 1) {
+        this.outOfItems = true;
+      }
+    }
+  }
+});
 
 /***/ }),
 
@@ -15864,47 +15999,58 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "header__group header__left-group" }, [
-                _c(
-                  "div",
-                  { staticClass: "header__group-itm header__menu-itm" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "header__menu-icon" },
-                      _vm._l(3, function(index) {
-                        return _c("div", { key: index })
+              _c(
+                "div",
+                { staticClass: "header__group header__left-group" },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "header__group-itm header__menu-itm" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "header__menu-icon" },
+                        _vm._l(3, function(index) {
+                          return _c("div", { key: index })
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "header__full-logo",
+                          attrs: { to: "/" }
+                        },
+                        [
+                          _c("img", {
+                            attrs: { src: "assets/images/logo-word.png" }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "header__group-itm header__short-logo-itm",
+                      attrs: { to: "/" }
+                    },
+                    [
+                      _c("img", {
+                        staticClass: "header__short-logo",
+                        attrs: { src: "assets/images/logo-icon.png" }
                       }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "router-link",
-                      { staticClass: "header__full-logo", attrs: { to: "/" } },
-                      [
-                        _c("img", {
-                          attrs: { src: "assets/images/logo-word.png" }
-                        })
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "header__group-itm header__short-logo-itm" },
-                  [
-                    _c("img", {
-                      staticClass: "header__short-logo",
-                      attrs: { src: "assets/images/logo-icon.png" }
-                    }),
-                    _vm._v(" "),
-                    _c("search", { staticClass: "header__search" })
-                  ],
-                  1
-                )
-              ]),
+                      _vm._v(" "),
+                      _c("search", { staticClass: "header__search" })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
                 "div",
@@ -15928,7 +16074,7 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  !_vm.$store.getters.isAuthorizate
+                  _vm.$store.getters.isAuthorizate
                     ? _c(
                         "div",
                         {
@@ -16862,9 +17008,137 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n  Профиль\n")])
+  return _c("div", { staticClass: "profile" }, [
+    _c("hr", { staticClass: "profile__upper-line" }),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "profile__profile" }, [
+      _c("div", { staticClass: "profile__left-block" }, [
+        _c("div", { staticClass: "profile-info" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "profile__stats-block" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _vm._m(3),
+            _vm._v(" "),
+            _c("div", { staticClass: "profile__registration-date" }, [
+              _vm._v(
+                "\n            Дата регистрации " +
+                  _vm._s("6 марта 2020 Г.") +
+                  "\n          "
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "profile__right-block" }, [
+        _c("div", { staticClass: "gallery" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "gallery" },
+            [_c("items-tiles-list", { attrs: { tilesList: _vm.itemsList } })],
+            1
+          )
+        ])
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile-banner" }, [
+      _c("img", {
+        staticClass: "profile-banner__img",
+        attrs: { src: "/assets/images/banner.jpg" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
+      _c("div", { staticClass: "profile-info__avatar" }, [
+        _c("img", {
+          staticClass: "profile-info__avatar-img",
+          attrs: { src: "/assets/images/avatar.jpg" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "profile-info__nickname" }, [
+        _c("span", [_vm._v("Thegrislyone")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile__edit" }, [
+      _c("button", { staticClass: "btn profile__edit-button" }, [
+        _vm._v("Редактировать профиль")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile__stats" }, [
+      _c("div", { staticClass: "profile__stat" }, [
+        _c("span", [_vm._v("Просмотры")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("85")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "profile__stat" }, [
+        _c("span", [_vm._v("Оценки")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("28")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "gallery__buttons" }, [
+      _c("div", { staticClass: "gallery__tabs" }, [
+        _c("button", { staticClass: "btn gallery__tab" }, [_vm._v("Работы")]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn gallery__tab gallery__tab_unactive" },
+          [_vm._v("Избранное")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn gallery__tab gallery__tab_unactive" },
+          [_vm._v("Оценки")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "gallery__add" }, [
+        _c("button", { staticClass: "btn gallery__add-button" }, [
+          _c("span", { staticClass: "gallery__add-short" }, [_vm._v("+")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "gallery__add-full" }, [
+            _vm._v("Добавить работу")
+          ])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

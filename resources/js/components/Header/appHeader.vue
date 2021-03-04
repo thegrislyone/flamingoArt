@@ -37,7 +37,10 @@
             >
           </router-link>
         </div>
-        <div class="header__group-itm header__short-logo-itm">
+        <router-link 
+          class="header__group-itm header__short-logo-itm"
+          to="/"
+        >
           <img 
             class="header__short-logo"
             src="assets/images/logo-icon.png"
@@ -45,7 +48,7 @@
           <search
             class="header__search"
           />
-        </div>
+        </router-link>
       </div>
       <div class="header__group header__right-group">
         <div 
@@ -58,7 +61,7 @@
           >
         </div>
         <div 
-          v-if="!$store.getters.isAuthorizate"
+          v-if="$store.getters.isAuthorizate"
           class="header__group-itm header__user-itm"
           @click="$store.commit('setSignFormOpenedStatus', true)"
         >

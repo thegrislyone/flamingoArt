@@ -7,12 +7,14 @@
   src:url("../assets/fonts/Opensans/OpenSans-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "Open sans";
   src: url("../assets/fonts/Opensans/OpenSans-Italic.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 400;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,12 +22,14 @@
   src: url("../assets/fonts/Opensans/OpenSans-Light.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "Open sans";
   src: url("../assets/fonts/Opensans/OpenSans-LightItalic.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -33,12 +37,14 @@
   src:url("../assets/fonts/Opensans/OpenSans-SemiBold.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "Open sans";
   src: url("../assets/fonts/Opensans/OpenSans-SemiBoldItalic.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 600;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -46,12 +52,14 @@
   src: url("../assets/fonts/Opensans/OpenSans-Bold.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "Open sans";
   src: url("../assets/fonts/Opensans/OpenSans-BoldItalic.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 700;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -59,12 +67,14 @@
   src: url("../assets/fonts/Opensans/OpenSans-ExtraBold.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 800;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "Open sans";
   src: url("../assets/fonts/Opensans/OpenSans-ExtraBoldItalic.ttf") format("truetype"); /* Safari, Android, iOS */
   font-weight: 800;
   font-style: italic;
+  font-display: swap;
 }
 
 
@@ -78,7 +88,7 @@ body {
   overflow-x: hidden;
 }
 #app {
-  font-family: "Open sans";
+  font-family: "Open sans", sans-serif;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -91,7 +101,7 @@ body {
   color: #000;
 }
 .main {
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 /* LITTLE COMPONENTS STYLES */
@@ -228,7 +238,8 @@ h6 {}
 /* buttons */
 
 .btn {
-  background-color: #ff6d88;
+  background: rgb(255,118,136);
+  background: linear-gradient(180deg, rgba(255,118,136,1) 0%, rgba(255,149,169,1) 100%);
   border-radius: 2em;
   padding: 10px 2em;
   font-weight: 800;
@@ -454,7 +465,7 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  padding: 31px 20px;
+  padding: 29px 20px;
 }
 .sign-form__close {
   top: 35px;
@@ -523,6 +534,9 @@ a {
 
 /* ITEMS LIST */
 
+.item-list {
+  padding: 15px;
+}
 .item-list__error-block {
   text-align: center;
   padding: 25px;
@@ -551,6 +565,7 @@ a {
   z-index: 0;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
 }
 .categories__bg {
   position: absolute;
@@ -617,4 +632,99 @@ img {
 .tile__likes {
   padding-left: 25px;
   background: url('../assets/images/i-like.svg') no-repeat left center;
+}
+
+/* PROFILE */
+
+.profile {
+
+}
+.profile__upper-line {
+  border: none;
+  height: 1px;
+  background: #232323;
+  margin: 0;
+}
+.profile-banner {
+  overflow: hidden;
+  /* height: 150px; */
+  height: calc(100vw / 3.5 - 1px);
+  display: flex;
+  align-items: center;
+}
+.profile-banner__img {
+  width: 100%;
+  height: calc(100% + 50%);
+}
+.profile__profile {
+  padding: 0 15px 15px 15px;
+}
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+.profile-info__avatar-and-nick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile-info__avatar {
+  width: 120px;
+  padding: 30px 30px 0 30px;
+  border-radius: 55%;
+  background-color: #101010;
+  margin-top: -50px;
+}
+.profile-info__avatar-img {
+  width: 100%;
+  border-radius: 55%;
+}
+.profile-info__nickname {
+  letter-spacing: 2px;
+}
+
+.profile__stats-block {
+  margin: 15px 0;
+  font-weight: 300;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  
+}
+.profile__edit-button {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+}
+.profile__stat {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+.profile__registration-date {
+  text-align: center;
+}
+
+.gallery__buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.gallery__tab {
+  font-size: 12px;
+  padding: 5px 10px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.gallery__tab_unactive {
+  background: transparent;
+  color: #fff;
+}
+.gallery__add-button {
+  padding: 5px 10px;
+}
+.gallery__add-full {
+  display: none;
 }

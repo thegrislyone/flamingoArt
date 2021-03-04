@@ -1,11 +1,127 @@
 <template>
-  <div>
-    Профиль
+  <div class="profile">
+
+    <hr class="profile__upper-line">
+
+    <div class="profile-banner">
+      <img
+        class="profile-banner__img"
+        src="/assets/images/banner.jpg"
+      >
+    </div>
+
+    <div class="profile__profile">
+      <div class="profile__left-block">
+        <div class="profile-info">
+          <div class="profile-info__avatar-and-nick">
+            <div class="profile-info__avatar">
+              <img
+                class="profile-info__avatar-img"
+                src="/assets/images/avatar.jpg"
+              >
+            </div>
+            <div class="profile-info__nickname">
+              <span>Thegrislyone</span>
+            </div>
+          </div>
+
+          <div class="profile__stats-block">
+            <div class="profile__edit">
+              <button class="btn profile__edit-button">Редактировать профиль</button>
+            </div>
+            <div class="profile__stats">
+              <div class="profile__stat">
+                <span>Просмотры</span>
+                <span>85</span>
+              </div>
+              <div class="profile__stat">
+                <span>Оценки</span>
+                <span>28</span>
+              </div>
+            </div>
+            <div class="profile__registration-date">
+              Дата регистрации {{ '6 марта 2020 Г.' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile__right-block">
+        <div class="gallery">
+          <div class="gallery__buttons">
+            <div class="gallery__tabs">
+              <button class="btn gallery__tab">Работы</button>
+              <button class="btn gallery__tab gallery__tab_unactive">Избранное</button>
+              <button class="btn gallery__tab gallery__tab_unactive">Оценки</button>
+            </div>
+            <div class="gallery__add">
+              <button class="btn gallery__add-button">
+                <span class="gallery__add-short">+</span>
+                <span class="gallery__add-full">Добавить работу</span>
+              </button>
+            </div>
+          </div>
+          <div class="gallery">
+            <items-tiles-list
+              :tilesList="itemsList"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import ItemsTilesList from '../components/ItemsTilesList'
+
 export default {
-  
+  components: {
+    ItemsTilesList
+  },
+  data() {
+    return {
+      items: {
+        data: [],
+        meta: {}
+      },
+    }
+  },
+  computed: {
+    itemsList() {
+      return this.items.data
+    },
+  },
+  created() {
+    const url = new URL(`${window.location.origin}/api/items`)
+    url.searchParams.set('page', this.page)
+
+    this.loadMoreItems(url)
+  },
+  methods: {
+    loadMoreItems(url) {
+      
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          data.data.forEach((item) => {
+            this.items.data.push(item)
+          })
+
+          for (const [key, value] of Object.entries(data)) {
+            if (key == 'data') continue
+            this.items.meta[key] = value
+          }
+
+          this.page++
+        })
+
+        if (this.items.meta.last_page == this.items.meta.current_page + 1) {
+          this.outOfItems = true
+        }
+    },
+  }
 }
 </script>
