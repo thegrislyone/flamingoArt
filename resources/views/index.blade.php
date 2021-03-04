@@ -11,6 +11,9 @@
   <!-- plugins css -->
   <link rel="stylesheet" href="/css/plugins/swiper.min.css">
 
+  <!-- favicon -->
+  <link rel="shortcut icon" href="/images/logo-icon.png" type="image/png">
+
   <title>FlamingoArt</title>
 </head>
 <body>
