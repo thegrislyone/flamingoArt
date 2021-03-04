@@ -34762,8 +34762,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./filters/capitalize.filter */ "./resources/js/filters/capitalize.filter.js");
 /* harmony import */ var _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Header/AppHeader.vue */ "./resources/js/components/Header/AppHeader.vue");
 /* harmony import */ var _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/Footer/AppFooter.vue */ "./resources/js/components/Footer/AppFooter.vue");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_12__);
 
 
 
@@ -34792,7 +34792,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capital
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_async_computed__WEBPACK_IMPORTED_MODULE_4__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_5___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_debounce__WEBPACK_IMPORTED_MODULE_6___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_13___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_12___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_click_outside__WEBPACK_IMPORTED_MODULE_7___default.a);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
@@ -35505,15 +35505,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-var routes = [{
+var routes = [// {
+//   path: '/',
+//   component: Index
+// },
+{
   path: '/',
-  component: _views_Index_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: '/contact',
   component: _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, {
-  path: '/items_list',
-  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: '/items_list/:id',
   component: _views_Item_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -35938,8 +35939,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\OpenServer\domains\diploma\flamingo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\OpenServer\domains\diploma\flamingo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\OSPanel\domains\flamingoArt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\OSPanel\domains\flamingoArt\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -10,17 +10,17 @@ import Item from '../views/Item.vue'
 Vue.use(vueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   component: Index
+  // },
   {
     path: '/',
-    component: Index
+    component: ItemList
   },
   {
     path: '/contact',
     component: Contacts
-  },
-  {
-    path: '/items_list',
-    component: ItemList
   },
   {
     path: '/items_list/:id',
