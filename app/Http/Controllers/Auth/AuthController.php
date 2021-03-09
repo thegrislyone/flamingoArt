@@ -28,24 +28,33 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, true)) {
-            return 'пользователь найден, аутентификация прошла успешно';
+
+            $success = [
+                'success' => 'Вы успешно авторизовались'
+            ];
+
+            return response()->json($success, 200);
+
         } else {
-            return "пользователь не найден";
+
+            $errors = [
+                'error' => 'Ошибка входа'
+            ];
+
+            return response()->json($errors, 200);
+
         }
 
     }
 
     public function logout() {
-
-        session_start();
-
-        if (Auth::user()) {
-            return "пользователь найден";
-        } else {
-            return "пользователь не найден";
+        Auth::logout();
+        if (!Auth::check()) {
+            $success = [
+                'success' => 'Вы успешно вышли'
+            ];
+            return response()->json($success, 200);
         }
-
-        // Auth::logout();
     }
 
     public function register(Request $request) {

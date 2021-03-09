@@ -2870,7 +2870,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     close: function close() {
-      this.$emit('close');
+      if (this.status != 'error') {
+        this.$emit('close');
+      }
+
       this.$modal.hide('status');
     }
   }
