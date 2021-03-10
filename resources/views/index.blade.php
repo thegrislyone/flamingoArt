@@ -25,6 +25,14 @@
     {{-- <app-footer></app-footer> --}}
   </div>
 
+  @isset ($userInfo)
+
+  <script>
+    window.USER = @json($userInfo);
+  </script>
+
+  @endisset
+
   <script src="./js/app.js"></script>
   
 </body>

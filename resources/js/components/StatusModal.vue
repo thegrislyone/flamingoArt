@@ -7,6 +7,7 @@
       :width="320"
       :scrollable="true"
       :height="'auto'"
+      @closed="close"
     >
       <div class="error-modal__window">
 
@@ -59,11 +60,15 @@ export default {
     draggable: {
       type: Boolean,
       default: false
+    },
+    closable: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
     close() {
-      if (this.status != 'error') {
+      if (this.closable) {
         this.$emit('close')
       }
       this.$modal.hide('status')

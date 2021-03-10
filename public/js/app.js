@@ -2059,6 +2059,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     formOpen: function formOpen() {
       return this.$store.getters.isSignFormOpened;
+    },
+    user: function user() {
+      return this.$store.getters.user;
     }
   },
   methods: {}
@@ -2550,6 +2553,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 
 
 
@@ -2567,7 +2571,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       errors: [],
       statusModal: {
         headline: '',
-        status: ''
+        status: '',
+        closable: true
       },
       // TODO: закинуть на апи адрес, чтобы не грузить если не надо
       form: {
@@ -2736,26 +2741,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       // TODO: переделать на пост, который какого-то хера пустой
-      var url = new URL(window.location.origin + this.activeForm.sendApi);
+      var url = new URL(window.location.origin + this.activeForm.sendApi); // for (const [key, item] of Object.entries(this.formModel)) {
+      //   url.searchParams.set(key, item)
+      // }
 
-      for (var _i2 = 0, _Object$entries2 = Object.entries(this.formModel); _i2 < _Object$entries2.length; _i2++) {
-        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-            key = _Object$entries2$_i[0],
-            item = _Object$entries2$_i[1];
-
-        url.searchParams.set(key, item);
-      }
-
-      this.$http.get(url).then(function (response) {
+      this.$http.post(url, this.formModel).then(function (response) {
         var data = response.data;
 
         if (data.hasOwnProperty('errors') || data.hasOwnProperty('email')) {
           _this.statusModal.headline = data.hasOwnProperty('errors') ? data.errors[0] : data.email[0];
           _this.statusModal.status = 'error';
+          _this.statusModal.closable = false;
         } else if (data.hasOwnProperty('success')) {
           _this.statusModal.headline = data.success;
           _this.statusModal.status = 'success';
+          _this.statusModal.closable = true;
         }
+
+        _this.$store.commit('setUser', data.user);
 
         _this.$modal.show('status');
       });
@@ -2868,6 +2871,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     mainHeadline: {
@@ -2889,11 +2893,15 @@ __webpack_require__.r(__webpack_exports__);
     draggable: {
       type: Boolean,
       "default": false
+    },
+    closable: {
+      type: Boolean,
+      "default": true
     }
   },
   methods: {
     close: function close() {
-      if (this.status != 'error') {
+      if (this.closable) {
         this.$emit('close');
       }
 
@@ -16097,7 +16105,7 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm.$store.getters.isAuthorizate
+                  _vm.$isEmpty(_vm.user)
                     ? _c(
                         "div",
                         {
@@ -16130,12 +16138,16 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "header__nickname" }, [
-                            _vm._v(_vm._s("thegrislyone"))
+                            _vm._v(_vm._s(_vm.user.nickname))
                           ]),
                           _vm._v(" "),
                           _c("img", {
                             staticClass: "header__user-img",
-                            attrs: { src: "assets/images/item2.jpg" }
+                            attrs: {
+                              src:
+                                _vm.user.avatar ||
+                                "assets/images/unknown-user.png"
+                            }
                           })
                         ]
                       )
@@ -16497,7 +16509,8 @@ var render = function() {
       _c("status-modal", {
         attrs: {
           mainHeadline: _vm.statusModal.headline,
-          status: _vm.statusModal.status
+          status: _vm.statusModal.status,
+          closable: _vm.statusModal.closable
         },
         on: {
           close: function($event) {
@@ -16738,7 +16751,8 @@ var render = function() {
             width: 320,
             scrollable: true,
             height: "auto"
-          }
+          },
+          on: { closed: _vm.close }
         },
         [
           _c("div", { staticClass: "error-modal__window" }, [
@@ -36565,7 +36579,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    authorization: false,
+    user: window.USER || {},
     signForm: {
       formOpened: false,
       formMode: {
@@ -36584,8 +36598,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     }
   },
   getters: {
-    isAuthorizate: function isAuthorizate(state) {
-      return state.authorization;
+    user: function user(state) {
+      return state.user;
     },
     isSignFormOpened: function isSignFormOpened(state) {
       return state.signForm.formOpened;
@@ -36628,6 +36642,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     }
   },
   mutations: {
+    setUser: function setUser(state, value) {
+      state.user = value;
+    },
     windowParametersChange: function windowParametersChange(state, _ref2) {
       var width = _ref2.width,
           height = _ref2.height;

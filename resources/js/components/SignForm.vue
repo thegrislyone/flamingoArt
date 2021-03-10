@@ -4,6 +4,7 @@
     <status-modal
       :mainHeadline="statusModal.headline"
       :status="statusModal.status"
+      :closable="statusModal.closable"
       @close="$emit('form-close')"
     />
 
@@ -122,7 +123,8 @@ export default {
       errors: [],
       statusModal: {
         headline: '',
-        status: ''
+        status: '',
+        closable: true
       },
 
       // TODO: закинуть на апи адрес, чтобы не грузить если не надо
@@ -295,21 +297,26 @@ export default {
       // TODO: переделать на пост, который какого-то хера пустой
       let url = new URL(window.location.origin + this.activeForm.sendApi)
 
-      for (const [key, item] of Object.entries(this.formModel)) {
-        url.searchParams.set(key, item)
-      }
+      // for (const [key, item] of Object.entries(this.formModel)) {
+      //   url.searchParams.set(key, item)
+      // }
 
-      this.$http.get(url)
+      this.$http.post(url, this.formModel)
         .then(response => {
+
           const data = response.data
 
           if (data.hasOwnProperty('errors') || data.hasOwnProperty('email')) {
             this.statusModal.headline = (data.hasOwnProperty('errors')) ? data.errors[0] : data.email[0]
             this.statusModal.status = 'error'
+            this.statusModal.closable = false
           } else if (data.hasOwnProperty('success')) {
             this.statusModal.headline = data.success
             this.statusModal.status = 'success'
+            this.statusModal.closable = true
           }
+
+          this.$store.commit('setUser', data.user)
 
           this.$modal.show('status')
 

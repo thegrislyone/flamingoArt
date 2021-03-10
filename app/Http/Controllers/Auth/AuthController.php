@@ -23,25 +23,32 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function login(Request $request) {
+    public function loginRequest(Request $request) {
 
         $credentials = $request->only('email', 'password');
+
+        return $this->login($credentials);
+
+    }
+
+    public function login($credentials) {
 
         if (Auth::attempt($credentials, true)) {
 
             $success = [
-                'success' => 'Вы успешно авторизовались'
+                'success' => 'Вы успешно авторизовались',
+                'user' => Auth::user()->only('name', 'avatar', 'nickname', 'banner')
             ];
 
-            return response()->json($success, 200);
+            return $success;
 
         } else {
 
             $errors = [
-                'error' => 'Ошибка входа'
+                'errors' => ['Пароль или логин введены неправильно']
             ];
 
-            return response()->json($errors, 200);
+            return $errors;
 
         }
 
@@ -99,7 +106,9 @@ class AuthController extends Controller
             'success' => 'Вы успешно зарегестрированы'
         ];
 
-        return response()->json($success, 200);;
+        $success['user'] = $this->login($request->only('email', 'password'))['user'];
+
+        return response()->json($success, 200);
     }
 
     protected function validator(array $data) {
