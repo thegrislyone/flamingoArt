@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('nickname');
             $table->text('avatar');
             $table->text('banner');
+            $table->integer('views');
+            $table->integer('likes');
         });
     }
 

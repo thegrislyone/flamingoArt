@@ -28,12 +28,19 @@
           <div class="header__menu-icon">
             <div v-for="index in 3" :key="index"></div>
           </div>
-          <img
+          <router-link
             class="header__full-logo"
-            src="assets/images/logo-word.png"
+            to="/"
           >
+            <img
+              src="assets/images/logo-word.png"
+            >
+          </router-link>
         </div>
-        <div class="header__group-itm header__short-logo-itm">
+        <router-link 
+          class="header__group-itm header__short-logo-itm"
+          to="/"
+        >
           <img 
             class="header__short-logo"
             src="assets/images/logo-icon.png"
@@ -41,24 +48,40 @@
           <search
             class="header__search"
           />
-        </div>
+        </router-link>
       </div>
       <div class="header__group header__right-group">
-        <div class="header__group-itm header__short-search-itm">
+        <div 
+          class="header__group-itm header__short-search-itm"
+        >
           <img 
             class="header__search-icon"
             src="assets/images/search.png"
             @click="searchOpened = true"
           >
-          <div class="header__nickname">{{ 'Thegrislyone' }}</div>
         </div>
-        <div class="header__group-itm header__user-itm">
+        <div 
+          v-if="$store.getters.isAuthorizate"
+          class="header__group-itm header__user-itm"
+          @click="$store.commit('setSignFormOpenedStatus', true)"
+        >
+          <div class="header__nickname">Войти</div>
           <img 
-            @click="$store.commit('setSignFormOpenedStatus', true)"
             class="header__user-img"
             src="assets/images/unknown-user.png"
           >
         </div>
+        <router-link 
+          v-else
+          to="/profile"
+          class="header__group-itm header__user-itm"
+        >
+          <div class="header__nickname">{{ 'thegrislyone' }}</div>
+          <img 
+            class="header__user-img"
+            src="assets/images/item2.jpg"
+          >
+        </router-link>
       </div>
     </div>
 

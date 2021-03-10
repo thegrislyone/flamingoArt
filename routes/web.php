@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/profile', function () {
+    return view('index');
+});
+
 Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/items_list', function () {
-    return view('index');
-});
 
 // Route::get('/{any}', function () {
 //     return view('index');
