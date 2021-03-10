@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/profile', function () {
+    if (Auth::check()) {
+        $userInfo = Auth::user()->only('name', 'avatar', 'nickname', 'banner');
+        return view('index')->with('userInfo', $userInfo);
+    }
     return view('index');
 });
 

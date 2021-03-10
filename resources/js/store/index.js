@@ -28,6 +28,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isAuthorizate: state => Object.keys(state.user).length,
     user: state => state.user,
 
     isSignFormOpened: state => state.signForm.formOpened,

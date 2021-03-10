@@ -14,7 +14,10 @@
     >
       <hr class="profile__upper-line">
 
-      <div class="profile-banner">
+      <div 
+        v-if="!$isEmpty(user.banner)"
+        class="profile-banner"
+      >
         <img
           class="profile-banner__img"
           src="/assets/images/banner.jpg"
@@ -109,6 +112,9 @@ export default {
     itemsList() {
       return this.items.data
     },
+    user() {
+      return this.$store.getters.user
+    }
   },
   created() {
 
