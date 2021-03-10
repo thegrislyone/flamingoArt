@@ -3302,6 +3302,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17068,23 +17078,52 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "profile__profile" }, [
             _c("div", { staticClass: "profile__left-block" }, [
-              _c("div", { staticClass: "profile-info" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "profile__stats-block" }, [
-                  _vm._m(1),
+              _c(
+                "div",
+                {
+                  staticClass: "profile-info",
+                  class: {
+                    "profile-info_no-banner": !_vm.$isEmpty(_vm.user.banner)
+                  }
+                },
+                [
+                  _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "profile-info__avatar",
+                        class: {
+                          "profile-info__avatar_no-banner": !_vm.$isEmpty(
+                            _vm.user.banner
+                          )
+                        }
+                      },
+                      [
+                        _c("img", {
+                          staticClass: "profile-info__avatar-img",
+                          attrs: { src: "/assets/images/avatar.jpg" }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
                   _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "profile__registration-date" }, [
-                    _vm._v(
-                      "\n              Дата регистрации " +
-                        _vm._s("6 марта 2020 Г.") +
-                        "\n            "
-                    )
+                  _c("div", { staticClass: "profile__stats-block" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "profile__registration-date" }, [
+                      _vm._v(
+                        "\n              Дата регистрации " +
+                          _vm._s("6 марта 2020 Г.") +
+                          "\n            "
+                      )
+                    ])
                   ])
-                ])
-              ])
+                ]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "profile__right-block" }, [
@@ -17112,17 +17151,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
-      _c("div", { staticClass: "profile-info__avatar" }, [
-        _c("img", {
-          staticClass: "profile-info__avatar-img",
-          attrs: { src: "/assets/images/avatar.jpg" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "profile-info__nickname" }, [
-        _c("span", [_vm._v("Thegrislyone")])
-      ])
+    return _c("div", { staticClass: "profile-info__nickname" }, [
+      _c("span", [_vm._v("Thegrislyone")])
     ])
   },
   function() {

@@ -78,8 +78,10 @@
     padding: 35px 20px 10px 20px;
     flex-shrink: 0;
     background-color: #232323;
-    margin-top: -150px;
     border-radius: 25px;
+  }
+  .profile-info_no-banner {
+    margin-top: -150px;
   }
   .profile-info__avatar {
     border-radius: 0;

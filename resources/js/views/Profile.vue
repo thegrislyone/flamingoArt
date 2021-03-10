@@ -26,9 +26,19 @@
 
       <div class="profile__profile">
         <div class="profile__left-block">
-          <div class="profile-info">
+          <div 
+            class="profile-info"
+            :class="{
+              'profile-info_no-banner': !$isEmpty(user.banner)
+            }"
+          >
             <div class="profile-info__avatar-and-nick">
-              <div class="profile-info__avatar">
+              <div 
+                class="profile-info__avatar"
+                :class="{
+                  'profile-info__avatar_no-banner': !$isEmpty(user.banner)
+                }"
+              >
                 <img
                   class="profile-info__avatar-img"
                   src="/assets/images/avatar.jpg"
