@@ -61,7 +61,7 @@
           >
         </div>
         <div 
-          v-if="$store.getters.isAuthorizate"
+          v-if="$isEmpty(user)"
           class="header__group-itm header__user-itm"
           @click="$store.commit('setSignFormOpenedStatus', true)"
         >
@@ -76,10 +76,10 @@
           to="/profile"
           class="header__group-itm header__user-itm"
         >
-          <div class="header__nickname">{{ 'thegrislyone' }}</div>
+          <div class="header__nickname">{{ user.nickname }}</div>
           <img 
             class="header__user-img"
-            src="assets/images/item2.jpg"
+            :src="user.avatar || 'assets/images/unknown-user.png'"
           >
         </router-link>
       </div>
@@ -109,6 +109,9 @@ export default {
     },
     formOpen() {
       return this.$store.getters.isSignFormOpened
+    },
+    user() {
+      return this.$store.getters.user
     }
   },
   methods: {

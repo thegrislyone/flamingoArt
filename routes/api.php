@@ -23,8 +23,8 @@ Route::get('categories','App\Http\Controllers\Categories\CategoriesController@ca
 
 /* Auth */
 
-Route::get('auth/login','App\Http\Controllers\Auth\AuthController@login');
-Route::post('auth/login','App\Http\Controllers\Auth\AuthController@login');
+Route::get('auth/login','App\Http\Controllers\Auth\AuthController@loginRequest');
+Route::post('auth/login','App\Http\Controllers\Auth\AuthController@loginRequest');
 Route::get('auth/logout','App\Http\Controllers\Auth\AuthController@logout');
 
 Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');

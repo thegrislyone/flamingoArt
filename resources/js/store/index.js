@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    authorization: false,
+    user: window.USER || {},
 
     signForm: {
       formOpened: false,
@@ -28,7 +28,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAuthorizate: state => state.authorization,
+    user: state => state.user,
 
     isSignFormOpened: state => state.signForm.formOpened,
     signFormMode: (state) => {
@@ -56,6 +56,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setUser(state, value) {
+      state.user = value
+    },
     windowParametersChange(state, {width, height}) {
       state.windowParameters.windowHeight = height
       state.windowParameters.windowWidth = width
