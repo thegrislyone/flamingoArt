@@ -17101,23 +17101,41 @@ var render = function() {
                       [
                         _c("img", {
                           staticClass: "profile-info__avatar-img",
-                          attrs: { src: "/assets/images/avatar.jpg" }
+                          attrs: {
+                            src:
+                              _vm.user.avatar ||
+                              "assets/images/unknown-user.png"
+                          }
                         })
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(0)
+                    _c("div", { staticClass: "profile-info__nickname" }, [
+                      _c("span", [_vm._v(_vm._s(_vm.user.nickname))])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "profile__stats-block" }, [
-                    _vm._m(1),
+                    _vm._m(0),
                     _vm._v(" "),
-                    _vm._m(2),
+                    _c("div", { staticClass: "profile__stats" }, [
+                      _c("div", { staticClass: "profile__stat" }, [
+                        _c("span", [_vm._v("Просмотры")]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v(_vm._s(_vm.user.views))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "profile__stat" }, [
+                        _c("span", [_vm._v("Оценки")]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v(_vm._s(_vm.user.likes))])
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "profile__registration-date" }, [
                       _vm._v(
                         "\n              Дата регистрации " +
-                          _vm._s("6 марта 2020 Г.") +
+                          _vm._s(_vm.user.created_at) +
                           "\n            "
                       )
                     ])
@@ -17128,7 +17146,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "profile__right-block" }, [
               _c("div", { staticClass: "gallery" }, [
-                _vm._m(3),
+                _vm._m(1),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -17151,35 +17169,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile-info__nickname" }, [
-      _c("span", [_vm._v("Thegrislyone")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "profile__edit" }, [
       _c("button", { staticClass: "btn profile__edit-button" }, [
         _vm._v("Редактировать профиль")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile__stats" }, [
-      _c("div", { staticClass: "profile__stat" }, [
-        _c("span", [_vm._v("Просмотры")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("85")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "profile__stat" }, [
-        _c("span", [_vm._v("Оценки")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("28")])
       ])
     ])
   },

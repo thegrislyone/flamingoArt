@@ -87,6 +87,8 @@ class AuthController extends Controller
                 'email' => $request['email'],
                 'nickname' => $request['nickname'],
                 'password' => Hash::make($request['password']),
+                'views' => 0,
+                'likes' => 0
             ]);
         } catch (Exception $e) {
             $res = [

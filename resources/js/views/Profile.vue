@@ -41,11 +41,11 @@
               >
                 <img
                   class="profile-info__avatar-img"
-                  src="/assets/images/avatar.jpg"
+                  :src="user.avatar || 'assets/images/unknown-user.png'"
                 >
               </div>
               <div class="profile-info__nickname">
-                <span>Thegrislyone</span>
+                <span>{{ user.nickname }}</span>
               </div>
             </div>
 
@@ -56,15 +56,15 @@
               <div class="profile__stats">
                 <div class="profile__stat">
                   <span>Просмотры</span>
-                  <span>85</span>
+                  <span>{{ user.views }}</span>
                 </div>
                 <div class="profile__stat">
                   <span>Оценки</span>
-                  <span>28</span>
+                  <span>{{ user.likes }}</span>
                 </div>
               </div>
               <div class="profile__registration-date">
-                Дата регистрации {{ '6 марта 2020 Г.' }}
+                Дата регистрации {{ user.created_at }}
               </div>
             </div>
           </div>
