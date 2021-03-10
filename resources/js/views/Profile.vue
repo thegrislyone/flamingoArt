@@ -1,87 +1,104 @@
 <template>
   <div class="profile">
 
-    <hr class="profile__upper-line">
-
-    <div class="profile-banner">
-      <img
-        class="profile-banner__img"
-        src="/assets/images/banner.jpg"
-      >
+    <div
+      v-if="loading"
+      class="profile__loading"
+    >
+      <loader/>
     </div>
 
-    <div class="profile__profile">
-      <div class="profile__left-block">
-        <div class="profile-info">
-          <div class="profile-info__avatar-and-nick">
-            <div class="profile-info__avatar">
-              <img
-                class="profile-info__avatar-img"
-                src="/assets/images/avatar.jpg"
-              >
-            </div>
-            <div class="profile-info__nickname">
-              <span>Thegrislyone</span>
-            </div>
-          </div>
+    <div
+      v-else
+      class="profile__main"
+    >
+      <hr class="profile__upper-line">
 
-          <div class="profile__stats-block">
-            <div class="profile__edit">
-              <button class="btn profile__edit-button">Редактировать профиль</button>
-            </div>
-            <div class="profile__stats">
-              <div class="profile__stat">
-                <span>Просмотры</span>
-                <span>85</span>
+      <div class="profile-banner">
+        <img
+          class="profile-banner__img"
+          src="/assets/images/banner.jpg"
+        >
+      </div>
+
+      <div class="profile__profile">
+        <div class="profile__left-block">
+          <div class="profile-info">
+            <div class="profile-info__avatar-and-nick">
+              <div class="profile-info__avatar">
+                <img
+                  class="profile-info__avatar-img"
+                  src="/assets/images/avatar.jpg"
+                >
               </div>
-              <div class="profile__stat">
-                <span>Оценки</span>
-                <span>28</span>
+              <div class="profile-info__nickname">
+                <span>Thegrislyone</span>
               </div>
             </div>
-            <div class="profile__registration-date">
-              Дата регистрации {{ '6 марта 2020 Г.' }}
+
+            <div class="profile__stats-block">
+              <div class="profile__edit">
+                <button class="btn profile__edit-button">Редактировать профиль</button>
+              </div>
+              <div class="profile__stats">
+                <div class="profile__stat">
+                  <span>Просмотры</span>
+                  <span>85</span>
+                </div>
+                <div class="profile__stat">
+                  <span>Оценки</span>
+                  <span>28</span>
+                </div>
+              </div>
+              <div class="profile__registration-date">
+                Дата регистрации {{ '6 марта 2020 Г.' }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="profile__right-block">
-        <div class="gallery">
-          <div class="gallery__buttons">
-            <div class="gallery__tabs">
-              <button class="btn gallery__tab">Работы</button>
-              <button class="btn gallery__tab gallery__tab_unactive">Избранное</button>
-              <button class="btn gallery__tab gallery__tab_unactive">Оценки</button>
-            </div>
-            <div class="gallery__add">
-              <button class="btn gallery__add-button">
-                <span class="gallery__add-short">+</span>
-                <span class="gallery__add-full">Добавить работу</span>
-              </button>
-            </div>
-          </div>
+        
+        <div class="profile__right-block">
           <div class="gallery">
-            <items-tiles-list
-              :tilesList="itemsList"
-            />
+            <div class="gallery__buttons">
+              <div class="gallery__tabs">
+                <button class="btn gallery__tab">Работы</button>
+                <button class="btn gallery__tab gallery__tab_unactive">Избранное</button>
+                <button class="btn gallery__tab gallery__tab_unactive">Оценки</button>
+              </div>
+              <div class="gallery__add">
+                <button class="btn gallery__add-button">
+                  <span class="gallery__add-short">+</span>
+                  <span class="gallery__add-full">Добавить работу</span>
+                </button>
+              </div>
+            </div>
+            <div class="gallery">
+              <items-tiles-list
+                :tilesList="itemsList"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    
 
   </div>
 </template>
 
 <script>
 import ItemsTilesList from '../components/ItemsTilesList'
+import Loader from '../components/Loader.vue'
 
 export default {
   components: {
-    ItemsTilesList
+    ItemsTilesList,
+    Loader
   },
   data() {
     return {
+      loading: true,
       items: {
         data: [],
         meta: {}
@@ -94,6 +111,11 @@ export default {
     },
   },
   created() {
+
+    setTimeout(() => {
+      this.loading = false
+    }, 1000)
+
     const url = new URL(`${window.location.origin}/api/items`)
     url.searchParams.set('page', this.page)
 

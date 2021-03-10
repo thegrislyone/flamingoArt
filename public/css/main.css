@@ -681,9 +681,9 @@ img {
   width: 100%;
   border-radius: 55%;
 }
-.profile-info__nickname {
+/* .profile-info__nickname {
   letter-spacing: 2px;
-}
+} */
 
 .profile__stats-block {
   margin: 15px 0;
@@ -691,7 +691,7 @@ img {
   gap: 10px;
   display: flex;
   flex-direction: column;
-  
+  font-size: 15px;
 }
 .profile__edit-button {
   display: block;
