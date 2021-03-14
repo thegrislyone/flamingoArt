@@ -10,7 +10,6 @@ class ItemsModel extends Model
     protected $table = 'items';
 
     protected $filltable = [
-        'id_item',
         'name',
         'price',
         'description',
@@ -18,7 +17,4 @@ class ItemsModel extends Model
         'tags'
     ];
 
-    public static function getPage($page) {
-        return $page;
-    }
 }

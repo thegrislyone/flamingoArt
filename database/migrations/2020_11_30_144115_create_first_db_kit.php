@@ -24,13 +24,13 @@ class CreateFirstDbKit extends Migration
             $table->integer('author');
         });
 
-        Schema::create('custom_users', function(Blueprint $table) {
-            $table->increments('id_user');
-            $table->char('name', 50);
-            $table->char('nickname', 50);
-            $table->text('password');
-            $table->text('email');
-            $table->text('avatar');
+        Schema::create('tags', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->text('name');
+            $table->text('background_color')->nullable();
+            $table->text('background_img')->nullable();
+            $table->integer('popularity');
         });
 
     }

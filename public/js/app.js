@@ -3172,7 +3172,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     url.searchParams.set('page', this.page);
     this.loadMoreItems(url);
     this.loadMoreItemsDebounced = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_3__["debounce"])(this.loadMoreItems, 100);
-    this.$http.get(new URL("".concat(window.location.origin, "/api/categories"))).then(function (response) {
+    this.$http.get(new URL("".concat(window.location.origin, "/api/tags?amount=5"))).then(function (response) {
       var data = response.data;
       _this2.categoriesData.categories = data;
     });

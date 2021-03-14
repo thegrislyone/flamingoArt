@@ -118,7 +118,7 @@ export default {
     this.loadMoreItems(url)
     this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
 
-    this.$http.get(new URL(`${window.location.origin}/api/categories`))
+    this.$http.get(new URL(`${window.location.origin}/api/tags?amount=5`))
     .then(response => {
       const data = response.data
       this.categoriesData.categories = data
