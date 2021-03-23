@@ -19,9 +19,9 @@
       class="item-list__tiles-wrp"
     >
     
-      <items-categories
+      <!-- <items-categories
         :categoriesData="categoriesData"
-      />
+      /> -->
       
       <items-tiles-list
         :tilesList="itemsList"
@@ -95,9 +95,8 @@ export default {
     },
     scrollCheck() {
       if (
-        (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight + 200) &&
-        !this.outOfItems &&
-        !this.$store.getters.isFormOpened
+        (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight) &&
+        !this.outOfItems
       ) {
         const url = new URL(`${window.location.origin}/api/items`)
         url.searchParams.set('page', this.page)
@@ -118,11 +117,11 @@ export default {
     this.loadMoreItems(url)
     this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
 
-    this.$http.get(new URL(`${window.location.origin}/api/tags?amount=5`))
-    .then(response => {
-      const data = response.data
-      this.categoriesData.categories = data
-    })
+    // this.$http.get(new URL(`${window.location.origin}/api/tags?amount=5`))
+    // .then(response => {
+    //   const data = response.data
+    //   this.categoriesData.categories = data
+    // })
 
   },
   mounted() {

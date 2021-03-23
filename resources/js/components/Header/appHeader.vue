@@ -1,87 +1,58 @@
 <template>
   <header class="header">
 
-    <sign-form
-      v-if="formOpen"
-      @form-close="$store.commit('setSignFormOpenedStatus', false)"
-    />
-
-    <div 
-      v-if="searchOpened"
-      class="header__short-search"
-    >
-      <search
-        :close="true"
-        @search-close="searchOpened = false"
-      />
+    <div class="header__menu-block">
+      <div class="menu-short">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
 
-    <div 
-      v-if="!searchOpened"
-      class="header__wrp"
-      :class="{
-        'header__wrp_search-opened': searchOpened
-      }"
-    >
-      <div class="header__group header__left-group">
-        <div class="header__group-itm header__menu-itm">
-          <div class="header__menu-icon">
-            <div v-for="index in 3" :key="index"></div>
-          </div>
-          <router-link
-            class="header__full-logo"
-            to="/"
-          >
-            <img
-              src="assets/images/logo-word.png"
-            >
-          </router-link>
-        </div>
-        <router-link 
-          class="header__group-itm header__short-logo-itm"
-          to="/"
-        >
-          <img 
-            class="header__short-logo"
-            src="assets/images/logo-icon.png"
-          >
-          <search
-            class="header__search"
-          />
-        </router-link>
+    <div class="header__logo">
+      <router-link to="/">FlamingoArt</router-link>
+    </div>
+
+    <div class="header__feed-type">
+      <div 
+        v-for="(feed, key) in feeds"
+        :key="key"
+        class="header__feed"
+        :class="{
+          'header__feed_active': feed.active
+        }"
+        @click="feedChange(key)"
+      >
+        {{ feed.title }}
       </div>
-      <div class="header__group header__right-group">
-        <div 
-          class="header__group-itm header__short-search-itm"
-        >
-          <img 
-            class="header__search-icon"
-            src="assets/images/search.png"
-            @click="searchOpened = true"
-          >
+    </div>
+    
+    <div class="header__search-block">
+      <div class="search-short">
+        <img src="/assets/images/i-search.svg">
+      </div>
+      <div class="search-full">
+        <search/>
+      </div>
+    </div>
+
+    <div class="header__icons-bar">
+      <div class="header__messages">
+        <img src="/assets/images/i-message.svg" alt="">
+      </div>
+      <div class="header__notifications">
+        <img src="/assets/images/i-notification.svg" alt="">
+      </div>
+      <div class="header__user">
+        <div class="headet__user-avatar">
+          <img src="/assets/images/avatar.jpg" alt="">
         </div>
-        <div 
-          v-if="$isEmpty(user)"
-          class="header__group-itm header__user-itm"
-          @click="$store.commit('setSignFormOpenedStatus', true)"
-        >
-          <div class="header__nickname">Войти</div>
-          <img 
-            class="header__user-img"
-            src="assets/images/unknown-user.png"
+        <img
+          class="header__user-menu"
+          src="/assets/images/i-arrow_small.svg"
+          alt=""
           >
-        </div>
-        <router-link 
-          v-else
-          to="/profile"
-          class="header__group-itm header__user-itm"
-        >
-          <div class="header__nickname">{{ user.nickname }}</div>
-          <img 
-            class="header__user-img"
-            :src="user.avatar || 'assets/images/unknown-user.png'"
-          >
-        </router-link>
+        <!-- <img src="/assets/images/i-.svg" alt=""> -->
       </div>
     </div>
 
@@ -101,6 +72,20 @@ export default {
   data() {
     return {
       searchOpened: false,
+      feeds: {
+        main: {
+          title: "Главная",
+          active: true
+        },
+        popular: {
+          title: "Популярное",
+          active: false
+        },
+        new: {
+          title: "Новое",
+          active: false
+        }
+      }
     }
   },
   computed: {
@@ -115,6 +100,12 @@ export default {
     }
   },
   methods: {
+    feedChange(key) {
+      for (const index in this.feeds) {
+        this.feeds[index].active = false
+      }
+      this.feeds[key].active = true
+    }
   }
 }
 </script>

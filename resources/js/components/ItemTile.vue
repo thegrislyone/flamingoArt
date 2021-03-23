@@ -4,7 +4,7 @@
       <div class="tile__thumbnail">
         <img :src="img">
       </div>
-      <div class="tile__inf">
+      <!-- <div class="tile__inf">
         <div class="tile__author">
           <div class="tile__avatar-block">
             <img :src="img">
@@ -16,7 +16,7 @@
         <div class="tile__likes">
           {{ likes }}
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
