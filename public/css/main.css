@@ -209,6 +209,15 @@ a {
 
 /* COMPONENTS */
 
+/* TRANSITIONS */
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .35s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+
 /* loader */
 
 .loader {
@@ -249,9 +258,11 @@ a {
 }
 
 /* search-field */
-
+.search {
+  position: relative;
+}
 #main-searh {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #121212;
   background-image: url('../assets/images/i-search.svg');
   background-repeat: no-repeat;
   padding: 12px 43px 12px 48px;
@@ -259,6 +270,32 @@ a {
   background-position: 15px center;
   color: #fff;
   width: 100%;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.011em;
+  transition: all .35s;
+}
+.search_opened {
+  border-radius: 20px 20px 0 0 !important;
+}
+.search__results {
+  position: absolute;
+  padding: 5px 45px 15px 45px;
+  border-radius: 0 0 20px 20px;
+  width: 100%;
+  background-color: #121212;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: default;
+}
+.search__result-text {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 
@@ -303,10 +340,18 @@ a {
   color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all .35s;
+  font-weight: 600;
 }
 .header__feed_active {
   color: #fff;
   cursor: pointer;
+}
+.search-short__field {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 12px;
+  padding: 0 15px;
 }
 .search-full {
   display: none;

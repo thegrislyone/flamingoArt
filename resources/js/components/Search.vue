@@ -6,11 +6,32 @@
       id="main-searh"
       autocomplete="off"
       placeholder="Поиск..."
+      :class="{
+        'search_opened': searchOpened
+      }"
+      v-click-outside="hideResults"
+      v-model="searchValue"
+      @input="searchQueryDebounced"
     >
+    <transition name="fade">
+      <div
+        v-if="searchOpened"
+        class="search__results"
+      >
+        <div
+          v-for="(result, key) in searchResults"
+          :key="key"
+          class="search__result"
+        >
+          <span class="search__result-text">{{ result }}</span>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import { debounce } from 'vue-debounce'
 export default {
   props: {
     close: {
@@ -21,27 +42,27 @@ export default {
   },
   data() {
     return {
-      searchResults: []
+      searchValue: '',
+
+      searchResults: [],
+      searchOpened: false,
+
+      searchQueryDebounced: null
     }
   },
+  created() {
+    this.searchQueryDebounced = debounce(this.searchQuery, 400)
+  },
   methods: {
-    focus() {
-      if (event.target.classList.contains('search__close')) {
-        this.closing()
-        return
-      }
-      document.querySelector('#search').focus()
-      this.searchResults = [
-        "результат 1",
-        "результат 2",
-        "результат 3"
-      ]
+    searchQuery() {
+      // сделать адрес
+      let url = new URL(window.location.origin + '/api/')
+      url.searchParams.set('search', this.searchValue)
+
+      console.log(url)
     },
-    closing() {
-      this.$emit("search-close")
-    },
-    closeSearch() {
-      this.searchResults = []
+    hideResults() {
+      this.searchOpened = false
     }
   }
 }

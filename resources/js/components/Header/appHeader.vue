@@ -29,7 +29,17 @@
     
     <div class="header__search-block">
       <div class="search-short">
-        <img src="/assets/images/i-search.svg">
+        <img 
+          src="/assets/images/i-search.svg"
+          @click="searchOpened = !searchOpened"
+        >
+        <transition name="fade">
+          <search 
+            v-if="shortSearchOpened"
+            class="search-short__field"
+            v-click-outside="() => searchOpened = false"
+          />
+        </transition>
       </div>
       <div class="search-full">
         <search/>
@@ -97,6 +107,14 @@ export default {
     },
     user() {
       return this.$store.getters.user
+    },
+    shortSearchOpened: {
+      get() {
+        return this.searchOpened && this.$store.getters.windowWidth < 560
+      },
+      set(value) {
+        this.searchOpened = value
+      }
     }
   },
   methods: {

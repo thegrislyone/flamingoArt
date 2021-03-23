@@ -2012,6 +2012,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2047,6 +2057,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     user: function user() {
       return this.$store.getters.user;
+    },
+    shortSearchOpened: {
+      get: function get() {
+        return this.searchOpened && this.$store.getters.windowWidth < 560;
+      },
+      set: function set(value) {
+        this.searchOpened = value;
+      }
     }
   },
   methods: {
@@ -2353,6 +2371,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
+/* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2365,6 +2385,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     close: {
@@ -2375,24 +2416,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      searchResults: []
+      searchValue: '',
+      searchResults: [],
+      searchOpened: false,
+      searchQueryDebounced: null
     };
   },
+  created: function created() {
+    this.searchQueryDebounced = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_0__["debounce"])(this.searchQuery, 400);
+  },
   methods: {
-    focus: function focus() {
-      if (event.target.classList.contains('search__close')) {
-        this.closing();
-        return;
-      }
-
-      document.querySelector('#search').focus();
-      this.searchResults = ["результат 1", "результат 2", "результат 3"];
+    searchQuery: function searchQuery() {
+      // сделать адрес
+      var url = new URL(window.location.origin + '/api/');
+      url.searchParams.set('search', this.searchValue);
+      console.log(url);
     },
-    closing: function closing() {
-      this.$emit("search-close");
-    },
-    closeSearch: function closeSearch() {
-      this.searchResults = [];
+    hideResults: function hideResults() {
+      this.searchOpened = false;
     }
   }
 });
@@ -16160,12 +16201,49 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "header__search-block" }, [
-      _vm._m(1),
+      _c(
+        "div",
+        { staticClass: "search-short" },
+        [
+          _c("img", {
+            attrs: { src: "/assets/images/i-search.svg" },
+            on: {
+              click: function($event) {
+                _vm.searchOpened = !_vm.searchOpened
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "transition",
+            { attrs: { name: "fade" } },
+            [
+              _vm.shortSearchOpened
+                ? _c("search", {
+                    directives: [
+                      {
+                        name: "click-outside",
+                        rawName: "v-click-outside",
+                        value: function() {
+                          return (_vm.searchOpened = false)
+                        },
+                        expression: "() => searchOpened = false"
+                      }
+                    ],
+                    staticClass: "search-short__field"
+                  })
+                : _vm._e()
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "search-full" }, [_c("search")], 1)
     ]),
     _vm._v(" "),
-    _vm._m(2)
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -16181,14 +16259,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "search-short" }, [
-      _c("img", { attrs: { src: "/assets/images/i-search.svg" } })
     ])
   },
   function() {
@@ -16476,26 +16546,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "search" }, [
+  return _c(
+    "div",
+    { staticClass: "search" },
+    [
       _c("input", {
+        directives: [
+          {
+            name: "click-outside",
+            rawName: "v-click-outside",
+            value: _vm.hideResults,
+            expression: "hideResults"
+          },
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.searchValue,
+            expression: "searchValue"
+          }
+        ],
+        class: {
+          search_opened: _vm.searchOpened
+        },
         attrs: {
           type: "text",
           name: "main-searh",
           id: "main-searh",
           autocomplete: "off",
           placeholder: "Поиск..."
+        },
+        domProps: { value: _vm.searchValue },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.searchValue = $event.target.value
+            },
+            _vm.searchQueryDebounced
+          ]
         }
-      })
-    ])
-  }
-]
+      }),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [
+        _vm.searchOpened
+          ? _c(
+              "div",
+              { staticClass: "search__results" },
+              _vm._l(_vm.searchResults, function(result, key) {
+                return _c("div", { key: key, staticClass: "search__result" }, [
+                  _c("span", { staticClass: "search__result-text" }, [
+                    _vm._v(_vm._s(result))
+                  ])
+                ])
+              }),
+              0
+            )
+          : _vm._e()
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
