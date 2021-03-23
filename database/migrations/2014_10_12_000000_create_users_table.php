@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('nickname');
-            $table->text('avatar');
-            $table->text('banner');
+            $table->text('avatar')->nullable();
+            $table->text('banner')->nullable();
             $table->integer('views');
             $table->integer('likes');
         });

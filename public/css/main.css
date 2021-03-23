@@ -675,6 +675,8 @@ img {
   padding: 30px 30px 0 30px;
   border-radius: 55%;
   background-color: #101010;
+}
+.profile-info__avatar_no-banner {
   margin-top: -50px;
 }
 .profile-info__avatar-img {

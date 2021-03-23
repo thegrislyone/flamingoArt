@@ -14,7 +14,10 @@
     >
       <hr class="profile__upper-line">
 
-      <div class="profile-banner">
+      <div 
+        v-if="!$isEmpty(user.banner)"
+        class="profile-banner"
+      >
         <img
           class="profile-banner__img"
           src="/assets/images/banner.jpg"
@@ -23,16 +26,26 @@
 
       <div class="profile__profile">
         <div class="profile__left-block">
-          <div class="profile-info">
+          <div 
+            class="profile-info"
+            :class="{
+              'profile-info_no-banner': !$isEmpty(user.banner)
+            }"
+          >
             <div class="profile-info__avatar-and-nick">
-              <div class="profile-info__avatar">
+              <div 
+                class="profile-info__avatar"
+                :class="{
+                  'profile-info__avatar_no-banner': !$isEmpty(user.banner)
+                }"
+              >
                 <img
                   class="profile-info__avatar-img"
-                  src="/assets/images/avatar.jpg"
+                  :src="user.avatar || 'assets/images/unknown-user.png'"
                 >
               </div>
               <div class="profile-info__nickname">
-                <span>Thegrislyone</span>
+                <span>{{ user.nickname }}</span>
               </div>
             </div>
 
@@ -43,15 +56,15 @@
               <div class="profile__stats">
                 <div class="profile__stat">
                   <span>Просмотры</span>
-                  <span>85</span>
+                  <span>{{ user.views }}</span>
                 </div>
                 <div class="profile__stat">
                   <span>Оценки</span>
-                  <span>28</span>
+                  <span>{{ user.likes }}</span>
                 </div>
               </div>
               <div class="profile__registration-date">
-                Дата регистрации {{ '6 марта 2020 Г.' }}
+                Дата регистрации {{ user.created_at }}
               </div>
             </div>
           </div>
@@ -109,6 +122,9 @@ export default {
     itemsList() {
       return this.items.data
     },
+    user() {
+      return this.$store.getters.user
+    }
   },
   created() {
 

@@ -3299,6 +3299,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3318,6 +3331,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   computed: {
     itemsList: function itemsList() {
       return this.items.data;
+    },
+    user: function user() {
+      return this.$store.getters.user;
     }
   },
   created: function created() {
@@ -17051,32 +17067,86 @@ var render = function() {
       : _c("div", { staticClass: "profile__main" }, [
           _c("hr", { staticClass: "profile__upper-line" }),
           _vm._v(" "),
-          _vm._m(0),
+          !_vm.$isEmpty(_vm.user.banner)
+            ? _c("div", { staticClass: "profile-banner" }, [
+                _c("img", {
+                  staticClass: "profile-banner__img",
+                  attrs: { src: "/assets/images/banner.jpg" }
+                })
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "profile__profile" }, [
             _c("div", { staticClass: "profile__left-block" }, [
-              _c("div", { staticClass: "profile-info" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c("div", { staticClass: "profile__stats-block" }, [
-                  _vm._m(2),
+              _c(
+                "div",
+                {
+                  staticClass: "profile-info",
+                  class: {
+                    "profile-info_no-banner": !_vm.$isEmpty(_vm.user.banner)
+                  }
+                },
+                [
+                  _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "profile-info__avatar",
+                        class: {
+                          "profile-info__avatar_no-banner": !_vm.$isEmpty(
+                            _vm.user.banner
+                          )
+                        }
+                      },
+                      [
+                        _c("img", {
+                          staticClass: "profile-info__avatar-img",
+                          attrs: {
+                            src:
+                              _vm.user.avatar ||
+                              "assets/images/unknown-user.png"
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "profile-info__nickname" }, [
+                      _c("span", [_vm._v(_vm._s(_vm.user.nickname))])
+                    ])
+                  ]),
                   _vm._v(" "),
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "profile__registration-date" }, [
-                    _vm._v(
-                      "\n              Дата регистрации " +
-                        _vm._s("6 марта 2020 Г.") +
-                        "\n            "
-                    )
+                  _c("div", { staticClass: "profile__stats-block" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "profile__stats" }, [
+                      _c("div", { staticClass: "profile__stat" }, [
+                        _c("span", [_vm._v("Просмотры")]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v(_vm._s(_vm.user.views))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "profile__stat" }, [
+                        _c("span", [_vm._v("Оценки")]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v(_vm._s(_vm.user.likes))])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "profile__registration-date" }, [
+                      _vm._v(
+                        "\n              Дата регистрации " +
+                          _vm._s(_vm.user.created_at) +
+                          "\n            "
+                      )
+                    ])
                   ])
-                ])
-              ])
+                ]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "profile__right-block" }, [
               _c("div", { staticClass: "gallery" }, [
-                _vm._m(4),
+                _vm._m(1),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -17099,55 +17169,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile-banner" }, [
-      _c("img", {
-        staticClass: "profile-banner__img",
-        attrs: { src: "/assets/images/banner.jpg" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
-      _c("div", { staticClass: "profile-info__avatar" }, [
-        _c("img", {
-          staticClass: "profile-info__avatar-img",
-          attrs: { src: "/assets/images/avatar.jpg" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "profile-info__nickname" }, [
-        _c("span", [_vm._v("Thegrislyone")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "profile__edit" }, [
       _c("button", { staticClass: "btn profile__edit-button" }, [
         _vm._v("Редактировать профиль")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile__stats" }, [
-      _c("div", { staticClass: "profile__stat" }, [
-        _c("span", [_vm._v("Просмотры")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("85")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "profile__stat" }, [
-        _c("span", [_vm._v("Оценки")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("28")])
       ])
     ])
   },
@@ -36506,11 +36530,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _views_Index_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../views/Index.vue */ "./resources/js/views/Index.vue");
-/* harmony import */ var _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../views/Contacts.vue */ "./resources/js/views/Contacts.vue");
-/* harmony import */ var _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../views/ItemsList.vue */ "./resources/js/views/ItemsList.vue");
-/* harmony import */ var _views_Profile_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/Profile.vue */ "./resources/js/views/Profile.vue");
-/* harmony import */ var _views_Item_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/Item.vue */ "./resources/js/views/Item.vue");
+/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/index.js */ "./resources/js/store/index.js");
+/* harmony import */ var _views_Index_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../views/Index.vue */ "./resources/js/views/Index.vue");
+/* harmony import */ var _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../views/Contacts.vue */ "./resources/js/views/Contacts.vue");
+/* harmony import */ var _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/ItemsList.vue */ "./resources/js/views/ItemsList.vue");
+/* harmony import */ var _views_Profile_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/Profile.vue */ "./resources/js/views/Profile.vue");
+/* harmony import */ var _views_Item_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../views/Item.vue */ "./resources/js/views/Item.vue");
+
 
  //components
 
@@ -36526,27 +36552,50 @@ var routes = [// {
 // },
 {
   path: '/',
-  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  name: 'index',
+  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/profile',
-  component: _views_Profile_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  meta: {
+    requiresAuth: true
+  },
+  component: _views_Profile_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (!_store_index_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.isAuthorizate) {
+      next({
+        name: 'index'
+      });
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/contact',
-  component: _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  component: _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: '/items_list/:id',
-  component: _views_Item_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  component: _views_Item_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
 }, {
   path: "*",
   meta: {
     error: true
   },
-  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }];
-/* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: "history",
   routes: routes
-}));
+}); // router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!store.getters.user.name) {
+//       next({ name: 'index' })
+//     } else {
+//       next()
+//     }
+//   }
+// })
+
+/* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
 
@@ -36598,6 +36647,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     }
   },
   getters: {
+    isAuthorizate: function isAuthorizate(state) {
+      return Object.keys(state.user).length;
+    },
     user: function user(state) {
       return state.user;
     },
