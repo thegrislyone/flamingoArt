@@ -381,11 +381,16 @@ a {
 
 .item-list__tiles {
   padding: 15px 0;
-  display: grid;
+  /* display: grid; */
+  display: flex;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
   grid-template-columns: 1fr; 
-  justify-content: start;
-  gap: 15px;
+  gap: 16px;
+}
+.tile {
+  width: 100%;
+  transition: all .15s;
 }
 .tile__wrp {
   cursor: pointer;
