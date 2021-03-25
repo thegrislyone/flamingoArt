@@ -1,397 +1,147 @@
 <template>
   <div class="sign-form">
-
-    <status-modal
-      :mainHeadline="statusModal.headline"
-      :status="statusModal.status"
-      :closable="statusModal.closable"
-      @close="$emit('form-close')"
-    />
-
-    <div class="sign-form__header">
-      <div class="sign-form__logo">
-        <img src="../../../public/assets/images/logo-word.png">
-      </div>
+    <img 
+      class="sign-form__close"
+      src="/assets/images/i-close.svg" 
+      alt=""
+      @click="$modal.hide('signForm')"
+    >
+    <transition name="fade" mode="out-in">
       <div 
-        class="close close_white sign-form__close"
-        @click="$emit('form-close')"
-      ></div>
-    </div>
-
-    <div class="sign-form__form-wrp">
-
-      <div 
-        class="sign-form__block sign-form__auth"
+        v-if="mode == 'reg'"
+        class="sign-form__reg"
+        key="registration"
       >
-        <h2 class="sign-form__headline h h_pink">{{ activeForm.headline | capitalize }}</h2>
+        <h2 class="sign-form__form sign-form__headline">Регистрация</h2>
+        
+        <form class="sign-form__form">
+          <form-group
+            v-for="(field, key) in regForm.fields"
+            :key="key"
+            :formData="field"
+            :v="$v.regForm[field.name]"
+          />
+        </form>
 
-        <div class="sign-form__form">
-
-          <div class="sign-form__fields">
-            <div 
-              v-for="(field, index) in activeForm.fields"
-              :key="index"
-              class="sign-form__field"
-            >
-              <text-input
-                v-if="field.type === 'text'"
-                :placeholder="field.caption"
-                :required="field.required"
-                :name="index"
-                :v="$v.formModel[index]"
-                @input-text="fieldInput"
-                v-model="$v.formModel[index].$model"
-              />
-              <password-input
-                v-if="field.type === 'password'"
-                :placeholder="field.caption"
-                :required="field.required"
-                :name="index"
-                :v="$v.formModel[index]"
-                @input-text="fieldInput"
-                v-model="$v.formModel[index].$model"
-              />
-            </div>
-            
-          </div>
-
-          <div 
-            v-if="activeForm.permission"
-            class="sign-form__permission"
-          >
-            <div>
-              <input 
-                type="checkbox"
-                id="permission"
-                v-model="userPermission"
-              >
-              <label for="permission"></label>
-            </div>
-            <div class="sign-form__permission-text">{{ activeForm.permission.text }}</div>
-          </div>
-
-          <div class="sign-form__button">
-            <button 
-              class="btn"
-              :disabled="$v.$invalid || !userPermission"
-              @click="buttonClick"
-            >{{ activeForm.buttonText | capitalize }}</button>
-          </div>
-
-          <div class="sign-form__link-block">
-            <span>{{ activeForm.lowerText.text | capitalize }}</span>
-            <span class="link" @click="changeFormMode(activeForm.changeKey)">{{ activeForm.lowerText.link | capitalize }}.</span>
-          </div>
-
-          <div class="sign-form__validation">
-            <div
-              v-for="(error, index) in errors"
-              :key="index"
-              class="sign-form__validation-error"
-            >{{ error.text | capitalize }}</div>
-          </div>
-          
-        </div>
       </div>
+      <div 
+        v-else-if="mode == 'auth'"
+        class="sign-form__form sign-form__auth"
+        key="authorization"
+      >
+        <h2 class="sign-form__headline">Вход</h2>
 
-    </div>
+        <form class="sign-form__form">
+          <form-group
+            v-for="(field, key) in authForm.fields"
+            :key="key"
+            :formData="field"
+            :v="$v.authForm[field.name]"
+          />
+        </form>
 
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import TextInput from './TextInput.vue'
-import PasswordInput from './PasswordInput.vue'
 
-import StatusModal from './StatusModal.vue'
-
-import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
-
+import FormGroup from './FormGroup.vue'
+import { required, email, sameAs, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   components: {
-    TextInput,
-    StatusModal,
-    PasswordInput
+    FormGroup
   },
   data() {
     return {
+      mode: 'auth',
 
-      userPermission: false,
-
-      formModel: {},
-      errors: [],
-      statusModal: {
-        headline: '',
-        status: '',
-        closable: true
+      registrationForm: {},
+      authForm: {
+        fields: [
+          {
+            name: 'login',
+            type: 'text',
+            placeholder: 'Логин',
+            minLength: 2,
+            maxLength: 32,
+          },
+          {
+            name: 'password',
+            type: 'password',
+            placeholder: 'Пароль',
+            minLength: 6,
+            maxLength: 54,
+          }
+        ]
       },
-
-      // TODO: закинуть на апи адрес, чтобы не грузить если не надо
-
-      form: {
-        authForm: {
-          headline: "вход",
-          changeKey: "registration",
-          buttonText: "войти",
-          sendApi: "/api/auth/login",
-          lowerText: {
-            text: "нет аккаунта?",
-            link: "регистрация"
+      regForm: {
+        fields: [
+          {
+            name: 'login',
+            type: 'text',
+            placeholder: 'Логин',
+            minLength: 2,
+            maxLength: 32,
           },
-          fields: {
-            email: {
-              type: 'text',
-              caption: "Email",
-              required: true
-            },
-            password: {
-              type: 'password',
-              caption: "Пароль",
-              min_length: 8,
-              required: true
-            }
+          {
+            name: 'email',
+            type: 'email',
+            placeholder: 'E-mail',
+          },
+          {
+            name: 'password',
+            type: 'password',
+            placeholder: 'Пароль',
+            minLength: 6,
+            maxLength: 54,
           }
-        },
-        registrationForm: {
-          headline: "регистрация",
-          changeKey: "authorization",
-          buttonText: "зарегестрироваться",
-          sendApi: "/api/auth/register",
-          lowerText: {
-            text: "есть аккаунт?",
-            link: "войти"
-          },
-          fields: {
-            email: {
-              type: 'text',
-              caption: "Email",
-              required: true
-            },
-            name: {
-              type: 'text',
-              caption: "Имя и фамилия",
-              min_length: 8,
-              max_length: 32,
-              required: true
-            },
-            nickname: {
-              type: 'text',
-              caption: "Имя пользователя",
-              min_length: 6,
-              max_length: 32,
-              required: true
-            },
-            password: {
-              type: 'password',
-              caption: "Пароль",
-              min_length: 8,
-              max_length: 32,
-              required: true
-            },
-            password_confirmation: {
-              type: 'password',
-              caption: "Повторите пароль",
-              min_length: 8,
-              max_length: 32,
-              required: true,
-              same_as: 'password'
-            }
-          },
-          permission: {
-            text: "Я принимаю условия пользовательского соглашения"
-          }
-        }
+        ]
       }
     }
   },
   computed: {
-    formMode() {
-      return this.$store.getters.signFormMode
-    },
-    activeForm() {
-      if (this.formMode === 'registration') {
-        this.userPermission = false
-        return this.form.registrationForm
-      } else if (this.formMode === 'authorization') {
-        this.userPermission = true
-        return this.form.authForm
-      }
-    },
+
   },
   validations() {
 
-    let formModel = {},
-        validationModel = {}
+    let formModel = {}
 
-    for (const [index, item] of Object.entries(this.activeForm.fields)) {
-      formModel[index] = ''
-    }
+    const activeForm = (this.mode == 'auth') ? this.authForm : this.regForm
 
-    this.formModel = Object.assign({}, formModel)
+    for (const field of activeForm.fields) {
 
-    // TODO: динамическая сборка объекта валидации
+      const name = field.name
 
-    if (this.formMode === 'registration') {
-      validationModel = {
-        email: {
-          required,
-          email: email
-        },
-        name: {
-          required,
-          maxLength: maxLength(52)
-        },
-        nickname: {
-          required,
-          minLength: minLength(6),
-          maxLength: maxLength(32)
-        },
-        password: {
-          required,
-          minLength: minLength(8),
-          maxLength: maxLength(32)
-        },
-        password_confirmation : {
-          required,
-          minLength: minLength(8),
-          maxLength: maxLength(32),
-          sameAs: sameAs('password')
-        }
+      formModel[name] = {}
+
+      formModel[name].required = required
+
+      if (field.type == 'email') {
+        formModel[name].email = email
       }
-    } else if (this.formMode === 'authorization') {
-      validationModel = {
-        email: {
-          required,
-          email: email
-        },
-        password: {
-          required,
-          minLength: minLength(8),
-          maxLength: maxLength(32)
-        }
+
+      if (field.minLength) {
+        formModel[name].minLength = minLength(field.minLength)
       }
+
+      if (field.maxLength) {
+        formModel[name].maxLength = maxLength(field.maxLength)
+      }
+
     }
 
-    return {
-      formModel: validationModel
-    }
+    return (this.mode == 'auth') ? { authForm: formModel } : { regForm: formModel }
+
   },
   created() {
+    console.log(this.$v)
   },
   mounted() {
   },
   methods: {
-    buttonClick() {
-      this.$v.$touch()
-      this.errors = []
-
-      if (this.$v.$error) {
-        this.formValidation()
-      } else {
-        this.formSend()
-      }
-      
-    },
-    formSend() {
-      // TODO: переделать на пост, который какого-то хера пустой
-      let url = new URL(window.location.origin + this.activeForm.sendApi)
-
-      // for (const [key, item] of Object.entries(this.formModel)) {
-      //   url.searchParams.set(key, item)
-      // }
-
-      this.$http.post(url, this.formModel)
-        .then(response => {
-
-          const data = response.data
-
-          if (data.hasOwnProperty('errors') || data.hasOwnProperty('email')) {
-            this.statusModal.headline = (data.hasOwnProperty('errors')) ? data.errors[0] : data.email[0]
-            this.statusModal.status = 'error'
-            this.statusModal.closable = false
-          } else if (data.hasOwnProperty('success')) {
-            this.statusModal.headline = data.success
-            this.statusModal.status = 'success'
-            this.statusModal.closable = true
-          }
-
-          this.$store.commit('setUser', data.user)
-
-          this.$modal.show('status')
-
-        })
-    },
-    formValidation(validationModel, key) {
-        
-      if (validationModel.required !== undefined && !validationModel.required) {
-
-        return `Поле ${this.activeForm.fields[key].caption.toLowerCase()} обязательно для заполнения`
-
-      } else if (validationModel.email !== undefined && !validationModel.email) {
-
-        return 'Неправильный формат почты'
-
-      } else if (validationModel.minLength !== undefined && !validationModel.minLength) {
-
-        return `Минимальная длина поля ${this.activeForm.fields[key].caption.toLowerCase()} - ${this.activeForm.fields[key].min_length} символов`
-      
-      } else if (validationModel.maxLength !== undefined && !validationModel.maxLength) {
-
-        return `Максимальная длина поля ${this.activeForm.fields[key].caption.toLowerCase()} - ${this.activeForm.fields[key].max_length} символов`
-      
-      } else if (validationModel.sameAs !== undefined && !validationModel.sameAs) {
-        
-        return `Пароли не совпадают`
-
-      } else {
-        return false
-      }
-
-      // const validationModel = this.$v.formModel
-
-      // for (const [key, field] of Object.entries(this.formModel)) {
-
-      //   if (this.errors.length == 2) {
-      //     return
-      //   }
-        
-      //   if (validationModel[key].required !== undefined && !validationModel[key].required) {
-      //     this.errors.push({
-      //       text: `Поле ${this.activeForm.fields[key].caption} обязательно для заполнения`
-      //     })
-      //   } else if (validationModel[key].email !== undefined && !validationModel[key].email) {
-      //     this.errors.push({
-      //       text: 'Неправильный формат почты'
-      //     })
-      //   } else if (validationModel[key].minLength !== undefined && !validationModel[key].minLength) {
-      //     this.errors.push({
-      //       text: `Минимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].min_length} символов`
-      //     })
-      //   } else if (validationModel[key].maxLength !== undefined && !validationModel[key].maxLength) {
-      //     this.errors.push({
-      //       text: `Максимальная длина поля ${this.activeForm.fields[key].caption} - ${this.activeForm.fields[key].max_length} символов`
-      //     })
-      //   } else if (validationModel[key].sameAs !== undefined && !validationModel[key].sameAs) {
-      //     this.errors.push({
-      //       text: `Пароли не совпадают`
-      //     })
-      //   }
-
-      // }
-    },
-    changeFormMode(mode) {
-      this.errors = []
-      this.$store.commit('setSignFormMode', mode)
-    },
-    fieldInput(value, key) {
-      this.errors.pop()
-      if (this.formValidation(this.$v.formModel[key], key)) {
-        this.errors.push({
-          text: this.formValidation(this.$v.formModel[key], key)
-        })
-      }
-    }
   }
 }
 </script>

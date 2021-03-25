@@ -1,6 +1,18 @@
 <template>
   <header class="header">
 
+    <modal
+      name="signForm"
+      :classes="['modal','sign-in-form']"
+      :adaptive="true"
+      :height="'auto'"
+      :scrollable="true"
+      :max-width="356"
+      :pivot-y="0"
+    >
+      <sign-form/>
+    </modal>
+
     <div class="header__menu-block">
       <div class="menu-short">
         <div></div>
@@ -55,14 +67,23 @@
       </div>
       <div class="header__user">
         <div class="headet__user-avatar">
-          <img src="/assets/images/avatar.jpg" alt="">
+          <img 
+            v-if="!$isEmpty($store.getters.user)"
+            src="/assets/images/avatar.jpg"
+            alt=""
+          >
+          <img 
+            v-else
+            src="/assets/images/unknown-user.png"
+            alt=""
+            @click="$modal.show('signForm')"
+          >
         </div>
         <img
           class="header__user-menu"
           src="/assets/images/i-arrow_small.svg"
           alt=""
           >
-        <!-- <img src="/assets/images/i-.svg" alt=""> -->
       </div>
     </div>
 
