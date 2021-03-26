@@ -15,9 +15,10 @@
         :author="item.author"
       />
     </div>
-    <loader
+    <div
       v-if="!outOfItems"
-    />
+      class="preloader"
+    ></div>
   </div>
 </template>
 

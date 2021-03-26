@@ -1948,11 +1948,71 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
+/* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     formData: {
@@ -1963,8 +2023,70 @@ __webpack_require__.r(__webpack_exports__);
       type: Object
     }
   },
-  created: function created() {
-    console.log(this.formData, this.v);
+  data: function data() {
+    return {
+      value: '',
+      isError: false,
+      isSuccess: false,
+      isLoading: false
+    };
+  },
+  computed: {
+    statusClass: function statusClass() {
+      if (!this.formData["class"]) {
+        return '';
+      }
+
+      if (this.isSuccess) {
+        return this.formData["class"] + '_success';
+      } else if (this.isError) {
+        return this.formData["class"] + '_error';
+      } else if (this.isLoading) {
+        return this.formData["class"] + '_loading';
+      }
+
+      return '';
+    }
+  },
+  created: function created() {},
+  methods: {
+    debounsedInput: function debounsedInput() {
+      this.isLoading = false;
+
+      if (this.v.$error) {
+        if (this.v.required != undefined && !this.v.required) {
+          var message = 'Поле ' + this.formData.placeholder.toLowerCase() + ' обязательно для заполнения';
+          this.$emit('error', message);
+        } else if (this.v.minLength != undefined && !this.v.minLength) {
+          var _message = 'Минимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.minLength + ' символов';
+
+          this.$emit('error', _message);
+        } else if (this.v.maxLength != undefined && !this.v.maxLength) {
+          var _message2 = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов';
+
+          this.$emit('error', _message2);
+        } else if (this.v.email != undefined && !this.v.email) {
+          var _message3 = 'Неправильный формат почты';
+          this.$emit('error', _message3);
+        }
+
+        this.isError = true;
+      } else {
+        this.isSuccess = true;
+      }
+
+      this.$emit('debouncedInput', this.value);
+    },
+    input: function input() {
+      this.isLoading = true;
+      this.isError = false;
+      this.isSuccess = false;
+      this.$emit('clearErrors');
+      this.$emit('input', this.value);
+    },
+    buttonClick: function buttonClick(method, action) {
+      this.$emit('buttonClick', action, method);
+    }
   }
 });
 
@@ -2308,6 +2430,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2452,6 +2575,56 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2508,40 +2681,71 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   data: function data() {
     return {
       mode: 'auth',
-      registrationForm: {},
+      validationError: '',
+      authFormModel: {},
+      regFormModel: {},
       authForm: {
         fields: [{
           name: 'login',
+          "class": 'sign-form__field',
           type: 'text',
           placeholder: 'Логин',
           minLength: 2,
           maxLength: 32
         }, {
           name: 'password',
+          "class": 'sign-form__field',
           type: 'password',
           placeholder: 'Пароль',
           minLength: 6,
           maxLength: 54
-        }]
+        }],
+        buttons: {
+          type: 'buttons',
+          left: [],
+          right: [],
+          center: [_defineProperty({
+            name: "authorizate",
+            type: "button",
+            title: "Войти",
+            action: "",
+            method: "POST"
+          }, "type", 'submit')]
+        }
       },
       regForm: {
         fields: [{
           name: 'login',
+          "class": 'sign-form__field',
           type: 'text',
           placeholder: 'Логин',
           minLength: 2,
           maxLength: 32
         }, {
           name: 'email',
+          "class": 'sign-form__field',
           type: 'email',
           placeholder: 'E-mail'
         }, {
           name: 'password',
+          "class": 'sign-form__field',
           type: 'password',
           placeholder: 'Пароль',
           minLength: 6,
           maxLength: 54
-        }]
+        }],
+        buttons: {
+          type: 'buttons',
+          left: [],
+          right: [],
+          center: [{
+            name: "create-account",
+            title: "Создать аккаунт",
+            action: "",
+            method: "POST",
+            type: 'submit'
+          }]
+        }
       }
     };
   },
@@ -2558,6 +2762,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var field = _step.value;
         var name = field.name;
         formModel[name] = {};
+
+        if (this.mode == 'auth') {
+          this.$set(this.authFormModel, name, '');
+        } else {
+          this.$set(this.regFormModel, name, '');
+        }
+
         formModel[name].required = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"];
 
         if (field.type == 'email') {
@@ -2579,16 +2790,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
 
     return this.mode == 'auth' ? {
-      authForm: formModel
+      authFormModel: formModel
     } : {
-      regForm: formModel
+      regFormModel: formModel
     };
   },
-  created: function created() {
-    console.log(this.$v);
-  },
+  created: function created() {},
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    setValidationError: function setValidationError(error) {
+      this.validationError = error;
+    }
+  }
 });
 
 /***/ }),
@@ -2687,6 +2900,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -2832,11 +3046,6 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
-//
-//
 //
 //
 //
@@ -15777,7 +15986,164 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-group" })
+  return _c(
+    "div",
+    { staticClass: "form-group" },
+    [
+      _vm.formData.type == "password"
+        ? [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.value,
+                  expression: "value"
+                },
+                {
+                  name: "debounce",
+                  rawName: "v-debounce:400ms.lock",
+                  value: _vm.debounsedInput,
+                  expression: "debounsedInput",
+                  arg: "400ms",
+                  modifiers: { lock: true }
+                }
+              ],
+              staticClass: "form-group__password",
+              class: [_vm.formData.class, _vm.statusClass],
+              attrs: {
+                type: "password",
+                placeholder: _vm.formData.placeholder
+              },
+              domProps: { value: _vm.value },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.value = $event.target.value
+                  },
+                  _vm.input
+                ]
+              }
+            })
+          ]
+        : _vm.formData.type == "text" || _vm.formData.type == "email"
+        ? [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.value,
+                  expression: "value"
+                },
+                {
+                  name: "debounce",
+                  rawName: "v-debounce:400ms.lock",
+                  value: _vm.debounsedInput,
+                  expression: "debounsedInput",
+                  arg: "400ms",
+                  modifiers: { lock: true }
+                }
+              ],
+              staticClass: "form-group__text",
+              class: [_vm.formData.class, _vm.statusClass],
+              attrs: { type: "text", placeholder: _vm.formData.placeholder },
+              domProps: { value: _vm.value },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.value = $event.target.value
+                  },
+                  _vm.input
+                ]
+              }
+            })
+          ]
+        : _vm.formData.type == "buttons"
+        ? [
+            _c("div", { staticClass: "justify-buttons" }, [
+              _c(
+                "div",
+                { staticClass: "justify-buttons__left" },
+                _vm._l(_vm.formData.left, function(button, key) {
+                  return _c(
+                    "button",
+                    {
+                      staticClass: "btn form-group__button",
+                      attrs: { type: button.type },
+                      on: {
+                        click: function($event) {
+                          return _vm.buttonClick(button.method, button.action)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " + _vm._s(button.title) + "\n        "
+                      )
+                    ]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "justify-buttons__right" },
+                _vm._l(_vm.formData.right, function(button, key) {
+                  return _c(
+                    "button",
+                    {
+                      staticClass: "btn form-group__button",
+                      attrs: { type: button.type },
+                      on: {
+                        click: function($event) {
+                          return _vm.buttonClick(button.method, button.action)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " + _vm._s(button.title) + "\n        "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "center-buttons" },
+              _vm._l(_vm.formData.center, function(button, key) {
+                return _c(
+                  "button",
+                  {
+                    staticClass: "btn form-group__button",
+                    attrs: { type: button.type },
+                    on: {
+                      click: function($event) {
+                        return _vm.buttonClick(button.method, button.action)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        " + _vm._s(button.title) + "\n      ")]
+                )
+              }),
+              0
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15814,8 +16180,8 @@ var render = function() {
             adaptive: true,
             height: "auto",
             scrollable: true,
-            "max-width": 356,
-            "pivot-y": 0
+            "max-width": 480,
+            shiftY: 0.1
           }
         },
         [_c("sign-form")],
@@ -16070,35 +16436,30 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "items-tiles-list" },
-    [
-      !_vm.$isEmpty(_vm.tilesList)
-        ? _c(
-            "div",
-            { staticClass: "item-list__tiles" },
-            _vm._l(_vm.tilesList, function(item, index) {
-              return _c("item-tile", {
-                key: index,
-                attrs: {
-                  name: item.name,
-                  price: item.price,
-                  description: item.description,
-                  img: item.thumbnail,
-                  likes: item.likes,
-                  author: item.author
-                }
-              })
-            }),
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.outOfItems ? _c("loader") : _vm._e()
-    ],
-    1
-  )
+  return _c("div", { staticClass: "items-tiles-list" }, [
+    !_vm.$isEmpty(_vm.tilesList)
+      ? _c(
+          "div",
+          { staticClass: "item-list__tiles" },
+          _vm._l(_vm.tilesList, function(item, index) {
+            return _c("item-tile", {
+              key: index,
+              attrs: {
+                name: item.name,
+                price: item.price,
+                description: item.description,
+                img: item.thumbnail,
+                likes: item.likes,
+                author: item.author
+              }
+            })
+          }),
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.outOfItems ? _c("div", { staticClass: "preloader" }) : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -16263,20 +16624,78 @@ var render = function() {
       _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
         _vm.mode == "reg"
           ? _c("div", { key: "registration", staticClass: "sign-form__reg" }, [
-              _c("h2", { staticClass: "sign-form__form sign-form__headline" }, [
+              _c("h1", { staticClass: "sign-form__form sign-form__headline" }, [
                 _vm._v("Регистрация")
               ]),
               _vm._v(" "),
               _c(
                 "form",
                 { staticClass: "sign-form__form" },
-                _vm._l(_vm.regForm.fields, function(field, key) {
-                  return _c("form-group", {
-                    key: key,
-                    attrs: { formData: field, v: _vm.$v.regForm[field.name] }
-                  })
-                }),
-                1
+                [
+                  _vm._l(_vm.regForm.fields, function(field, key) {
+                    return _c("form-group", {
+                      key: key,
+                      attrs: {
+                        formData: field,
+                        v: _vm.$v.regFormModel[field.name]
+                      },
+                      on: {
+                        error: _vm.setValidationError,
+                        clearErrors: function($event) {
+                          _vm.validationError = ""
+                        }
+                      },
+                      model: {
+                        value: _vm.$v.regFormModel[field.name].$model,
+                        callback: function($$v) {
+                          _vm.$set(
+                            _vm.$v.regFormModel[field.name],
+                            "$model",
+                            $$v
+                          )
+                        },
+                        expression: "$v.regFormModel[field.name].$model"
+                      }
+                    })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "sign-form__validation-error" }, [
+                    _vm._v(
+                      "\n          " +
+                        _vm._s(_vm.validationError) +
+                        "\n        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("form-group", {
+                    staticClass: "sign-form__button",
+                    attrs: { formData: _vm.regForm.buttons }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "sign-form__change-mode" }, [
+                    _vm._v("\n          Есть аккаунт? "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "sign-form__link sign-form__link_pink",
+                        on: {
+                          click: function($event) {
+                            _vm.mode = "auth"
+                          }
+                        }
+                      },
+                      [_vm._v("Войти")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "sign-form__confirmation" }, [
+                    _vm._v("\n          Регистрируясь, вы принимаете условия"),
+                    _c("span", { staticClass: "sign-form__link" }, [
+                      _vm._v("Пользовательского соглашения")
+                    ])
+                  ])
+                ],
+                2
               )
             ])
           : _vm.mode == "auth"
@@ -16287,20 +16706,77 @@ var render = function() {
                 staticClass: "sign-form__form sign-form__auth"
               },
               [
-                _c("h2", { staticClass: "sign-form__headline" }, [
+                _c("h1", { staticClass: "sign-form__headline" }, [
                   _vm._v("Вход")
                 ]),
                 _vm._v(" "),
                 _c(
                   "form",
                   { staticClass: "sign-form__form" },
-                  _vm._l(_vm.authForm.fields, function(field, key) {
-                    return _c("form-group", {
-                      key: key,
-                      attrs: { formData: field, v: _vm.$v.authForm[field.name] }
-                    })
-                  }),
-                  1
+                  [
+                    _vm._l(_vm.authForm.fields, function(field, key) {
+                      return _c("form-group", {
+                        key: key,
+                        attrs: {
+                          formData: field,
+                          v: _vm.$v.authFormModel[field.name]
+                        },
+                        on: {
+                          error: _vm.setValidationError,
+                          clearErrors: function($event) {
+                            _vm.validationError = ""
+                          }
+                        },
+                        model: {
+                          value: _vm.$v.authFormModel[field.name].$model,
+                          callback: function($$v) {
+                            _vm.$set(
+                              _vm.$v.authFormModel[field.name],
+                              "$model",
+                              $$v
+                            )
+                          },
+                          expression: "$v.authFormModel[field.name].$model"
+                        }
+                      })
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "sign-form__validation-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.validationError) +
+                          "\n        "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("form-group", {
+                      staticClass: "sign-form__button",
+                      attrs: { formData: _vm.authForm.buttons }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "sign-form__change-mode" }, [
+                      _vm._v("\n          Нет аккаунта? "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "sign-form__link sign-form__link_pink",
+                          on: {
+                            click: function($event) {
+                              _vm.mode = "reg"
+                            }
+                          }
+                        },
+                        [_vm._v("Регистрация")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "sign-form__reset-password" }, [
+                      _c("span", { staticClass: "sign-form__link" }, [
+                        _vm._v("Забыли пароль?")
+                      ])
+                    ])
+                  ],
+                  2
                 )
               ]
             )
@@ -16428,43 +16904,38 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "item-list" },
-    [
-      _vm.errorBannerShow
-        ? _c("div", { staticClass: "item-list__error-block" }, [
-            _c("div", {
-              staticClass: "item-list__error-close",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.errorBannerShow = false
-                }
+  return _c("div", { staticClass: "item-list" }, [
+    _vm.errorBannerShow
+      ? _c("div", { staticClass: "item-list__error-block" }, [
+          _c("div", {
+            staticClass: "item-list__error-close",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.errorBannerShow = false
               }
-            }),
-            _vm._v(" "),
-            _c("h1", [_vm._v("Не удалось найти эту страницу")]),
-            _vm._v(" "),
-            _c("h2", [_vm._v("Здесь нужно что-то написать")])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.$isEmpty(_vm.itemsList)
-        ? _c("loader")
-        : _c(
-            "div",
-            { staticClass: "item-list__tiles-wrp" },
-            [
-              _c("items-tiles-list", {
-                attrs: { tilesList: _vm.itemsList, outOfItems: _vm.outOfItems }
-              })
-            ],
-            1
-          )
-    ],
-    1
-  )
+            }
+          }),
+          _vm._v(" "),
+          _c("h1", [_vm._v("Не удалось найти эту страницу")]),
+          _vm._v(" "),
+          _c("h2", [_vm._v("Здесь нужно что-то написать")])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.$isEmpty(_vm.itemsList)
+      ? _c("div", { staticClass: "preloader" })
+      : _c(
+          "div",
+          { staticClass: "item-list__tiles-wrp" },
+          [
+            _c("items-tiles-list", {
+              attrs: { tilesList: _vm.itemsList, outOfItems: _vm.outOfItems }
+            })
+          ],
+          1
+        )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -16490,7 +16961,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "profile" }, [
     _vm.loading
-      ? _c("div", { staticClass: "profile__loading" }, [_c("loader")], 1)
+      ? _c("div", { staticClass: "preloader" })
       : _c("div", { staticClass: "profile__main" }, [
           _c("hr", { staticClass: "profile__upper-line" }),
           _vm._v(" "),

@@ -7,8 +7,8 @@
       :adaptive="true"
       :height="'auto'"
       :scrollable="true"
-      :max-width="356"
-      :pivot-y="0"
+      :max-width="480"
+      :shiftY="0.1"
     >
       <sign-form/>
     </modal>

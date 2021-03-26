@@ -1,12 +1,7 @@
 <template>
   <div class="profile">
 
-    <div
-      v-if="loading"
-      class="profile__loading"
-    >
-      <loader/>
-    </div>
+    <div v-if="loading" class="preloader"></div>
 
     <div
       v-else

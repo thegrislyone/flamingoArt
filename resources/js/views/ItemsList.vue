@@ -10,9 +10,10 @@
       <h2>Здесь нужно что-то написать</h2>
     </div>
 
-    <loader 
+    <div
       v-if="$isEmpty(itemsList)"
-    />
+      class="preloader"
+    ></div>
 
     <div
       v-else

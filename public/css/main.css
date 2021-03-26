@@ -195,19 +195,69 @@ body {
 
 /* COMPONENTS */
 
-input {
+.app_dark input {
   border: none;
+  height: 48px;
+  padding: 0 32px;
+  font-size: 18px;
+  line-height: 22px;
+  /* identical to box height */
+
+  letter-spacing: -0.014em;
+
+  /* Текст и иконки (Прозрачный)/White 70 */
+
+  color: rgba(255, 255, 255, 0.7);
+
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  transition: all .35s;
 }
+.app_dark input:focus {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+button {
+  border: none;
+  outline: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+}
+h2 {}
+h3 {}
+h4 {}
+h5 {}
+h6 {}
 
 /*------------------------------------*\
 	#STYLES
 \*------------------------------------*/
 
 /* COMPONENTS */
+
+.btn {
+  padding: 10px 32px 11px;
+
+  background: #DA71FF;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.011em;
+
+  /* Текст и иконки/Black 100 */
+
+  color: #000000;
+}
 
 /* TRANSITIONS */
 
@@ -216,6 +266,16 @@ a {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
+}
+
+/* loader */
+
+.preloader {
+  background: url(../assets/images/loader.gif) no-repeat center center;
+  background-size: 70px;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
 }
 
 /* loader */
@@ -308,7 +368,7 @@ a {
   padding: 20px 24px;
   gap: 50px;
 }
-.header > * {
+.header > *:not(.vm--container) {
   cursor: pointer;
 }
 .header__logo {
@@ -430,10 +490,85 @@ img {
 
 .sign-form__close {
   position: absolute;
+  cursor: pointer;
   right: 31px;
   top: 31px;
 }
 .sign-form__headline {
   text-align: center;
+  margin-bottom: 45px;
+}
+.sign-form__field {
+  width: 100%;
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: 95% center;
+}
+.sign-form__field_loading {
+  background-image: url(../assets/images/loader.gif);
+}
+.sign-form__field_success {
+  background-size: 15px;
+  background-image: url(../assets/images/i-success.svg);
+}
+.sign-form__field_error {
+  background-size: 15px;
+  background-image: url(../assets/images/i-error.svg);
+}
+.sign-form__validation-error {
+  min-height: 60px;
+  font-size: 16px;
+  line-height: 130%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* identical to box height, or 21px */
+
+  text-align: center;
+  letter-spacing: -0.011em;
+
+  /* Текст и иконки (Прозрачный)/Error */
+
+  color: rgba(255, 94, 94, 0.4);
+}
+.sign-form__change-mode {
   margin-bottom: 25px;
+}
+.sign-form__change-mode,
+.sign-form__reset-password,
+.sign-form__confirmation {
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+}
+.sign-form__link {
+  letter-spacing: -0.006em;
+  text-decoration-line: underline;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  display: block;
+  cursor: pointer;
+}
+.sign-form__link_pink {
+  text-decoration: none;
+  display: inline;
+  color: #da71ff;
+}
+.sign-form__button {
+  margin-bottom: 25px !important;
+}
+/* form-group */
+
+.form-group {
+  margin: 8px 0;
+}
+.justify-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.center-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
