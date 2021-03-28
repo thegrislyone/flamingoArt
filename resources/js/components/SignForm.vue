@@ -17,14 +17,15 @@
       >
         <h1 class="sign-form__form sign-form__headline">Регистрация</h1>
         
-        <form class="sign-form__form">
+        <form class="sign-form__form" @submit.prevent="formSubmit">
           <form-group
             v-for="(field, key) in regForm.fields"
+            :ref="field.name"
             :key="key"
             :formData="field"
             :v="$v.regFormModel[field.name]"
             @error="setValidationError"
-            @clearErrors="validationError = ''"
+            @clearErrors="setValidationError('')"
             v-model="$v.regFormModel[field.name].$model"
           />
 
@@ -38,7 +39,7 @@
           />
 
           <div class="sign-form__change-mode">
-            Есть аккаунт? <span class="sign-form__link sign-form__link_pink" @click="mode = 'auth'">Войти</span>
+            Есть аккаунт? <span class="sign-form__link sign-form__link_pink" @click="changeMode('auth')">Войти</span>
           </div>
 
           <div class="sign-form__confirmation">
@@ -58,14 +59,15 @@
       >
         <h1 class="sign-form__headline">Вход</h1>
 
-        <form class="sign-form__form">
+        <form class="sign-form__form" @submit.prevent="formSubmit">
           <form-group
             v-for="(field, key) in authForm.fields"
+            :ref="field.name"
             :key="key"
             :formData="field"
             :v="$v.authFormModel[field.name]"
             @error="setValidationError"
-            @clearErrors="validationError = ''"
+            @clearErrors="setValidationError('')"
             v-model="$v.authFormModel[field.name].$model"
           />
 
@@ -79,7 +81,7 @@
           />
 
           <div class="sign-form__change-mode">
-            Нет аккаунта? <span class="sign-form__link sign-form__link_pink" @click="mode = 'reg'">Регистрация</span>
+            Нет аккаунта? <span class="sign-form__link sign-form__link_pink" @click="changeMode('reg')">Регистрация</span>
           </div>
 
           <div class="sign-form__reset-password">
@@ -104,7 +106,7 @@ export default {
   },
   data() {
     return {
-      mode: 'auth',
+      mode: 'reg',
 
       validationError: '',
 
@@ -112,6 +114,7 @@ export default {
       regFormModel: {},
 
       authForm: {
+        submit: '/api/auth/login',
         fields: [
           {
             name: 'login',
@@ -147,6 +150,7 @@ export default {
         },
       },
       regForm: {
+        submit: '/api/auth/register',
         fields: [
           {
             name: 'login',
@@ -236,6 +240,46 @@ export default {
   methods: {
     setValidationError(error) {
       this.validationError = error
+    },
+    formSubmit() {
+
+      const form = (this.mode == 'auth') ? this.authForm : this.regForm
+      const formData = (this.mode == 'auth') ? this.authFormModel : this.regFormModel
+      const validationForm = (this.mode == 'auth') ? this.$v.authFormModel : this.$v.regFormModel
+
+      if (validationForm.$invalid) {
+
+        this.$v.$touch()
+
+        // print the nearest error
+
+        for(let [key, ref] of Object.entries(this.$refs)) {
+          if (ref[0].getError()) {
+            this.setValidationError(ref[0].getError())
+          }
+        }
+
+      } else {
+
+        this.$http.post(form.submit, formData)
+          .then(response => {
+            const data = response.data
+
+            console.log(data)
+          })
+          .catch(error => {
+
+          })
+          .then(() => {
+
+          }) 
+
+        console.log(formData, form)
+      }
+    },
+    changeMode(mode) {
+      this.mode = mode
+      this.setValidationError('')
     }
   }
 }

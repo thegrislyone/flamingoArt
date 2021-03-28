@@ -89,7 +89,7 @@ export default {
       }
       if (this.isSuccess) {
         return this.formData.class + '_success'
-      } else if (this.isError) {
+      } else if (this.isError || this.v.$error) {
         return this.formData.class + '_error'
       } else if (this.isLoading) {
         return this.formData.class + '_loading'
@@ -100,24 +100,29 @@ export default {
   created() {
   },
   methods: {
+    getError() {
+
+      let message = ''
+
+      if (this.v.required != undefined && !this.v.required) {
+        message = 'Поле ' + this.formData.placeholder.toLowerCase() + ' обязательно для заполнения'
+      } else if (this.v.minLength != undefined && !this.v.minLength) {
+        message = 'Минимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.minLength + ' символов' 
+      } else if (this.v.maxLength != undefined && !this.v.maxLength) {
+        message = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов' 
+      } else if (this.v.email != undefined && !this.v.email) {
+        message = 'Неправильный формат почты'
+      }
+
+      return message
+      
+    },
     debounsedInput() {
 
       this.isLoading = false
 
       if (this.v.$error) {
-        if (this.v.required != undefined && !this.v.required) {
-          const message = 'Поле ' + this.formData.placeholder.toLowerCase() + ' обязательно для заполнения'
-          this.$emit('error', message)
-        } else if (this.v.minLength != undefined && !this.v.minLength) {
-          const message = 'Минимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.minLength + ' символов' 
-          this.$emit('error', message)
-        } else if (this.v.maxLength != undefined && !this.v.maxLength) {
-          const message = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов' 
-          this.$emit('error', message)
-        } else if (this.v.email != undefined && !this.v.email) {
-          const message = 'Неправильный формат почты'
-          this.$emit('error', message)
-        }
+        this.$emit('error', this.getError())  
         this.isError = true
       } else {
         this.isSuccess = true

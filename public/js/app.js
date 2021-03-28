@@ -2039,7 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.isSuccess) {
         return this.formData["class"] + '_success';
-      } else if (this.isError) {
+      } else if (this.isError || this.v.$error) {
         return this.formData["class"] + '_error';
       } else if (this.isLoading) {
         return this.formData["class"] + '_loading';
@@ -2050,26 +2050,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   methods: {
+    getError: function getError() {
+      var message = '';
+
+      if (this.v.required != undefined && !this.v.required) {
+        message = 'Поле ' + this.formData.placeholder.toLowerCase() + ' обязательно для заполнения';
+      } else if (this.v.minLength != undefined && !this.v.minLength) {
+        message = 'Минимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.minLength + ' символов';
+      } else if (this.v.maxLength != undefined && !this.v.maxLength) {
+        message = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов';
+      } else if (this.v.email != undefined && !this.v.email) {
+        message = 'Неправильный формат почты';
+      }
+
+      return message;
+    },
     debounsedInput: function debounsedInput() {
       this.isLoading = false;
 
       if (this.v.$error) {
-        if (this.v.required != undefined && !this.v.required) {
-          var message = 'Поле ' + this.formData.placeholder.toLowerCase() + ' обязательно для заполнения';
-          this.$emit('error', message);
-        } else if (this.v.minLength != undefined && !this.v.minLength) {
-          var _message = 'Минимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.minLength + ' символов';
-
-          this.$emit('error', _message);
-        } else if (this.v.maxLength != undefined && !this.v.maxLength) {
-          var _message2 = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов';
-
-          this.$emit('error', _message2);
-        } else if (this.v.email != undefined && !this.v.email) {
-          var _message3 = 'Неправильный формат почты';
-          this.$emit('error', _message3);
-        }
-
+        this.$emit('error', this.getError());
         this.isError = true;
       } else {
         this.isSuccess = true;
@@ -2571,7 +2571,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormGroup_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormGroup.vue */ "./resources/js/components/FormGroup.vue");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
@@ -2579,6 +2587,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -2682,11 +2692,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      mode: 'auth',
+      mode: 'reg',
       validationError: '',
       authFormModel: {},
       regFormModel: {},
       authForm: {
+        submit: '/api/auth/login',
         fields: [{
           name: 'login',
           "class": 'sign-form__field',
@@ -2716,6 +2727,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       },
       regForm: {
+        submit: '/api/auth/register',
         fields: [{
           name: 'login',
           "class": 'sign-form__field',
@@ -2802,6 +2814,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     setValidationError: function setValidationError(error) {
       this.validationError = error;
+    },
+    formSubmit: function formSubmit() {
+      var form = this.mode == 'auth' ? this.authForm : this.regForm;
+      var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
+      var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.$v.regFormModel;
+
+      if (validationForm.$invalid) {
+        this.$v.$touch(); // print the nearest error
+
+        for (var _i = 0, _Object$entries = Object.entries(this.$refs); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              ref = _Object$entries$_i[1];
+
+          if (ref[0].getError()) {
+            this.setValidationError(ref[0].getError());
+          }
+        }
+      } else {
+        this.$http.post(form.submit, formData).then(function (response) {
+          var data = response.data;
+          console.log(data);
+        })["catch"](function (error) {}).then(function () {});
+        console.log(formData, form);
+      }
+    },
+    changeMode: function changeMode(mode) {
+      this.mode = mode;
+      this.setValidationError('');
     }
   }
 });
@@ -16634,11 +16675,21 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "form",
-                { staticClass: "sign-form__form" },
+                {
+                  staticClass: "sign-form__form",
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.formSubmit($event)
+                    }
+                  }
+                },
                 [
                   _vm._l(_vm.regForm.fields, function(field, key) {
                     return _c("form-group", {
                       key: key,
+                      ref: field.name,
+                      refInFor: true,
                       attrs: {
                         formData: field,
                         v: _vm.$v.regFormModel[field.name]
@@ -16646,7 +16697,7 @@ var render = function() {
                       on: {
                         error: _vm.setValidationError,
                         clearErrors: function($event) {
-                          _vm.validationError = ""
+                          return _vm.setValidationError("")
                         }
                       },
                       model: {
@@ -16684,7 +16735,7 @@ var render = function() {
                         staticClass: "sign-form__link sign-form__link_pink",
                         on: {
                           click: function($event) {
-                            _vm.mode = "auth"
+                            return _vm.changeMode("auth")
                           }
                         }
                       },
@@ -16716,11 +16767,21 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "form",
-                  { staticClass: "sign-form__form" },
+                  {
+                    staticClass: "sign-form__form",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.formSubmit($event)
+                      }
+                    }
+                  },
                   [
                     _vm._l(_vm.authForm.fields, function(field, key) {
                       return _c("form-group", {
                         key: key,
+                        ref: field.name,
+                        refInFor: true,
                         attrs: {
                           formData: field,
                           v: _vm.$v.authFormModel[field.name]
@@ -16728,7 +16789,7 @@ var render = function() {
                         on: {
                           error: _vm.setValidationError,
                           clearErrors: function($event) {
-                            _vm.validationError = ""
+                            return _vm.setValidationError("")
                           }
                         },
                         model: {
@@ -16766,7 +16827,7 @@ var render = function() {
                           staticClass: "sign-form__link sign-form__link_pink",
                           on: {
                             click: function($event) {
-                              _vm.mode = "reg"
+                              return _vm.changeMode("reg")
                             }
                           }
                         },
