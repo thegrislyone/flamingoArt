@@ -2196,6 +2196,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -16177,9 +16179,11 @@ var render = function() {
           attrs: {
             name: "signForm",
             classes: ["modal", "sign-in-form"],
-            adaptive: true,
             height: "auto",
             scrollable: true,
+            "min-width": 320,
+            "min-height": 535,
+            adaptive: true,
             "max-width": 480,
             shiftY: 0.1
           }

@@ -4,9 +4,11 @@
     <modal
       name="signForm"
       :classes="['modal','sign-in-form']"
-      :adaptive="true"
       :height="'auto'"
       :scrollable="true"
+      :min-width="320"
+      :min-height="535"
+      :adaptive="true"
       :max-width="480"
       :shiftY="0.1"
     >
