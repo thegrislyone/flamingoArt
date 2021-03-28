@@ -69,11 +69,12 @@
       </div>
       <div class="header__user">
         <div class="headet__user-avatar">
-          <img 
-            v-if="!$isEmpty($store.getters.user)"
-            src="/assets/images/avatar.jpg"
-            alt=""
-          >
+          <router-link v-if="!$isEmpty(user)" to="/profile">
+            <img 
+              :src="user.avatar"
+              alt=""
+            >
+          </router-link>
           <img 
             v-else
             src="/assets/images/unknown-user.png"

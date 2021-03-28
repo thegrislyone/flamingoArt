@@ -2198,6 +2198,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3186,6 +3187,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3195,7 +3202,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   data: function data() {
     return {
-      loading: true,
+      profileLoading: true,
+      itemsLoading: false,
+      itemsMode: 'my-items',
+      infOpened: false,
+      social: ["/assets/images/i-vk.svg", "/assets/images/i-facebook.svg", "/assets/images/i-twitter.svg", "/assets/images/i-instagram.svg"],
       items: {
         data: [],
         meta: {}
@@ -3211,23 +3222,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   created: function created() {
-    var _this = this;
-
-    setTimeout(function () {
-      _this.loading = false;
-    }, 1000);
     var url = new URL("".concat(window.location.origin, "/api/items"));
     url.searchParams.set('page', this.page);
     this.loadMoreItems(url);
   },
   methods: {
     loadMoreItems: function loadMoreItems(url) {
-      var _this2 = this;
+      var _this = this;
 
+      this.profileLoading = true;
       this.$http.get(url).then(function (response) {
         var data = response.data;
         data.data.forEach(function (item) {
-          _this2.items.data.push(item);
+          _this.items.data.push(item);
         });
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
@@ -3236,15 +3243,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               value = _Object$entries$_i[1];
 
           if (key == 'data') continue;
-          _this2.items.meta[key] = value;
+          _this.items.meta[key] = value;
         }
 
-        _this2.page++;
+        _this.page++;
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function () {
+        _this.profileLoading = false;
       });
 
       if (this.items.meta.last_page == this.items.meta.current_page + 1) {
         this.outOfItems = true;
       }
+    },
+    changeItems: function changeItems(mode) {
+      if (this.itemsMode == mode) {
+        return;
+      }
+
+      this.itemsMode = mode;
     }
   }
 });
@@ -16315,20 +16333,25 @@ var render = function() {
         _vm._m(2),
         _vm._v(" "),
         _c("div", { staticClass: "header__user" }, [
-          _c("div", { staticClass: "headet__user-avatar" }, [
-            !_vm.$isEmpty(_vm.$store.getters.user)
-              ? _c("img", {
-                  attrs: { src: "/assets/images/avatar.jpg", alt: "" }
-                })
-              : _c("img", {
-                  attrs: { src: "/assets/images/unknown-user.png", alt: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.$modal.show("signForm")
+          _c(
+            "div",
+            { staticClass: "headet__user-avatar" },
+            [
+              !_vm.$isEmpty(_vm.user)
+                ? _c("router-link", { attrs: { to: "/profile" } }, [
+                    _c("img", { attrs: { src: _vm.user.avatar, alt: "" } })
+                  ])
+                : _c("img", {
+                    attrs: { src: "/assets/images/unknown-user.png", alt: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$modal.show("signForm")
+                      }
                     }
-                  }
-                })
-          ]),
+                  })
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("img", {
             staticClass: "header__user-menu",
@@ -17024,105 +17047,150 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "profile" }, [
-    _vm.loading
+  return _c("div", [
+    _vm.profileLoading
       ? _c("div", { staticClass: "preloader" })
-      : _c("div", { staticClass: "profile__main" }, [
-          _c("hr", { staticClass: "profile__upper-line" }),
-          _vm._v(" "),
-          !_vm.$isEmpty(_vm.user.banner)
+      : _c("div", { staticClass: "profile" }, [
+          _vm.user.banner
             ? _c("div", { staticClass: "profile-banner" }, [
                 _c("img", {
                   staticClass: "profile-banner__img",
-                  attrs: { src: "/assets/images/banner.jpg" }
+                  attrs: { src: _vm.user.banner }
                 })
               ])
             : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "profile__profile" }, [
-            _c("div", { staticClass: "profile__left-block" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "profile-info",
-                  class: {
-                    "profile-info_no-banner": !_vm.$isEmpty(_vm.user.banner)
-                  }
-                },
-                [
-                  _c("div", { staticClass: "profile-info__avatar-and-nick" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "profile-info__avatar",
-                        class: {
-                          "profile-info__avatar_no-banner": !_vm.$isEmpty(
-                            _vm.user.banner
-                          )
-                        }
+          _c("div", { staticClass: "profile-block" }, [
+            _c("div", { staticClass: "profile-block__profile" }, [
+              _c("div", { staticClass: "profile-card" }, [
+                _c("div", { staticClass: "profile-card__avatar-block" }, [
+                  _c("img", {
+                    attrs: {
+                      src: _vm.user.avatar || "/assets/images/unknown-user.png"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "profile-card__nickname" }, [
+                  _c("span", [_vm._v(_vm._s(_vm.user.login))])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "profile-card__information" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "profile-card__inf-wrd no-select",
+                      class: {
+                        "profile-card__inf-wrd_opened": _vm.infOpened
                       },
-                      [
-                        _c("img", {
-                          staticClass: "profile-info__avatar-img",
-                          attrs: {
-                            src:
-                              _vm.user.avatar ||
-                              "assets/images/unknown-user.png"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "profile-info__nickname" }, [
-                      _c("span", [_vm._v(_vm._s(_vm.user.nickname))])
-                    ])
-                  ]),
+                      on: {
+                        click: function($event) {
+                          _vm.infOpened = !_vm.infOpened
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n            Информация\n            "),
+                      _c("i", { staticClass: "arrow" })
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "profile__stats-block" }, [
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "profile__stats" }, [
-                      _c("div", { staticClass: "profile__stat" }, [
-                        _c("span", [_vm._v("Просмотры")]),
-                        _vm._v(" "),
-                        _c("span", [_vm._v(_vm._s(_vm.user.views))])
+                  _c(
+                    "div",
+                    {
+                      staticClass: "profile-card__information-block",
+                      class: {
+                        "profile-card__information-block_opened": _vm.infOpened
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "profile-card__inf-items" }, [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.itemsList.length) +
+                            " работ\n            "
+                        )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "profile__stat" }, [
-                        _c("span", [_vm._v("Оценки")]),
-                        _vm._v(" "),
-                        _c("span", [_vm._v(_vm._s(_vm.user.likes))])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "profile__registration-date" }, [
-                      _vm._v(
-                        "\n              Дата регистрации " +
-                          _vm._s(_vm.user.created_at) +
-                          "\n            "
+                      _c("div", { staticClass: "profile-card__inf-favorite" }, [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(7) +
+                            " добавили в избранное\n            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "profile-card__inf-social" },
+                        _vm._l(_vm.social, function(social, key) {
+                          return _c("div", { key: key }, [
+                            _c("img", { attrs: { src: social } })
+                          ])
+                        }),
+                        0
                       )
-                    ])
-                  ])
-                ]
-              )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "profile__right-block" }, [
-              _c("div", { staticClass: "gallery" }, [
-                _vm._m(1),
-                _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "profile-block__my-items" },
+              [
                 _c(
                   "div",
-                  { staticClass: "gallery" },
+                  { staticClass: "profile-tabs" },
                   [
-                    _c("items-tiles-list", {
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "profile-tab",
+                          class: {
+                            "profile-tab_active": _vm.itemsMode == "my-items"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.changeItems("my-items")
+                            }
+                          }
+                        },
+                        [_vm._v("Мои работы")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "profile-tab",
+                          class: {
+                            "profile-tab_active": _vm.itemsMode == "favorite"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.changeItems("favorite")
+                            }
+                          }
+                        },
+                        [_vm._v("Избранное")]
+                      )
+                    ]
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.itemsLoading
+                  ? _c("div", { staticClass: "preloader" })
+                  : _c("items-tiles-list", {
                       attrs: { tilesList: _vm.itemsList }
                     })
-                  ],
-                  1
-                )
-              ])
-            ])
+              ],
+              1
+            )
           ])
         ])
   ])
@@ -17132,41 +17200,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile__edit" }, [
-      _c("button", { staticClass: "btn profile__edit-button" }, [
-        _vm._v("Редактировать профиль")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "gallery__buttons" }, [
-      _c("div", { staticClass: "gallery__tabs" }, [
-        _c("button", { staticClass: "btn gallery__tab" }, [_vm._v("Работы")]),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn gallery__tab gallery__tab_unactive" },
-          [_vm._v("Избранное")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn gallery__tab gallery__tab_unactive" },
-          [_vm._v("Оценки")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "gallery__add" }, [
-        _c("button", { staticClass: "btn gallery__add-button" }, [
-          _c("span", { staticClass: "gallery__add-short" }, [_vm._v("+")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "gallery__add-full" }, [
-            _vm._v("Добавить работу")
-          ])
-        ])
+    return _c("div", { staticClass: "profile-card__edit" }, [
+      _c("button", { staticClass: "btn profile-card__edit-button" }, [
+        _vm._v("\n            Редактировать\n          ")
       ])
     ])
   }
