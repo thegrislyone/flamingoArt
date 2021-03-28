@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function loginRequest(Request $request) {
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('login', 'password');
 
         return $this->login($credentials);
 
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
             $success = [
                 'success' => 'Вы успешно авторизовались',
-                'user' => Auth::user()->only('name', 'avatar', 'nickname', 'banner')
+                'user' => Auth::user()->only('name', 'avatar', 'login', 'banner')
             ];
 
             return $success;
@@ -85,7 +85,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
-                'nickname' => $request['nickname'],
+                'login' => $request['login'],
                 'password' => Hash::make($request['password']),
                 'views' => 0,
                 'likes' => 0
@@ -116,7 +116,7 @@ class AuthController extends Controller
     protected function validator(array $data) {
         return Validator::make($data, [
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:6',
         ]);
     }
 
