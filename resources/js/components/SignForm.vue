@@ -289,7 +289,7 @@ export default {
       }
     },
     changeMode(mode) {
-      this.mode = mode
+      this.$emit('setMode', mode)
       this.setValidationError('')
     }
   }

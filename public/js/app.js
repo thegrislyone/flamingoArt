@@ -2214,9 +2214,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2274,6 +2271,9 @@ __webpack_require__.r(__webpack_exports__);
     openForm: function openForm(mode) {
       this.formMode = mode;
       this.$modal.show('signForm');
+    },
+    setFormMode: function setFormMode(mode) {
+      this.formMode = mode;
     }
   }
 });
@@ -2881,7 +2881,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     changeMode: function changeMode(mode) {
-      this.mode = mode;
+      this.$emit('setMode', mode);
       this.setValidationError('');
     }
   }
@@ -16291,7 +16291,12 @@ var render = function() {
             shiftY: 0.1
           }
         },
-        [_c("sign-form", { attrs: { mode: _vm.formMode } })],
+        [
+          _c("sign-form", {
+            attrs: { mode: _vm.formMode },
+            on: { setMode: _vm.setFormMode }
+          })
+        ],
         1
       ),
       _vm._v(" "),
@@ -16377,21 +16382,24 @@ var render = function() {
             _vm._v(" "),
             _vm._m(2),
             _vm._v(" "),
+            _c("span", { staticClass: "header__user-login" }, [
+              _vm._v(_vm._s(_vm.user.login))
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "header__user" }, [
               _c(
                 "div",
                 { staticClass: "headet__user-avatar" },
                 [
-                  !_vm.$isEmpty(_vm.user)
-                    ? _c("router-link", { attrs: { to: "/profile" } }, [
-                        _c("img", { attrs: { src: _vm.user.avatar, alt: "" } })
-                      ])
-                    : _c("img", {
-                        attrs: {
-                          src: "/assets/images/unknown-user.png",
-                          alt: ""
-                        }
-                      })
+                  _c("router-link", { attrs: { to: "/profile" } }, [
+                    _c("img", {
+                      attrs: {
+                        src:
+                          _vm.user.avatar || "/assets/images/unknown-user.png",
+                        alt: ""
+                      }
+                    })
+                  ])
                 ],
                 1
               ),

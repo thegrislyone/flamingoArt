@@ -14,6 +14,7 @@
     >
       <sign-form
         :mode="formMode"
+        @setMode="setFormMode"
       />
     </modal>
 
@@ -72,19 +73,15 @@
       <div class="header__notifications">
         <img src="/assets/images/i-notification.svg" alt="">
       </div>
+      <span class="header__user-login">{{ user.login }}</span>
       <div class="header__user">
         <div class="headet__user-avatar">
-          <router-link v-if="!$isEmpty(user)" to="/profile">
+          <router-link to="/profile">
             <img 
-              :src="user.avatar"
+              :src="user.avatar || '/assets/images/unknown-user.png'"
               alt=""
             >
           </router-link>
-          <img 
-            v-else
-            src="/assets/images/unknown-user.png"
-            alt=""
-          >
         </div>
         <img
           class="header__user-menu"
@@ -170,6 +167,9 @@ export default {
     openForm(mode) {
       this.formMode = mode
       this.$modal.show('signForm')
+    },
+    setFormMode(mode) {
+      this.formMode = mode
     }
   },
 }

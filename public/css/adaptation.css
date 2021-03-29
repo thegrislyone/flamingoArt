@@ -162,11 +162,18 @@
   .header {
     padding: 20px 112px;
   }
+  .header__feed-type {
+    gap: 48px;
+  }
   .header__search-block {
     flex-grow: 1;
   }
   .header__icons-bar {
+    gap: 32px;
     flex-grow: 1;
+  }
+  .header__user-login {
+    display: block;
   }
   /* ITEMS-LIST */
   .item-list {
