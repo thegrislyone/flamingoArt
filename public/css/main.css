@@ -192,6 +192,7 @@ body {
 .main {
   /* padding:  32px; */
   position: relative;
+  margin-top: 64px;
 }
 
 /* COMPONENTS */
@@ -202,14 +203,8 @@ body {
   padding: 0 32px;
   font-size: 18px;
   line-height: 22px;
-  /* identical to box height */
-
   letter-spacing: -0.014em;
-
-  /* Текст и иконки (Прозрачный)/White 70 */
-
   color: rgba(255, 255, 255, 0.7);
-
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   transition: all .35s;
@@ -217,6 +212,14 @@ body {
 .app_dark input:focus {
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+.app_dark input::placeholder {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.006em;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 button {
@@ -254,6 +257,11 @@ h6 {}
   line-height: 19px;
   letter-spacing: -0.011em;
   color: #000000;
+  cursor: pointer;
+}
+.btn_no-bg {
+  background-color: transparent;
+  color: #fff;
 }
 .arrow {
   display: block;
@@ -271,6 +279,9 @@ h6 {}
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+.pointer {
+  cursor: pointer;
 }
 
 /* TRANSITIONS */
@@ -377,13 +388,19 @@ h6 {}
 
 .header {
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
   gap: 50px;
-}
-.header > *:not(.vm--container) {
-  cursor: pointer;
+  background: rgba(18, 18, 18, 0.75);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(50px);
+  height: 64px;
 }
 .header__logo {
   display: none;
@@ -407,13 +424,14 @@ h6 {}
 }
 .header__feed-type {
   display: none;
-  gap: 15px;
+  align-items: center;
   cursor: default;
 }
 .header__feed {
   color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all .35s;
+  padding: 7px 24px 8px;;
   font-weight: 600;
 }
 .header__feed_active {
@@ -439,6 +457,12 @@ h6 {}
 }
 .header__icons-bar > * {
   cursor: pointer;
+}
+.sign-buttons {
+  display: none;
+  flex-shrink: 0;
+  flex-grow: 1;
+  text-align: right;
 }
 .header__user {
   display: flex;
@@ -616,6 +640,9 @@ img {
   align-items: center;
   border-radius: 16px;
   margin-top: -50px;
+}
+.profile-card_no-banner {
+  margin-top: 0;
 }
 .profile-card__avatar-block {
   display: inline-flex;

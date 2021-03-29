@@ -7,12 +7,14 @@
       :height="'auto'"
       :scrollable="true"
       :min-width="320"
-      :min-height="535"
+      :min-height="580"
       :adaptive="true"
       :max-width="480"
       :shiftY="0.1"
     >
-      <sign-form/>
+      <sign-form
+        :mode="formMode"
+      />
     </modal>
 
     <div class="header__menu-block">
@@ -60,7 +62,10 @@
       </div>
     </div>
 
-    <div class="header__icons-bar">
+    <div
+      v-if="!$isEmpty(user)"
+      class="header__icons-bar"
+    >
       <div class="header__messages">
         <img src="/assets/images/i-message.svg" alt="">
       </div>
@@ -79,7 +84,6 @@
             v-else
             src="/assets/images/unknown-user.png"
             alt=""
-            @click="$modal.show('signForm')"
           >
         </div>
         <img
@@ -88,6 +92,20 @@
           alt=""
           >
       </div>
+    </div>
+
+    <div 
+      v-else
+      class="sign-buttons"
+    >
+      <button class="btn btn_no-bg" @click="openForm('auth')">
+        Войти
+      </button> 
+
+      <button class="btn" @click="openForm('reg')">
+        Регистрация
+      </button>
+
     </div>
 
   </header>
@@ -105,6 +123,7 @@ export default {
   },
   data() {
     return {
+      formMode: 'reg',
       searchOpened: false,
       feeds: {
         main: {
@@ -139,7 +158,7 @@ export default {
       set(value) {
         this.searchOpened = value
       }
-    }
+    },
   },
   methods: {
     feedChange(key) {
@@ -147,7 +166,11 @@ export default {
         this.feeds[index].active = false
       }
       this.feeds[key].active = true
+    },
+    openForm(mode) {
+      this.formMode = mode
+      this.$modal.show('signForm')
     }
-  }
+  },
 }
 </script>

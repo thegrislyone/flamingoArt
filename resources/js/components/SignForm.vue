@@ -104,9 +104,13 @@ export default {
   components: {
     FormGroup
   },
+  props: {
+    mode: {
+      type: String
+    }
+  },
   data() {
     return {
-      mode: 'reg',
 
       validationError: '',
 
@@ -265,7 +269,14 @@ export default {
           .then(response => {
             const data = response.data
 
-            console.log(data)
+            if (data.success) {
+              alert(data.success)
+              this.$store.commit('setUser', data.user)
+              this.$modal.hide('signForm')
+            } else if (data.errors || data.email) {
+              alert(data.email[0])
+              alert(data.errors[0])
+            }
           })
           .catch(error => {
 

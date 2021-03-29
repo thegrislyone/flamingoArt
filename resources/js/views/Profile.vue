@@ -12,7 +12,12 @@
     <div class="profile-block">
       <div class="profile-block__profile">
         
-        <div class="profile-card">
+        <div 
+          class="profile-card"
+          :class="{
+            'profile-card_no-banner': !user.banner
+          }"
+        >
 
           <div class="profile-card__avatar-block">
             <img :src="user.avatar || '/assets/images/unknown-user.png'">

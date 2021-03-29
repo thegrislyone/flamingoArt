@@ -2199,6 +2199,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2208,6 +2226,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      formMode: 'reg',
       searchOpened: false,
       feeds: {
         main: {
@@ -2251,6 +2270,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.feeds[key].active = true;
+    },
+    openForm: function openForm(mode) {
+      this.formMode = mode;
+      this.$modal.show('signForm');
     }
   }
 });
@@ -2691,9 +2714,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     FormGroup: _FormGroup_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  props: {
+    mode: {
+      type: String
+    }
+  },
   data: function data() {
     return {
-      mode: 'reg',
       validationError: '',
       authFormModel: {},
       regFormModel: {},
@@ -2817,6 +2844,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.validationError = error;
     },
     formSubmit: function formSubmit() {
+      var _this = this;
+
       var form = this.mode == 'auth' ? this.authForm : this.regForm;
       var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
       var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.$v.regFormModel;
@@ -2836,7 +2865,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.$http.post(form.submit, formData).then(function (response) {
           var data = response.data;
-          console.log(data);
+
+          if (data.success) {
+            alert(data.success);
+
+            _this.$store.commit('setUser', data.user);
+
+            _this.$modal.hide('signForm');
+          } else if (data.errors || data.email) {
+            alert(data.email[0]);
+            alert(data.errors[0]);
+          }
         })["catch"](function (error) {}).then(function () {});
         console.log(formData, form);
       }
@@ -3090,6 +3129,11 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -16241,13 +16285,13 @@ var render = function() {
             height: "auto",
             scrollable: true,
             "min-width": 320,
-            "min-height": 535,
+            "min-height": 580,
             adaptive: true,
             "max-width": 480,
             shiftY: 0.1
           }
         },
-        [_c("sign-form")],
+        [_c("sign-form", { attrs: { mode: _vm.formMode } })],
         1
       ),
       _vm._v(" "),
@@ -16327,38 +16371,64 @@ var render = function() {
         _c("div", { staticClass: "search-full" }, [_c("search")], 1)
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "header__icons-bar" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _c("div", { staticClass: "header__user" }, [
-          _c(
-            "div",
-            { staticClass: "headet__user-avatar" },
-            [
-              !_vm.$isEmpty(_vm.user)
-                ? _c("router-link", { attrs: { to: "/profile" } }, [
-                    _c("img", { attrs: { src: _vm.user.avatar, alt: "" } })
-                  ])
-                : _c("img", {
-                    attrs: { src: "/assets/images/unknown-user.png", alt: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.$modal.show("signForm")
-                      }
-                    }
-                  })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("img", {
-            staticClass: "header__user-menu",
-            attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" }
-          })
-        ])
-      ])
+      !_vm.$isEmpty(_vm.user)
+        ? _c("div", { staticClass: "header__icons-bar" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "header__user" }, [
+              _c(
+                "div",
+                { staticClass: "headet__user-avatar" },
+                [
+                  !_vm.$isEmpty(_vm.user)
+                    ? _c("router-link", { attrs: { to: "/profile" } }, [
+                        _c("img", { attrs: { src: _vm.user.avatar, alt: "" } })
+                      ])
+                    : _c("img", {
+                        attrs: {
+                          src: "/assets/images/unknown-user.png",
+                          alt: ""
+                        }
+                      })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("img", {
+                staticClass: "header__user-menu",
+                attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" }
+              })
+            ])
+          ])
+        : _c("div", { staticClass: "sign-buttons" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn_no-bg",
+                on: {
+                  click: function($event) {
+                    return _vm.openForm("auth")
+                  }
+                }
+              },
+              [_vm._v("\n      Войти\n    ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn",
+                on: {
+                  click: function($event) {
+                    return _vm.openForm("reg")
+                  }
+                }
+              },
+              [_vm._v("\n      Регистрация\n    ")]
+            )
+          ])
     ],
     1
   )
@@ -17062,80 +17132,95 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "profile-block" }, [
             _c("div", { staticClass: "profile-block__profile" }, [
-              _c("div", { staticClass: "profile-card" }, [
-                _c("div", { staticClass: "profile-card__avatar-block" }, [
-                  _c("img", {
-                    attrs: {
-                      src: _vm.user.avatar || "/assets/images/unknown-user.png"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "profile-card__nickname" }, [
-                  _c("span", [_vm._v(_vm._s(_vm.user.login))])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "profile-card__information" }, [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "profile-card__inf-wrd no-select",
-                      class: {
-                        "profile-card__inf-wrd_opened": _vm.infOpened
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.infOpened = !_vm.infOpened
-                        }
+              _c(
+                "div",
+                {
+                  staticClass: "profile-card",
+                  class: {
+                    "profile-card_no-banner": !_vm.user.banner
+                  }
+                },
+                [
+                  _c("div", { staticClass: "profile-card__avatar-block" }, [
+                    _c("img", {
+                      attrs: {
+                        src:
+                          _vm.user.avatar || "/assets/images/unknown-user.png"
                       }
-                    },
-                    [
-                      _vm._v("\n            Информация\n            "),
-                      _c("i", { staticClass: "arrow" })
-                    ]
-                  ),
+                    })
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "profile-card__information-block",
-                      class: {
-                        "profile-card__information-block_opened": _vm.infOpened
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "profile-card__inf-items" }, [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.itemsList.length) +
-                            " работ\n            "
+                  _c("div", { staticClass: "profile-card__nickname" }, [
+                    _c("span", [_vm._v(_vm._s(_vm.user.login))])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "profile-card__information" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "profile-card__inf-wrd no-select",
+                        class: {
+                          "profile-card__inf-wrd_opened": _vm.infOpened
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.infOpened = !_vm.infOpened
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("\n            Информация\n            "),
+                        _c("i", { staticClass: "arrow" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "profile-card__information-block",
+                        class: {
+                          "profile-card__information-block_opened":
+                            _vm.infOpened
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "profile-card__inf-items" }, [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.itemsList.length) +
+                              " работ\n            "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "profile-card__inf-favorite" },
+                          [
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(7) +
+                                " добавили в избранное\n            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "profile-card__inf-social" },
+                          _vm._l(_vm.social, function(social, key) {
+                            return _c("div", { key: key }, [
+                              _c("img", { attrs: { src: social } })
+                            ])
+                          }),
+                          0
                         )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "profile-card__inf-favorite" }, [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(7) +
-                            " добавили в избранное\n            "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "profile-card__inf-social" },
-                        _vm._l(_vm.social, function(social, key) {
-                          return _c("div", { key: key }, [
-                            _c("img", { attrs: { src: social } })
-                          ])
-                        }),
-                        0
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(0)
-              ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ]
+              )
             ]),
             _vm._v(" "),
             _c(
