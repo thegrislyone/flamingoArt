@@ -396,7 +396,7 @@ h6 {}
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  gap: 50px;
+  gap: 28px;
   background: rgba(18, 18, 18, 0.75);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(50px);
@@ -405,6 +405,7 @@ h6 {}
 .header__logo {
   display: none;
   font-weight: bold;
+  flex-shrink: 0;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: -0.017em;
@@ -449,6 +450,7 @@ h6 {}
 }
 .search-full {
   display: none;
+  flex-grow: 1;
 }
 .header__icons-bar {
   display: none;

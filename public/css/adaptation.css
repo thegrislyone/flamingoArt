@@ -72,30 +72,7 @@
 \*------------------------------------*/
 
 @media (min-width: 960px) {
-  /* HEADER */
-  .header__logo {
-    display: block;
-  }
-  .header__menu-block {
-    display: none;
-  }
-  .header__feed-type {
-    display: flex;
-  }
-  .header__icons-bar {
-    display: flex;
-    flex-grow: 1;
-  }
-  .search-short {
-    display: none;
-  }
-  .sign-buttons {
-    display: block;
-  }
-  .search-full {
-    display: block;
-    flex-grow: 1;
-  }
+  
   /* ITEMS LIST */
   .item-list__tiles {
     grid-template-columns: repeat(4, 1fr);
@@ -141,6 +118,37 @@
   }
   .profile-card__inf-social {
     margin-top: 25px;
+  }
+}
+
+/*------------------------------------*\
+  # MIN-WIDTH: 1024px
+\*------------------------------------*/
+
+@media (min-width: 1024px) {
+  /* HEADER */
+  .header__logo {
+    display: block;
+  }
+  .header__menu-block {
+    display: none;
+  }
+  .header__feed-type {
+    display: flex;
+  }
+  .header__icons-bar {
+    display: flex;
+    flex-grow: 1;
+  }
+  .search-short {
+    display: none;
+  }
+  .sign-buttons {
+    display: block;
+  }
+  .search-full {
+    display: block;
+    flex-grow: 1;
   }
 }
 
