@@ -9,13 +9,17 @@
       <img :src="user.banner" class="profile-banner__img">
     </div>
 
+    <div class="profile-banner">
+      <img src="/assets/images/баннер.png" class="profile-banner__img">
+    </div>
+
     <div class="profile-block">
       <div class="profile-block__profile">
         
         <div 
           class="profile-card"
           :class="{
-            'profile-card_no-banner': !user.banner
+            'profile-card_no-banner': user.banner
           }"
         >
 
@@ -77,14 +81,16 @@
             <span 
               class="profile-tab"
               :class="{
-                'profile-tab_active': itemsMode == 'my-items'
+                'profile-tab_active': itemsMode == 'my-items' && $store.getters.windowWidth < 1024,
+                'btn': itemsMode == 'my-items' && $store.getters.windowWidth > 1024
               }"
               @click="changeItems('my-items')"
             >Мои работы</span>
             <span 
               class="profile-tab"
               :class="{
-                'profile-tab_active': itemsMode == 'favorite'
+                'profile-tab_active': itemsMode == 'favorite' && $store.getters.windowWidth < 1024,
+                'btn': itemsMode == 'favorite' && $store.getters.windowWidth > 1024
               }"
               @click="changeItems('favorite')"
             >Избранное</span>

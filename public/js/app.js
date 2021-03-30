@@ -2218,6 +2218,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3166,6 +3173,12 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -16414,39 +16427,47 @@ var render = function() {
       ]),
       _vm._v(" "),
       !_vm.$isEmpty(_vm.user)
-        ? _c("div", { staticClass: "header__icons-bar" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _vm._m(2),
-            _vm._v(" "),
-            _c("span", { staticClass: "header__user-login" }, [
-              _vm._v(_vm._s(_vm.user.login))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "header__user" }, [
-              _c(
-                "div",
-                { staticClass: "headet__user-avatar" },
-                [
-                  _c("router-link", { attrs: { to: "/profile" } }, [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          _vm.user.avatar || "/assets/images/unknown-user.png",
-                        alt: ""
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
+        ? _c(
+            "div",
+            { staticClass: "header__icons-bar" },
+            [
+              _vm._m(1),
               _vm._v(" "),
-              _c("img", {
-                staticClass: "header__user-menu",
-                attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" }
-              })
-            ])
-          ])
+              _vm._m(2),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: "/profile" } }, [
+                _c("span", { staticClass: "header__user-login" }, [
+                  _vm._v(_vm._s(_vm.user.login))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "header__user" }, [
+                _c(
+                  "div",
+                  { staticClass: "headet__user-avatar" },
+                  [
+                    _c("router-link", { attrs: { to: "/profile" } }, [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            _vm.user.avatar ||
+                            "/assets/images/unknown-user.png",
+                          alt: ""
+                        }
+                      })
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "header__user-menu",
+                  attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" }
+                })
+              ])
+            ],
+            1
+          )
         : _c("div", { staticClass: "sign-buttons" }, [
             _c(
               "button",
@@ -17177,6 +17198,8 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
           _c("div", { staticClass: "profile-block" }, [
             _c("div", { staticClass: "profile-block__profile" }, [
               _c(
@@ -17184,7 +17207,7 @@ var render = function() {
                 {
                   staticClass: "profile-card",
                   class: {
-                    "profile-card_no-banner": !_vm.user.banner
+                    "profile-card_no-banner": _vm.user.banner
                   }
                 },
                 [
@@ -17265,7 +17288,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(0)
+                  _vm._m(1)
                 ]
               )
             ]),
@@ -17284,7 +17307,12 @@ var render = function() {
                         {
                           staticClass: "profile-tab",
                           class: {
-                            "profile-tab_active": _vm.itemsMode == "my-items"
+                            "profile-tab_active":
+                              _vm.itemsMode == "my-items" &&
+                              _vm.$store.getters.windowWidth < 1024,
+                            btn:
+                              _vm.itemsMode == "my-items" &&
+                              _vm.$store.getters.windowWidth > 1024
                           },
                           on: {
                             click: function($event) {
@@ -17300,7 +17328,12 @@ var render = function() {
                         {
                           staticClass: "profile-tab",
                           class: {
-                            "profile-tab_active": _vm.itemsMode == "favorite"
+                            "profile-tab_active":
+                              _vm.itemsMode == "favorite" &&
+                              _vm.$store.getters.windowWidth < 1024,
+                            btn:
+                              _vm.itemsMode == "favorite" &&
+                              _vm.$store.getters.windowWidth > 1024
                           },
                           on: {
                             click: function($event) {
@@ -17328,6 +17361,17 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile-banner" }, [
+      _c("img", {
+        staticClass: "profile-banner__img",
+        attrs: { src: "/assets/images/баннер.png" }
+      })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

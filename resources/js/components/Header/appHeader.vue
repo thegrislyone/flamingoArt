@@ -67,13 +67,19 @@
       v-if="!$isEmpty(user)"
       class="header__icons-bar"
     >
+
       <div class="header__messages">
         <img src="/assets/images/i-message.svg" alt="">
       </div>
+
       <div class="header__notifications">
         <img src="/assets/images/i-notification.svg" alt="">
       </div>
-      <span class="header__user-login">{{ user.login }}</span>
+
+      <router-link to="/profile">
+        <span class="header__user-login">{{ user.login }}</span>
+      </router-link>
+
       <div class="header__user">
         <div class="headet__user-avatar">
           <router-link to="/profile">
@@ -89,6 +95,7 @@
           alt=""
           >
       </div>
+      
     </div>
 
     <div 

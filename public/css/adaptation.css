@@ -80,45 +80,6 @@
   .tile {
     width: calc(25% - 12px);
   }
-  /* PROFILE */
-  .profile-block__profile {
-    flex-shrink: 0;
-    width: auto;
-  }
-  .profile-block {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .profile-card {
-    padding: 25px;
-    margin-top: -100px;
-    width: 340px;
-    backdrop-filter: blur(300px);
-    background-color: rgba(18, 18, 18, 0.4);
-  }
-  .profile-card_no-banner {
-    margin-top: 0;
-  }
-  .profile-card__avatar-block {
-    order: 0;
-  }
-  .profile-card__edit,
-  .profile-card__nickname {
-    order: 1;
-  }
-  .profile-card__information {
-    order: 2;
-  }
-  .profile-card__inf-wrd {
-    display: none;
-  }
-  .profile-card__information-block {
-    height: auto;
-  }
-  .profile-card__inf-social {
-    margin-top: 25px;
-  }
 }
 
 /*------------------------------------*\
@@ -149,6 +110,46 @@
   .search-full {
     display: block;
     flex-grow: 1;
+  }
+  /* PROFILE */
+  .profile-block__profile {
+    flex-shrink: 0;
+    width: auto;
+  }
+  .profile-block {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .profile-card {
+    padding: 25px;
+    margin-top: -100px;
+    width: 340px;
+    backdrop-filter: blur(300px);
+    background-color: rgba(18, 18, 18, 0.4);
+  }
+  .profile-card_no-banner {
+    margin-top: 0;
+  }
+  .profile-card__avatar-block {
+    order: 0;
+    background-color: transparent;
+  }
+  .profile-card__edit,
+  .profile-card__nickname {
+    order: 1;
+  }
+  .profile-card__information {
+    order: 2;
+  }
+  .profile-card__inf-wrd {
+    display: none;
+  }
+  .profile-card__information-block {
+    height: auto;
+  }
+  .profile-card__inf-social {
+    margin-top: 25px;
   }
 }
 
