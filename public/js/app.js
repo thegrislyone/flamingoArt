@@ -2253,7 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     shortSearchOpened: {
       get: function get() {
-        return this.searchOpened && this.$store.getters.windowWidth < 560;
+        return this.searchOpened && this.$store.getters.windowWidth < 960;
       },
       set: function set(value) {
         this.searchOpened = value;
@@ -36999,8 +36999,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\OpenServer\domains\diploma\flamingo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\OpenServer\domains\diploma\flamingo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\OSPanel\domains\flamingoArt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\OSPanel\domains\flamingoArt\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -150,7 +150,7 @@ export default {
     },
     shortSearchOpened: {
       get() {
-        return this.searchOpened && this.$store.getters.windowWidth < 560
+        return this.searchOpened && this.$store.getters.windowWidth < 960
       },
       set(value) {
         this.searchOpened = value
