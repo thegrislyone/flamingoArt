@@ -89,7 +89,7 @@ export default {
       }
       if (this.isSuccess) {
         return this.formData.class + '_success'
-      } else if (this.isError) {
+      } else if (this.isError || this.v.$error) {
         return this.formData.class + '_error'
       } else if (this.isLoading) {
         return this.formData.class + '_loading'

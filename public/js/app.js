@@ -2039,7 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.isSuccess) {
         return this.formData["class"] + '_success';
-      } else if (this.isError) {
+      } else if (this.isError || this.v.$error) {
         return this.formData["class"] + '_error';
       } else if (this.isLoading) {
         return this.formData["class"] + '_loading';
@@ -2728,6 +2728,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       validationError: '',
+      formError: false,
       authFormModel: {},
       regFormModel: {},
       authForm: {
@@ -2861,7 +2862,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
       var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.$v.regFormModel;
 
-      if (validationForm.$invalid) {
+      if (validationForm.$invalid || this.formError) {
         this.$v.$touch(); // print the nearest error
 
         for (var _i = 0, _Object$entries = Object.entries(this.$refs); _i < _Object$entries.length; _i++) {
@@ -2904,6 +2905,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var data = response.data;
 
         if ('errors' in data) {
+          _this2.formError = true;
           _this2.validationError = data.errors[0];
           _this2.$refs[name][0].isSuccess = false;
           _this2.$refs[name][0].isError = true;

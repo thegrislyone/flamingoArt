@@ -115,6 +115,7 @@ export default {
     return {
 
       validationError: '',
+      formError: false,
 
       authFormModel: {},
       regFormModel: {},
@@ -258,7 +259,7 @@ export default {
       const formData = (this.mode == 'auth') ? this.authFormModel : this.regFormModel
       const validationForm = (this.mode == 'auth') ? this.$v.authFormModel : this.$v.regFormModel
 
-      if (validationForm.$invalid) {
+      if (validationForm.$invalid || this.formError) {
 
         this.$v.$touch()
 
@@ -311,6 +312,8 @@ export default {
           const data = response.data
 
           if ('errors' in data) {
+            this.formError = true
+
             this.validationError = data.errors[0]
             this.$refs[name][0].isSuccess = false
             this.$refs[name][0].isError = true
