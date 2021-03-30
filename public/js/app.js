@@ -2039,7 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.isSuccess) {
         return this.formData["class"] + '_success';
-      } else if (this.isError || this.v.$error) {
+      } else if (this.isError) {
         return this.formData["class"] + '_error';
       } else if (this.isLoading) {
         return this.formData["class"] + '_loading';
@@ -2075,7 +2075,11 @@ __webpack_require__.r(__webpack_exports__);
         this.isSuccess = true;
       }
 
-      this.$emit('debouncedInput', this.value);
+      if (this.formData.requireServerValidation) {
+        this.$emit('validateInput', this.value, this.formData.name, this.v.$error);
+      }
+
+      this.$emit('debouncedInput', this.value, this.formData.name);
     },
     input: function input() {
       this.isLoading = true;
@@ -2708,6 +2712,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2728,6 +2734,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         submit: '/api/auth/login',
         fields: [{
           name: 'login',
+          requireServerValidation: false,
           "class": 'sign-form__field',
           type: 'text',
           placeholder: 'Логин',
@@ -2735,6 +2742,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           maxLength: 32
         }, {
           name: 'password',
+          requireServerValidation: false,
           "class": 'sign-form__field',
           type: 'password',
           placeholder: 'Пароль',
@@ -2758,6 +2766,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         submit: '/api/auth/register',
         fields: [{
           name: 'login',
+          requireServerValidation: true,
           "class": 'sign-form__field',
           type: 'text',
           placeholder: 'Логин',
@@ -2765,11 +2774,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           maxLength: 32
         }, {
           name: 'email',
+          requireServerValidation: true,
           "class": 'sign-form__field',
           type: 'email',
           placeholder: 'E-mail'
         }, {
           name: 'password',
+          requireServerValidation: false,
           "class": 'sign-form__field',
           type: 'password',
           placeholder: 'Пароль',
@@ -2879,6 +2890,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         })["catch"](function (error) {}).then(function () {});
         console.log(formData, form);
       }
+    },
+    dataCheck: function dataCheck(value, name, isClientError) {
+      var _this2 = this;
+
+      if (isClientError) return;
+      this.$refs[name][0].isSuccess = false;
+      this.$refs[name][0].isError = false;
+      this.$refs[name][0].isLoading = true;
+      var request = {};
+      request[name] = value;
+      this.$http.post('/api/auth/data-check', request).then(function (response) {
+        var data = response.data;
+
+        if ('errors' in data) {
+          _this2.validationError = data.errors[0];
+          _this2.$refs[name][0].isSuccess = false;
+          _this2.$refs[name][0].isError = true;
+          _this2.$refs[name][0].isLoading = false;
+        } else if ('success' in data) {
+          _this2.$refs[name][0].isSuccess = true;
+          _this2.$refs[name][0].isError = false;
+          _this2.$refs[name][0].isLoading = false;
+        }
+      });
     },
     changeMode: function changeMode(mode) {
       this.$emit('setMode', mode);
@@ -16799,7 +16834,8 @@ var render = function() {
                         error: _vm.setValidationError,
                         clearErrors: function($event) {
                           return _vm.setValidationError("")
-                        }
+                        },
+                        validateInput: _vm.dataCheck
                       },
                       model: {
                         value: _vm.$v.regFormModel[field.name].$model,
@@ -16891,7 +16927,8 @@ var render = function() {
                           error: _vm.setValidationError,
                           clearErrors: function($event) {
                             return _vm.setValidationError("")
-                          }
+                          },
+                          validateInput: _vm.dataCheck
                         },
                         model: {
                           value: _vm.$v.authFormModel[field.name].$model,

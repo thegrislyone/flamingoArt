@@ -89,7 +89,7 @@ export default {
       }
       if (this.isSuccess) {
         return this.formData.class + '_success'
-      } else if (this.isError || this.v.$error) {
+      } else if (this.isError) {
         return this.formData.class + '_error'
       } else if (this.isLoading) {
         return this.formData.class + '_loading'
@@ -128,7 +128,11 @@ export default {
         this.isSuccess = true
       }
 
-      this.$emit('debouncedInput', this.value)
+      if (this.formData.requireServerValidation) {
+        this.$emit('validateInput', this.value, this.formData.name, this.v.$error)
+      }
+
+      this.$emit('debouncedInput', this.value, this.formData.name)
     },
     input() {
 

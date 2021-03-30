@@ -26,6 +26,7 @@
             :v="$v.regFormModel[field.name]"
             @error="setValidationError"
             @clearErrors="setValidationError('')"
+            @validateInput="dataCheck"
             v-model="$v.regFormModel[field.name].$model"
           />
 
@@ -68,6 +69,7 @@
             :v="$v.authFormModel[field.name]"
             @error="setValidationError"
             @clearErrors="setValidationError('')"
+            @validateInput="dataCheck"
             v-model="$v.authFormModel[field.name].$model"
           />
 
@@ -122,6 +124,7 @@ export default {
         fields: [
           {
             name: 'login',
+            requireServerValidation: false,
             class: 'sign-form__field',
             type: 'text',
             placeholder: 'Логин',
@@ -130,6 +133,7 @@ export default {
           },
           {
             name: 'password',
+            requireServerValidation: false,
             class: 'sign-form__field',
             type: 'password',
             placeholder: 'Пароль',
@@ -158,6 +162,7 @@ export default {
         fields: [
           {
             name: 'login',
+            requireServerValidation: true,
             class: 'sign-form__field',
             type: 'text',
             placeholder: 'Логин',
@@ -166,12 +171,14 @@ export default {
           },
           {
             name: 'email',
+            requireServerValidation: true,
             class: 'sign-form__field',
             type: 'email',
             placeholder: 'E-mail',
           },
           {
             name: 'password',
+            requireServerValidation: false,
             class: 'sign-form__field',
             type: 'password',
             placeholder: 'Пароль',
@@ -287,6 +294,34 @@ export default {
 
         console.log(formData, form)
       }
+    },
+    dataCheck(value, name, isClientError) {
+
+      if (isClientError) return
+
+      this.$refs[name][0].isSuccess = false
+      this.$refs[name][0].isError = false
+      this.$refs[name][0].isLoading = true
+
+      let request = {}
+      request[name] = value
+
+      this.$http.post('/api/auth/data-check', request)
+        .then(response => {
+          const data = response.data
+
+          if ('errors' in data) {
+            this.validationError = data.errors[0]
+            this.$refs[name][0].isSuccess = false
+            this.$refs[name][0].isError = true
+            this.$refs[name][0].isLoading = false
+          } else if ('success' in data) {
+            this.$refs[name][0].isSuccess = true
+            this.$refs[name][0].isError = false
+            this.$refs[name][0].isLoading = false
+          }
+
+        })
     },
     changeMode(mode) {
       this.$emit('setMode', mode)

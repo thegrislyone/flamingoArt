@@ -54,6 +54,64 @@ class AuthController extends Controller
 
     }
 
+    public function unicDataCheck(Request $request) {
+        if ($request['email']) {
+            
+            $email = $request->all();
+
+            $validator =  Validator::make($email, [
+                'email' => 'unique:users'
+            ]);
+
+            if ($validator->fails()) {
+                $errors = [
+                    'errors' => ['Этот адрес электронной почты уже занят']
+                ];
+                return response()->json($errors, 200);
+            } else {
+                $success = [
+                    'success' => 'Этот адрес электронной не занят'
+                ];
+                return response()->json($success, 200);
+            }
+
+        } elseif ($request['login']) {
+
+            $login = $request->all();
+
+            $validator =  Validator::make($login, [
+                'login' => 'unique:users'
+            ]);
+
+            if ($validator->fails()) {
+                $errors = [
+                    'errors' => ['Этот никнейм уже занят']
+                ];
+                return response()->json($errors, 200);
+            } else {
+                $success = [
+                    'success' => 'Этот никнейм не занят'
+                ];
+                return response()->json($success, 200);
+            }
+        } else {
+            $success = [
+                'success' => 'Все правильно'
+            ];
+            return response()->json($success, 200);
+        }
+    }
+
+    public function compactErrorsResponse($messages) {
+        $errors = [];
+        foreach($messages as $errorArray) {
+            foreach($errorArray as $error) {
+                array_push($errors, $error);
+            }
+        }
+        return $errors;
+    }
+
     public function logout() {
         Auth::logout();
         if (!Auth::check()) {
