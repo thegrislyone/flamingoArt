@@ -1974,6 +1974,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1981,6 +1992,11 @@ __webpack_require__.r(__webpack_exports__);
       imgSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
     };
+  },
+  computed: {
+    windowWidth: function windowWidth() {
+      return this.$store.getters.windowWidth;
+    }
   },
   mounted: function mounted() {
     this.loaderContainer = document.querySelector('.upload__block');
@@ -2063,6 +2079,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TagsInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagsInput.vue */ "./resources/js/components/TagsInput.vue");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
 //
 //
 //
@@ -3170,7 +3190,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -3181,8 +3200,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       popularTags: [],
-      tag: '',
-      tags: []
+      tag: 'tre',
+      tags: ['anime', 'spring']
     };
   },
   created: function created() {
@@ -3653,6 +3672,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/FormGroup.vue */ "./resources/js/components/FormGroup.vue");
 /* harmony import */ var _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/TagsInput.vue */ "./resources/js/components/TagsInput.vue");
 /* harmony import */ var _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Switcher.vue */ "./resources/js/components/Switcher.vue");
+//
 //
 //
 //
@@ -16536,12 +16556,22 @@ var render = function() {
                 "label",
                 { staticClass: "upload__block", attrs: { for: "file-loader" } },
                 [
-                  _c("img", {
-                    staticClass: "upload__img",
-                    attrs: { src: "/assets/images/upload.png" }
-                  }),
+                  _vm.windowWidth < 1024
+                    ? _c("img", {
+                        staticClass: "upload__img",
+                        attrs: { src: "/assets/images/upload_35.png" }
+                      })
+                    : _vm.windowWidth > 1024 && _vm.windowWidth < 1920
+                    ? _c("img", {
+                        staticClass: "upload__img",
+                        attrs: { src: "/assets/images/upload_70.png" }
+                      })
+                    : _c("img", {
+                        staticClass: "upload__img",
+                        attrs: { src: "/assets/images/upload_70_gray.png" }
+                      }),
                   _vm._v(" "),
-                  _c("h3", { staticClass: "upload__headline" }, [
+                  _c("span", { staticClass: "upload__headline" }, [
                     _vm._v("Загрузить изображение")
                   ]),
                   _vm._v(" "),
@@ -16610,7 +16640,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "form-group" },
+    { staticClass: "form-group", class: [_vm.formData.class] },
     [
       _vm.formData.type == "password"
         ? [
@@ -16638,7 +16668,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-group__password",
-              class: [_vm.formData.class, _vm.statusClass],
+              class: [_vm.statusClass],
               attrs: {
                 type: "password",
                 placeholder: _vm.formData.placeholder
@@ -16665,7 +16695,10 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _c("textarea", { attrs: { placeholder: _vm.formData.placeholder } })
+            _c("textarea", {
+              class: [_vm.statusClass],
+              attrs: { placeholder: _vm.formData.placeholder }
+            })
           ]
         : _vm.formData.type == "tags"
         ? [
@@ -16710,7 +16743,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-group__text",
-              class: [_vm.formData.class, _vm.statusClass],
+              class: [_vm.statusClass],
               attrs: { type: "text", placeholder: _vm.formData.placeholder },
               domProps: { value: _vm.value },
               on: {
@@ -17604,7 +17637,7 @@ var render = function() {
             }
           ],
           staticClass: "tags-input__input",
-          attrs: { type: "text", placeholder: _vm.placeholder },
+          attrs: { type: "text" },
           domProps: { value: _vm.tag },
           on: {
             keydown: function($event) {
@@ -17632,7 +17665,7 @@ var render = function() {
       "div",
       { staticClass: "tags-input__popular" },
       [
-        _c("h4", [_vm._v("Варианты тегов")]),
+        _c("h4", [_vm._v("Варианты тегов:")]),
         _vm._v(" "),
         !_vm.popularTags.length
           ? [_c("div", { staticClass: "preloader" })]
@@ -18076,6 +18109,7 @@ var render = function() {
           _vm._v(" "),
           _c("form-group", {
             ref: _vm.description.name,
+            staticClass: "upload-item__description",
             attrs: { formData: _vm.description }
           }),
           _vm._v(" "),

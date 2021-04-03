@@ -1,11 +1,14 @@
 <template>
-  <div class="form-group">
+  <div 
+    class="form-group"
+    :class="[formData.class]"
+  >
 
     <template v-if="formData.type  == 'password'">
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__password"
-        :class="[formData.class, statusClass]"
+        :class="[statusClass]"
         type="password"
         :placeholder="formData.placeholder"
         v-model="value"
@@ -18,6 +21,7 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <textarea
         :placeholder="formData.placeholder"
+        :class="[statusClass]"
       ></textarea>
     </template>
 
@@ -33,7 +37,7 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__text"
-        :class="[formData.class, statusClass]"
+        :class="[statusClass]"
         type="text"
         :placeholder="formData.placeholder"
         v-model="value"

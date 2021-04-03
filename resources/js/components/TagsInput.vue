@@ -13,7 +13,6 @@
       <input 
         type="text"
         class="tags-input__input"
-        :placeholder="placeholder"
         @keydown.enter="addTag('')"
         v-model="tag"
       ></input>
@@ -21,7 +20,7 @@
     </span>
 
     <div class="tags-input__popular">
-      <h4>Варианты тегов</h4>
+      <h4>Варианты тегов:</h4>
       <template v-if="!popularTags.length">
         <div class="preloader"></div>
       </template>
@@ -55,8 +54,8 @@ export default {
   data() {
     return {
       popularTags: [],
-      tag: '',
-      tags: []
+      tag: 'tre',
+      tags: ['anime', 'spring']
     }
   },
   created() {

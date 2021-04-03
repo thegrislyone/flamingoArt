@@ -177,12 +177,24 @@
   }
   .upload__block {
     height: 420px;
+    padding-top: 115px;
+  }
+  .upload-item__block {
+    gap: 48px;
+  }
+  .upload__headline {
+    font-size: 32px;
+    margin: 22px 0 16px 0;
+  }
+  .upload__subtext {
+    font-size: 18px;
   }
   .upload-item__price {
     width: 210px;
   }
   .price-input__auction {
     display: inline-flex;
+    margin-left: 24px;
   }
 }
 
@@ -214,13 +226,16 @@
   }
   .upload-item__block {
     flex-direction: row;
-    padding: 115px;
+    padding: 64px 115px;
   }
   .upload__block {
     width: 700px;
   }
   .upload-item__form {
     width: 400px;
+  }
+  .upload-item__block {
+    gap: 32px;
   }
 }
 
@@ -262,5 +277,9 @@
   /* ITEMS LIST */
   .item-list__tiles {
     grid-template-columns: repeat(6, 1fr);
+  }
+  /* UPLOAD-ITEM */
+  .upload__headline {
+    color: #696969;
   }
 }

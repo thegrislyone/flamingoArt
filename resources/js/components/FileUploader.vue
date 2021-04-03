@@ -20,10 +20,21 @@
           class="upload__block"
         >
           <img 
+            v-if="windowWidth < 1024"
             class="upload__img"
-            src="/assets/images/upload.png"
+            src="/assets/images/upload_35.png"
           >
-          <h3 class="upload__headline">Загрузить изображение</h3>
+          <img 
+            v-else-if="windowWidth > 1024 && windowWidth < 1920"
+            class="upload__img"
+            src="/assets/images/upload_70.png"
+          >
+          <img 
+            v-else
+            class="upload__img"
+            src="/assets/images/upload_70_gray.png"
+          >
+          <span class="upload__headline">Загрузить изображение</span>
           <span class="upload__subtext">(минимальный размер 1000x1000)</span>
         </label>
       </div>
@@ -50,6 +61,11 @@ export default {
       loaderContainer: null,
       imgSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'],
+    }
+  },
+  computed: {
+    windowWidth() {
+      return this.$store.getters.windowWidth
     }
   },
   mounted() {

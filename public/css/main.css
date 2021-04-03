@@ -338,6 +338,7 @@ h6 {}
   display: inline-flex;
   flex-wrap: wrap;
   flex-direction: row;
+  padding: 10px;
   gap: 8px;
   margin-bottom: 24px;
 }
@@ -353,10 +354,10 @@ h6 {}
 .tags-input__input {
   height: auto !important;
   background: transparent;
-  padding: 0 0 0 20px !important;
+  padding: 0 0 0 3px !important;
   border-radius: 0 !important;
   color: #FFFFFF !important;
-  width: 120px;
+  width: 50px;
 }
 .tags-input__input:focus {
   background: transparent !important;
@@ -379,7 +380,7 @@ h6 {}
   display: inline-block;
 }
 .switch__trace {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);;
   border-radius: 12px;
   width: 48px;
   height: 24px;
@@ -417,12 +418,15 @@ h6 {}
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 34px 10px 40px 10px;
   cursor: pointer;
 }
 .upload__headline {
   color: #DA71FF;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  margin: 11px 0 8px 0;
 }
 .upload__subtext {
   font-weight: 500;
@@ -770,7 +774,7 @@ img {
 /* form-group */
 
 .form-group {
-  margin: 8px 0;
+  /* margin: 8px 0; */
 }
 .form-group__label {
   display: block;
@@ -931,11 +935,16 @@ img {
 }
 .upload-item__field {
   width: 100%;
+  letter-spacing: -0.014em;
+}
+.upload-item__description,
+.price-input {
+  margin-bottom: 48px !important;
 }
 .price-input__auction {
   margin-top: 16px;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 16px;
 }
 .price-input__auction span {

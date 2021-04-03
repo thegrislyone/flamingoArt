@@ -17,6 +17,7 @@
         />
 
         <form-group
+          class="upload-item__description"
           :ref="description.name"
           :formData="description"
         />
