@@ -9,17 +9,13 @@
       <img :src="user.banner" class="profile-banner__img">
     </div>
 
-    <div class="profile-banner">
-      <img src="/assets/images/баннер.png" class="profile-banner__img">
-    </div>
-
     <div class="profile-block">
       <div class="profile-block__profile">
         
         <div 
           class="profile-card"
           :class="{
-            'profile-card_no-banner': user.banner
+            'profile-card_no-banner': !user.banner
           }"
         >
 
@@ -52,7 +48,7 @@
                 {{ itemsList.length }} работ
               </div>
               <div class="profile-card__inf-favorite">
-                {{ 7 }} добавили в избранное
+                {{ 0 }} добавили в избранное
               </div>
               <div class="profile-card__inf-social">
                 <div
@@ -66,8 +62,11 @@
           </div>
 
           <div class="profile-card__edit">
-            <button class="btn profile-card__edit-button">
-              Редактировать
+            <button 
+              class="btn profile-card__edit-button"
+              @click="$router.push('/upload-item')"
+            >
+              Выложить работу
             </button>
           </div>
 
@@ -102,6 +101,7 @@
         <items-tiles-list
           v-else
           :tilesList="itemsList"
+          :outOfItems="true"
         />
         
       </div>

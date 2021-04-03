@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/profile', function () {
-    if (Auth::check()) {
-        $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        return view('index')->with('userInfo', $userInfo);
-    }
-    return view('index');
-});
-
 Route::get('/', function () {
     if (Auth::check()) {
         $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
@@ -31,6 +23,21 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/profile', function () {
+    if (Auth::check()) {
+        $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        return view('index')->with('userInfo', $userInfo);
+    }
+    return view('index');
+});
+
+Route::get('/upload-item', function () {
+    if (Auth::check()) {
+        $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        return view('index')->with('userInfo', $userInfo);
+    }
+    return view('index');
+});
 
 // Route::get('/{any}', function () {
 //     return view('index');

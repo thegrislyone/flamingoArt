@@ -8,6 +8,7 @@ import Contacts from '../views/Contacts.vue'
 import ItemList from '../views/ItemsList.vue'
 import Profile from '../views/Profile.vue'
 import Item from '../views/Item.vue'
+import UploadItem from '../views/UploadItem.vue'
 
 Vue.use(VueRouter)
 
@@ -25,13 +26,6 @@ const routes = [
     path: '/profile',
     meta: { requiresAuth: true },
     component: Profile,
-    beforeEnter: (to, from, next) => {
-      if (!store.getters.isAuthorizate) {
-        next({ name: 'index' })
-      } else {
-        next()
-      }
-    }
   },
   {
     path: '/contact',
@@ -40,6 +34,11 @@ const routes = [
   {
     path: '/items_list/:id',
     component: Item
+  },
+  {
+    path: '/upload-item',
+    meta: { requiresAuth: true },
+    component: UploadItem
   },
   {
     path: "*",
@@ -55,16 +54,18 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-  
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!store.getters.user.name) {
-//       next({ name: 'index' })
-//     } else {
-//       next()
-//     }
-//   }
+router.beforeEach((to, from, next) => {
 
-// })
+  if (!!to.meta.requiresAuth) {
+    if (!store.getters.isAuthorizate) {
+      next({ name: 'index' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+
+})
 
 export default router

@@ -1,6 +1,8 @@
 <template>
   <div class="form-group">
+
     <template v-if="formData.type  == 'password'">
+      <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__password"
         :class="[formData.class, statusClass]"
@@ -11,7 +13,24 @@
         v-debounce:400ms.lock="debounsedInput"
       >
     </template>
+
+    <template v-else-if="formData.type == 'textarea'">
+      <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
+      <textarea
+        :placeholder="formData.placeholder"
+      ></textarea>
+    </template>
+
+    <template v-else-if="formData.type == 'tags'">
+      <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
+      <tags-input
+        :placeholder="formData.placeholder"
+        @add-tag="$emit('add-tag')"
+      />
+    </template>
+
     <template v-else-if="formData.type == 'text' || formData.type  == 'email'">
+      <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__text"
         :class="[formData.class, statusClass]"
@@ -22,6 +41,7 @@
         v-debounce:400ms.lock="debounsedInput"
       >
     </template>
+
     <template v-else-if="formData.type == 'buttons'">
       <div class="justify-buttons">
         <div class="justify-buttons__left">
@@ -57,13 +77,18 @@
       </div>
       
     </template>
+
   </div>
 </template>
 
 <script>
+import TagsInput from './TagsInput.vue'
 import { debounce } from 'vue-debounce'
 
 export default {
+  components: {
+    TagsInput
+  },
   props: {
     formData: {
       type: Object,
@@ -89,7 +114,7 @@ export default {
       }
       if (this.isSuccess) {
         return this.formData.class + '_success'
-      } else if (this.isError || this.v.$error) {
+      } else if (this.isError || (this.v && this.v.$error)) {
         return this.formData.class + '_error'
       } else if (this.isLoading) {
         return this.formData.class + '_loading'
@@ -121,7 +146,7 @@ export default {
 
       this.isLoading = false
 
-      if (this.v.$error) {
+      if (this.v && this.v.$error) {
         this.$emit('error', this.getError())  
         this.isError = true
       } else {
@@ -129,7 +154,7 @@ export default {
       }
 
       if (this.formData.requireServerValidation) {
-        this.$emit('validateInput', this.value, this.formData.name, this.v.$error)
+        this.$emit('validateInput', this.value, this.formData.name, (this.v) ? this.v.$error : null)
       }
 
       this.$emit('debouncedInput', this.value, this.formData.name)
