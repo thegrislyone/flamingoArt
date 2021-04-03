@@ -221,6 +221,12 @@
 \*------------------------------------*/
 
 @media (min-width: 1366px) {
+  /* .upload-item__block {
+    width: 1136;
+  } */
+  /* .upload-item__block > * {
+    flex-grow: 1;
+  } */
   .upload-item {
     padding: 0;
   }

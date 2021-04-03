@@ -718,6 +718,12 @@ img {
   background-repeat: no-repeat;
   background-position: 95% center;
 }
+.sign-form__field:not(:last-child) {
+  margin-bottom: 8px;
+}
+.sign-form__field input {
+  width: 100%;
+}
 .sign-form__field_loading {
   background-image: url(../assets/images/loader.gif);
 }

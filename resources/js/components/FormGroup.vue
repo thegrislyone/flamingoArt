@@ -8,7 +8,7 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__password"
-        :class="[statusClass]"
+        :class="[formData.class, statusClass]"
         type="password"
         :placeholder="formData.placeholder"
         v-model="value"
@@ -21,7 +21,9 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <textarea
         :placeholder="formData.placeholder"
-        :class="[statusClass]"
+        :class="[formData.class, statusClass]"
+        v-model="value"
+        @input="input"
       ></textarea>
     </template>
 
@@ -29,7 +31,7 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <tags-input
         :placeholder="formData.placeholder"
-        @add-tag="$emit('add-tag')"
+        @add-tag="addTag"
       />
     </template>
 
@@ -37,7 +39,7 @@
       <label class="form-group__label" v-if="formData.label">{{ formData.label }}</label>
       <input 
         class="form-group__text"
-        :class="[statusClass]"
+        :class="[formData.class, statusClass]"
         type="text"
         :placeholder="formData.placeholder"
         v-model="value"
@@ -176,6 +178,9 @@ export default {
     },
     buttonClick(method, action) {
       this.$emit('buttonClick', action, method)
+    },
+    addTag(tags) {
+      this.$emit('add-tag', tags, this.formData.name)
     }
   }
 }

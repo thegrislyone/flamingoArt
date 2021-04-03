@@ -2035,11 +2035,13 @@ __webpack_require__.r(__webpack_exports__);
         var img = new Image();
         img.addEventListener('load', function () {
           // if (this.width >= 1000 && this.height >= 1000) {
-          vm.imgSrc = reader.result; // } else {
+          vm.imgSrc = reader.result;
+          vm.$emit('fileUpload', file); // } else {
           //   alert('Изображение не соответствует минимальным размерам')
           // }
         });
-        img.src = reader.result;
+        img.src = reader.result; // let data = new FormData()
+        // data.append("file", file)
       });
       reader.readAsDataURL(file);
     }
@@ -2079,6 +2081,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TagsInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagsInput.vue */ "./resources/js/components/TagsInput.vue");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
 //
 //
 //
@@ -2248,6 +2252,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     buttonClick: function buttonClick(method, action) {
       this.$emit('buttonClick', action, method);
+    },
+    addTag: function addTag(tags) {
+      this.$emit('add-tag', tags, this.formData.name);
     }
   }
 });
@@ -3050,7 +3057,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             _this.$modal.hide('signForm');
           } else if (data.errors || data.email) {
-            alert(data.email[0]);
             alert(data.errors[0]);
           }
         })["catch"](function (error) {}).then(function () {});
@@ -3128,7 +3134,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     input: function input() {
-      console.log(this.value);
       this.$emit('input', !this.value);
     }
   }
@@ -3668,10 +3673,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_FileUploader_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/FileUploader.vue */ "./resources/js/components/FileUploader.vue");
-/* harmony import */ var _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/FormGroup.vue */ "./resources/js/components/FormGroup.vue");
-/* harmony import */ var _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/TagsInput.vue */ "./resources/js/components/TagsInput.vue");
-/* harmony import */ var _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Switcher.vue */ "./resources/js/components/Switcher.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_FileUploader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/FileUploader.vue */ "./resources/js/components/FileUploader.vue");
+/* harmony import */ var _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/FormGroup.vue */ "./resources/js/components/FormGroup.vue");
+/* harmony import */ var _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/TagsInput.vue */ "./resources/js/components/TagsInput.vue");
+/* harmony import */ var _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Switcher.vue */ "./resources/js/components/Switcher.vue");
 //
 //
 //
@@ -3726,51 +3733,102 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    FileUploader: _components_FileUploader_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    FormGroup: _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    TagsInput: _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Switcher: _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    FileUploader: _components_FileUploader_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FormGroup: _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    TagsInput: _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Switcher: _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
       auction: false,
-      name: {
-        name: 'name',
-        label: 'Название',
-        requireServerValidation: false,
-        "class": 'upload-item__field',
-        type: 'text',
-        placeholder: 'Введите название',
-        minLength: 2,
-        maxLength: 32
+      formData: {
+        name: '',
+        tags: [],
+        description: '',
+        price: {
+          auction: false,
+          value: ''
+        }
       },
-      tags: {
-        name: 'tags',
-        label: 'Теги',
-        requireServerValidation: false,
-        "class": 'upload-item__field',
-        type: 'tags',
-        placeholder: 'Введите тег',
-        minLength: 2,
-        maxLength: 32
-      },
-      description: {
-        name: 'description',
-        label: 'Описание',
-        requireServerValidation: false,
-        "class": 'upload-item__field',
-        type: 'textarea',
-        placeholder: 'Введите описание для своей работы (необязательно)',
-        minLength: 2,
-        maxLength: 32
+      fields: {
+        name: {
+          name: 'name',
+          label: 'Название',
+          requireServerValidation: false,
+          externalClass: '',
+          "class": 'upload-item__field',
+          type: 'text',
+          placeholder: 'Введите название',
+          minLength: 2,
+          maxLength: 32
+        },
+        tags: {
+          name: 'tags',
+          label: 'Теги',
+          requireServerValidation: false,
+          externalClass: '',
+          "class": 'upload-item__field',
+          type: 'tags',
+          placeholder: 'Введите тег',
+          minLength: 2,
+          maxLength: 32
+        },
+        description: {
+          name: 'description',
+          label: 'Описание',
+          requireServerValidation: false,
+          externalClass: "upload-item__description",
+          "class": 'upload-item__field',
+          type: 'textarea',
+          placeholder: 'Введите описание для своей работы (необязательно)',
+          minLength: 2,
+          maxLength: 32
+        }
       }
     };
+  },
+  validations: function validations() {},
+  methods: {
+    setImage: function setImage(image) {
+      var formData = new FormData();
+      formData.append('file', image);
+      this.$set(this.formData, 'img', formData);
+    },
+    addTag: function addTag(tags, key) {
+      this.formData[key] = tags;
+    },
+    upload: function upload() {
+      console.log(this.formData);
+      this.$http.post('/api/item-load', this.formData).then(function (response) {
+        var data = response.data;
+        console.log(data);
+      });
+    }
   }
 });
 
@@ -16668,7 +16726,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-group__password",
-              class: [_vm.statusClass],
+              class: [_vm.formData.class, _vm.statusClass],
               attrs: {
                 type: "password",
                 placeholder: _vm.formData.placeholder
@@ -16696,8 +16754,28 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _c("textarea", {
-              class: [_vm.statusClass],
-              attrs: { placeholder: _vm.formData.placeholder }
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.value,
+                  expression: "value"
+                }
+              ],
+              class: [_vm.formData.class, _vm.statusClass],
+              attrs: { placeholder: _vm.formData.placeholder },
+              domProps: { value: _vm.value },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.value = $event.target.value
+                  },
+                  _vm.input
+                ]
+              }
             })
           ]
         : _vm.formData.type == "tags"
@@ -16710,11 +16788,7 @@ var render = function() {
             _vm._v(" "),
             _c("tags-input", {
               attrs: { placeholder: _vm.formData.placeholder },
-              on: {
-                "add-tag": function($event) {
-                  return _vm.$emit("add-tag")
-                }
-              }
+              on: { "add-tag": _vm.addTag }
             })
           ]
         : _vm.formData.type == "text" || _vm.formData.type == "email"
@@ -16743,7 +16817,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-group__text",
-              class: [_vm.statusClass],
+              class: [_vm.formData.class, _vm.statusClass],
               attrs: { type: "text", placeholder: _vm.formData.placeholder },
               domProps: { value: _vm.value },
               on: {
@@ -18089,7 +18163,7 @@ var render = function() {
       _c(
         "div",
         { staticClass: "upload-item__upload" },
-        [_c("file-uploader")],
+        [_c("file-uploader", { on: { fileUpload: _vm.setImage } })],
         1
       ),
       _vm._v(" "),
@@ -18097,28 +18171,51 @@ var render = function() {
         "div",
         { staticClass: "upload-item__form" },
         [
-          _c("form-group", {
-            ref: _vm.name.name,
-            attrs: { formData: _vm.name }
-          }),
-          _vm._v(" "),
-          _c("form-group", {
-            ref: _vm.tags.name,
-            attrs: { formData: _vm.tags }
-          }),
-          _vm._v(" "),
-          _c("form-group", {
-            ref: _vm.description.name,
-            staticClass: "upload-item__description",
-            attrs: { formData: _vm.description }
+          _vm._l(_vm.fields, function(field, key) {
+            return _c("form-group", {
+              key: key,
+              ref: field.name,
+              refInFor: true,
+              class: field.externalClass,
+              attrs: { formData: field },
+              on: { "add-tag": _vm.addTag },
+              model: {
+                value: _vm.formData[field.name],
+                callback: function($$v) {
+                  _vm.$set(_vm.formData, field.name, $$v)
+                },
+                expression: "formData[field.name]"
+              }
+            })
           }),
           _vm._v(" "),
           _c("div", { staticClass: "price-input" }, [
             _c("label", { staticClass: "form-group__label" }, [_vm._v("Цена")]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formData.price.value,
+                  expression: "formData.price.value"
+                }
+              ],
               staticClass: "upload-item__field upload-item__price",
-              attrs: { type: "text", placeholder: "Введите цену" }
+              attrs: {
+                type: "text",
+                placeholder: "Введите цену",
+                disabled: _vm.formData.price.auction
+              },
+              domProps: { value: _vm.formData.price.value },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.formData.price, "value", $event.target.value)
+                }
+              }
             }),
             _vm._v(" "),
             _c(
@@ -18128,13 +18225,18 @@ var render = function() {
                 _c("span", [_vm._v("Аукцион")]),
                 _vm._v(" "),
                 _c("switcher", {
-                  attrs: { value: _vm.auction },
+                  attrs: { value: _vm.formData.price.auction },
+                  on: {
+                    input: function($event) {
+                      _vm.formData.price.value = ""
+                    }
+                  },
                   model: {
-                    value: _vm.auction,
+                    value: _vm.formData.price.auction,
                     callback: function($$v) {
-                      _vm.auction = $$v
+                      _vm.$set(_vm.formData.price, "auction", $$v)
                     },
-                    expression: "auction"
+                    expression: "formData.price.auction"
                   }
                 }),
                 _vm._v(" "),
@@ -18147,11 +18249,16 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("button", { staticClass: "upload-item__button btn" }, [
-            _vm._v("\n        Опубликовать\n      ")
-          ])
+          _c(
+            "button",
+            {
+              staticClass: "upload-item__button btn",
+              on: { click: _vm.upload }
+            },
+            [_vm._v("\n        Опубликовать\n      ")]
+          )
         ],
-        1
+        2
       )
     ])
   ])

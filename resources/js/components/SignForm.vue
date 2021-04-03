@@ -282,7 +282,6 @@ export default {
               this.$store.commit('setUser', data.user)
               this.$modal.hide('signForm')
             } else if (data.errors || data.email) {
-              alert(data.email[0])
               alert(data.errors[0])
             }
           })

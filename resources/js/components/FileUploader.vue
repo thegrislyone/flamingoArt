@@ -115,17 +115,24 @@ export default {
         img.addEventListener('load', function() {
           // if (this.width >= 1000 && this.height >= 1000) {
             vm.imgSrc = reader.result
+            vm.$emit('fileUpload', file)
           // } else {
           //   alert('Изображение не соответствует минимальным размерам')
           // }
           
         })
-        img.src = reader.result
-        
 
+        img.src = reader.result
+
+        // let data = new FormData()
+
+        // data.append("file", file)
+        
       })
 
       reader.readAsDataURL(file)
+
+
 
     }
   }
