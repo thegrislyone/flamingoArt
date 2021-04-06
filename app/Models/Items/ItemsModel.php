@@ -17,4 +17,6 @@ class ItemsModel extends Model
         'tags'
     ];
 
+    protected $guarded = [];
+
 }

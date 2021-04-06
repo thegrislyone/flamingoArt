@@ -14,9 +14,10 @@ class CreateFirstDbKit extends Migration
     public function up()
     {
         Schema::create('items', function(Blueprint $table) {
-            $table->increments('id_item');
+            $table->id();
             $table->char('name', 50);
             $table->float('price', 10, 2);
+            $table->timestamps();
             $table->text('description');
             $table->text('thumbnail');
             $table->text('tags');

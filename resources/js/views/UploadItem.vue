@@ -40,15 +40,15 @@
             type="text" 
             placeholder="Введите цену"
             class="upload-item__field upload-item__price"
-            :disabled="formData.price.auction"
-            v-model="formData.price.value"
+            :disabled="formData.auction"
+            v-model="formData.price"
           >
           <div class="price-input__auction">
             <span>Аукцион</span>
             <switcher
-              :value="formData.price.auction"
-              v-model="formData.price.auction"
-              @input="formData.price.value = ''"
+              :value="formData.auction"
+              v-model="formData.auction"
+              @input="formData.price = ''"
             />
             <img 
               class="price-input__tip pointer"
@@ -93,10 +93,8 @@ export default {
         name: '',
         tags: [],
         description: '',
-        price: {
-          auction: false,
-          value: ''
-        }
+        price: '',
+        auction: false
       },
       fields: {
         name: {
@@ -141,19 +139,19 @@ export default {
   },
   methods: {
     setImage(image) {
-
-      let formData = new FormData()
-      formData.append('file', image)
-
-      this.$set(this.formData, 'img', formData)
+      this.$set(this.formData, 'img', image)
     },
     addTag(tags, key) {
       this.formData[key] = tags
     },
     upload() {
-      console.log(this.formData)
+      let formData = new FormData()
 
-      this.$http.post('/api/item-load', this.formData)
+      for (const [key, value] of Object.entries(this.formData)) {
+        formData.append(key, value)
+      }
+
+      this.$http.post('/api/item-load', formData)
         .then(response => {
           const data = response.data
 

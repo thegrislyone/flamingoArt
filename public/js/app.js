@@ -3689,6 +3689,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_FormGroup_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/FormGroup.vue */ "./resources/js/components/FormGroup.vue");
 /* harmony import */ var _components_TagsInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/TagsInput.vue */ "./resources/js/components/TagsInput.vue");
 /* harmony import */ var _components_Switcher_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Switcher.vue */ "./resources/js/components/Switcher.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -3780,10 +3792,8 @@ __webpack_require__.r(__webpack_exports__);
         name: '',
         tags: [],
         description: '',
-        price: {
-          auction: false,
-          value: ''
-        }
+        price: '',
+        auction: false
       },
       fields: {
         name: {
@@ -3825,16 +3835,23 @@ __webpack_require__.r(__webpack_exports__);
   validations: function validations() {},
   methods: {
     setImage: function setImage(image) {
-      var formData = new FormData();
-      formData.append('file', image);
-      this.$set(this.formData, 'img', formData);
+      this.$set(this.formData, 'img', image);
     },
     addTag: function addTag(tags, key) {
       this.formData[key] = tags;
     },
     upload: function upload() {
-      console.log(this.formData);
-      this.$http.post('/api/item-load', this.formData).then(function (response) {
+      var formData = new FormData();
+
+      for (var _i = 0, _Object$entries = Object.entries(this.formData); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        formData.append(key, value);
+      }
+
+      this.$http.post('/api/item-load', formData).then(function (response) {
         var data = response.data;
         console.log(data);
       });
@@ -18211,23 +18228,23 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.formData.price.value,
-                  expression: "formData.price.value"
+                  value: _vm.formData.price,
+                  expression: "formData.price"
                 }
               ],
               staticClass: "upload-item__field upload-item__price",
               attrs: {
                 type: "text",
                 placeholder: "Введите цену",
-                disabled: _vm.formData.price.auction
+                disabled: _vm.formData.auction
               },
-              domProps: { value: _vm.formData.price.value },
+              domProps: { value: _vm.formData.price },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.formData.price, "value", $event.target.value)
+                  _vm.$set(_vm.formData, "price", $event.target.value)
                 }
               }
             }),
@@ -18239,18 +18256,18 @@ var render = function() {
                 _c("span", [_vm._v("Аукцион")]),
                 _vm._v(" "),
                 _c("switcher", {
-                  attrs: { value: _vm.formData.price.auction },
+                  attrs: { value: _vm.formData.auction },
                   on: {
                     input: function($event) {
-                      _vm.formData.price.value = ""
+                      _vm.formData.price = ""
                     }
                   },
                   model: {
-                    value: _vm.formData.price.auction,
+                    value: _vm.formData.auction,
                     callback: function($$v) {
-                      _vm.$set(_vm.formData.price, "auction", $$v)
+                      _vm.$set(_vm.formData, "auction", $$v)
                     },
-                    expression: "formData.price.auction"
+                    expression: "formData.auction"
                   }
                 }),
                 _vm._v(" "),

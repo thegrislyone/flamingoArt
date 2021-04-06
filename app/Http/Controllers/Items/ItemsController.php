@@ -4,8 +4,13 @@ namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+
 use App\Models\Items\ItemsModel;
+
+use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
@@ -15,7 +20,34 @@ class ItemsController extends Controller
     }
 
     public function itemLoad(Request $request) {
-        Storage::disk('public')->put('example.txt', 'Contents');
-        return $request;
+
+        $itemName = $request['name'];
+        $itemTags = $request['tags'];
+        $itemDescription = $request['description'] || null;
+        $itemsPrice = intval($request['price']);
+        $isAuction = $request['auction'];
+
+        $img = $request['img'];
+        $imgExtension = $request->file('img')->extension();
+
+        $userId = Auth::user()->only('id')['id'];
+
+        $pathArray = explode('/', Storage::putFileAs('public/items', $request['img'], $userId . '_' . $itemName . '.' . $imgExtension));
+        
+        array_shift($pathArray);
+
+        $path = '/storage/' . implode('/', $pathArray);
+
+        ItemsModel::create([
+            'name' => $itemName,
+            'price' => $itemsPrice,
+            'description' => $itemDescription,
+            'thumbnail' => $path,
+            'tags' => '',
+            'likes' => 0,
+            'author' => $userId
+        ]);
+
+        return $request['img'];
     }
 }
