@@ -1,7 +1,6 @@
 <template>
   <div class="tags-input">
-    <span class="tags-input__tags">
-
+    <span class="tags-input__tags" @click="inputFocus">
       <span 
         v-for="(tag, key) in tags"
         :key="key"
@@ -15,7 +14,7 @@
         class="tags-input__input"
         @keydown.enter="addTag('')"
         v-model="tag"
-      ></input>
+      >
 
     </span>
 
@@ -54,8 +53,8 @@ export default {
   data() {
     return {
       popularTags: [],
-      tag: 'tre',
-      tags: ['anime', 'spring']
+      tag: '',
+      tags: []
     }
   },
   created() {
@@ -78,6 +77,9 @@ export default {
       }
       
       this.$emit('add-tag', this.tags)
+    },
+    inputFocus() {
+      document.querySelector('.tags-input__input').focus()
     }
   }
 }

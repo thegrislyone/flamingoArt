@@ -182,6 +182,9 @@
   .upload-item__block {
     gap: 48px;
   }
+  .upload__img {
+    width: 70px;
+  }
   .upload__headline {
     font-size: 32px;
     margin: 22px 0 16px 0;

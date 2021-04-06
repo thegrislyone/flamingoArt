@@ -211,7 +211,7 @@ input[type=file] {
   letter-spacing: -0.014em;
   color: rgba(255, 255, 255, 0.7);
   background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
+  /* border-radius: 24px; */
   transition: all .35s;
 }
 .app_dark input::placeholder {
@@ -421,12 +421,27 @@ h6 {}
   padding: 34px 10px 40px 10px;
   cursor: pointer;
 }
-.upload__headline {
+.upload__block:hover .upload__headline {
   color: #DA71FF;
+}
+.upload__block:hover .upload__img path {
+  fill: #DA71FF;
+}
+.upload__headline {
+  color: #696969;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.022em;
   margin: 11px 0 8px 0;
+  transition: all .35s;
+}
+.upload__img {
+  width: 35px;
+}
+.upload__img path {
+  width: 35px;
+  fill: #696969;
+  transition: all .35s;
 }
 .upload__subtext {
   font-weight: 500;
