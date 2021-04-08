@@ -9,12 +9,21 @@
       <input 
         class="form-group__password"
         :class="[formData.class, statusClass]"
-        type="password"
+        :type="(passwordShow) ? 'text' : 'password'"
         :placeholder="formData.placeholder"
         v-model="value"
         @input="input"
         v-debounce:400ms.lock="debounsedInput"
       >
+      <button 
+        type="button"
+        class="form-group__password-visibility pointer"
+        :class="{
+          'form-group__password-visibility_show': passwordShow,
+          'form-group__password-visibility_hide': !passwordShow
+        }"
+        @click="passwordShow = !passwordShow"
+      ></button>
     </template>
 
     <template v-else-if="formData.type == 'textarea'">
@@ -106,6 +115,9 @@ export default {
   },
   data() {
     return {
+
+      passwordShow: false,
+
       value: '',
 
       isError: false,

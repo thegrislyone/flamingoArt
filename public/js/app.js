@@ -2178,6 +2178,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2195,6 +2204,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      passwordShow: false,
       value: '',
       isError: false,
       isSuccess: false,
@@ -16739,40 +16749,138 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.value,
-                  expression: "value"
-                },
-                {
-                  name: "debounce",
-                  rawName: "v-debounce:400ms.lock",
-                  value: _vm.debounsedInput,
-                  expression: "debounsedInput",
-                  arg: "400ms",
-                  modifiers: { lock: true }
-                }
-              ],
-              staticClass: "form-group__password",
-              class: [_vm.formData.class, _vm.statusClass],
-              attrs: {
-                type: "password",
-                placeholder: _vm.formData.placeholder
-              },
-              domProps: { value: _vm.value },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
+            (_vm.passwordShow ? "text" : "password") === "checkbox"
+              ? _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.value,
+                      expression: "value"
+                    },
+                    {
+                      name: "debounce",
+                      rawName: "v-debounce:400ms.lock",
+                      value: _vm.debounsedInput,
+                      expression: "debounsedInput",
+                      arg: "400ms",
+                      modifiers: { lock: true }
                     }
-                    _vm.value = $event.target.value
+                  ],
+                  staticClass: "form-group__password",
+                  class: [_vm.formData.class, _vm.statusClass],
+                  attrs: {
+                    placeholder: _vm.formData.placeholder,
+                    type: "checkbox"
                   },
-                  _vm.input
-                ]
+                  domProps: {
+                    checked: Array.isArray(_vm.value)
+                      ? _vm._i(_vm.value, null) > -1
+                      : _vm.value
+                  },
+                  on: {
+                    input: _vm.input,
+                    change: function($event) {
+                      var $$a = _vm.value,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.value = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.value = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.value = $$c
+                      }
+                    }
+                  }
+                })
+              : (_vm.passwordShow ? "text" : "password") === "radio"
+              ? _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.value,
+                      expression: "value"
+                    },
+                    {
+                      name: "debounce",
+                      rawName: "v-debounce:400ms.lock",
+                      value: _vm.debounsedInput,
+                      expression: "debounsedInput",
+                      arg: "400ms",
+                      modifiers: { lock: true }
+                    }
+                  ],
+                  staticClass: "form-group__password",
+                  class: [_vm.formData.class, _vm.statusClass],
+                  attrs: {
+                    placeholder: _vm.formData.placeholder,
+                    type: "radio"
+                  },
+                  domProps: { checked: _vm._q(_vm.value, null) },
+                  on: {
+                    input: _vm.input,
+                    change: function($event) {
+                      _vm.value = null
+                    }
+                  }
+                })
+              : _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.value,
+                      expression: "value"
+                    },
+                    {
+                      name: "debounce",
+                      rawName: "v-debounce:400ms.lock",
+                      value: _vm.debounsedInput,
+                      expression: "debounsedInput",
+                      arg: "400ms",
+                      modifiers: { lock: true }
+                    }
+                  ],
+                  staticClass: "form-group__password",
+                  class: [_vm.formData.class, _vm.statusClass],
+                  attrs: {
+                    placeholder: _vm.formData.placeholder,
+                    type: _vm.passwordShow ? "text" : "password"
+                  },
+                  domProps: { value: _vm.value },
+                  on: {
+                    input: [
+                      function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.value = $event.target.value
+                      },
+                      _vm.input
+                    ]
+                  }
+                }),
+            _vm._v(" "),
+            _c("button", {
+              staticClass: "form-group__password-visibility pointer",
+              class: {
+                "form-group__password-visibility_show": _vm.passwordShow,
+                "form-group__password-visibility_hide": !_vm.passwordShow
+              },
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.passwordShow = !_vm.passwordShow
+                }
               }
             })
           ]

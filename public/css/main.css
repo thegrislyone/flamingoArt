@@ -796,7 +796,28 @@ img {
 /* form-group */
 
 .form-group {
+  position: relative;
   /* margin: 8px 0; */
+}
+.form-group__password-visibility {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-color: transparent;
+  top: calc(50% - 14px);
+  right: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.form-group__password {
+  background-position-y: center;
+  background-position-x: calc(100% - 50px);
+}
+.form-group__password-visibility_show {
+  background-image: url(../assets/images/i-password_hide.svg);
+}
+.form-group__password-visibility_hide {
+  background-image: url(../assets/images/i-password_show.svg);
 }
 .form-group__label {
   display: block;
