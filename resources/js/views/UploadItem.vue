@@ -35,14 +35,17 @@
         /> -->
 
         <div class="price-input">
+
           <label class="form-group__label">Цена</label>
+
           <input 
-            type="text" 
+            type="number" 
             placeholder="Введите цену"
             class="upload-item__field upload-item__price"
             :disabled="formData.auction"
             v-model="formData.price"
           >
+
           <div class="price-input__auction">
             <span>Аукцион</span>
             <switcher
@@ -64,6 +67,8 @@
         >
           Опубликовать
         </button>
+
+        <div v-if="sendLoading" class="preloader preloader_inline"></div>
 
       </div>
     </div>
@@ -89,7 +94,10 @@ export default {
   data() {
     return {
       auction: false,
+      sendLoading: false,
+
       formData: {
+        img: null,
         name: '',
         tags: [],
         description: '',
@@ -107,6 +115,7 @@ export default {
           placeholder: 'Введите название',
           minLength: 2,
           maxLength: 32,
+          required: true,
         },
         tags: {
           name: 'tags',
@@ -116,8 +125,7 @@ export default {
           class: 'upload-item__field',
           type: 'tags',
           placeholder: 'Введите тег',
-          minLength: 2,
-          maxLength: 32,
+          required: false,
         },
         description: {
           name: 'description',
@@ -129,31 +137,84 @@ export default {
           placeholder: 'Введите описание для своей работы (необязательно)',
           minLength: 2,
           maxLength: 32,
-        },
+          required: false,
+        }
       },
       
     }
   },
   validations() {
-    
+
+    let fieldsModel = {}
+
+    for (let [key, field] of Object.entries(this.fields)) {
+
+      fieldsModel[field.name] = {}
+
+      // if (field.type == 'tags') {
+      //   const tagsLength = (value) => !!value.length
+      //   fieldsModel[field.name].tagsLength = tagsLength
+      // }
+
+      if (field.required) {
+        fieldsModel[field.name].required = required
+      }
+
+      if (field.minLength) {
+        fieldsModel[field.name].minLength = minLength
+      }
+
+      if (field.maxLength) {
+        fieldsModel[field.name].maxLength = maxLength
+      }
+
+    }
+
+    fieldsModel['price'] = {}
+    fieldsModel['price'].required = required
+
+    fieldsModel['img'] = {}
+    fieldsModel['img'].required = required
+
+    return {
+      formData: fieldsModel
+    }
+
+  },
+  created() {
+    console.log(this.$v)
   },
   methods: {
     setImage(image) {
-      this.$set(this.formData, 'img', image)
+      this.formData.img = image
+      // this.$set(this.formData, 'img', image)
     },
     addTag(tags, key) {
       this.formData[key] = tags
     },
     upload() {
+
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        alert("заполните данные")
+        return
+      }
+
       let formData = new FormData()
 
       for (const [key, value] of Object.entries(this.formData)) {
         formData.append(key, value)
       }
 
+      this.sendLoading = true
+
       this.$http.post('/api/item-load', formData)
         .then(response => {
           const data = response.data
+
+          this.sendLoading = false
+
+          this.$router.push('/profile')
 
           console.log(data)
         })

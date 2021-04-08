@@ -19,6 +19,23 @@ class ItemsController extends Controller
         return response()->json($items, 200);
     }
 
+    public function userItems() {
+
+        if (!Auth::check()) {
+            $res = [
+                'errors' => ['Вы не авторизованы']
+            ];
+            return response()->json($res, 200);
+        }
+
+        $userId = Auth::user()->only('id')['id'];
+
+        $items = ItemsModel::where('author', '=', $userId)->get();
+
+        return response()->json($items, 200);;
+
+    }
+
     public function itemLoad(Request $request) {
 
         $itemName = $request['name'];

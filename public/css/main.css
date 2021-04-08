@@ -225,6 +225,17 @@ input[type=file] {
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.15);
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 .app_dark textarea {
   font-family: "Inter";
@@ -305,6 +316,13 @@ h6 {}
   letter-spacing: -0.011em;
   color: #000000;
   cursor: pointer;
+}
+.btn_loading {
+  color: transparent;
+  background-image: url(../assets/images/loader.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px;
 }
 .btn_no-bg {
   background-color: transparent;
@@ -472,6 +490,10 @@ h6 {}
   width: 40px;
   height: 40px;
   margin: 0 auto;
+}
+.preloader_inline {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* loader */

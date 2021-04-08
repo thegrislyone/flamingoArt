@@ -3480,20 +3480,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_ItemsTilesList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList */ "./resources/js/components/ItemsTilesList.vue");
+/* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
+//
+//
 //
 //
 //
@@ -3612,7 +3602,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ItemsTilesList: _components_ItemsTilesList__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ItemsTilesList: _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
@@ -3622,24 +3612,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       itemsMode: 'my-items',
       infOpened: false,
       social: ["/assets/images/i-vk.svg", "/assets/images/i-facebook.svg", "/assets/images/i-twitter.svg", "/assets/images/i-instagram.svg"],
-      items: {
-        data: [],
-        meta: {}
-      }
+      items: [],
+      favorites: []
     };
   },
   computed: {
-    itemsList: function itemsList() {
-      return this.items.data;
-    },
     user: function user() {
       return this.$store.getters.user;
     }
   },
   created: function created() {
-    var url = new URL("".concat(window.location.origin, "/api/items"));
-    url.searchParams.set('page', this.page);
+    var url = new URL("".concat(window.location.origin, "/api/user-items"));
     this.loadMoreItems(url);
+    this.page++;
   },
   methods: {
     loadMoreItems: function loadMoreItems(url) {
@@ -3648,29 +3633,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.profileLoading = true;
       this.$http.get(url).then(function (response) {
         var data = response.data;
-        data.data.forEach(function (item) {
-          _this.items.data.push(item);
-        });
 
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
-
-          if (key == 'data') continue;
-          _this.items.meta[key] = value;
+        if (!_this.$isEmpty(data)) {
+          _this.items = data;
         }
-
-        _this.page++;
       })["catch"](function (error) {
         console.log(error);
       }).then(function () {
         _this.profileLoading = false;
       });
-
-      if (this.items.meta.last_page == this.items.meta.current_page + 1) {
-        this.outOfItems = true;
-      }
     },
     changeItems: function changeItems(mode) {
       if (this.itemsMode == mode) {
@@ -3783,6 +3754,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3798,7 +3774,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   data: function data() {
     return {
       auction: false,
+      sendLoading: false,
       formData: {
+        img: null,
         name: '',
         tags: [],
         description: '',
@@ -3815,7 +3793,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           type: 'text',
           placeholder: 'Введите название',
           minLength: 2,
-          maxLength: 32
+          maxLength: 32,
+          required: true
         },
         tags: {
           name: 'tags',
@@ -3825,8 +3804,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           "class": 'upload-item__field',
           type: 'tags',
           placeholder: 'Введите тег',
-          minLength: 2,
-          maxLength: 32
+          required: false
         },
         description: {
           name: 'description',
@@ -3837,32 +3815,82 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           type: 'textarea',
           placeholder: 'Введите описание для своей работы (необязательно)',
           minLength: 2,
-          maxLength: 32
+          maxLength: 32,
+          required: false
         }
       }
     };
   },
-  validations: function validations() {},
+  validations: function validations() {
+    var fieldsModel = {};
+
+    for (var _i = 0, _Object$entries = Object.entries(this.fields); _i < _Object$entries.length; _i++) {
+      var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+          key = _Object$entries$_i[0],
+          field = _Object$entries$_i[1];
+
+      fieldsModel[field.name] = {}; // if (field.type == 'tags') {
+      //   const tagsLength = (value) => !!value.length
+      //   fieldsModel[field.name].tagsLength = tagsLength
+      // }
+
+      if (field.required) {
+        fieldsModel[field.name].required = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"];
+      }
+
+      if (field.minLength) {
+        fieldsModel[field.name].minLength = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"];
+      }
+
+      if (field.maxLength) {
+        fieldsModel[field.name].maxLength = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"];
+      }
+    }
+
+    fieldsModel['price'] = {};
+    fieldsModel['price'].required = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"];
+    fieldsModel['img'] = {};
+    fieldsModel['img'].required = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"];
+    return {
+      formData: fieldsModel
+    };
+  },
+  created: function created() {
+    console.log(this.$v);
+  },
   methods: {
     setImage: function setImage(image) {
-      this.$set(this.formData, 'img', image);
+      this.formData.img = image; // this.$set(this.formData, 'img', image)
     },
     addTag: function addTag(tags, key) {
       this.formData[key] = tags;
     },
     upload: function upload() {
+      var _this = this;
+
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        alert("заполните данные");
+        return;
+      }
+
       var formData = new FormData();
 
-      for (var _i = 0, _Object$entries = Object.entries(this.formData); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
+      for (var _i2 = 0, _Object$entries2 = Object.entries(this.formData); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            value = _Object$entries2$_i[1];
 
         formData.append(key, value);
       }
 
+      this.sendLoading = true;
       this.$http.post('/api/item-load', formData).then(function (response) {
         var data = response.data;
+        _this.sendLoading = false;
+
+        _this.$router.push('/profile');
+
         console.log(data);
       });
     }
@@ -18159,7 +18187,7 @@ var render = function() {
                         _c("div", { staticClass: "profile-card__inf-items" }, [
                           _vm._v(
                             "\n              " +
-                              _vm._s(_vm.itemsList.length) +
+                              _vm._s(_vm.items.length) +
                               " работ\n            "
                           )
                         ]),
@@ -18170,7 +18198,7 @@ var render = function() {
                           [
                             _vm._v(
                               "\n              " +
-                                _vm._s(0) +
+                                _vm._s(_vm.favorites.length) +
                                 " добавили в избранное\n            "
                             )
                           ]
@@ -18265,9 +18293,11 @@ var render = function() {
                 _vm._v(" "),
                 _vm.itemsLoading
                   ? _c("div", { staticClass: "preloader" })
-                  : _c("items-tiles-list", {
-                      attrs: { tilesList: _vm.itemsList, outOfItems: true }
+                  : _vm.items.length
+                  ? _c("items-tiles-list", {
+                      attrs: { tilesList: _vm.items, outOfItems: true }
                     })
+                  : _c("div", {}, [_vm._v("У вас нет выложенных работ")])
               ],
               1
             )
@@ -18342,7 +18372,7 @@ var render = function() {
               ],
               staticClass: "upload-item__field upload-item__price",
               attrs: {
-                type: "text",
+                type: "number",
                 placeholder: "Введите цену",
                 disabled: _vm.formData.auction
               },
@@ -18395,7 +18425,11 @@ var render = function() {
               on: { click: _vm.upload }
             },
             [_vm._v("\n        Опубликовать\n      ")]
-          )
+          ),
+          _vm._v(" "),
+          _vm.sendLoading
+            ? _c("div", { staticClass: "preloader preloader_inline" })
+            : _vm._e()
         ],
         2
       )

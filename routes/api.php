@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('items','App\Http\Controllers\Items\ItemsController@itemsGet');
 Route::post('item-load','App\Http\Controllers\Items\ItemsController@itemLoad');
+Route::get('user-items','App\Http\Controllers\Items\ItemsController@userItems');
 Route::get('tags','App\Http\Controllers\Tags\TagsController@tags');
 
 /* Auth */

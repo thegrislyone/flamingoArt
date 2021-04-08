@@ -45,10 +45,10 @@
               }"
             >
               <div class="profile-card__inf-items">
-                {{ itemsList.length }} работ
+                {{ items.length }} работ
               </div>
               <div class="profile-card__inf-favorite">
-                {{ 0 }} добавили в избранное
+                {{ favorites.length }} добавили в избранное
               </div>
               <div class="profile-card__inf-social">
                 <div
@@ -99,10 +99,12 @@
         <div v-if="itemsLoading" class="preloader"></div>
 
         <items-tiles-list
-          v-else
-          :tilesList="itemsList"
+          v-else-if="items.length"
+          :tilesList="items"
           :outOfItems="true"
         />
+
+        <div v-else class="">У вас нет выложенных работ</div>
         
       </div>
     </div>
@@ -113,7 +115,7 @@
 </template>
 
 <script>
-import ItemsTilesList from '../components/ItemsTilesList'
+import ItemsTilesList from '../components/ItemsTilesList.vue'
 import Loader from '../components/Loader.vue'
 
 export default {
@@ -135,26 +137,23 @@ export default {
         "/assets/images/i-twitter.svg",
         "/assets/images/i-instagram.svg"
       ],
-      items: {
-        data: [],
-        meta: {}
-      },
+      items: [],
+      favorites: []
     }
   },
   computed: {
-    itemsList() {
-      return this.items.data
-    },
     user() {
       return this.$store.getters.user
     }
   },
   created() {
 
-    const url = new URL(`${window.location.origin}/api/items`)
-    url.searchParams.set('page', this.page)
+    const url = new URL(`${window.location.origin}/api/user-items`)
 
     this.loadMoreItems(url)
+    
+    this.page++
+
   },
   methods: {
     loadMoreItems(url) {
@@ -165,25 +164,15 @@ export default {
         .then(response => {
           const data = response.data
 
-          data.data.forEach((item) => {
-            this.items.data.push(item)
-          })
-
-          for (const [key, value] of Object.entries(data)) {
-            if (key == 'data') continue
-            this.items.meta[key] = value
+          if (!this.$isEmpty(data)) {
+            this.items = data
           }
-
-          this.page++
         }).catch((error) => {
           console.log(error)
         }).then(() => {
           this.profileLoading = false
         })
 
-        if (this.items.meta.last_page == this.items.meta.current_page + 1) {
-          this.outOfItems = true
-        }
     },
     changeItems(mode) {
 
