@@ -599,6 +599,7 @@ h6 {}
   align-items: center;
   cursor: default;
   flex-shrink: 0;
+  padding: 0 24px;
   gap: 48px;
 }
 .header__feed {
