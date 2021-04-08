@@ -116,45 +116,7 @@
     flex-grow: 1;
   }
   /* PROFILE */
-  .profile-block__profile {
-    flex-shrink: 0;
-    width: auto;
-  }
-  .profile-block {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 32px;
-  }
-  .profile-card {
-    padding: 25px;
-    margin-top: -100px;
-    width: 340px;
-    backdrop-filter: blur(300px);
-    background-color: rgba(18, 18, 18, 0.4);
-  }
-  .profile-card_no-banner {
-    margin-top: 0;
-  }
-  .profile-card__avatar-block {
-    order: 0;
-    background-color: transparent;
-  }
-  .profile-card__edit,
-  .profile-card__nickname {
-    order: 1;
-  }
-  .profile-card__information {
-    order: 2;
-  }
-  .profile-card__inf-wrd {
-    display: none;
-  }
-  .profile-card__information-block {
-    height: auto;
-  }
-  .profile-card__inf-social {
-    margin-top: 25px;
-  }
+  
 }
 
 /*------------------------------------*\
@@ -224,12 +186,56 @@
 \*------------------------------------*/
 
 @media (min-width: 1366px) {
+  /* PROFILE */
+  .profile-block__profile {
+    flex-shrink: 0;
+    width: auto;
+  }
+  .profile-block {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .profile-card {
+    padding: 25px;
+    margin-top: -100px;
+    width: 340px;
+    backdrop-filter: blur(300px);
+    background-color: rgba(18, 18, 18, 0.4);
+  }
+  .profile-card_no-banner {
+    margin-top: 0;
+  }
+  .profile-card__avatar-block {
+    order: 0;
+    background-color: transparent;
+  }
+  .profile-card__edit,
+  .profile-card__nickname {
+    order: 1;
+  }
+  .profile-card__information {
+    order: 2;
+  }
+  .profile-card__inf-wrd {
+    display: none;
+  }
+  .profile-card__information-block {
+    height: auto;
+  }
+  .profile-card__inf-social {
+    margin-top: 25px;
+  }
+  .profile .tile {
+    width: calc(32% - 2px);
+  }
   /* .upload-item__block {
     width: 1136;
   } */
   /* .upload-item__block > * {
     flex-grow: 1;
   } */
+  /* UPLOAD-ITEM */
   .upload-item {
     padding: 0;
   }
@@ -287,6 +293,10 @@
   .item-list__tiles {
     grid-template-columns: repeat(6, 1fr);
   }
+  /* PROFILE */
+  .profile .tile {
+    width: calc(25% - 12px);
+  } 
   /* UPLOAD-ITEM */
   .upload__headline {
     color: #696969;
