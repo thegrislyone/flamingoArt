@@ -18,6 +18,8 @@ class TagsModel extends Model
         'popularity'
     ];
 
+    protected $guarded = [];
+
     static public function mostPopulate($tagsAmount) {
         
         return $tagsAmount;

@@ -24,19 +24,26 @@ const routes = [
   },
   {
     path: '/profile',
+    name: 'profile',
     meta: { requiresAuth: true },
     component: Profile,
+  },
+  {
+    path: '/item',
+    redirect: { name: 'index' }
+  },
+  {
+    path: '/item/:item_id',
+    name: 'item',
+    component: Item,
   },
   {
     path: '/contact',
     component: Contacts
   },
   {
-    path: '/items_list/:id',
-    component: Item
-  },
-  {
     path: '/upload-item',
+    name: 'upload-item',
     meta: { requiresAuth: true },
     component: UploadItem
   },

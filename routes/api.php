@@ -18,9 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+/* Items */
+
 Route::get('items','App\Http\Controllers\Items\ItemsController@itemsGet');
 Route::post('item-load','App\Http\Controllers\Items\ItemsController@itemLoad');
 Route::get('user-items','App\Http\Controllers\Items\ItemsController@userItems');
+Route::get('single-item','App\Http\Controllers\Items\ItemsController@getSingleItem');
+
+/* Tags */
+
 Route::get('tags','App\Http\Controllers\Tags\TagsController@tags');
 
 /* Auth */

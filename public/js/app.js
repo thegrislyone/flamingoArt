@@ -2042,11 +2042,12 @@ __webpack_require__.r(__webpack_exports__);
       reader.addEventListener("load", function () {
         var img = new Image();
         img.addEventListener('load', function () {
-          // if (this.width >= 1000 && this.height >= 1000) {
-          vm.imgSrc = reader.result;
-          vm.$emit('fileUpload', file); // } else {
-          //   alert('Изображение не соответствует минимальным размерам')
-          // }
+          if (this.width >= 1000 && this.height >= 1000) {
+            vm.imgSrc = reader.result;
+            vm.$emit('fileUpload', file);
+          } else {
+            alert('Изображение не соответствует минимальным размерам');
+          }
         });
         img.src = reader.result; // let data = new FormData()
         // data.append("file", file)
@@ -2408,6 +2409,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2506,9 +2508,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
+    id: Number,
     name: String,
     price: Number,
     description: String,
@@ -2627,6 +2633,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ItemTile_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemTile.vue */ "./resources/js/components/ItemTile.vue");
 /* harmony import */ var _Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Loader.vue */ "./resources/js/components/Loader.vue");
+//
 //
 //
 //
@@ -3309,13 +3316,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      loading: false
+    };
+  },
   computed: {
     id: function id() {
-      return this.$route.params.id;
+      return this.$route.params.item_id;
     }
-  }
+  },
+  created: function created() {
+    this.loading = true;
+    this.$http.get('/api/single-item?item_id=' + this.id);
+  },
+  methods: {}
 });
 
 /***/ }),
@@ -17169,6 +17185,7 @@ var render = function() {
           { staticClass: "search-short" },
           [
             _c("img", {
+              staticClass: "pointer",
               attrs: { src: "/assets/images/i-search.svg" },
               on: {
                 click: function($event) {
@@ -17285,7 +17302,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "header__menu-block" }, [
-      _c("div", { staticClass: "menu-short" }, [
+      _c("div", { staticClass: "menu-short pointer" }, [
         _c("div"),
         _vm._v(" "),
         _c("div"),
@@ -17334,13 +17351,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "tile" }, [
-    _c("div", { staticClass: "tile__wrp" }, [
-      _c("div", { staticClass: "tile__thumbnail" }, [
-        _c("img", { attrs: { src: _vm.img } })
+  return _c(
+    "div",
+    { staticClass: "tile" },
+    [
+      _c("router-link", { attrs: { to: "/item/" + _vm.id } }, [
+        _c("div", { staticClass: "tile__wrp" }, [
+          _c("div", { staticClass: "tile__thumbnail" }, [
+            _c("img", { attrs: { src: _vm.img } })
+          ])
+        ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -17429,6 +17453,7 @@ var render = function() {
             return _c("item-tile", {
               key: index,
               attrs: {
+                id: item.id,
                 name: item.name,
                 price: item.price,
                 description: item.description,
@@ -18028,17 +18053,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("h1", [_vm._v("товар №" + _vm._s(_vm.id))]),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/items_list" } }, [
-        _vm._v("обратно в ленту товаров")
-      ])
-    ],
-    1
-  )
+  return _c("div", { staticClass: "item" })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37865,18 +37880,26 @@ var routes = [// {
   component: _views_ItemsList_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/profile',
+  name: 'profile',
   meta: {
     requiresAuth: true
   },
   component: _views_Profile_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
+  path: '/item',
+  redirect: {
+    name: 'index'
+  }
+}, {
+  path: '/item/:item_id',
+  name: 'item',
+  component: _views_Item_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+}, {
   path: '/contact',
   component: _views_Contacts_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
-  path: '/items_list/:id',
-  component: _views_Item_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
-}, {
   path: '/upload-item',
+  name: 'upload-item',
   meta: {
     requiresAuth: true
   },

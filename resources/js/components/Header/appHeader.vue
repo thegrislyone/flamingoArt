@@ -19,7 +19,7 @@
     </modal>
 
     <div class="header__menu-block">
-      <div class="menu-short">
+      <div class="menu-short pointer">
         <div></div>
         <div></div>
         <div></div>
@@ -47,6 +47,7 @@
     <div class="header__search-block">
       <div class="search-short">
         <img 
+          class="pointer"
           src="/assets/images/i-search.svg"
           @click="searchOpened = !searchOpened"
         >

@@ -7,6 +7,7 @@
       <item-tile
         v-for="(item, index) in tilesList"
         :key="index"
+        :id="item.id"
         :name="item.name"
         :price="item.price"
         :description="item.description"

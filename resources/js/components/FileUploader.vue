@@ -121,12 +121,12 @@ export default {
 
         let img = new Image()
         img.addEventListener('load', function() {
-          // if (this.width >= 1000 && this.height >= 1000) {
+          if (this.width >= 1000 && this.height >= 1000) {
             vm.imgSrc = reader.result
             vm.$emit('fileUpload', file)
-          // } else {
-          //   alert('Изображение не соответствует минимальным размерам')
-          // }
+          } else {
+            alert('Изображение не соответствует минимальным размерам')
+          }
           
         })
 
