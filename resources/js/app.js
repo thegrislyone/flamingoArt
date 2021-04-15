@@ -9,6 +9,7 @@ import Vuelidate from 'vuelidate'
 import vueDebounce from 'vue-debounce'
 import vClickOutside from 'v-click-outside'
 import VueCookies from 'vue-cookies'
+import VueLazyload from 'vue-lazyload'
 
 //properties
 import { empty, exist } from './properties/'
@@ -38,6 +39,12 @@ Vue.use(vueDebounce)
 Vue.use(VModal)
 Vue.use(vClickOutside)
 Vue.use(VueCookies)
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    error: 'dist/error.png',
+    loading: '/assets/images/loader.gif',
+    attempt: 1
+  })
 
 const app = new Vue({
     el: '#app',

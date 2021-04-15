@@ -18,7 +18,7 @@
     </div>
     <div
       v-if="!outOfItems"
-      class="preloader"
+      class="preloader item-list__preloader"
     ></div>
   </div>
 </template>

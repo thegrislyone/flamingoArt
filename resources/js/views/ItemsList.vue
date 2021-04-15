@@ -90,7 +90,7 @@ export default {
           this.page++
         })
 
-        if (this.items.meta.last_page == this.items.meta.current_page + 1) {
+        if (this.items.meta.last_page <= this.items.meta.current_page + 1) {
           this.outOfItems = true
         }
     },

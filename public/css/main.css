@@ -348,6 +348,9 @@ h6 {}
 .pointer {
   cursor: pointer;
 }
+img[lazy=loading] {
+  /*your style here*/
+}
 
 /* tags-input */
 
@@ -690,6 +693,9 @@ h6 {}
 
 .item-list {
   padding: 15px 32px;
+}
+.item-list__preloader {
+  margin: 10px auto;
 }
 .item-list__tiles {
   /* padding: 15px 32px; */

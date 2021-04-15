@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class ItemsController extends Controller
 {
     public function itemsGet() {
-        $items = ItemsModel::paginate(15);
+        $items = ItemsModel::paginate(30);
         return response()->json($items, 200);
     }
 
