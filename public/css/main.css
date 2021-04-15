@@ -195,6 +195,28 @@ body {
   margin-top: 64px;
 }
 
+.cookie-agreement {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  left: 0;
+  right: 0;
+  padding: 24px 40px 24px 24px;
+  gap: 16px;
+  min-width: 320px;
+  align-items: center;
+  background-color: #0A0A0A;
+}
+.cookie-agreement__text {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 140%;
+  letter-spacing: -0.003em;
+  color: #696969;
+}
+
 /* COMPONENTS */
 
 input[type=file] {
@@ -326,7 +348,7 @@ h6 {}
 }
 .btn_no-bg {
   background-color: transparent;
-  color: #fff;
+  color: #B4B4B4;
 }
 .arrow {
   display: block;

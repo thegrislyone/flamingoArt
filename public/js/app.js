@@ -42045,7 +42045,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: function data() {
     return {
       notification: {},
-      theme: this.$cookies.get('theme')
+      theme: this.$cookies.get('theme'),
+      cookieAgreementShow: false
     };
   },
   created: function created() {
@@ -42054,12 +42055,20 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.theme = this.$cookies.get('theme');
     }
 
+    if (!this.$cookies.get('cookie_agreement_set')) {
+      this.cookieAgreementShow = true;
+    }
+
     window.addEventListener('resize', this.onResize);
   },
   mounted: function mounted() {
     document.querySelector('#app').classList.add('app_' + this.theme);
   },
   methods: {
+    cookieAgreementClose: function cookieAgreementClose() {
+      this.$cookies.set('cookie_agreement_set', 1);
+      this.cookieAgreementShow = false;
+    },
     changeTheme: function changeTheme(theme) {
       // delete old class
       document.querySelector('#app').classList.remove('app_' + this.theme); // set new class

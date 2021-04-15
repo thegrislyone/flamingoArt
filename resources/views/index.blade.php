@@ -23,9 +23,24 @@
       
       <router-view :key="$route.path"></router-view>
 
+        <transition name="fade">
+          <div 
+            v-if="cookieAgreementShow"
+            class="cookie-agreement"
+          >
+            <span class="cookie-agreement__text">Мы используем файлы cookies, чтобы вам было удобнее пользоваться сайтом. Оставаясь на сайте, вы соглашаетесь с этой технологией и <a href="#"><u>политикой конфиденциальности</u></a></span>
+            <div class="cookie-agreement__buttons">
+              <button class="btn" @click="cookieAgreementClose">Ок</button>
+              <button class="btn btn_no-bg">Подробнее</button>
+            </div>
+          </div>
+      </transition>
+
+      
       <notification
         :data="notification"
-      />
+      ></notification>
+      
 
     </div>
     {{-- <app-footer></app-footer> --}}

@@ -57,7 +57,8 @@ const app = new Vue({
     data() {
         return {
             notification: {},
-            theme: this.$cookies.get('theme')
+            theme: this.$cookies.get('theme'),
+            cookieAgreementShow: false
         }
     },
     created() {
@@ -67,6 +68,10 @@ const app = new Vue({
             this.theme = this.$cookies.get('theme')
         }
 
+        if (!this.$cookies.get('cookie_agreement_set')) {
+            this.cookieAgreementShow = true
+        }
+
         window.addEventListener('resize', this.onResize)
 
     },
@@ -74,6 +79,10 @@ const app = new Vue({
         document.querySelector('#app').classList.add('app_' + this.theme)
     },
     methods: {
+        cookieAgreementClose() {
+            this.$cookies.set('cookie_agreement_set', 1)
+            this.cookieAgreementShow = false
+        },
         changeTheme(theme) {
             // delete old class
             document.querySelector('#app').classList.remove('app_' + this.theme)
