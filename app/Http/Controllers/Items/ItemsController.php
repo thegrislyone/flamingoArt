@@ -73,7 +73,7 @@ class ItemsController extends Controller
 
         $itemName = $request['name'];
         $itemTags = $request['tags'];
-        $itemDescription = $request['description'] || null;
+        $itemDescription = $request['description'];
         $itemsPrice = intval($request['price']);
         $isAuction = $request['auction'];
 

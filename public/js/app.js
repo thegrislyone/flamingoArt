@@ -5090,6 +5090,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6508,22 +6509,121 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loading: false,
-      item: null
+      item: null,
+      slider: null
     };
+  },
+  watch: {
+    slidesAmount: function slidesAmount() {
+      this.slider.destroy(true, true);
+      this.sliderInit();
+    }
   },
   computed: {
     id: function id() {
       return this.$route.params.item_id;
+    },
+    windowWidth: function windowWidth() {
+      return this.$store.getters.windowWidth;
+    },
+    slidesAmount: function slidesAmount() {
+      if (this.windowWidth < 640) return 2;else if (this.windowWidth > 640 && this.windowWidth < 960) return 3;else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4;else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5;else if (this.windowWidth > 1440) return 6;
     }
   },
   created: function created() {
@@ -6532,13 +6632,31 @@ __webpack_require__.r(__webpack_exports__);
     this.loading = true;
     this.$http.get('/api/single-item?item_id=' + this.id).then(function (response) {
       var data = response.data;
+      console.log(data);
 
       if (data.errors) {} else {
         _this.item = data;
       }
+
+      _this.loading = false;
+    }).then(function () {
+      _this.sliderInit();
     });
   },
-  methods: {}
+  mounted: function mounted() {},
+  methods: {
+    sliderInit: function sliderInit() {
+      this.slider = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.item__author-items', {
+        direction: 'horizontal',
+        spaceBetween: 16,
+        slidesPerView: this.slidesAmount,
+        freeMode: true,
+        loop: false,
+        observer: true
+      });
+      this.slider.init();
+    }
+  }
 });
 
 /***/ }),
@@ -21749,7 +21867,7 @@ var render = function() {
                 ]
               )
             ])
-          : _c("div", { key: "loaded" }, [
+          : _c("div", { key: "loaded", staticClass: "upload__loaded-block" }, [
               _c("img", {
                 staticClass: "upload__loaded-img",
                 attrs: { src: _vm.imgSrc }
@@ -23143,7 +23261,117 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "item" })
+  return _c("div", { staticClass: "item" }, [
+    _vm.loading
+      ? _c("div", { staticClass: "preloader" })
+      : _c("div", { staticClass: "item__wrapper" }, [
+          _c("div", { staticClass: "item__block" }, [
+            _c("div", { staticClass: "item__thumbnail-block" }, [
+              _c("img", {
+                staticClass: "item__thumbnail",
+                attrs: { src: _vm.item.thumbnail }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item__information-block" }, [
+              _c("div", { staticClass: "item__information" }, [
+                _c("h1", { staticClass: "item__name" }, [
+                  _vm._v(_vm._s(_vm.item.name))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__description" }, [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.item.description) +
+                      "\n          "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "item__tags" },
+                  _vm._l(_vm.item.tags, function(tag) {
+                    return _c(
+                      "span",
+                      { key: tag.id, staticClass: "item__tag pointer" },
+                      [
+                        _vm._v(
+                          "\n              #" +
+                            _vm._s(tag.name) +
+                            "\n            "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "item__actions" }, [
+                _c("div", { staticClass: "item__to-favorite pointer" }, [
+                  _vm._v("\n            В избранное\n          ")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__buy" }, [
+                  _c("button", { staticClass: "btn" }, [_vm._v("Купить")]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "item__price" }, [
+                    _vm._v(_vm._s(_vm.item.price) + " ₽")
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "item__author-more" }, [
+            _c("div", { staticClass: "item__author" }, [
+              _vm.item.author.avatar
+                ? _c("img", {
+                    staticClass: "item__author-avatar",
+                    attrs: { src: _vm.item.author.avatar }
+                  })
+                : _c("img", {
+                    staticClass: "item__author-avatar",
+                    attrs: { src: "/assets/images/unknown-user.png" }
+                  }),
+              _vm._v(" "),
+              _c("span", { staticClass: "item__author-nickname" }, [
+                _vm._v(_vm._s(_vm.item.author.login))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "item__more-from-author" }, [
+                _vm._v("Ещё от автора:")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item__author-items swiper-container" }, [
+              _c(
+                "div",
+                { staticClass: "item__swiper swiper-wrapper" },
+                _vm._l(_vm.item.author.items, function(item) {
+                  return _c(
+                    "div",
+                    {
+                      key: item.id,
+                      staticClass: "item__author-item swiper-slide"
+                    },
+                    [
+                      _c("router-link", { attrs: { to: "/item/" + item.id } }, [
+                        _c("img", {
+                          staticClass: "item__author-item-img",
+                          attrs: { src: item.thumbnail, alt: "" }
+                        })
+                      ])
+                    ],
+                    1
+                  )
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

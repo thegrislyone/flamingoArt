@@ -50,6 +50,7 @@
       <div 
         v-else 
         key="loaded"
+        class="upload__loaded-block"
       >
         <img 
           :src="imgSrc"
