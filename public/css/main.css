@@ -352,6 +352,45 @@ img[lazy=loading] {
   /*your style here*/
 }
 
+/* notification */
+.notification {
+  display: block;
+  position: fixed;
+  bottom: -100px;
+  right: 15px;
+  background-color: #121212;
+  padding: 20px 32px 20px 26px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  font-size: 14px;
+  transition: bottom .35s;
+  transition-timing-function: cubic-bezier(.42,.97,.52,1.49);
+}
+.notification_show {
+  bottom: 15px;
+}
+.notification__close {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  border-radius: 11px;
+  background-color: #343434;
+  background-image: url(../assets/images/i-notification_close.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.notification__status-icon {
+  margin-right: 18px;
+}
+.notification__text_success {
+  color: #17B556;
+}
+.notification__text_error {
+  color: #EC3838;
+}
+
 /* tags-input */
 
 .tags-input {}

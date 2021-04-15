@@ -20,7 +20,13 @@
   <div id="app">
     <app-header></app-header>
     <div class="main">
+      
       <router-view :key="$route.path"></router-view>
+
+      <notification
+        :data="notification"
+      />
+
     </div>
     {{-- <app-footer></app-footer> --}}
   </div>

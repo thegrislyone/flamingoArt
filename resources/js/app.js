@@ -10,6 +10,7 @@ import vueDebounce from 'vue-debounce'
 import vClickOutside from 'v-click-outside'
 import VueCookies from 'vue-cookies'
 import VueLazyload from 'vue-lazyload'
+import { createPopper } from '@popperjs/core'
 
 //properties
 import { empty, exist } from './properties/'
@@ -20,6 +21,7 @@ import { capitalize } from './filters/capitalize.filter'
 //common components
 import AppHeader from './components/Header/AppHeader.vue'
 import AppFooter from './components/Footer/AppFooter.vue'
+import Notification from './components/Notification.vue'
 
 //components
 import VModal from 'vue-js-modal'
@@ -28,6 +30,7 @@ import VModal from 'vue-js-modal'
 Vue.prototype.$http = axios
 Vue.prototype.$isEmpty = empty
 Vue.prototype.$isExist = exist
+Vue.prototype.$createPopper = createPopper
 
 //filters
 Vue.filter('capitalize', capitalize)
@@ -48,11 +51,12 @@ Vue.use(VueLazyload, {
 
 const app = new Vue({
     el: '#app',
-    components: { AppHeader, AppFooter },
+    components: { AppHeader, AppFooter, Notification },
     router,
     store,
     data() {
         return {
+            notification: {},
             theme: this.$cookies.get('theme')
         }
     },
