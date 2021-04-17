@@ -23092,7 +23092,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "tags-input" }, [
     _c(
-      "span",
+      "div",
       { staticClass: "tags-input__tags", on: { click: _vm.inputFocus } },
       [
         _vm._l(_vm.tags, function(tag, key) {

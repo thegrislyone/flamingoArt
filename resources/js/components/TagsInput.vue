@@ -1,6 +1,6 @@
 <template>
   <div class="tags-input">
-    <span class="tags-input__tags" @click="inputFocus">
+    <div class="tags-input__tags" @click="inputFocus">
       <span 
         v-for="(tag, key) in tags"
         :key="key"
@@ -16,7 +16,7 @@
         v-model="tag"
       >
 
-    </span>
+    </div>
 
     <div class="tags-input__popular">
       <h4>Варианты тегов:</h4>
