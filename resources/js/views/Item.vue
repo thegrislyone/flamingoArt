@@ -50,20 +50,28 @@
       <div class="item__author-more">
         <div class="item__author">
 
-          <img 
-            v-if="item.author.avatar"
-            class="item__author-avatar"
-            :src="item.author.avatar"
-          >
-          <img 
-            v-else 
-            class="item__author-avatar"
-            src="/assets/images/unknown-user.png"
-          >
+          <router-link 
+            :to="'/profile/' + item.author.id"
+            class="item__author-nickname-block pointer"
+           >
 
-          <span class="item__author-nickname">{{ item.author.login }}</span>
+            <img 
+              v-if="item.author.avatar"
+              class="item__author-avatar"
+              :src="item.author.avatar"
+            >
+            <img 
+              v-else 
+              class="item__author-avatar"
+              src="/assets/images/unknown-user.png"
+            >
+
+            <span class="item__author-nickname">{{ item.author.login }}</span>
+
+          </router-link>
 
           <span class="item__more-from-author">Ещё от автора:</span>
+          
 
         </div>
 

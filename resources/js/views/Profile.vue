@@ -63,10 +63,17 @@
 
           <div class="profile-card__edit">
             <button 
+              v-if="!isForeign"
               class="btn profile-card__edit-button"
               @click="$router.push('/upload-item')"
             >
               Выложить работу
+            </button>
+            <button
+              v-else
+              class="btn profile-card__edit-button"
+            >
+              Написать
             </button>
           </div>
 
@@ -138,17 +145,53 @@ export default {
         "/assets/images/i-instagram.svg"
       ],
       items: [],
-      favorites: []
+      favorites: [],
+
+      userObject: null
+
     }
   },
   computed: {
-    user() {
-      return this.$store.getters.user
+    isForeign() {
+      return !!this.$route.params.author_id
+    },
+    authorId() {
+      return this.$route.params.author_id
+    },
+    user: {
+      get() {
+        return this.userObject
+      },
+      set(value) {
+        this.userObject = value
+      }
     }
   },
   created() {
 
+    if (this.isForeign) {
+
+      this.profileLoading = true
+
+      this.$http.get('/api/auth/get-author?author_id=' + this.authorId)
+        .then(response => {
+          const data = response.data
+
+          this.user = data
+        })
+        .then(() => {
+          this.profileLoading = false
+        })
+    } else {
+      this.user = this.$store.getters.user
+    }
+
     const url = new URL(`${window.location.origin}/api/user-items`)
+
+    if (this.isForeign) {
+      url.searchParams.set('author_id', this.authorId)
+    }
+    
 
     this.loadMoreItems(url)
     
@@ -158,7 +201,7 @@ export default {
   methods: {
     loadMoreItems(url) {
 
-      this.profileLoading = true
+      this.itemsLoading = true
       
       this.$http.get(url)
         .then(response => {
@@ -170,7 +213,10 @@ export default {
         }).catch((error) => {
           console.log(error)
         }).then(() => {
-          this.profileLoading = false
+          if (!this.isForeign) {
+            this.profileLoading = false
+          }
+          this.itemsLoading = false
         })
 
     },

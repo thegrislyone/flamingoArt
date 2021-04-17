@@ -29,6 +29,11 @@ const routes = [
     component: Profile,
   },
   {
+    path: '/profile/:author_id',
+    name: 'profile-foreign',
+    component: Profile,
+  },
+  {
     path: '/item',
     redirect: { name: 'index' }
   },

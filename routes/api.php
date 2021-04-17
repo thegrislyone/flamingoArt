@@ -39,3 +39,7 @@ Route::post('auth/data-check','App\Http\Controllers\Auth\AuthController@unicData
 
 Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
 Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
+
+/* Author */
+
+Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor');

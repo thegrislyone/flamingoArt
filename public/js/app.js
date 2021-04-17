@@ -6609,6 +6609,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -6948,6 +6956,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6963,34 +6978,69 @@ __webpack_require__.r(__webpack_exports__);
       infOpened: false,
       social: ["/assets/images/i-vk.svg", "/assets/images/i-facebook.svg", "/assets/images/i-twitter.svg", "/assets/images/i-instagram.svg"],
       items: [],
-      favorites: []
+      favorites: [],
+      userObject: null
     };
   },
   computed: {
-    user: function user() {
-      return this.$store.getters.user;
+    isForeign: function isForeign() {
+      return !!this.$route.params.author_id;
+    },
+    authorId: function authorId() {
+      return this.$route.params.author_id;
+    },
+    user: {
+      get: function get() {
+        return this.userObject;
+      },
+      set: function set(value) {
+        this.userObject = value;
+      }
     }
   },
   created: function created() {
+    var _this = this;
+
+    if (this.isForeign) {
+      this.profileLoading = true;
+      this.$http.get('/api/auth/get-author?author_id=' + this.authorId).then(function (response) {
+        var data = response.data;
+        _this.user = data;
+      }).then(function () {
+        _this.profileLoading = false;
+      });
+    } else {
+      this.user = this.$store.getters.user;
+    }
+
     var url = new URL("".concat(window.location.origin, "/api/user-items"));
+
+    if (this.isForeign) {
+      url.searchParams.set('author_id', this.authorId);
+    }
+
     this.loadMoreItems(url);
     this.page++;
   },
   methods: {
     loadMoreItems: function loadMoreItems(url) {
-      var _this = this;
+      var _this2 = this;
 
-      this.profileLoading = true;
+      this.itemsLoading = true;
       this.$http.get(url).then(function (response) {
         var data = response.data;
 
-        if (!_this.$isEmpty(data)) {
-          _this.items = data;
+        if (!_this2.$isEmpty(data)) {
+          _this2.items = data;
         }
       })["catch"](function (error) {
         console.log(error);
       }).then(function () {
-        _this.profileLoading = false;
+        if (!_this2.isForeign) {
+          _this2.profileLoading = false;
+        }
+
+        _this2.itemsLoading = false;
       });
     },
     changeItems: function changeItems(mode) {
@@ -23351,25 +23401,39 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "item__author-more" }, [
-            _c("div", { staticClass: "item__author" }, [
-              _vm.item.author.avatar
-                ? _c("img", {
-                    staticClass: "item__author-avatar",
-                    attrs: { src: _vm.item.author.avatar }
-                  })
-                : _c("img", {
-                    staticClass: "item__author-avatar",
-                    attrs: { src: "/assets/images/unknown-user.png" }
-                  }),
-              _vm._v(" "),
-              _c("span", { staticClass: "item__author-nickname" }, [
-                _vm._v(_vm._s(_vm.item.author.login))
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "item__more-from-author" }, [
-                _vm._v("Ещё от автора:")
-              ])
-            ]),
+            _c(
+              "div",
+              { staticClass: "item__author" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "item__author-nickname-block pointer",
+                    attrs: { to: "/profile/" + _vm.item.author.id }
+                  },
+                  [
+                    _vm.item.author.avatar
+                      ? _c("img", {
+                          staticClass: "item__author-avatar",
+                          attrs: { src: _vm.item.author.avatar }
+                        })
+                      : _c("img", {
+                          staticClass: "item__author-avatar",
+                          attrs: { src: "/assets/images/unknown-user.png" }
+                        }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "item__author-nickname" }, [
+                      _vm._v(_vm._s(_vm.item.author.login))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "item__more-from-author" }, [
+                  _vm._v("Ещё от автора:")
+                ])
+              ],
+              1
+            ),
             _vm._v(" "),
             _c("div", { staticClass: "item__author-items swiper-container" }, [
               _c(
@@ -23579,18 +23643,24 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "profile-card__edit" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn profile-card__edit-button",
-                        on: {
-                          click: function($event) {
-                            return _vm.$router.push("/upload-item")
-                          }
-                        }
-                      },
-                      [_vm._v("\n            Выложить работу\n          ")]
-                    )
+                    !_vm.isForeign
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn profile-card__edit-button",
+                            on: {
+                              click: function($event) {
+                                return _vm.$router.push("/upload-item")
+                              }
+                            }
+                          },
+                          [_vm._v("\n            Выложить работу\n          ")]
+                        )
+                      : _c(
+                          "button",
+                          { staticClass: "btn profile-card__edit-button" },
+                          [_vm._v("\n            Написать\n          ")]
+                        )
                   ])
                 ]
               )
@@ -43322,6 +43392,10 @@ var routes = [// {
   meta: {
     requiresAuth: true
   },
+  component: _views_Profile_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+}, {
+  path: '/profile/:author_id',
+  name: 'profile-foreign',
   component: _views_Profile_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
   path: '/item',

@@ -31,6 +31,14 @@ Route::get('/profile', function () {
     return view('index');
 });
 
+Route::get('/profile/{author_id}', function ($author_id = '') {
+    if (Auth::check()) {
+        $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        return view('index')->with('userInfo', $userInfo);
+    }
+    return view('index');
+});
+
 Route::get('/upload-item', function () {
     if (Auth::check()) {
         $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');

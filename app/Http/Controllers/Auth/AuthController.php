@@ -31,6 +31,16 @@ class AuthController extends Controller
 
     }
 
+    public function getAuthor(Request $request) {
+
+        $authorId = $request['author_id'];
+
+        $author = User::find($authorId);
+
+        return response()->json($author, 200);
+
+    }
+
     public function login($credentials) {
 
         if (Auth::attempt($credentials, true)) {
