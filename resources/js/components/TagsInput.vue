@@ -4,7 +4,7 @@
       <span 
         v-for="(tag, key) in tags"
         :key="key"
-        class="tags-input__tag"
+        class="tags-input__tag no-select"
       >
         {{ '#' + tag }}
       </span>
@@ -34,7 +34,7 @@
             :key="tag.id"
             class="tags-input__popular-tag"
           >
-            <span class="pointer" @click="addTag(tag.name, key)">{{ '#' + tag.name }}</span>
+            <span class="pointer no-select" @click="addTag(tag.name, key)">{{ '#' + tag.name }}</span>
           </span>
         </div>
       </template>
@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       popularTags: [],
+      // popularTagsChoosen: [],
       tag: '',
       tags: []
     }
@@ -72,6 +73,7 @@ export default {
       if (tag) {
         this.tags.push(tag)
         this.popularTags = this.popularTags.slice(0, key).concat(this.popularTags.slice(key + 1))
+        // this.popularTagsChoosen.push(tag)
       } else {
         this.tags.push(this.tag)
         this.tag = ''
@@ -84,6 +86,14 @@ export default {
       if (event.key == 'Backspace' && this.tag) {
         return
       }
+
+      // if (this.popularTagsChoosen.find((tag) => {
+      //   if (tag.name == this.tags[this.tags.length - 1]) {
+      //     return true
+      //   }
+      // })) {
+      //   this.popularTags.push(this.tags[this.tags.length - 1])
+      // }
 
       this.tags.pop()
       this.$emit('add-tag', this.tags)

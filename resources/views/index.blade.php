@@ -38,6 +38,7 @@
 
       
       <notification
+        ref="notification"
         :data="notification"
       ></notification>
       

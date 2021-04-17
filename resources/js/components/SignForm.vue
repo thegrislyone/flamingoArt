@@ -278,11 +278,11 @@ export default {
             const data = response.data
 
             if (data.success) {
-              alert(data.success)
+              this.$root.showNotification(data.success, 'success')
               this.$store.commit('setUser', data.user)
               this.$modal.hide('signForm')
             } else if (data.errors || data.email) {
-              alert(data.errors[0])
+              this.$root.showNotification(data.errors[0], 'error')
             }
           })
           .catch(error => {

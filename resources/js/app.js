@@ -83,6 +83,16 @@ const app = new Vue({
             this.$cookies.set('cookie_agreement_set', 1)
             this.cookieAgreementShow = false
         },
+        showNotification(title, status) {
+            this.notification = {
+                title: title,
+                status: status
+            }
+            this.$refs.notification.showPopper()
+        },
+        deleteNotification() {
+            this.notification = {}
+        },
         changeTheme(theme) {
             // delete old class
             document.querySelector('#app').classList.remove('app_' + this.theme)

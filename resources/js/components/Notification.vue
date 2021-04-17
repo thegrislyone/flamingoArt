@@ -51,9 +51,6 @@ export default {
     }
   },
   watch: {
-    data() {
-      this.show = true
-    },
     show() {
 
       if (this.show == true) {
@@ -73,6 +70,7 @@ export default {
     },
     hidePopper() {
       this.show = false
+      this.$root.deleteNotification()
     },
     enter() {
       if (this.show == true) {

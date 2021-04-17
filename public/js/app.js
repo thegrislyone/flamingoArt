@@ -5131,7 +5131,7 @@ __webpack_require__.r(__webpack_exports__);
       var file = outsideFile ? outsideFile : event.target.files[0];
 
       if (!file.type.includes('image')) {
-        alert('это не изображение');
+        this.$root.showNotification('Неверный формат файла', 'error');
         return;
       }
 
@@ -5144,7 +5144,7 @@ __webpack_require__.r(__webpack_exports__);
             vm.imgSrc = reader.result;
             vm.$emit('fileUpload', file);
           } else {
-            alert('Изображение не соответствует минимальным размерам');
+            vm.$root.showNotification('Изображение не соответствует минимальным размерам', 'error');
           }
         });
         img.src = reader.result; // let data = new FormData()
@@ -5865,9 +5865,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    data: function data() {
-      this.show = true;
-    },
     show: function show() {
       var _this = this;
 
@@ -5885,6 +5882,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     hidePopper: function hidePopper() {
       this.show = false;
+      this.$root.deleteNotification();
     },
     enter: function enter() {
       if (this.show == true) {
@@ -6275,13 +6273,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var data = response.data;
 
           if (data.success) {
-            alert(data.success);
+            _this.$root.showNotification(data.success, 'success');
 
             _this.$store.commit('setUser', data.user);
 
             _this.$modal.hide('signForm');
           } else if (data.errors || data.email) {
-            alert(data.errors[0]);
+            _this.$root.showNotification(data.errors[0], 'error');
           }
         })["catch"](function (error) {}).then(function () {});
         console.log(formData, form);
@@ -6429,6 +6427,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       popularTags: [],
+      // popularTagsChoosen: [],
       tag: '',
       tags: []
     };
@@ -6445,7 +6444,7 @@ __webpack_require__.r(__webpack_exports__);
     addTag: function addTag(tag, key) {
       if (tag) {
         this.tags.push(tag);
-        this.popularTags = this.popularTags.slice(0, key).concat(this.popularTags.slice(key + 1));
+        this.popularTags = this.popularTags.slice(0, key).concat(this.popularTags.slice(key + 1)); // this.popularTagsChoosen.push(tag)
       } else {
         this.tags.push(this.tag);
         this.tag = '';
@@ -6456,7 +6455,14 @@ __webpack_require__.r(__webpack_exports__);
     deleteTag: function deleteTag() {
       if (event.key == 'Backspace' && this.tag) {
         return;
-      }
+      } // if (this.popularTagsChoosen.find((tag) => {
+      //   if (tag.name == this.tags[this.tags.length - 1]) {
+      //     return true
+      //   }
+      // })) {
+      //   this.popularTags.push(this.tags[this.tags.length - 1])
+      // }
+
 
       this.tags.pop();
       this.$emit('add-tag', this.tags);
@@ -6791,11 +6797,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         _this.page++;
+      }).then(function () {
+        if (_this.items.meta.last_page <= _this.items.meta.current_page + 1) {
+          _this.outOfItems = true;
+        }
       });
-
-      if (this.items.meta.last_page <= this.items.meta.current_page + 1) {
-        this.outOfItems = true;
-      }
     },
     scrollCheck: function scrollCheck() {
       if (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight && !this.outOfItems) {
@@ -7270,7 +7276,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.$v.$invalid) {
         this.$v.$touch();
-        alert("заполните данные");
+        this.$root.showNotification('Заполните данные', 'error');
         return;
       }
 
@@ -23155,9 +23161,11 @@ var render = function() {
       { staticClass: "tags-input__tags", on: { click: _vm.inputFocus } },
       [
         _vm._l(_vm.tags, function(tag, key) {
-          return _c("span", { key: key, staticClass: "tags-input__tag" }, [
-            _vm._v("\n      " + _vm._s("#" + tag) + "\n    ")
-          ])
+          return _c(
+            "span",
+            { key: key, staticClass: "tags-input__tag no-select" },
+            [_vm._v("\n      " + _vm._s("#" + tag) + "\n    ")]
+          )
         }),
         _vm._v(" "),
         _c("input", {
@@ -23230,7 +23238,7 @@ var render = function() {
                           _c(
                             "span",
                             {
-                              staticClass: "pointer",
+                              staticClass: "pointer no-select",
                               on: {
                                 click: function($event) {
                                   return _vm.addTag(tag.name, key)
@@ -42393,6 +42401,16 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     cookieAgreementClose: function cookieAgreementClose() {
       this.$cookies.set('cookie_agreement_set', 1);
       this.cookieAgreementShow = false;
+    },
+    showNotification: function showNotification(title, status) {
+      this.notification = {
+        title: title,
+        status: status
+      };
+      this.$refs.notification.showPopper();
+    },
+    deleteNotification: function deleteNotification() {
+      this.notification = {};
     },
     changeTheme: function changeTheme(theme) {
       // delete old class

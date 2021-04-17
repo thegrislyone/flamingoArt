@@ -89,10 +89,13 @@ export default {
 
           this.page++
         })
+        .then(() => {
+          if (this.items.meta.last_page <= this.items.meta.current_page + 1) {
+            this.outOfItems = true
+          }
+        })
 
-        if (this.items.meta.last_page <= this.items.meta.current_page + 1) {
-          this.outOfItems = true
-        }
+        
     },
     scrollCheck() {
       if (

@@ -384,6 +384,7 @@ img[lazy=loading] {
 
 /* notification */
 .notification {
+  z-index: 999;
   display: block;
   position: fixed;
   bottom: -100px;

@@ -196,7 +196,7 @@ export default {
 
       if (this.$v.$invalid) {
         this.$v.$touch()
-        alert("заполните данные")
+        this.$root.showNotification('Заполните данные', 'error')
         return
       }
 

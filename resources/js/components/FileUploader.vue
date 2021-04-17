@@ -110,7 +110,7 @@ export default {
       const file = (outsideFile) ? outsideFile : event.target.files[0]
 
       if (!file.type.includes('image')) {
-        alert('это не изображение')
+        this.$root.showNotification('Неверный формат файла', 'error')
         return
       }
 
@@ -126,7 +126,7 @@ export default {
             vm.imgSrc = reader.result
             vm.$emit('fileUpload', file)
           } else {
-            alert('Изображение не соответствует минимальным размерам')
+            vm.$root.showNotification('Изображение не соответствует минимальным размерам', 'error')
           }
           
         })
