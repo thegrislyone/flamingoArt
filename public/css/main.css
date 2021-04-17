@@ -427,7 +427,7 @@ img[lazy=loading] {
   display: flex;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
-  height: 48px;
+  min-height: 48px;
   cursor: text;
   flex-wrap: wrap;
   flex-direction: row;
@@ -448,6 +448,7 @@ img[lazy=loading] {
   color: #000000;
 }
 .tags-input__input {
+  flex-grow: 1;
   height: auto !important;
   background: transparent;
   padding: 0 0 0 3px !important;

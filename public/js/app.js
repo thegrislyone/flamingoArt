@@ -6418,6 +6418,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -6450,6 +6451,14 @@ __webpack_require__.r(__webpack_exports__);
         this.tag = '';
       }
 
+      this.$emit('add-tag', this.tags);
+    },
+    deleteTag: function deleteTag() {
+      if (event.key == 'Backspace' && this.tag) {
+        return;
+      }
+
+      this.tags.pop();
       this.$emit('add-tag', this.tags);
     },
     inputFocus: function inputFocus() {
@@ -23114,15 +23123,30 @@ var render = function() {
           attrs: { type: "text" },
           domProps: { value: _vm.tag },
           on: {
-            keydown: function($event) {
-              if (
-                !$event.type.indexOf("key") &&
-                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-              ) {
-                return null
+            keydown: [
+              function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.addTag("")
+              },
+              function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "delete", [8, 46], $event.key, [
+                    "Backspace",
+                    "Delete",
+                    "Del"
+                  ])
+                ) {
+                  return null
+                }
+                return _vm.deleteTag()
               }
-              return _vm.addTag("")
-            },
+            ],
             input: function($event) {
               if ($event.target.composing) {
                 return

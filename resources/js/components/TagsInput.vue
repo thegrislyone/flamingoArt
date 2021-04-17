@@ -13,6 +13,7 @@
         type="text"
         class="tags-input__input"
         @keydown.enter="addTag('')"
+        @keydown.delete="deleteTag()"
         v-model="tag"
       >
 
@@ -76,6 +77,15 @@ export default {
         this.tag = ''
       }
       
+      this.$emit('add-tag', this.tags)
+    },
+    deleteTag() {
+      
+      if (event.key == 'Backspace' && this.tag) {
+        return
+      }
+
+      this.tags.pop()
       this.$emit('add-tag', this.tags)
     },
     inputFocus() {
