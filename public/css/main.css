@@ -996,7 +996,7 @@ img {
   background-color: #000;
   overflow: hidden;
   padding: 15px;
-  margin-bottom: 16px;
+  margin-bottom: 9px;
 }
 .profile-card__avatar-block img {
   width: 128px;
@@ -1027,7 +1027,7 @@ img {
   line-height: 34px;
   letter-spacing: -0.021em;
   color: #FFFFFF;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .profile-card__nickname,
 .profile-card__information {
@@ -1050,6 +1050,7 @@ img {
 }
 .profile-card__information-block_opened {
   height: 78px;
+  margin-bottom: 16px;
 }
 .profile-card__inf-social {
   display: flex;
@@ -1062,10 +1063,12 @@ img {
   cursor: pointer;
 }
 .profile-card__edit {
-  margin: 10px 0 25px 0;
+  margin: 10px 0 24px 0;
   width: 100%;
 }
 .profile-card__edit-button {
+  display: block;
+  margin: 0 auto;
   width: 100%;
 }
 
@@ -1073,7 +1076,7 @@ img {
   width: 100%;
 }
 .profile-tabs {
-  margin: 10px 0;
+  margin: 24px 0;
   display: flex;
   align-items: center;
   gap: 16px;

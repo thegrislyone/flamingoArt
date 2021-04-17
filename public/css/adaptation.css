@@ -37,6 +37,10 @@
   .tile {
     width: calc(50% - 8px);
   }
+  /* PROFILE */
+  .profile-card__edit-button {
+    max-width: 256px;
+  }
 }
 
 /*------------------------------------*\
