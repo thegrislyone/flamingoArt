@@ -24,7 +24,7 @@
               <span 
                 v-for="tag in item.tags"
                 :key="tag.id"
-                class="item__tag pointer"
+                class="item__tag pointer no-select"
               >
                 #{{ tag.name }}
               </span>

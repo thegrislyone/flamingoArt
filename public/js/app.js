@@ -23293,7 +23293,10 @@ var render = function() {
                   _vm._l(_vm.item.tags, function(tag) {
                     return _c(
                       "span",
-                      { key: tag.id, staticClass: "item__tag pointer" },
+                      {
+                        key: tag.id,
+                        staticClass: "item__tag pointer no-select"
+                      },
                       [
                         _vm._v(
                           "\n              #" +
