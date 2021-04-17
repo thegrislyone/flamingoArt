@@ -1112,6 +1112,7 @@ img {
 .item__thumbnail {
   width: 100%;
   max-width: 640px;
+  border-radius: 4px;
 }
 .item__information {
   border-bottom: 1px solid #2A2A2A;
@@ -1136,6 +1137,7 @@ img {
 .item__tag {
   padding: 2px 8px;
   font-size: 18px;
+  background: rgba(255, 255, 255, 0.05);
   line-height: 140%;
   letter-spacing: -0.022em;
   color: #B4B4B4;
@@ -1152,19 +1154,25 @@ img {
   flex-direction: column;
 }
 .item__to-favorite {
-  margin: 32px 0;
+  margin: 30px 0 32px 8px;
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
   padding-left: 28px;
+  padding-top: 2px;
   background: url(../assets/images/i-favorite.svg) no-repeat left center;
   
   letter-spacing: -0.011em;
   color: #B4B4B4;
 }
-.item__buy button {
-  margin-right: 24px;
+.item__buy {
+  display: flex;
+  gap: 0 24px;
+  align-items: center;
 }
+/* .item__buy button {
+  margin-right: 24px;
+} */
 .item__price {
   font-weight: 300;
   font-size: 24px;
