@@ -63,9 +63,16 @@ class ItemsController extends Controller
             'item_id' => $itemId
         ]);
 
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userId)->get();
+        $favorites = [];
+
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
+        }
+
         $success = [
             'success' => 'Товар добавлен в избранное',
-            'favorites' => FavoritesModel::where('user_id', '=', $userId)->get()
+            'favorites' => $favorites
         ];
         
         return response()->json($success, 200);

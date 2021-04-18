@@ -26,6 +26,7 @@ class AuthController extends Controller
 {
 
     public function getUserInfo() {
+        
         $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
         $favorites = [];
 
