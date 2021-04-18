@@ -1196,18 +1196,28 @@ img {
 .item__actions {
   display: flex;
   flex-direction: column;
+  margin-top: 32px;
+  gap: 32px;
 }
 .item__to-favorite {
-  margin: 30px 0 32px 8px;
+  /* margin: 30px 0 32px 8px; */
+  display: inherit;
+  background-color: transparent;
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
   padding-left: 28px;
   padding-top: 2px;
-  background: url(../assets/images/i-favorite.svg) no-repeat left center;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-image: url(../assets/images/i-favorite.svg);
   
   letter-spacing: -0.011em;
   color: #B4B4B4;
+}
+.item__to-favorite_added {
+  color: #DA71FF;
+  background-image: url(../assets/images/i-in-favorite.svg);
 }
 .item__buy {
   display: flex;
@@ -1227,7 +1237,7 @@ img {
 }
 
 .item__author-more {
-  margin-top: 48px;
+  margin-top: 16px;
   margin-bottom: 24px;
   padding: 0 16px;
 }

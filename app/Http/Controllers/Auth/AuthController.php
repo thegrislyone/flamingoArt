@@ -9,6 +9,8 @@ use Dlnsk\HierarchicalRBAC\Authorization;
 
 use App\Models\User;
 use App\Models\Code;
+use App\Models\Items\FavoritesModel;
+use App\Models\Items\ItemsModel;
 
 use Illuminate\Http\Request;
 
@@ -22,6 +24,22 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    public function getUserInfo() {
+        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        $favorites = [];
+
+
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
+
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
+        }
+
+        $userInfo['favorites'] = $favorites;
+
+        return $userInfo;
+    }
 
     public function loginRequest(Request $request) {
 
@@ -47,7 +65,7 @@ class AuthController extends Controller
 
             $success = [
                 'success' => 'Вы успешно авторизовались',
-                'user' => Auth::user()->only('name', 'avatar', 'login', 'banner')
+                'user' => $this->getUserInfo()
             ];
 
             return $success;

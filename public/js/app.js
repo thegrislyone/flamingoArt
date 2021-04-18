@@ -6623,6 +6623,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -6642,6 +6666,21 @@ __webpack_require__.r(__webpack_exports__);
     id: function id() {
       return this.$route.params.item_id;
     },
+    isAuthorized: function isAuthorized() {
+      return this.$store.getters.isAuthorizate;
+    },
+    isInFavorite: function isInFavorite() {
+      var _this = this;
+
+      var favorite = this.$store.getters.favorites.find(function (favorite) {
+        if (favorite.id == _this.item.id) {
+          return true;
+        }
+
+        return false;
+      });
+      return !this.$isEmpty(favorite);
+    },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
     },
@@ -6650,7 +6689,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true;
     this.$http.get('/api/single-item?item_id=' + this.id).then(function (response) {
@@ -6658,12 +6697,12 @@ __webpack_require__.r(__webpack_exports__);
       console.log(data);
 
       if (data.errors) {} else {
-        _this.item = data;
+        _this2.item = data;
       }
 
-      _this.loading = false;
+      _this2.loading = false;
     }).then(function () {
-      _this.sliderInit();
+      _this2.sliderInit();
     });
   },
   mounted: function mounted() {},
@@ -6678,6 +6717,22 @@ __webpack_require__.r(__webpack_exports__);
         observer: true
       });
       this.slider.init();
+    },
+    addToFavorite: function addToFavorite() {
+      var _this3 = this;
+
+      if (!this.isInFavorite) {
+        var itemId = this.item.id;
+        this.$http.get('/api/add-to-favorite?item_id=' + itemId).then(function (response) {
+          var data = response.data;
+
+          if ('success' in data) {
+            _this3.$root.showNotification(data.success, 'success');
+
+            _this3.$store.commit('setFavorites', data.favorites);
+          }
+        });
+      }
     }
   }
 });
@@ -6969,6 +7024,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6989,6 +7061,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    itemsList: function itemsList() {
+      if (this.itemsMode == 'my-items') {
+        return this.items;
+      } else if (this.itemsMode == 'favorites') {
+        return this.favorites;
+      }
+    },
     isForeign: function isForeign() {
       return !!this.$route.params.author_id;
     },
@@ -7007,14 +7086,17 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    this.favorites = this.$store.getters.favorites;
+
     if (this.isForeign) {
-      this.profileLoading = true;
+      this.profileLoading = true; // get my-items
+
       this.$http.get('/api/auth/get-author?author_id=' + this.authorId).then(function (response) {
         var data = response.data;
         _this.user = data;
       }).then(function () {
         _this.profileLoading = false;
-      });
+      }); // get favorites
     } else {
       this.user = this.$store.getters.user;
     }
@@ -7052,6 +7134,12 @@ __webpack_require__.r(__webpack_exports__);
     changeItems: function changeItems(mode) {
       if (this.itemsMode == mode) {
         return;
+      }
+
+      if (window.pageXOffset) {
+        window.scrollTo({
+          top: 0
+        });
       }
 
       this.itemsMode = mode;
@@ -23392,19 +23480,51 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "item__actions" }, [
-                _c("div", { staticClass: "item__to-favorite pointer" }, [
-                  _vm._v("\n            В избранное\n          ")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "item__buy" }, [
-                  _c("button", { staticClass: "btn" }, [_vm._v("Купить")]),
+              _c(
+                "div",
+                {
+                  staticClass: "item__actions",
+                  class: {
+                    "item__actions_no-favorites": !_vm.isAuthorized
+                  }
+                },
+                [
+                  _vm.isAuthorized
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "item__to-favorite pointer no-select",
+                          class: {
+                            "item__to-favorite_added": _vm.isInFavorite
+                          },
+                          on: { click: _vm.addToFavorite }
+                        },
+                        [
+                          _vm.isInFavorite
+                            ? [
+                                _vm._v(
+                                  "\n              В избранном\n            "
+                                )
+                              ]
+                            : [
+                                _vm._v(
+                                  "\n              В избранное\n            "
+                                )
+                              ]
+                        ],
+                        2
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("span", { staticClass: "item__price" }, [
-                    _vm._v(_vm._s(_vm.item.price) + " ₽")
+                  _c("div", { staticClass: "item__buy" }, [
+                    _c("button", { staticClass: "btn" }, [_vm._v("Купить")]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "item__price" }, [
+                      _vm._v(_vm._s(_vm.item.price) + " ₽")
+                    ])
                   ])
-                ])
-              ])
+                ]
+              )
             ])
           ]),
           _vm._v(" "),
@@ -23710,15 +23830,15 @@ var render = function() {
                           staticClass: "profile-tab",
                           class: {
                             "profile-tab_active":
-                              _vm.itemsMode == "favorite" &&
+                              _vm.itemsMode == "favorites" &&
                               _vm.$store.getters.windowWidth < 1024,
                             btn:
-                              _vm.itemsMode == "favorite" &&
+                              _vm.itemsMode == "favorites" &&
                               _vm.$store.getters.windowWidth > 1024
                           },
                           on: {
                             click: function($event) {
-                              return _vm.changeItems("favorite")
+                              return _vm.changeItems("favorites")
                             }
                           }
                         },
@@ -23732,12 +23852,33 @@ var render = function() {
                 _vm.itemsLoading
                   ? _c("div", { staticClass: "preloader" })
                   : _vm.items.length
-                  ? _c("items-tiles-list", {
-                      attrs: { tilesList: _vm.items, outOfItems: true }
-                    })
+                  ? [
+                      _c(
+                        "transition",
+                        { attrs: { name: "fade", mode: "out-in" } },
+                        [
+                          _vm.itemsMode == "my-items"
+                            ? _c("items-tiles-list", {
+                                key: "my-items",
+                                attrs: {
+                                  tilesList: _vm.itemsList,
+                                  outOfItems: true
+                                }
+                              })
+                            : _c("items-tiles-list", {
+                                key: "favorites",
+                                attrs: {
+                                  tilesList: _vm.itemsList,
+                                  outOfItems: true
+                                }
+                              })
+                        ],
+                        1
+                      )
+                    ]
                   : _c("div", {}, [_vm._v("У вас нет выложенных работ")])
               ],
-              1
+              2
             )
           ])
         ])
@@ -43492,6 +43633,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     user: function user(state) {
       return state.user;
     },
+    favorites: function favorites(state) {
+      if (Object.keys(state.user).length) {
+        return state.user.favorites;
+      }
+
+      return [];
+    },
     windowParameters: function windowParameters(state) {
       return state.windowParameters;
     },
@@ -43512,6 +43660,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     }
   },
   mutations: {
+    setFavorites: function setFavorites(state, data) {
+      state.user.favorites = data;
+    },
     setUser: function setUser(state, value) {
       state.user = value;
     },

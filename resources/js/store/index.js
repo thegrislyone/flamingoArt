@@ -17,6 +17,13 @@ export default new Vuex.Store({
     isAuthorizate: state => Object.keys(state.user).length,
     user: state => state.user,
 
+    favorites: state => {
+      if (Object.keys(state.user).length) {
+        return state.user.favorites
+      }
+      return []
+    },
+
     windowParameters: state => state.windowParameters,
     windowWidth: state => state.windowParameters.windowWidth,
     windowHeight: state => state.windowParameters.windowHeight,
@@ -30,6 +37,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setFavorites(state, data) {
+      state.user.favorites = data
+    },
     setUser(state, value) {
       state.user = value
     },

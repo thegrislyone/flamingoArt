@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 
 use App\Models\Items\ItemsModel;
+use App\Models\Items\FavoritesModel;
+
 use App\Models\Tags\TagsModel;
 use App\Models\Tags\UserTagsModel;
+
 use App\Models\User;
 
 
@@ -49,6 +52,39 @@ class ItemsController extends Controller
 
         return response()->json($item, 200);
     }
+
+    public function addToFavorite(Request $request) {
+
+        $userId = Auth::user()['id'];
+        $itemId = $request['item_id'];
+
+        FavoritesModel::create([
+            'user_id' => $userId,
+            'item_id' => $itemId
+        ]);
+
+        $success = [
+            'success' => 'Товар добавлен в избранное',
+            'favorites' => FavoritesModel::where('user_id', '=', $userId)->get()
+        ];
+        
+        return response()->json($success, 200);
+
+    }
+
+    // public function getUserFavorites(Request $request) {
+
+    //     $favorites = [];
+    //     $favoritesConnections = FavoritesModel::where('user_id', '=', Auth::user()['id'])->get();
+        
+    //     foreach($favoritesConnections as $favorite) {
+
+    //         ItemsModel::find()
+    //     }
+        
+    //     return 5;
+
+    // }
 
     public function userItems(Request $request) {
 

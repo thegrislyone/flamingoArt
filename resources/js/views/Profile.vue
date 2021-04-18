@@ -95,21 +95,38 @@
             <span 
               class="profile-tab"
               :class="{
-                'profile-tab_active': itemsMode == 'favorite' && $store.getters.windowWidth < 1024,
-                'btn': itemsMode == 'favorite' && $store.getters.windowWidth > 1024
+                'profile-tab_active': itemsMode == 'favorites' && $store.getters.windowWidth < 1024,
+                'btn': itemsMode == 'favorites' && $store.getters.windowWidth > 1024
               }"
-              @click="changeItems('favorite')"
+              @click="changeItems('favorites')"
             >Избранное</span>
           </template>
         </div>
         
         <div v-if="itemsLoading" class="preloader"></div>
 
-        <items-tiles-list
-          v-else-if="items.length"
-          :tilesList="items"
-          :outOfItems="true"
-        />
+        <template  v-else-if="items.length">
+
+          <transition name="fade" mode="out-in">
+
+            <items-tiles-list
+              v-if="itemsMode == 'my-items'"
+              key="my-items"
+              :tilesList="itemsList"
+              :outOfItems="true"
+            />
+
+            <items-tiles-list
+              v-else
+              key="favorites"
+              :tilesList="itemsList"
+              :outOfItems="true"
+            />
+
+          </transition>
+
+        </template>
+
 
         <div v-else class="">У вас нет выложенных работ</div>
         
@@ -144,6 +161,7 @@ export default {
         "/assets/images/i-twitter.svg",
         "/assets/images/i-instagram.svg"
       ],
+
       items: [],
       favorites: [],
 
@@ -152,6 +170,13 @@ export default {
     }
   },
   computed: {
+    itemsList() {
+      if (this.itemsMode == 'my-items') {
+        return this.items
+      } else if (this.itemsMode == 'favorites') {
+        return this.favorites
+      }
+    },
     isForeign() {
       return !!this.$route.params.author_id
     },
@@ -169,9 +194,13 @@ export default {
   },
   created() {
 
+    this.favorites = this.$store.getters.favorites
+
     if (this.isForeign) {
 
       this.profileLoading = true
+
+      // get my-items
 
       this.$http.get('/api/auth/get-author?author_id=' + this.authorId)
         .then(response => {
@@ -182,6 +211,11 @@ export default {
         .then(() => {
           this.profileLoading = false
         })
+
+      // get favorites
+
+
+
     } else {
       this.user = this.$store.getters.user
     }
@@ -226,9 +260,13 @@ export default {
         return
       }
 
+      if (window.pageXOffset) {
+        window.scrollTo({
+          top: 0,
+        })
+      }
+
       this.itemsMode = mode
-
-
 
     }
   }

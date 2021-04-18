@@ -31,11 +31,35 @@
             </div>
           </div>
 
-          <div class="item__actions">
+          <div 
+            class="item__actions"
+            :class="{
+              'item__actions_no-favorites': !isAuthorized
+            }"
+          >
 
-            <div class="item__to-favorite pointer">
-              В избранное
-            </div>
+            <button
+              v-if="isAuthorized"
+              class="item__to-favorite pointer no-select"
+              :class="{
+                'item__to-favorite_added': isInFavorite
+              }"
+              @click="addToFavorite"
+            >
+
+              <template 
+                v-if="isInFavorite"
+              >
+                В избранном
+              </template>
+
+              <template
+                v-else
+              >
+                В избранное
+              </template>
+
+            </button>
 
             <div class="item__buy">
               <button class="btn">Купить</button>
@@ -121,6 +145,20 @@ export default {
     id() {
       return this.$route.params.item_id
     },
+    isAuthorized() {
+      return this.$store.getters.isAuthorizate
+    },
+    isInFavorite() {
+
+      const favorite = this.$store.getters.favorites.find((favorite) => {
+        if (favorite.id == this.item.id) {
+          return true
+        }
+        return false
+      })
+      
+      return !this.$isEmpty(favorite)
+    },
     windowWidth() {
       return this.$store.getters.windowWidth
     },
@@ -170,6 +208,24 @@ export default {
       })
 
       this.slider.init()
+    },
+    addToFavorite() {
+      if (!this.isInFavorite) {
+
+        const itemId = this.item.id
+
+        this.$http.get('/api/add-to-favorite?item_id=' + itemId)
+          .then(response => {
+            const data = response.data
+
+            if ('success' in data) {
+              this.$root.showNotification(data.success, 'success')
+              this.$store.commit('setFavorites', data.favorites)
+            }
+
+          })
+
+      }
     }
   }
 }
