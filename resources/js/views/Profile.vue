@@ -82,7 +82,10 @@
       </div>
       <div class="profile-block__my-items">
 
-        <div class="profile-tabs">
+        <div 
+          v-if="!isForeign"
+          class="profile-tabs"
+        >
           <template>
             <span 
               class="profile-tab"

@@ -7041,6 +7041,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -23798,56 +23801,58 @@ var render = function() {
               "div",
               { staticClass: "profile-block__my-items" },
               [
-                _c(
-                  "div",
-                  { staticClass: "profile-tabs" },
-                  [
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "profile-tab",
-                          class: {
-                            "profile-tab_active":
-                              _vm.itemsMode == "my-items" &&
-                              _vm.$store.getters.windowWidth < 1024,
-                            btn:
-                              _vm.itemsMode == "my-items" &&
-                              _vm.$store.getters.windowWidth > 1024
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.changeItems("my-items")
-                            }
-                          }
-                        },
-                        [_vm._v("Мои работы")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass: "profile-tab",
-                          class: {
-                            "profile-tab_active":
-                              _vm.itemsMode == "favorites" &&
-                              _vm.$store.getters.windowWidth < 1024,
-                            btn:
-                              _vm.itemsMode == "favorites" &&
-                              _vm.$store.getters.windowWidth > 1024
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.changeItems("favorites")
-                            }
-                          }
-                        },
-                        [_vm._v("Избранное")]
-                      )
-                    ]
-                  ],
-                  2
-                ),
+                !_vm.isForeign
+                  ? _c(
+                      "div",
+                      { staticClass: "profile-tabs" },
+                      [
+                        [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "profile-tab",
+                              class: {
+                                "profile-tab_active":
+                                  _vm.itemsMode == "my-items" &&
+                                  _vm.$store.getters.windowWidth < 1024,
+                                btn:
+                                  _vm.itemsMode == "my-items" &&
+                                  _vm.$store.getters.windowWidth > 1024
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.changeItems("my-items")
+                                }
+                              }
+                            },
+                            [_vm._v("Мои работы")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticClass: "profile-tab",
+                              class: {
+                                "profile-tab_active":
+                                  _vm.itemsMode == "favorites" &&
+                                  _vm.$store.getters.windowWidth < 1024,
+                                btn:
+                                  _vm.itemsMode == "favorites" &&
+                                  _vm.$store.getters.windowWidth > 1024
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.changeItems("favorites")
+                                }
+                              }
+                            },
+                            [_vm._v("Избранное")]
+                          )
+                        ]
+                      ],
+                      2
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _vm.itemsLoading
                   ? _c("div", { staticClass: "preloader" })
