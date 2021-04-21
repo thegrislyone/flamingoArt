@@ -4,13 +4,14 @@ import store from './store/'
 import axios from 'axios'
 
 //plugins
-import AsyncComputed from 'vue-async-computed'
+// import AsyncComputed from 'vue-async-computed'
 import Vuelidate from 'vuelidate'
 import vueDebounce from 'vue-debounce'
 import vClickOutside from 'v-click-outside'
 import VueCookies from 'vue-cookies'
 import VueLazyload from 'vue-lazyload'
 import { createPopper } from '@popperjs/core'
+import vuePusher from 'vue-pusher'
 
 //properties
 import { empty, exist } from './properties/'
@@ -36,7 +37,7 @@ Vue.prototype.$createPopper = createPopper
 Vue.filter('capitalize', capitalize)
 
 //plugins registration
-Vue.use(AsyncComputed)
+// Vue.use(AsyncComputed)
 Vue.use(Vuelidate)
 Vue.use(vueDebounce)
 Vue.use(VModal)
@@ -47,7 +48,15 @@ Vue.use(VueLazyload, {
     error: 'dist/error.png',
     loading: '/assets/images/loader.gif',
     attempt: 1
-  })
+})
+Vue.use(vuePusher, {
+    api_key: '7e4e4873e6401ef6ec49',
+    options: {
+        cluster: 'eu',
+        encrypted: true,
+    }
+})
+  
 
 const app = new Vue({
     el: '#app',

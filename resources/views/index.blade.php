@@ -47,6 +47,8 @@
     {{-- <app-footer></app-footer> --}}
   </div>
 
+  {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+
   @isset ($userInfo)
 
   <script>

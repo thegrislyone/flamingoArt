@@ -9,6 +9,7 @@ import ItemList from '../views/ItemsList.vue'
 import Profile from '../views/Profile.vue'
 import Item from '../views/Item.vue'
 import UploadItem from '../views/UploadItem.vue'
+import Chat from '../views/Chat.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,12 @@ const routes = [
     name: 'upload-item',
     meta: { requiresAuth: true },
     component: UploadItem
+  },
+  {
+    path: '/chat/:interlocutor_id',
+    name: 'chat',
+    meta: { requiresAuth: true },
+    component: Chat
   },
   {
     path: "*",

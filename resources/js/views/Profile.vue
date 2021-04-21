@@ -72,6 +72,7 @@
             <button
               v-else
               class="btn profile-card__edit-button"
+              @click="goToChat"
             >
               Написать
             </button>
@@ -271,6 +272,9 @@ export default {
 
       this.itemsMode = mode
 
+    },
+    goToChat() {
+      this.$router.push('/chat/' + this.authorId)
     }
   }
 }

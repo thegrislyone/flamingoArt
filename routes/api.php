@@ -32,6 +32,10 @@ Route::get('add-to-favorite','App\Http\Controllers\Items\ItemsController@addToFa
 
 Route::get('tags','App\Http\Controllers\Tags\TagsController@tags');
 
+/* Chat */
+
+Route::get('chat/send-message','App\Http\Controllers\Chat\ChatController@sendMessage');
+
 /* Auth */
 
 Route::get('auth/login','App\Http\Controllers\Auth\AuthController@loginRequest');
