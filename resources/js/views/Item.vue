@@ -75,7 +75,7 @@
         <div class="item__author">
 
           <router-link 
-            :to="'/profile/' + item.author.id"
+            :to="(isAuthor) ? '/profile' : '/profile/' + item.author.id"
             class="item__author-nickname-block pointer"
            >
 
@@ -158,6 +158,9 @@ export default {
       })
       
       return !this.$isEmpty(favorite)
+    },
+    isAuthor() {
+      return this.$store.getters.user.id == this.item.author.id
     },
     windowWidth() {
       return this.$store.getters.windowWidth

@@ -5547,7 +5547,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     shortSearchOpened: {
       get: function get() {
-        return this.searchOpened && this.$store.getters.windowWidth < 960;
+        return this.searchOpened && this.$store.getters.windowWidth < 1024;
       },
       set: function set(value) {
         this.searchOpened = value;
@@ -6730,6 +6730,9 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       });
       return !this.$isEmpty(favorite);
+    },
+    isAuthor: function isAuthor() {
+      return this.$store.getters.user.id == this.item.author.id;
     },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
@@ -31990,7 +31993,11 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "item__author-nickname-block pointer",
-                    attrs: { to: "/profile/" + _vm.item.author.id }
+                    attrs: {
+                      to: _vm.isAuthor
+                        ? "/profile"
+                        : "/profile/" + _vm.item.author.id
+                    }
                   },
                   [
                     _vm.item.author.avatar
