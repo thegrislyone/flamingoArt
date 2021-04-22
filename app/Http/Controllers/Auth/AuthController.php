@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function getUserInfo() {
+    public function getUserInformation() {
         
         $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
         $favorites = [];
@@ -66,7 +66,7 @@ class AuthController extends Controller
 
             $success = [
                 'success' => 'Вы успешно авторизовались',
-                'user' => $this->getUserInfo()
+                'user' => $this->getUserInformation()
             ];
 
             return $success;
@@ -175,7 +175,8 @@ class AuthController extends Controller
                 'login' => $request['login'],
                 'password' => Hash::make($request['password']),
                 'views' => 0,
-                'likes' => 0
+                'likes' => 0,
+                'chat_room' => $this->generateCode(16)
             ]);
         } catch (Exception $e) {
             $res = [

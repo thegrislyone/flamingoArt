@@ -22,7 +22,8 @@ class User extends Authenticatable
         'password',
         'login',
         'views',
-        'likes'
+        'likes',
+        'chat_room'
     ];
 
     /**

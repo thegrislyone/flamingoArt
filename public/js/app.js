@@ -6490,6 +6490,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6499,26 +6504,68 @@ __webpack_require__.r(__webpack_exports__);
       channel: null
     };
   },
+  computed: {
+    author: function author() {
+      return Number(this.$store.getters.user.id);
+    },
+    interlocutor: function interlocutor() {
+      return Number(this.$route.query.interlocutor_id);
+    },
+    charRoomId: function charRoomId() {
+      return this.$route.query.chat_id;
+    }
+  },
   created: function created() {
     var _this = this;
 
-    // Pusher.logToConsole = true;
-    // this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
-    //   cluster: 'eu'
-    // });
-    // create channel
-    this.channel = this.$pusher.subscribe('my-channel'); //create channel event listener
-
-    this.channel.bind('my-event', function (data) {
-      _this.messages.push(JSON.stringify(data));
+    /* PUSHER INIT */
+    Pusher.logToConsole = true;
+    this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+      cluster: 'eu'
     });
+    /* CREATE CHANNEL */
+    // this.channel = this.$pusher.subscribe('my-channel')
+
+    this.channel = this.pusher.subscribe(this.charRoomId);
+    /* CREATE CHANNEL EVENT LISTENER */
+
+    this.channel.bind('message-get', function (data) {
+      _this.messages.push(data);
+
+      console.log(data, _this.messages);
+    });
+    /* GET MESSAGES LIST */
+
+    this.getMessages();
   },
   methods: {
+    getMessages: function getMessages() {
+      var _this2 = this;
+
+      var url_string = window.location.origin + '/api/chat/get-messages';
+      var url = new URL(url_string);
+      url.searchParams.set('author', this.author);
+      url.searchParams.set('interlocutor', this.interlocutor);
+      this.$http.get(url.href).then(function (response) {
+        var data = response.data;
+
+        if ('messages' in data) {
+          _this2.messages = data.messages;
+        }
+      });
+    },
     sendMessage: function sendMessage() {
-      this.$http.get('/api/chat/send-message?message=' + this.message).then(function (response) {
+      var request = {
+        message: this.message,
+        author: this.author,
+        interlocutor: this.interlocutor,
+        chat_room: this.charRoomId
+      };
+      this.$http.post('/api/chat/send-message', request).then(function (response) {
         var data = response.data;
         console.log(data);
       });
+      this.message = '';
     }
   }
 });
@@ -7197,7 +7244,11 @@ __webpack_require__.r(__webpack_exports__);
       this.itemsMode = mode;
     },
     goToChat: function goToChat() {
-      this.$router.push('/chat/' + this.authorId);
+      var url_string = window.location.origin + '/chat';
+      var url = new URL(url_string);
+      url.searchParams.set('chat_id', this.user.chat_room);
+      url.searchParams.set('interlocutor_id', this.authorId);
+      this.$router.push(url.pathname + url.search);
     }
   }
 });
@@ -31766,37 +31817,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "chat" }, [
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.message,
-          expression: "message"
-        }
-      ],
-      attrs: { type: "text" },
-      domProps: { value: _vm.message },
-      on: {
-        keydown: function($event) {
-          if (
-            !$event.type.indexOf("key") &&
-            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-          ) {
-            return null
+  return _c(
+    "div",
+    { staticClass: "chat" },
+    [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.message,
+            expression: "message"
           }
-          return _vm.sendMessage($event)
-        },
-        input: function($event) {
-          if ($event.target.composing) {
-            return
+        ],
+        attrs: { type: "text" },
+        domProps: { value: _vm.message },
+        on: {
+          keydown: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.sendMessage($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.message = $event.target.value
           }
-          _vm.message = $event.target.value
         }
-      }
-    })
-  ])
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.messages, function(message) {
+        return _c("div", { key: message.message }, [
+          message.author == _vm.author
+            ? _c("span", [_vm._v("Ваше сообщение - ")])
+            : message.author == _vm.interlocutor
+            ? _c("span", [_vm._v("Сообщение собеседника - ")])
+            : _vm._e(),
+          _vm._v("\n    " + _vm._s(message.message_text) + "\n  ")
+        ])
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -52112,7 +52179,7 @@ var routes = [// {
   },
   component: _views_UploadItem_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
 }, {
-  path: '/chat/:interlocutor_id',
+  path: '/chat',
   name: 'chat',
   meta: {
     requiresAuth: true

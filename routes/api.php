@@ -34,7 +34,9 @@ Route::get('tags','App\Http\Controllers\Tags\TagsController@tags');
 
 /* Chat */
 
-Route::get('chat/send-message','App\Http\Controllers\Chat\ChatController@sendMessage');
+Route::post('chat/send-message','App\Http\Controllers\Chat\ChatController@sendMessage');
+Route::get('chat/get-messages','App\Http\Controllers\Chat\ChatController@getMessages');
+Route::get('chat/generate-chat-id','App\Http\Controllers\Chat\ChatController@generateChatId');
 
 /* Auth */
 

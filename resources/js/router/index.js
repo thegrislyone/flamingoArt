@@ -54,7 +54,7 @@ const routes = [
     component: UploadItem
   },
   {
-    path: '/chat/:interlocutor_id',
+    path: '/chat',
     name: 'chat',
     meta: { requiresAuth: true },
     component: Chat

@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->text('banner')->nullable();
             $table->integer('views');
             $table->integer('likes');
+            $table->text('chat_room');
         });
     }
 

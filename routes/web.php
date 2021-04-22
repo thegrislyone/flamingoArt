@@ -80,7 +80,7 @@ Route::get('/item/{item_id}', function ($item_id = '') {
     return view('index');
 });
 
-Route::get('/chat/{user_id}', function ($user_id = '') {
+Route::get('/chat', function () {
     if (Auth::check()) {
         // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
         // return view('index')->with('userInfo', $userInfo);

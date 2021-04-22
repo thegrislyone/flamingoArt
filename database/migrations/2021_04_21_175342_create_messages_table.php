@@ -24,6 +24,8 @@ class CreateMessagesTable extends Migration
             $table->timestamps();
             $table->integer('author_id');
             $table->integer('interlocutor_id');
+            $table->integer('message_id');
+            $table->text('chat_room');
         });
     }
 

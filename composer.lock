@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6cc51d91b63f0bef5cf97d3dbdadd8f",
+    "content-hash": "b525ba1df87acbc74fb43db9b7cd59c7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2397,33 +2397,31 @@
         },
         {
             "name": "pusher/pusher-php-server",
-            "version": "6.1.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pusher/pusher-http-php.git",
-                "reference": "8673f60458ceedb9531fad7a5747eb49de619a8a"
+                "reference": "43540be9536469f8eaec95a347d3f7532bac852c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/8673f60458ceedb9531fad7a5747eb49de619a8a",
-                "reference": "8673f60458ceedb9531fad7a5747eb49de619a8a",
+                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/43540be9536469f8eaec95a347d3f7532bac852c",
+                "reference": "43540be9536469f8eaec95a347d3f7532bac852c",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "guzzlehttp/guzzle": "^7.2",
                 "paragonie/sodium_compat": "^1.6",
-                "php": "^7.2.5|^8.0",
+                "php": ">=7.1 <7.4",
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "overtrue/phplint": "^2.3",
-                "phpunit/phpunit": "^7.2|^8.5|^9.3"
+                "phpunit/phpunit": "^7.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -2451,9 +2449,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pusher/pusher-http-php/issues",
-                "source": "https://github.com/pusher/pusher-http-php/tree/6.1.0"
+                "source": "https://github.com/pusher/pusher-http-php/tree/v4.0.0"
             },
-            "time": "2021-03-24T08:23:36+00:00"
+            "time": "2019-06-25T09:22:44+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
