@@ -108,30 +108,25 @@
         
         <div v-if="itemsLoading" class="preloader"></div>
 
-        <template  v-else-if="items.length">
-
           <transition name="fade" mode="out-in">
 
             <items-tiles-list
-              v-if="itemsMode == 'my-items'"
+              v-if="itemsList.length && itemsMode == 'my-items'"
               key="my-items"
               :tilesList="itemsList"
               :outOfItems="true"
             />
 
             <items-tiles-list
-              v-else
+              v-else-if="itemsList.length && itemsMode == 'favorites'"
               key="favorites"
               :tilesList="itemsList"
               :outOfItems="true"
             />
 
+            <div v-else key="no-items">У вас нет выложенных работ</div>
+
           </transition>
-
-        </template>
-
-
-        <div v-else class="">У вас нет выложенных работ</div>
         
       </div>
     </div>

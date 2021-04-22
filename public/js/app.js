@@ -7042,11 +7042,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -23863,34 +23858,30 @@ var render = function() {
                 _vm._v(" "),
                 _vm.itemsLoading
                   ? _c("div", { staticClass: "preloader" })
-                  : _vm.items.length
-                  ? [
-                      _c(
-                        "transition",
-                        { attrs: { name: "fade", mode: "out-in" } },
-                        [
-                          _vm.itemsMode == "my-items"
-                            ? _c("items-tiles-list", {
-                                key: "my-items",
-                                attrs: {
-                                  tilesList: _vm.itemsList,
-                                  outOfItems: true
-                                }
-                              })
-                            : _c("items-tiles-list", {
-                                key: "favorites",
-                                attrs: {
-                                  tilesList: _vm.itemsList,
-                                  outOfItems: true
-                                }
-                              })
-                        ],
-                        1
-                      )
-                    ]
-                  : _c("div", {}, [_vm._v("У вас нет выложенных работ")])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "transition",
+                  { attrs: { name: "fade", mode: "out-in" } },
+                  [
+                    _vm.itemsList.length && _vm.itemsMode == "my-items"
+                      ? _c("items-tiles-list", {
+                          key: "my-items",
+                          attrs: { tilesList: _vm.itemsList, outOfItems: true }
+                        })
+                      : _vm.itemsList.length && _vm.itemsMode == "favorites"
+                      ? _c("items-tiles-list", {
+                          key: "favorites",
+                          attrs: { tilesList: _vm.itemsList, outOfItems: true }
+                        })
+                      : _c("div", { key: "no-items" }, [
+                          _vm._v("У вас нет выложенных работ")
+                        ])
+                  ],
+                  1
+                )
               ],
-              2
+              1
             )
           ])
         ])
