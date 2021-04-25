@@ -6,34 +6,81 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Chat\Messages;
-use App\Models\Chat\MessagesConnecting;
-use App\Models\Users;
+use App\Models\Chat\Chats;
+use App\Models\Chat\ChatUsers;
+
+use App\Models\User;
 
 use App\Events\MessageSend;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+
+    public function getChatChannel(Request $request) {
+
+        $interlocutor_id = $request['interlocutor_id'];
+        $author_id = Auth::user()['id'];
+
+        $chat = $this->findChatByInterlocutors($author_id, $interlocutor_id);
+
+        return $chat['room_id'];
+    }
+
+    public function findChatByInterlocutors($first, $second) {
+
+        $chat_id;
+
+        if (ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()) {
+
+            // return "есть";
+            
+            $chat_id = ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()['id'];
+        
+        } elseif (ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()) {
+
+            // return "есть, но перевернуто";
+            
+            $chat_id = ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()['id'];
+        
+        } else {
+            
+            // return "нет";
+
+            $chat_id = ChatUsers::create([
+                'user_first' => $first,
+                'user_second' => $second
+            ])['id'];
+
+            Chats::create([
+                'room_id' => $this->generateChatId(16),
+                'interlocutors' => $chat_id
+            ]);
+            
+        }
+
+        $chat = Chats::where('interlocutors', '=', $chat_id)->first();
+
+        return $chat;
+    }
+
     public function sendMessage(Request $request) {
 
         $message = $request['message'];
         $author = $request['author'];
         $destination = $request['interlocutor'];
-        $chat_room = $request['chat_room'];
+
+        $chat = $this->findChatByInterlocutors($author, $destination);
 
         $message_id = Messages::create([
-            'message_text' => $message
+            'message_text' => $message,
+            'chat' => $chat['id'],
+            'interlocutors' => $chat['interlocutors']
         ]);
 
-        $message_id = $message_id['id'];
-
-        MessagesConnecting::create([
-            'author_id' => $author,
-            'message_id' => $message_id,
-            'interlocutor_id' => $destination,
-            'chat_room' => $chat_room
-        ]);
+        $chat_room = $this->findChatByInterlocutors($author, $destination)['room_id'];
 
         event(new MessageSend($message, $author, $destination, $message_id, $chat_room));
         
@@ -44,15 +91,15 @@ class ChatController extends Controller
         $author_id = $request['author'];
         $interlocutor_id = $request['interlocutor'];
 
-        $messagesConnections = MessagesConnecting::where('author_id', '=', $author_id)->where('interlocutor_id', '=', $interlocutor_id)->get();
+        $chat_id = $this->findChatByInterlocutors($author_id, $interlocutor_id)['id'];
 
-        $messages = [];
+        $messages = Messages::where('chat', '=', $chat_id)->get();
 
-        foreach($messagesConnections as $messagesConnection) {
-            $msg = Messages::find($messagesConnection['message_id'])->only('id', 'message_text');
-            $msg['author'] = $messagesConnection['author_id'];
-            $msg['interlocutor'] = $messagesConnection['interlocutor_id'];
-            array_push($messages, $msg);
+        foreach ($messages as $message) {
+            $interlocutors_id = $message['interlocutors'];
+            $interlocutors = ChatUsers::find($interlocutors_id);
+            $message['author'] = $interlocutors['user_first'];
+            $message['interlocutor'] = $interlocutors['user_second'];
         }
 
         $response = [
@@ -63,8 +110,10 @@ class ChatController extends Controller
     }
 
     public function generateChatId($length) {
+
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         return substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
+
     }
 }

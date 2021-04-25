@@ -272,7 +272,7 @@ export default {
       const url_string = window.location.origin + '/chat'
 
       let url = new URL(url_string)
-      url.searchParams.set('chat_id', this.user.chat_room)
+      // url.searchParams.set('chat_id', this.user.chat_room)
       url.searchParams.set('interlocutor_id', this.authorId)
 
       this.$router.push(url.pathname + url.search)

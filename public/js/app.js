@@ -6510,35 +6510,40 @@ __webpack_require__.r(__webpack_exports__);
     },
     interlocutor: function interlocutor() {
       return Number(this.$route.query.interlocutor_id);
-    },
-    charRoomId: function charRoomId() {
-      return this.$route.query.chat_id;
     }
   },
   created: function created() {
-    var _this = this;
-
-    /* PUSHER INIT */
-    Pusher.logToConsole = true;
-    this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
-      cluster: 'eu'
-    });
-    /* CREATE CHANNEL */
-    // this.channel = this.$pusher.subscribe('my-channel')
-
-    this.channel = this.pusher.subscribe(this.charRoomId);
-    /* CREATE CHANNEL EVENT LISTENER */
-
-    this.channel.bind('message-get', function (data) {
-      _this.messages.push(data);
-
-      console.log(data, _this.messages);
-    });
-    /* GET MESSAGES LIST */
-
-    this.getMessages();
+    this.setChat();
   },
   methods: {
+    setChat: function setChat() {
+      var _this = this;
+
+      var url_string = window.location.origin + '/api/chat/get-chat-channel';
+      var url = new URL(url_string);
+      url.searchParams.set('interlocutor_id', this.interlocutor);
+      this.$http.get(url).then(function (response) {
+        var channel = response.data;
+        /* PUSHER INIT */
+
+        Pusher.logToConsole = true;
+        _this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+          cluster: 'eu'
+        }); // /* CREATE CHANNEL */
+        // this.channel = this.$pusher.subscribe('my-channel')
+
+        _this.channel = _this.pusher.subscribe(channel); // /* CREATE CHANNEL EVENT LISTENER */
+
+        _this.channel.bind('message-get', function (data) {
+          _this.messages.push(data);
+
+          console.log(data, _this.messages);
+        }); // /* GET MESSAGES LIST */
+
+
+        _this.getMessages();
+      });
+    },
     getMessages: function getMessages() {
       var _this2 = this;
 
@@ -7245,8 +7250,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToChat: function goToChat() {
       var url_string = window.location.origin + '/chat';
-      var url = new URL(url_string);
-      url.searchParams.set('chat_id', this.user.chat_room);
+      var url = new URL(url_string); // url.searchParams.set('chat_id', this.user.chat_room)
+
       url.searchParams.set('interlocutor_id', this.authorId);
       this.$router.push(url.pathname + url.search);
     }

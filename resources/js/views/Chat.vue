@@ -28,39 +28,52 @@ export default {
     interlocutor() {
       return Number(this.$route.query.interlocutor_id)
     },
-    charRoomId() {
-      return this.$route.query.chat_id
-    }
   },
   created() {
 
-    /* PUSHER INIT */
-    
-    Pusher.logToConsole = true;
-
-    this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
-      cluster: 'eu'
-    });
-
-    /* CREATE CHANNEL */
-
-    // this.channel = this.$pusher.subscribe('my-channel')
-
-    this.channel = this.pusher.subscribe(this.charRoomId)
-
-    /* CREATE CHANNEL EVENT LISTENER */
-
-    this.channel.bind('message-get', data => {
-      this.messages.push(data)
-      console.log(data, this.messages)
-    })
-
-    /* GET MESSAGES LIST */
-
-    this.getMessages()
+    this.setChat()
 
   },
   methods: {
+    setChat() {
+
+      const url_string = window.location.origin + '/api/chat/get-chat-channel'
+
+      let url = new URL(url_string)
+      url.searchParams.set('interlocutor_id', this.interlocutor)
+
+      this.$http.get(url)
+        .then(response => {
+
+          const channel = response.data
+
+          /* PUSHER INIT */
+          
+          Pusher.logToConsole = true;
+
+          this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+            cluster: 'eu'
+          });
+
+          // /* CREATE CHANNEL */
+
+          // this.channel = this.$pusher.subscribe('my-channel')
+
+          this.channel = this.pusher.subscribe(channel)
+
+          // /* CREATE CHANNEL EVENT LISTENER */
+
+          this.channel.bind('message-get', data => {
+            this.messages.push(data)
+            console.log(data, this.messages)
+          })
+
+          // /* GET MESSAGES LIST */
+
+          this.getMessages()
+
+        })
+    },
     getMessages() {
 
       const url_string = window.location.origin + '/api/chat/get-messages'
