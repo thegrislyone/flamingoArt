@@ -65,7 +65,7 @@ const app = new Vue({
 
         if (!this.theme) {
             this.$cookies.set('theme', 'dark')
-            this.theme = this.$cookies.get('theme')
+            this.theme = 'dark'
         }
 
         if (!this.$cookies.get('cookie_agreement_set')) {

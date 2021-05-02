@@ -42529,7 +42529,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   created: function created() {
     if (!this.theme) {
       this.$cookies.set('theme', 'dark');
-      this.theme = this.$cookies.get('theme');
+      this.theme = 'dark';
     }
 
     if (!this.$cookies.get('cookie_agreement_set')) {
