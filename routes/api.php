@@ -22,9 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     ! ITEMS
 */
 
-Route::get('items/get-items','App\Http\Controllers\Items\ItemsController@itemsGet');
-Route::post('items/item-load','App\Http\Controllers\Items\ItemsController@itemLoad');
-Route::get('items/user-items','App\Http\Controllers\Items\ItemsController@userItems');
+Route::get('items/get-items','App\Http\Controllers\Items\ItemsController@getItems');
+Route::post('items/item-load','App\Http\Controllers\Items\ItemsController@itemUpload');
+Route::get('items/user-items','App\Http\Controllers\Items\ItemsController@getUserItems');
 Route::get('items/single-item','App\Http\Controllers\Items\ItemsController@getSingleItem');
 Route::put('items/transition-to-item','App\Http\Controllers\Items\ItemsController@transitionToItem');
 

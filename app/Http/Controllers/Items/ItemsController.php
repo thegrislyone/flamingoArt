@@ -21,11 +21,20 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
-    public function itemsGet(Request $request) {
 
-        $feed = $request['feed'];
+    /**
+     * * Method, that returns items to use it in itemsList 
+     * @param request - get parameters for this api-address
+     * * returns items list
+    */
 
-        $items = [];
+    public function getItems(Request $request) {
+
+        $feed = $request['feed'];   // get feed-type
+
+        $items = [];    // init empty items arr
+
+        /* get items depending on feed type */
 
         if (!$feed || $feed == 'main') {
             $items = ItemsModel::simplePaginate(30)->toArray();
@@ -35,8 +44,10 @@ class ItemsController extends Controller
             $items = $items = ItemsModel::orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
         }
 
-        $meta = [];
-        $data = $items['data'];
+        /* detach pagination information from items list */
+
+        $meta = [];                 // pagination information
+        $data = $items['data'];     // items list
         
         foreach ($items as $key=>$value) {
             if ($key != 'data') {
@@ -50,20 +61,28 @@ class ItemsController extends Controller
         ];
         
         return response()->json($items, 200);
+
     }
 
+    /**
+     * * Method that returns single items by id. It uses in single item page 
+     * @param request - get parameters for this api-address
+     * * returns single item
+    */
+
     public function getSingleItem(Request $request) {
-        $itemId = $request['item_id'];
 
-        $item = ItemsModel::where('id', '=', $itemId)->first();
+        $itemId = $request['item_id'];  // get item id
 
-        // getting author items
+        $item = ItemsModel::find($itemId);  // find item by id
+
+        /* getting author items for more-section */
 
         $authorId = $item['author'];
         $item['author'] = User::find($authorId);
         $item['author']['items'] = ItemsModel::where('author', '=', $authorId)->get();
 
-        // getting item tag
+        /* getting item tags */
 
         $tagsConnections = UserTagsModel::where('item_id', '=', $itemId)->get();
 
@@ -77,23 +96,33 @@ class ItemsController extends Controller
         $item['tags'] = $findedTags;
 
         return response()->json($item, 200);
+
     }
+
+    /**
+     * * Method that adding item to user's favorites and returns favorites list with added element to update it on client
+     * @param request - get parameters for this api-address
+     * * returns full favorites list with added element
+    */
 
     public function addToFavorite(Request $request) {
 
-        $userId = Auth::user()['id'];
-        $itemId = $request['item_id'];
+        $userId = Auth::user()['id'];   // get user id
+        $itemId = $request['item_id'];  // get item id
+
+        /* insert favorite into favorites table */
 
         FavoritesModel::create([
             'user_id' => $userId,
             'item_id' => $itemId
         ]);
 
-        // increase favorited counter
+        /* increase favorited counter */
 
         $favoritedAmount = ItemsModel::find($itemId)['favorited'];
-
         ItemsModel::find($itemId)->update(['favorited' => $favoritedAmount + 1]);
+
+        /* get favorites list to update it on client */
 
         $favoritesConnections = FavoritesModel::where('user_id', '=', $userId)->get();
         $favorites = [];
@@ -111,19 +140,26 @@ class ItemsController extends Controller
 
     }
 
+    /**
+     * * Method that removint item from user's favorites and returns favorites list without removed element to update it on client
+     * @param request - get parameters for this api-address
+     * * returns full favorites list without removed element
+    */
+
     public function removeFromFavorite(Request $request) {
 
-        $userId = Auth::user()['id'];
-        $itemId = $request['item_id'];
+        $userId = Auth::user()['id'];   // get user id
+        $itemId = $request['item_id'];  // get item id
 
 
-        FavoritesModel::where('user_id', '=', $userId)->where('item_id', '=', $itemId)->delete();
+        FavoritesModel::where('user_id', '=', $userId)->where('item_id', '=', $itemId)->delete();   // get item by user and item id
 
-        // decrease favorited counter
+        /* decrease favorited counter */
 
         $favoritedAmount = ItemsModel::find($itemId)['favorited'];
-
         ItemsModel::find($itemId)->update(['favorited' => $favoritedAmount - 1]);
+
+        /* get favorites list to update it on client */
 
         $favoritesConnections = FavoritesModel::where('user_id', '=', $userId)->get();
         $favorites = [];
@@ -141,18 +177,31 @@ class ItemsController extends Controller
 
     }
 
+    /**
+     * * Method that returns favorites list by user id
+     * @param request - get parameters for this api-address
+     * * returns user's items list
+    */
+
     public function getUserFavorites(Request $request) {
 
         // it's not so need right now
 
     }
 
+    /**
+     * * Method that increase item's transitions counter, that uses as popularity flag
+     * @param request - get parameters for this api-address
+     * * returns success status
+    */
+
     public function transitionToItem(Request $request) {
 
-        $itemId = $request['item_id'];
+        $itemId = $request['item_id'];  // get item id
+
+        /* increase transitions counter */
 
         $transitionsAmount = ItemsModel::find($itemId)['transitions'];
-
         ItemsModel::find($itemId)->update(['transitions' => $transitionsAmount + 1]);
 
         $success = [
@@ -162,7 +211,15 @@ class ItemsController extends Controller
         return response()->json($success, 200);
     }
 
-    public function userItems(Request $request) {
+    /**
+     * * Method that returns items list by author id
+     * @param request - get parameters for this api-address
+     * * returns items list
+    */
+
+    public function getUserItems(Request $request) {
+
+        /* checking for authorization */
 
         if (!Auth::check() && !$request['author_id']) {
             $res = [
@@ -170,6 +227,8 @@ class ItemsController extends Controller
             ];
             return response()->json($res, 200);
         }
+
+        /* get author id, it's depends of who is owner */
 
         $userId;
 
@@ -179,13 +238,19 @@ class ItemsController extends Controller
             $userId = Auth::user()->only('id')['id'];
         }
 
-        $items = ItemsModel::where('author', '=', $userId)->get();
+        $items = ItemsModel::where('author', '=', $userId)->get(); // get items by author
 
         return response()->json($items, 200);
 
     }
 
-    public function itemLoad(Request $request) {
+    /**
+     * * Method that uploads item: saving thumbnail to storage, insert into database
+     * @param request - get parameters for this api-address
+     * * returns thumbnail-path // ! it's useless for now
+    */
+
+    public function itemUpload(Request $request) {
 
         // form data
 
@@ -271,5 +336,6 @@ class ItemsController extends Controller
         $item->save();
 
         return $request['img'];
+        
     }
 }
