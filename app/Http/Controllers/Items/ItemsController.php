@@ -271,17 +271,17 @@ class ItemsController extends Controller
 
         // renaming file to make the first char an user id
 
-        // $fileNameWithAuthor = implode('/', array_slice($pathArray, 0, count($pathArray) - 1)) . '/' . $userId . '_' . end($pathArray);
+        $fileNameWithAuthor = implode('/', array_slice($pathArray, 0, count($pathArray) - 1)) . '/' . $userId . '_' . end($pathArray);
 
-        // $pathArray = explode('/', $fileNameWithAuthor);
+        $pathArray = explode('/', $fileNameWithAuthor);
 
-        // Storage::move($fileName, $fileNameWithAuthor);
+        Storage::move($fileName, $fileNameWithAuthor);
         
         // saving item
         
         array_shift($pathArray);
 
-        $path = '/storage/' . implode('/', $pathArray);     // creating right path to insert into img-tag
+        $path = '/storage/' . implode('/', $pathArray);     // creating reght path to insert into img-tag
 
         $item = ItemsModel::create([
             'name' => $itemName,
