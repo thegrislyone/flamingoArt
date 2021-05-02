@@ -26,6 +26,7 @@ Route::get('user-items','App\Http\Controllers\Items\ItemsController@userItems');
 Route::get('single-item','App\Http\Controllers\Items\ItemsController@getSingleItem');
 
 Route::get('add-to-favorite','App\Http\Controllers\Items\ItemsController@addToFavorite');
+Route::put('transition-to-item','App\Http\Controllers\Items\ItemsController@transitionToItem');
 // Route::get('get-user-favorites','App\Http\Controllers\Items\ItemsController@getUserFavorites');
 
 /* Tags */

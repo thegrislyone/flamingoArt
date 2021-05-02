@@ -21,8 +21,10 @@ class CreateFirstDbKit extends Migration
             $table->text('description');
             $table->text('thumbnail');
             $table->text('tags');
-            $table->integer('likes');
+            $table->integer('favorited');
             $table->integer('author');
+            $table->integer('views');
+            $table->integer('transitions');
         });
 
         Schema::create('tags', function (Blueprint $table) {

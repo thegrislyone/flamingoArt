@@ -1,6 +1,6 @@
 <template>
-  <div class="tile">
-    <router-link :to="'/item/' + id">
+  <div class="tile" @click="transition">
+    <router-link :to="'/item/' + id" @click="transition">
       <div class="tile__wrp">
         <div class="tile__thumbnail">
           <img :src="img">
@@ -40,6 +40,14 @@ export default {
     author: Number//String
   },
   created() {
+  },
+  methods: {
+    transition() {
+      this.$http.put('/api/transition-to-item?item_id=' + this.id)
+        .then(response => {
+          const data = response.data
+        })
+    }
   }
 }
 </script>

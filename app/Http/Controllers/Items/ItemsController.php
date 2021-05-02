@@ -63,6 +63,12 @@ class ItemsController extends Controller
             'item_id' => $itemId
         ]);
 
+        // increase favorited counter
+
+        $favoritedAmount = ItemsModel::find($itemId)['favorited'];
+
+        ItemsModel::find($itemId)->update(['favorited' => $favoritedAmount + 1]);
+
         $favoritesConnections = FavoritesModel::where('user_id', '=', $userId)->get();
         $favorites = [];
 
@@ -92,6 +98,21 @@ class ItemsController extends Controller
     //     return 5;
 
     // }
+
+    public function transitionToItem(Request $request) {
+
+        $itemId = $request['item_id'];
+
+        $transitionsAmount = ItemsModel::find($itemId)['transitions'];
+
+        ItemsModel::find($itemId)->update(['transitions' => $transitionsAmount + 1]);
+
+        $success = [
+            'success' => 'Ок',
+        ];
+        
+        return response()->json($success, 200);
+    }
 
     public function userItems(Request $request) {
 
@@ -155,7 +176,9 @@ class ItemsController extends Controller
             'description' => $itemDescription,
             'thumbnail' => $path,
             'tags' => '',
-            'likes' => 0,
+            'favorited' => 0,
+            'views' => 0,
+            'transitions' => 0,
             'author' => $userId
         ]);
 

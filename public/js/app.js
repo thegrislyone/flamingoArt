@@ -5625,7 +5625,14 @@ __webpack_require__.r(__webpack_exports__);
     author: Number //String
 
   },
-  created: function created() {}
+  created: function created() {},
+  methods: {
+    transition: function transition() {
+      this.$http.put('/api/transition-to-item?item_id=' + this.id).then(function (response) {
+        var data = response.data;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -22650,15 +22657,19 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "tile" },
+    { staticClass: "tile", on: { click: _vm.transition } },
     [
-      _c("router-link", { attrs: { to: "/item/" + _vm.id } }, [
-        _c("div", { staticClass: "tile__wrp" }, [
-          _c("div", { staticClass: "tile__thumbnail" }, [
-            _c("img", { attrs: { src: _vm.img } })
+      _c(
+        "router-link",
+        { attrs: { to: "/item/" + _vm.id }, on: { click: _vm.transition } },
+        [
+          _c("div", { staticClass: "tile__wrp" }, [
+            _c("div", { staticClass: "tile__thumbnail" }, [
+              _c("img", { attrs: { src: _vm.img } })
+            ])
           ])
-        ])
-      ])
+        ]
+      )
     ],
     1
   )

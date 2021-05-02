@@ -193,7 +193,9 @@ export default {
 
       })
       .then(() => {
+
         this.sliderInit()
+
       })
 
   },
