@@ -44,7 +44,7 @@
               :class="{
                 'item__to-favorite_added': isInFavorite
               }"
-              @click="addToFavorite"
+              @click="addOrRemoveFavorite"
             >
 
               <template 
@@ -214,7 +214,7 @@ export default {
 
       this.slider.init()
     },
-    addToFavorite() {
+    addOrRemoveFavorite() {
       if (!this.isInFavorite) {
 
         const itemId = this.item.id
@@ -230,6 +230,20 @@ export default {
 
           })
 
+      } else {
+
+        const itemId = this.item.id
+
+        this.$http.get('/api/remove-from-favorite?item_id=' + itemId)
+          .then(response => {
+            const data = response.data
+
+            if ('success' in data) {
+              this.$root.showNotification(data.success, 'success')
+              this.$store.commit('setFavorites', data.favorites)
+            }
+
+          })
       }
     }
   }

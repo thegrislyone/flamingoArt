@@ -5603,19 +5603,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
@@ -6735,12 +6722,23 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.slider.init();
     },
-    addToFavorite: function addToFavorite() {
+    addOrRemoveFavorite: function addOrRemoveFavorite() {
       var _this3 = this;
 
       if (!this.isInFavorite) {
         var itemId = this.item.id;
         this.$http.get('/api/add-to-favorite?item_id=' + itemId).then(function (response) {
+          var data = response.data;
+
+          if ('success' in data) {
+            _this3.$root.showNotification(data.success, 'success');
+
+            _this3.$store.commit('setFavorites', data.favorites);
+          }
+        });
+      } else {
+        var _itemId = this.item.id;
+        this.$http.get('/api/remove-from-favorite?item_id=' + _itemId).then(function (response) {
           var data = response.data;
 
           if ('success' in data) {
@@ -23536,7 +23534,7 @@ var render = function() {
                           class: {
                             "item__to-favorite_added": _vm.isInFavorite
                           },
-                          on: { click: _vm.addToFavorite }
+                          on: { click: _vm.addOrRemoveFavorite }
                         },
                         [
                           _vm.isInFavorite

@@ -111,6 +111,36 @@ class ItemsController extends Controller
 
     }
 
+    public function removeFromFavorite(Request $request) {
+
+        $userId = Auth::user()['id'];
+        $itemId = $request['item_id'];
+
+
+        FavoritesModel::where('user_id', '=', $userId)->where('item_id', '=', $itemId)->delete();
+
+        // decrease favorited counter
+
+        $favoritedAmount = ItemsModel::find($itemId)['favorited'];
+
+        ItemsModel::find($itemId)->update(['favorited' => $favoritedAmount - 1]);
+
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userId)->get();
+        $favorites = [];
+
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
+        }
+
+        $success = [
+            'success' => 'Товар удалён из избранного',
+            'favorites' => $favorites
+        ];
+        
+        return response()->json($success, 200);
+
+    }
+
     // public function getUserFavorites(Request $request) {
 
     //     $favorites = [];
