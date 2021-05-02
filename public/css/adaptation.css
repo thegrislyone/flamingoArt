@@ -86,7 +86,7 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .tile {
-    width: calc(32% - 2px);
+    width: calc(31.9% - 2px);
   }
 }
 
