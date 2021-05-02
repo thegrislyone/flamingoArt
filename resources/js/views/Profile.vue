@@ -70,7 +70,7 @@
               Выложить работу
             </button>
             <button
-              v-else
+              v-else-if="isAuthorizate"
               class="btn profile-card__edit-button"
             >
               Написать
@@ -168,6 +168,9 @@ export default {
     }
   },
   computed: {
+    isAuthorizate() {
+      return this.$store.getters.isAuthorizate
+    },
     itemsList() {
       if (this.itemsMode == 'my-items') {
         return this.items
@@ -229,6 +232,11 @@ export default {
     
     this.page++
 
+  },
+  mounted() {
+    if (!this.isAuthorizate) {
+      this.$root.showNotification('Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем', 'success')
+    }
   },
   methods: {
     loadMoreItems(url) {

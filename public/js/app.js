@@ -7094,6 +7094,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    isAuthorizate: function isAuthorizate() {
+      return this.$store.getters.isAuthorizate;
+    },
     itemsList: function itemsList() {
       if (this.itemsMode == 'my-items') {
         return this.items;
@@ -7142,6 +7145,11 @@ __webpack_require__.r(__webpack_exports__);
 
     this.loadMoreItems(url);
     this.page++;
+  },
+  mounted: function mounted() {
+    if (!this.isAuthorizate) {
+      this.$root.showNotification('Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем', 'success');
+    }
   },
   methods: {
     loadMoreItems: function loadMoreItems(url) {
@@ -23825,11 +23833,13 @@ var render = function() {
                           },
                           [_vm._v("\n            Выложить работу\n          ")]
                         )
-                      : _c(
+                      : _vm.isAuthorizate
+                      ? _c(
                           "button",
                           { staticClass: "btn profile-card__edit-button" },
                           [_vm._v("\n            Написать\n          ")]
                         )
+                      : _vm._e()
                   ])
                 ]
               )
