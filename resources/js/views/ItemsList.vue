@@ -81,7 +81,7 @@ export default {
       this.errorBannerShow = true
     }
 
-    const url = new URL(`${window.location.origin}/api/items`)
+    const url = new URL(`${window.location.origin}/api/items/get-items`)
     url.searchParams.set('page', this.page)
 
     if (this.feed) {
@@ -106,7 +106,7 @@ export default {
       this.page = 1
       this.feed = feed
 
-      const url = new URL(`${window.location.origin}/api/items`)
+      const url = new URL(`${window.location.origin}/api/items/get-items`)
       url.searchParams.set('page', this.page)
       url.searchParams.set('feed', this.feed)
       
@@ -157,7 +157,7 @@ export default {
         (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight) &&
         !this.outOfItems
       ) {
-        const url = new URL(`${window.location.origin}/api/items`)
+        const url = new URL(`${window.location.origin}/api/items/get-items`)
         url.searchParams.set('page', this.page)
 
         if (this.feed) {

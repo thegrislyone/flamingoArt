@@ -141,19 +141,11 @@ class ItemsController extends Controller
 
     }
 
-    // public function getUserFavorites(Request $request) {
+    public function getUserFavorites(Request $request) {
 
-    //     $favorites = [];
-    //     $favoritesConnections = FavoritesModel::where('user_id', '=', Auth::user()['id'])->get();
-        
-    //     foreach($favoritesConnections as $favorite) {
+        // it's not so need right now
 
-    //         ItemsModel::find()
-    //     }
-        
-    //     return 5;
-
-    // }
+    }
 
     public function transitionToItem(Request $request) {
 

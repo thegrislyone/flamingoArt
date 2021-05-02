@@ -60,7 +60,7 @@ export default {
     }
   },
   created() {
-    this.$http.get('/api/tags?amount=10')
+    this.$http.get('/api/tags/get-tags?amount=10')
       .then(response => {
         const data = response.data
 

@@ -218,7 +218,7 @@ export default {
       this.user = this.$store.getters.user
     }
 
-    const url = new URL(`${window.location.origin}/api/user-items`)
+    const url = new URL(`${window.location.origin}/api/items/user-items`)
 
     if (this.isForeign) {
       url.searchParams.set('author_id', this.authorId)

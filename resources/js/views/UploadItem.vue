@@ -208,7 +208,7 @@ export default {
 
       this.sendLoading = true
 
-      this.$http.post('/api/item-load', formData)
+      this.$http.post('/api/items/item-load', formData)
         .then(response => {
           const data = response.data
 

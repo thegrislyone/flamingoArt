@@ -177,7 +177,7 @@ export default {
 
     this.loading = true
 
-    this.$http.get('/api/single-item?item_id=' + this.id)
+    this.$http.get('/api/items/single-item?item_id=' + this.id)
       .then(response => {
         const data = response.data
 
@@ -219,7 +219,7 @@ export default {
 
         const itemId = this.item.id
 
-        this.$http.get('/api/add-to-favorite?item_id=' + itemId)
+        this.$http.get('/api/items/add-to-favorite?item_id=' + itemId)
           .then(response => {
             const data = response.data
 
@@ -234,7 +234,7 @@ export default {
 
         const itemId = this.item.id
 
-        this.$http.get('/api/remove-from-favorite?item_id=' + itemId)
+        this.$http.get('/api/items/remove-from-favorite?item_id=' + itemId)
           .then(response => {
             const data = response.data
 

@@ -5622,7 +5622,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {},
   methods: {
     transition: function transition() {
-      this.$http.put('/api/transition-to-item?item_id=' + this.id).then(function (response) {
+      this.$http.put('/api/items/transition-to-item?item_id=' + this.id).then(function (response) {
         var data = response.data;
       });
     }
@@ -6436,7 +6436,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.$http.get('/api/tags?amount=10').then(function (response) {
+    this.$http.get('/api/tags/get-tags?amount=10').then(function (response) {
       var data = response.data;
       _this.popularTags = data;
     });
@@ -6696,7 +6696,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this2 = this;
 
     this.loading = true;
-    this.$http.get('/api/single-item?item_id=' + this.id).then(function (response) {
+    this.$http.get('/api/items/single-item?item_id=' + this.id).then(function (response) {
       var data = response.data;
       console.log(data);
 
@@ -6727,7 +6727,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.isInFavorite) {
         var itemId = this.item.id;
-        this.$http.get('/api/add-to-favorite?item_id=' + itemId).then(function (response) {
+        this.$http.get('/api/items/add-to-favorite?item_id=' + itemId).then(function (response) {
           var data = response.data;
 
           if ('success' in data) {
@@ -6738,7 +6738,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else {
         var _itemId = this.item.id;
-        this.$http.get('/api/remove-from-favorite?item_id=' + _itemId).then(function (response) {
+        this.$http.get('/api/items/remove-from-favorite?item_id=' + _itemId).then(function (response) {
           var data = response.data;
 
           if ('success' in data) {
@@ -6844,7 +6844,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.errorBannerShow = true;
     }
 
-    var url = new URL("".concat(window.location.origin, "/api/items"));
+    var url = new URL("".concat(window.location.origin, "/api/items/get-items"));
     url.searchParams.set('page', this.page);
 
     if (this.feed) {
@@ -6868,7 +6868,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.items.data = [];
       this.page = 1;
       this.feed = feed;
-      var url = new URL("".concat(window.location.origin, "/api/items"));
+      var url = new URL("".concat(window.location.origin, "/api/items/get-items"));
       url.searchParams.set('page', this.page);
       url.searchParams.set('feed', this.feed);
       this.$http.get(url).then(function (response) {
@@ -6910,7 +6910,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     scrollCheck: function scrollCheck() {
       if (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight && !this.outOfItems) {
-        var url = new URL("".concat(window.location.origin, "/api/items"));
+        var url = new URL("".concat(window.location.origin, "/api/items/get-items"));
         url.searchParams.set('page', this.page);
 
         if (this.feed) {
@@ -7134,7 +7134,7 @@ __webpack_require__.r(__webpack_exports__);
       this.user = this.$store.getters.user;
     }
 
-    var url = new URL("".concat(window.location.origin, "/api/user-items"));
+    var url = new URL("".concat(window.location.origin, "/api/items/user-items"));
 
     if (this.isForeign) {
       url.searchParams.set('author_id', this.authorId);
@@ -7412,7 +7412,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       this.sendLoading = true;
-      this.$http.post('/api/item-load', formData).then(function (response) {
+      this.$http.post('/api/items/item-load', formData).then(function (response) {
         var data = response.data;
         _this.sendLoading = false;
 

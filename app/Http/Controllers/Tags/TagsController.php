@@ -8,7 +8,7 @@ use App\Models\Tags\TagsModel;
 
 class TagsController extends Controller
 {
-    public function tags(Request $request) {
+    public function getPopularTags(Request $request) {
         $amount = $request['amount'];
         $tags = TagsModel::orderBy('popularity', 'desc')->get(['id', 'name'])->toArray();
         return response()->json(array_slice($tags, 0, $amount), 200);

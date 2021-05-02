@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     transition() {
-      this.$http.put('/api/transition-to-item?item_id=' + this.id)
+      this.$http.put('/api/items/transition-to-item?item_id=' + this.id)
         .then(response => {
           const data = response.data
         })
