@@ -42543,7 +42543,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   },
   methods: {
     cookieAgreementClose: function cookieAgreementClose() {
-      this.$cookies.set('cookie_agreement_set', 1);
+      this.$cookies.set('cookie_agreement_set', 1, "1y");
       this.cookieAgreementShow = false;
     },
     showNotification: function showNotification(title, status) {

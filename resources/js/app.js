@@ -80,7 +80,7 @@ const app = new Vue({
     },
     methods: {
         cookieAgreementClose() {
-            this.$cookies.set('cookie_agreement_set', 1)
+            this.$cookies.set('cookie_agreement_set', 1, "1y")
             this.cookieAgreementShow = false
         },
         showNotification(title, status) {
