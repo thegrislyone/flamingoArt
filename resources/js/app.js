@@ -31,6 +31,7 @@ Vue.prototype.$http = axios
 Vue.prototype.$isEmpty = empty
 Vue.prototype.$isExist = exist
 Vue.prototype.$createPopper = createPopper
+Vue.prototype.$eventBus = new Vue()
 
 //filters
 Vue.filter('capitalize', capitalize)

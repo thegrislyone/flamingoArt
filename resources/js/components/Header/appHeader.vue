@@ -165,12 +165,19 @@ export default {
       }
     },
   },
+  created() {
+    if (this.$cookies.get('items-list-feed')) {
+      this.feedChange(this.$cookies.get('items-list-feed'))
+    }
+  },
   methods: {
     feedChange(key) {
       for (const index in this.feeds) {
         this.feeds[index].active = false
       }
       this.feeds[key].active = true
+      this.$eventBus.$emit('feed-change', key)
+      this.$cookies.set('items-list-feed', key, "1d")
     },
     openForm(mode) {
       this.formMode = mode

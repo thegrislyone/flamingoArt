@@ -53,38 +53,93 @@ export default {
     return {
       errorBannerShow: false,
 
-      items: {
-        data: [],
-        meta: {}
-      },
+      items: null,
       categoriesData: {
         categories: []
       },
       
       page: 1,
+      feed: null,
       outOfItems: false,
       loadMoreItemsDebounced: null
     }
   },
   computed: {
     itemsList() {
-      return this.items.data
+      return (this.items) ? this.items.data : []
     },
   },
+  created() {
+
+    this.$eventBus.$on('feed-change', this.feedChange)
+
+    if (this.$cookies.get('items-list-feed')) {
+      this.feed = this.$cookies.get('items-list-feed')
+    }
+
+    if (this.$route.meta.error) {
+      this.errorBannerShow = true
+    }
+
+    const url = new URL(`${window.location.origin}/api/items`)
+    url.searchParams.set('page', this.page)
+
+    if (this.feed) {
+      url.searchParams.set('feed', this.feed)
+    }
+
+    this.loadMoreItems(url)
+    this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
+
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollCheck)
+  },
+  beforeDestroy() {
+    this.$eventBus.$off('feed-change')
+    window.removeEventListener("scroll", this.scrollCheck)
+  },
   methods: {
+    feedChange(feed) {
+
+      this.items.data = []
+      this.page = 1
+      this.feed = feed
+
+      const url = new URL(`${window.location.origin}/api/items`)
+      url.searchParams.set('page', this.page)
+      url.searchParams.set('feed', this.feed)
+      
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          if ('data' in data && 'meta' in data) {
+            this.items = data
+          }
+
+          this.page++
+        })
+        .then(() => {
+          if (this.items.meta.last_page <= this.items.meta.current_page + 1) {
+            this.outOfItems = true
+          }
+        })
+
+    },
     loadMoreItems(url) {
       
       this.$http.get(url)
         .then(response => {
           const data = response.data
 
-          data.data.forEach((item) => {
-            this.items.data.push(item)
-          })
-
-          for (const [key, value] of Object.entries(data)) {
-            if (key == 'data') continue
-            this.items.meta[key] = value
+          if ('data' in data && 'meta' in data) {
+            if (this.items) {
+              this.items.data.concat(data.data)
+              this.items.meta = data.meta
+            } else {
+              this.items = data
+            }
           }
 
           this.page++
@@ -105,34 +160,13 @@ export default {
         const url = new URL(`${window.location.origin}/api/items`)
         url.searchParams.set('page', this.page)
 
+        if (this.feed) {
+          url.searchParams.set('feed', this.feed)
+        }
+
         this.loadMoreItemsDebounced(url)
       }
     }
   },
-  created() {
-
-    if (this.$route.meta.error) {
-      this.errorBannerShow = true
-    }
-
-    const url = new URL(`${window.location.origin}/api/items`)
-    url.searchParams.set('page', this.page)
-
-    this.loadMoreItems(url)
-    this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
-
-    // this.$http.get(new URL(`${window.location.origin}/api/tags?amount=5`))
-    // .then(response => {
-    //   const data = response.data
-    //   this.categoriesData.categories = data
-    // })
-
-  },
-  mounted() {
-    window.addEventListener("scroll", this.scrollCheck)
-  },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.scrollCheck)
-  }
 }
 </script>

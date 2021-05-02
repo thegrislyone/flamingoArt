@@ -21,8 +21,34 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
-    public function itemsGet() {
-        $items = ItemsModel::paginate(30);
+    public function itemsGet(Request $request) {
+
+        $feed = $request['feed'];
+
+        $items = [];
+
+        if (!$feed || $feed == 'main') {
+            $items = ItemsModel::simplePaginate(30)->toArray();
+        } elseif ($feed == 'popular') {
+            $items = ItemsModel::orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
+        } elseif ($feed == 'new') {
+            $items = $items = ItemsModel::orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
+        }
+
+        $meta = [];
+        $data = $items['data'];
+        
+        foreach ($items as $key=>$value) {
+            if ($key != 'data') {
+                $meta[$key] = $value;
+            }
+        }
+        
+        $items = [
+            'meta' => $meta,
+            'data' => $data
+        ];
+        
         return response()->json($items, 200);
     }
 

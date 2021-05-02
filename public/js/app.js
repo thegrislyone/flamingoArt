@@ -5554,6 +5554,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  created: function created() {
+    if (this.$cookies.get('items-list-feed')) {
+      this.feedChange(this.$cookies.get('items-list-feed'));
+    }
+  },
   methods: {
     feedChange: function feedChange(key) {
       for (var index in this.feeds) {
@@ -5561,6 +5566,8 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.feeds[key].active = true;
+      this.$eventBus.$emit('feed-change', key);
+      this.$cookies.set('items-list-feed', key, "1d");
     },
     openForm: function openForm(mode) {
       this.formMode = mode;
@@ -6763,18 +6770,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-debounce */ "./node_modules/vue-debounce/dist/vue-debounce.min.js");
 /* harmony import */ var vue_debounce__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_debounce__WEBPACK_IMPORTED_MODULE_3__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -6825,40 +6820,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       errorBannerShow: false,
-      items: {
-        data: [],
-        meta: {}
-      },
+      items: null,
       categoriesData: {
         categories: []
       },
       page: 1,
+      feed: null,
       outOfItems: false,
       loadMoreItemsDebounced: null
     };
   },
   computed: {
     itemsList: function itemsList() {
-      return this.items.data;
+      return this.items ? this.items.data : [];
     }
   },
+  created: function created() {
+    this.$eventBus.$on('feed-change', this.feedChange);
+
+    if (this.$cookies.get('items-list-feed')) {
+      this.feed = this.$cookies.get('items-list-feed');
+    }
+
+    if (this.$route.meta.error) {
+      this.errorBannerShow = true;
+    }
+
+    var url = new URL("".concat(window.location.origin, "/api/items"));
+    url.searchParams.set('page', this.page);
+
+    if (this.feed) {
+      url.searchParams.set('feed', this.feed);
+    }
+
+    this.loadMoreItems(url);
+    this.loadMoreItemsDebounced = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_3__["debounce"])(this.loadMoreItems, 100);
+  },
+  mounted: function mounted() {
+    window.addEventListener("scroll", this.scrollCheck);
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.$eventBus.$off('feed-change');
+    window.removeEventListener("scroll", this.scrollCheck);
+  },
   methods: {
-    loadMoreItems: function loadMoreItems(url) {
+    feedChange: function feedChange(feed) {
       var _this = this;
 
+      this.items.data = [];
+      this.page = 1;
+      this.feed = feed;
+      var url = new URL("".concat(window.location.origin, "/api/items"));
+      url.searchParams.set('page', this.page);
+      url.searchParams.set('feed', this.feed);
       this.$http.get(url).then(function (response) {
         var data = response.data;
-        data.data.forEach(function (item) {
-          _this.items.data.push(item);
-        });
 
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
-
-          if (key == 'data') continue;
-          _this.items.meta[key] = value;
+        if ('data' in data && 'meta' in data) {
+          _this.items = data;
         }
 
         _this.page++;
@@ -6868,33 +6887,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
+    loadMoreItems: function loadMoreItems(url) {
+      var _this2 = this;
+
+      this.$http.get(url).then(function (response) {
+        var data = response.data;
+
+        if ('data' in data && 'meta' in data) {
+          if (_this2.items) {
+            _this2.items.data.concat(data.data);
+
+            _this2.items.meta = data.meta;
+          } else {
+            _this2.items = data;
+          }
+        }
+
+        _this2.page++;
+      }).then(function () {
+        if (_this2.items.meta.last_page <= _this2.items.meta.current_page + 1) {
+          _this2.outOfItems = true;
+        }
+      });
+    },
     scrollCheck: function scrollCheck() {
       if (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight && !this.outOfItems) {
         var url = new URL("".concat(window.location.origin, "/api/items"));
         url.searchParams.set('page', this.page);
+
+        if (this.feed) {
+          url.searchParams.set('feed', this.feed);
+        }
+
         this.loadMoreItemsDebounced(url);
       }
     }
-  },
-  created: function created() {
-    if (this.$route.meta.error) {
-      this.errorBannerShow = true;
-    }
-
-    var url = new URL("".concat(window.location.origin, "/api/items"));
-    url.searchParams.set('page', this.page);
-    this.loadMoreItems(url);
-    this.loadMoreItemsDebounced = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_3__["debounce"])(this.loadMoreItems, 100); // this.$http.get(new URL(`${window.location.origin}/api/tags?amount=5`))
-    // .then(response => {
-    //   const data = response.data
-    //   this.categoriesData.categories = data
-    // })
-  },
-  mounted: function mounted() {
-    window.addEventListener("scroll", this.scrollCheck);
-  },
-  beforeDestroy: function beforeDestroy() {
-    window.removeEventListener("scroll", this.scrollCheck);
   }
 });
 
@@ -42505,7 +42532,8 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = axios__WEBPACK_IMPORTED_MODULE_3___default.a;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isEmpty = _properties___WEBPACK_IMPORTED_MODULE_11__["empty"];
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isExist = _properties___WEBPACK_IMPORTED_MODULE_11__["exist"];
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$createPopper = _popperjs_core__WEBPACK_IMPORTED_MODULE_10__["createPopper"]; //filters
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$createPopper = _popperjs_core__WEBPACK_IMPORTED_MODULE_10__["createPopper"];
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); //filters
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_12__["capitalize"]); //plugins registration
 
