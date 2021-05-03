@@ -6905,6 +6905,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var data = response.data;
 
         if ('data' in data && 'meta' in data) {
+          if (_this2.$isEmpty(data.data) || data.data.length < 30) {
+            _this2.outOfItems = true;
+
+            if (_this2.$isEmpty(data.data)) {
+              return;
+            }
+          }
+
           if (_this2.items) {
             _this2.items.data.concat(data.data);
 

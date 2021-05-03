@@ -134,6 +134,14 @@ export default {
           const data = response.data
 
           if ('data' in data && 'meta' in data) {
+
+            if (this.$isEmpty(data.data) || data.data.length < 30) {
+              this.outOfItems = true
+              if (this.$isEmpty(data.data)) {
+                return
+              }
+            }
+
             if (this.items) {
               this.items.data.concat(data.data)
               this.items.meta = data.meta
