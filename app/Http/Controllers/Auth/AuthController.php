@@ -25,12 +25,18 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
+    /**
+     * * Not-api method that packing user-info json-object
+     * * returns user info
+    */
+
     public function getUserInfo() {
         
-        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');  // selecting user info
+
+        /* get user favorites */
+
         $favorites = [];
-
-
         $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
 
         foreach ($favoritesConnections as $favorite) {
@@ -42,27 +48,49 @@ class AuthController extends Controller
         return $userInfo;
     }
 
+    /**
+     * * Method, that returns items to use it in itemsList
+     * @param request - get parameters for this api-address
+     * * returns status and logged user
+    */
+
     public function loginRequest(Request $request) {
 
-        $credentials = $request->only('login', 'password');
+        $credentials = $request->only('login', 'password'); // get credentials
 
-        return $this->login($credentials);
+        return $this->login($credentials);  // call login-method
 
     }
 
+    /**
+     * * Method, that returns user by id
+     * @param request - get parameters for this api-address
+     * * returns user
+    */
+
     public function getAuthor(Request $request) {
 
-        $authorId = $request['author_id'];
+        $authorId = $request['author_id'];  // get author id
 
-        $author = User::find($authorId);
+        $author = User::find($authorId);    // select user
 
         return response()->json($author, 200);
 
     }
 
+    /**
+     * * Not-api method that authenticate user using credentials
+     * @param credentials - user credentials-data
+     * * returns status and logged user
+    */
+
     public function login($credentials) {
 
+        /* checking user existence */
+
         if (Auth::attempt($credentials, true)) {
+
+            /* return success status */
 
             $success = [
                 'success' => 'Вы успешно авторизовались',
@@ -72,6 +100,8 @@ class AuthController extends Controller
             return $success;
 
         } else {
+
+            /* return error status */
 
             $errors = [
                 'errors' => ['Пароль или логин введены неправильно']
@@ -83,10 +113,21 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * * Method that checking for uniqueness login and email while registration
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
     public function unicDataCheck(Request $request) {
+
+        /* check for checking parameter */
+
         if ($request['email']) {
             
             $email = $request->all();
+
+            /* check if email already engaged by standart validator */
 
             $validator =  Validator::make($email, [
                 'email' => 'unique:users'
@@ -108,6 +149,8 @@ class AuthController extends Controller
 
             $login = $request->all();
 
+            /* check if login already engaged by standart validator */
+
             $validator =  Validator::make($login, [
                 'login' => 'unique:users'
             ]);
@@ -124,38 +167,53 @@ class AuthController extends Controller
                 return response()->json($success, 200);
             }
         } else {
+
+            /* if parameter is not need to be checked */
+
             $success = [
                 'success' => 'Все правильно'
             ];
+
             return response()->json($success, 200);
+
         }
     }
 
-    public function compactErrorsResponse($messages) {
-        $errors = [];
-        foreach($messages as $errorArray) {
-            foreach($errorArray as $error) {
-                array_push($errors, $error);
-            }
-        }
-        return $errors;
-    }
+    /**
+     * * Method that logging user out
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
 
     public function logout() {
-        Auth::logout();
+
+        Auth::logout(); // logging user out
+
+        /* checking for user is not logged */
+        
         if (!Auth::check()) {
+
             $success = [
                 'success' => 'Вы успешно вышли'
             ];
+
             return response()->json($success, 200);
         }
     }
 
+    /**
+     * * Method that registrating user
+     * @param request - get parameters for this api-address
+     * * returns status and registrated user
+    */
+
     public function register(Request $request) {
+
+        /* validate data */
 
         $validator = $this->validator($request->all());
 
-        if ($validator->fails()) {   
+        if ($validator->fails()) {
 
             $errors = $validator->messages();
 
@@ -167,6 +225,8 @@ class AuthController extends Controller
 
             return response()->json($errors, 200);
         };
+
+        /* inserting user to database */
 
         try {
             $user = User::create([
@@ -184,12 +244,12 @@ class AuthController extends Controller
             return response()->json($res, 200);
         }
 
-        
-        $code = $this->generateCode(8);
-        Code::create([
-            'user_id' => $user->id,
-            'code' => $code,
-        ]);
+        // $code = $this->generateCode(8);
+
+        // Code::create([
+        //     'user_id' => $user->id,
+        //     'code' => $code,
+        // ]);
 
         $success = [
             'success' => 'Вы успешно зарегестрированы'
