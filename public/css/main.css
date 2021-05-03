@@ -788,6 +788,7 @@ img[lazy=loading] {
   /* padding: 15px 32px; */
   /* display: grid; */
   display: flex;
+  align-items: center;
   /* justify-content: space-between; */
   flex-wrap: wrap;
   grid-template-columns: 1fr; 
@@ -806,13 +807,14 @@ img[lazy=loading] {
 }
 .tile__thumbnail {
   overflow: hidden;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   flex-grow: 1;
 }
 .tile__thumbnail
 img {
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 }
 
 /* SIGN-FORM */

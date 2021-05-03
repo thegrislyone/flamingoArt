@@ -102,7 +102,7 @@
         <div class="item__author-items swiper-container">
           <div class="item__swiper swiper-wrapper">
             <div 
-              v-for="item in item.author.items"
+              v-for="item in moreOfAuthor"
               :key="item.id"
               class="item__author-item swiper-slide"
             >
@@ -161,6 +161,14 @@ export default {
     },
     isAuthor() {
       return this.$store.getters.user.id == this.item.author.id
+    },
+    moreOfAuthor() {
+      return this.item.author.items.filter(item => {
+        if (item.id != this.item.id) {
+          return true
+        }
+        return false
+      })
     },
     windowWidth() {
       return this.$store.getters.windowWidth

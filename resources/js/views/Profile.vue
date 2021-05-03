@@ -124,7 +124,9 @@
               :outOfItems="true"
             />
 
-            <div v-else key="no-items">У вас нет выложенных работ</div>
+            <div v-else-if="!itemsList.length && itemsMode == 'my-items'" key="no-items">У вас нет выложенных работ</div>
+
+            <div v-else-if="!itemsList.length && itemsMode == 'favorites'" key="no-favorites">У вас нет работ, добавленных в избранное</div>
 
           </transition>
         

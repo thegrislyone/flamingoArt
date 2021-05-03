@@ -6698,6 +6698,17 @@ __webpack_require__.r(__webpack_exports__);
     isAuthor: function isAuthor() {
       return this.$store.getters.user.id == this.item.author.id;
     },
+    moreOfAuthor: function moreOfAuthor() {
+      var _this2 = this;
+
+      return this.item.author.items.filter(function (item) {
+        if (item.id != _this2.item.id) {
+          return true;
+        }
+
+        return false;
+      });
+    },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
     },
@@ -6706,7 +6717,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.loading = true;
     this.$http.get('/api/items/single-item?item_id=' + this.id).then(function (response) {
@@ -6714,12 +6725,12 @@ __webpack_require__.r(__webpack_exports__);
       console.log(data);
 
       if (data.errors) {} else {
-        _this2.item = data;
+        _this3.item = data;
       }
 
-      _this2.loading = false;
+      _this3.loading = false;
     }).then(function () {
-      _this2.sliderInit();
+      _this3.sliderInit();
     });
   },
   mounted: function mounted() {},
@@ -6736,7 +6747,7 @@ __webpack_require__.r(__webpack_exports__);
       this.slider.init();
     },
     addOrRemoveFavorite: function addOrRemoveFavorite() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.isInFavorite) {
         var itemId = this.item.id;
@@ -6744,9 +6755,9 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data;
 
           if ('success' in data) {
-            _this3.$root.showNotification(data.success, 'success');
+            _this4.$root.showNotification(data.success, 'success');
 
-            _this3.$store.commit('setFavorites', data.favorites);
+            _this4.$store.commit('setFavorites', data.favorites);
           }
         });
       } else {
@@ -6755,9 +6766,9 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data;
 
           if ('success' in data) {
-            _this3.$root.showNotification(data.success, 'success');
+            _this4.$root.showNotification(data.success, 'success');
 
-            _this3.$store.commit('setFavorites', data.favorites);
+            _this4.$store.commit('setFavorites', data.favorites);
           }
         });
       }
@@ -6957,6 +6968,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
+//
+//
 //
 //
 //
@@ -23651,7 +23664,7 @@ var render = function() {
               _c(
                 "div",
                 { staticClass: "item__swiper swiper-wrapper" },
-                _vm._l(_vm.item.author.items, function(item) {
+                _vm._l(_vm.moreOfAuthor, function(item) {
                   return _c(
                     "div",
                     {
@@ -23955,9 +23968,15 @@ var render = function() {
                           key: "favorites",
                           attrs: { tilesList: _vm.itemsList, outOfItems: true }
                         })
-                      : _c("div", { key: "no-items" }, [
+                      : !_vm.itemsList.length && _vm.itemsMode == "my-items"
+                      ? _c("div", { key: "no-items" }, [
                           _vm._v("У вас нет выложенных работ")
                         ])
+                      : !_vm.itemsList.length && _vm.itemsMode == "favorites"
+                      ? _c("div", { key: "no-favorites" }, [
+                          _vm._v("У вас нет работ, добавленных в избранное")
+                        ])
+                      : _vm._e()
                   ],
                   1
                 )
