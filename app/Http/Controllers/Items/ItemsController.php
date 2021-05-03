@@ -245,6 +245,8 @@ class ItemsController extends Controller
 
         foreach ($tags as $key=>$tag) {
 
+            TagsModel::find($tag['id'])->update(['popularity' => $tag['popularity'] + 1]); // tag popularity increase
+
             $connections = UserTagsModel::where('tag_id', '=', $tag['id'])->get()->toArray();
 
             foreach ($connections as $index=>$connection) {
