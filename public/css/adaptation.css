@@ -111,18 +111,25 @@
 
 @media (min-width: 1024px) {
   /* HEADER */
+  
+  .header {
+    padding: 20px 64px;
+  }
   .header__logo {
     display: block;
+    margin-right: 27px;
   }
   .header__menu-block {
     display: none;
   }
   .header__feed-type {
     display: flex;
+    margin-right: 16px;
   }
   .header__icons-bar {
     display: flex;
     flex-grow: 1;
+    padding-left: 100px;
   }
   .search-short {
     display: none;
@@ -133,22 +140,6 @@
   .search-full {
     display: block;
     flex-grow: 1;
-  }
-  /* PROFILE */
-  
-}
-
-/*------------------------------------*\
-  # MIN-WIDTH: 1024px
-\*------------------------------------*/
-
-@media (min-width: 1024px) {
-  /* HEADER */
-  .header {
-    padding: 20px 64px;
-  }
-  .search-full {
-    display: block;
   }
   /* PROFILE */
   .profile-tab {
@@ -211,6 +202,13 @@
 \*------------------------------------*/
 
 @media (min-width: 1366px) {
+  /* HEADER */
+  .header__search-block {
+    flex-grow: 1;
+  }
+  .header__icons-bar {
+    padding-left: 0;
+  }
   /* PROFILE */
   .profile-block__profile {
     flex-shrink: 0;

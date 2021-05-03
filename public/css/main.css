@@ -627,9 +627,9 @@ img[lazy=loading] {
   background-color: #121212;
   background-image: url('../assets/images/i-search.svg');
   background-repeat: no-repeat;
-  padding: 12px 43px 12px 48px;
+  padding: 12px 12px 12px 48px;
   border-radius: 20px;
-  background-position: 15px center;
+  background-position: 18px center;
   color: #fff;
   width: 100%;
   font-weight: 500;
@@ -637,6 +637,12 @@ img[lazy=loading] {
   line-height: 19px;
   letter-spacing: -0.011em;
   transition: all .35s;
+}
+#main-searh::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-family: Inter;
+  line-height: 17px;
 }
 .search_opened {
   border-radius: 20px 20px 0 0 !important;
@@ -673,7 +679,7 @@ img[lazy=loading] {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  gap: 28px;
+  /* gap: 28px; */
   background: rgba(18, 18, 18, 0.75);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(50px);
@@ -705,14 +711,14 @@ img[lazy=loading] {
   align-items: center;
   cursor: default;
   flex-shrink: 0;
-  padding: 0 24px;
-  gap: 48px;
+  /* padding: 0 24px; */
+  /* gap: 48px; */
 }
 .header__feed {
   color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all .35s;
-  padding: 7px 0 8px;
+  padding: 7px 24px 8px;
   font-weight: 600;
 }
 .header__feed_active {

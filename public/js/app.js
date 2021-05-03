@@ -42555,7 +42555,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_cookies__WEBPACK_IMPORTED_MOD
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_lazyload__WEBPACK_IMPORTED_MODULE_9__["default"], {
   preLoad: 1.3,
   error: 'dist/error.png',
-  loading: '/assets/images/loader.gif',
+  loading: '/assets/images/loader_70.gif',
   attempt: 1
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
