@@ -212,6 +212,71 @@ class ItemsController extends Controller
     }
 
     /**
+     * * Method that returns search tips
+     * @param request - get parameters for this api-address
+     * * returns search tips or no-tips error
+    */
+
+    public function getSearchTips(Request $request) {
+
+    }
+
+    /**
+     * * Method that returns search results
+     * @param request - get parameters for this api-address
+     * * returns search results or no-results error
+    */
+
+    public function getSearchResults(Request $request) {
+
+        $search = $request['search'];   // get search
+
+        /* search items */
+
+        $items = ItemsModel::search($search)->get();
+
+        /* search tags */
+
+        $tags = TagsModel::search($search)->get();
+
+        /* search items by tags */
+
+        $items_by_tags = [];
+
+        foreach ($tags as $key=>$tag) {
+
+            $connections = UserTagsModel::where('tag_id', '=', $tag['id'])->get()->toArray();
+
+            foreach ($connections as $index=>$connection) {
+                $item = ItemsModel::find($connection['item_id']);
+                array_push($items_by_tags, $item);
+            }
+
+        }
+
+        // return result
+
+        $result;
+
+        if (!count($items) && !count($items_by_tags) && !count($tags)) {
+            $result = [
+                'success' => false,
+                'error' => ['Нет результатов']
+            ];
+        } else {
+            $result = [
+                'success' => true,
+                'items' => $items,
+                'tags' => $tags,
+                'items_by_tags' => $items_by_tags
+            ];
+        }
+
+        return $result;
+
+    }
+
+    /**
      * * Method that returns items list by author id
      * @param request - get parameters for this api-address
      * * returns items list

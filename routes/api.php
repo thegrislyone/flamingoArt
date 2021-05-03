@@ -29,7 +29,14 @@ Route::get('items/single-item','App\Http\Controllers\Items\ItemsController@getSi
 Route::put('items/transition-to-item','App\Http\Controllers\Items\ItemsController@transitionToItem');
 
 /*
- ! favorites
+ ! SEARCH
+*/
+
+Route::get('items/get-search-tips','App\Http\Controllers\Items\ItemsController@getSearchTips');
+Route::get('items/get-search-results','App\Http\Controllers\Items\ItemsController@getSearchResults');
+
+/*
+ ! FAVORITES
 */
 
 Route::get('items/get-user-favorites','App\Http\Controllers\Items\ItemsController@getUserFavorites'); // * it's useless for now
@@ -56,8 +63,4 @@ Route::post('auth/data-check','App\Http\Controllers\Auth\AuthController@unicData
 Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
 Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
 
-/* 
-    ! AUTHOR
-*/
-
-Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor');
+Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor'); // ! AUTHOR

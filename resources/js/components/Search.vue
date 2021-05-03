@@ -11,7 +11,8 @@
       }"
       v-click-outside="hideResults"
       v-model="searchValue"
-      @input="searchQueryDebounced"
+      v-debounce:400ms.lock="getSearchTip"
+      @keydown.enter="getSearchResults"
     >
     <transition name="fade">
       <div
@@ -47,19 +48,42 @@ export default {
       searchResults: [],
       searchOpened: false,
 
-      searchQueryDebounced: null
+      // searchQueryDebounced: null
     }
   },
   created() {
-    this.searchQueryDebounced = debounce(this.searchQuery, 400)
+    // this.searchQueryDebounced = debounce(this.searchQuery, 400)
   },
   methods: {
-    searchQuery() {
-      // сделать адрес
-      let url = new URL(window.location.origin + '/api/')
+    getSearchTip() {
+      
+      let url = new URL(window.location.origin + '/api/items/get-search-tips')
       url.searchParams.set('search', this.searchValue)
 
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          console.log(data)
+        })
+
+    },
+    getSearchResults() {
+
+      let url = new URL(window.location.origin + '/api/items/get-search-results')
+      url.searchParams.set('search', this.searchValue)
+
+      this.searchValue = ''
+
       console.log(url)
+
+      this.$http.get(url)
+        .then(response => {
+          const data = response.data
+
+          console.log(data)
+        })
+
     },
     hideResults() {
       this.searchOpened = false

@@ -5947,6 +5947,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -5960,19 +5961,30 @@ __webpack_require__.r(__webpack_exports__);
     return {
       searchValue: '',
       searchResults: [],
-      searchOpened: false,
-      searchQueryDebounced: null
+      searchOpened: false // searchQueryDebounced: null
+
     };
   },
-  created: function created() {
-    this.searchQueryDebounced = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_0__["debounce"])(this.searchQuery, 400);
+  created: function created() {// this.searchQueryDebounced = debounce(this.searchQuery, 400)
   },
   methods: {
-    searchQuery: function searchQuery() {
-      // сделать адрес
-      var url = new URL(window.location.origin + '/api/');
+    getSearchTip: function getSearchTip() {
+      var url = new URL(window.location.origin + '/api/items/get-search-tips');
       url.searchParams.set('search', this.searchValue);
+      this.$http.get(url).then(function (response) {
+        var data = response.data;
+        console.log(data);
+      });
+    },
+    getSearchResults: function getSearchResults() {
+      var url = new URL(window.location.origin + '/api/items/get-search-results');
+      url.searchParams.set('search', this.searchValue);
+      this.searchValue = '';
       console.log(url);
+      this.$http.get(url).then(function (response) {
+        var data = response.data;
+        console.log(data);
+      });
     },
     hideResults: function hideResults() {
       this.searchOpened = false;
@@ -22955,6 +22967,14 @@ var render = function() {
             rawName: "v-model",
             value: _vm.searchValue,
             expression: "searchValue"
+          },
+          {
+            name: "debounce",
+            rawName: "v-debounce:400ms.lock",
+            value: _vm.getSearchTip,
+            expression: "getSearchTip",
+            arg: "400ms",
+            modifiers: { lock: true }
           }
         ],
         class: {
@@ -22969,15 +22989,21 @@ var render = function() {
         },
         domProps: { value: _vm.searchValue },
         on: {
-          input: [
-            function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.searchValue = $event.target.value
-            },
-            _vm.searchQueryDebounced
-          ]
+          keydown: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.getSearchResults($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.searchValue = $event.target.value
+          }
         }
       }),
       _vm._v(" "),
