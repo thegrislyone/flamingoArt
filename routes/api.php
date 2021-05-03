@@ -48,7 +48,9 @@ Route::get('items/remove-from-favorite','App\Http\Controllers\Items\ItemsControl
     ! TAGS
 */
 
-Route::get('tags/get-tags','App\Http\Controllers\Tags\TagsController@getPopularTags');
+Route::get('tags/get-tags','App\Http\Controllers\Tags\TagsController@getAllTags');
+Route::get('tags/get-popular-tags','App\Http\Controllers\Tags\TagsController@getPopularTags');
+Route::get('tags/get-unpopular-tags','App\Http\Controllers\Tags\TagsController@getUnpopularTags');
 
 /* 
     ! AUTH

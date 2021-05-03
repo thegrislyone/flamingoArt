@@ -6449,7 +6449,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.$http.get('/api/tags/get-tags?amount=10').then(function (response) {
+    this.$http.get('/api/tags/get-popular-tags?amount=10').then(function (response) {
       var data = response.data;
       _this.popularTags = data;
     });
