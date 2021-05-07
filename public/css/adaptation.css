@@ -325,6 +325,9 @@
 \*------------------------------------*/
 
 @media (min-width: 1920px) {
+  .item-list {
+    padding: 64px;
+  }
   /* HEADER */
 
   /* ITEMS LIST */

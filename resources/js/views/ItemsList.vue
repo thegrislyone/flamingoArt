@@ -1,17 +1,17 @@
 <template>
   <div class="item-list">
   
-    <div
+    <!-- <div
       v-if="errorBannerShow"
       class="item-list__error-block"
     >
       <div class="item-list__error-close" @click.prevent="errorBannerShow = false"></div>
       <h1>Не удалось найти эту страницу</h1>
       <h2>Здесь нужно что-то написать</h2>
-    </div>
+    </div> -->
 
     <div
-      v-if="$isEmpty(itemsList)"
+      v-if="!listLoaded"
       class="preloader"
     ></div>
 
@@ -19,6 +19,27 @@
       v-else
       class="item-list__tiles-wrp"
     >
+
+      <div class="popular-tags">
+
+        <h2 class="popular-tags__headline">Популярные теги</h2>
+
+        <div class="popular-tags__block swiper-container">
+
+          <div class="popular-tags__wrapper swiper-wrapper">
+
+            <tag 
+              v-for="tag in popularTags"
+              :key="tag.id"
+              :tag="tag"
+              class="swiper-slide"
+            />
+            
+          </div>
+
+        </div>
+        
+      </div>
     
       <!-- <items-categories
         :categoriesData="categoriesData"
@@ -34,34 +55,41 @@
 </template>
 
 <script>
+
 import ItemsTilesList from '../components/ItemsTilesList.vue'
 import ItemsCategories from '../components/ItemsCategories.vue'
+
+import Tag from '../components/Tag.vue'
 
 import Loader from '../components/Loader.vue'
 
 import { debounce } from 'vue-debounce'
+import Swiper from 'swiper'
 
 export default {
   components: {
     ItemsTilesList,
     ItemsCategories,
 
-    Loader,
-    ItemsTilesList,
+    Tag,
+
+    Loader
   },
   data() {
     return {
-      errorBannerShow: false,
+
+      popularTags: null,
+      tagsSlider: null,
 
       items: null,
-      categoriesData: {
-        categories: []
-      },
-      
-      page: 1,
-      feed: null,
       outOfItems: false,
-      loadMoreItemsDebounced: null
+      loadMoreItemsDebounced: null,
+      listLoaded: false,
+      
+      page: 2,
+
+      feed: null,
+    
     }
   },
   computed: {
@@ -72,25 +100,54 @@ export default {
   created() {
 
     this.$eventBus.$on('feed-change', this.feedChange)
+    this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
 
     if (this.$cookies.get('items-list-feed')) {
       this.feed = this.$cookies.get('items-list-feed')
     }
 
-    if (this.$route.meta.error) {
-      this.errorBannerShow = true
-    }
+    // if (this.$route.meta.error) {
+    //   this.errorBannerShow = true
+    // }
 
     const url = new URL(`${window.location.origin}/api/items/get-items`)
-    url.searchParams.set('page', this.page)
+    url.searchParams.set('page', 1)
 
     if (this.feed) {
       url.searchParams.set('feed', this.feed)
     }
 
-    this.loadMoreItems(url)
-    this.loadMoreItemsDebounced = debounce(this.loadMoreItems, 100)
+    this.$http.get(url)
+      .then(response => {
+        const data = response.data
 
+        if ('data' in data) {
+          this.items = data
+        }
+
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .then(() => {
+
+        this.$http.get('/api/tags/get-popular-tags?amount=' + 30)
+          .then(response => {
+            const data = response.data
+
+            if (data.length) {
+              this.popularTags = data
+            }
+
+            this.listLoaded = true
+            
+          })
+          .then(() => {
+            this.tagsSliderInit()
+          })
+
+      })
+    
   },
   mounted() {
     window.addEventListener("scroll", this.scrollCheck)
@@ -100,6 +157,19 @@ export default {
     window.removeEventListener("scroll", this.scrollCheck)
   },
   methods: {
+    tagsSliderInit() {
+
+      this.tagsSlider = new Swiper('.popular-tags__block', {
+        direction: 'horizontal',
+        spaceBetween: 16,
+        slidesPerView: 'auto',
+        freeMode: true,
+        loop: false
+      })
+
+      this.tagsSlider.init()
+
+    },
     feedChange(feed) {
 
       this.items.data = []
@@ -157,7 +227,6 @@ export default {
             this.outOfItems = true
           }
         })
-
         
     },
     scrollCheck() {

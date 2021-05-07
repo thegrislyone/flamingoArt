@@ -21,13 +21,11 @@
             </div>
 
             <div class="item__tags">
-              <span 
+              <tag 
                 v-for="tag in item.tags"
                 :key="tag.id"
-                class="item__tag pointer no-select"
-              >
-                #{{ tag.name }}
-              </span>
+                :tag="tag"
+              />
             </div>
           </div>
 
@@ -71,7 +69,10 @@
         </div>
       </div>
 
-      <div class="item__author-more">
+      <div 
+        v-if="moreOfAuthor.length"
+        class="item__author-more"
+      >
         <div class="item__author">
 
           <router-link 
@@ -124,7 +125,12 @@
 
 import Swiper from 'swiper'
 
+import Tag from '../components/Tag.vue'
+
 export default {
+  components: {
+    Tag
+  },
   data() {
     return {
       loading: false,

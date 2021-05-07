@@ -22,13 +22,16 @@
   })(window,document,'script','dataLayer','GTM-KWGCRFR');</script>
   <!-- End Google Tag Manager -->
 
-  
-
   <title>FlamingoArt</title>
+
 </head>
+
 <body>
+
   <div id="app">
+
     <app-header></app-header>
+    
     <div class="main">
       
       <router-view :key="$route.path"></router-view>
@@ -58,7 +61,7 @@
   </div>
 
   <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWGCRFR"
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWGCRFR"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
