@@ -21,6 +21,10 @@ class TagsController extends Controller
 
         $tags = TagsModel::orderBy('popularity', 'desc')->get(['id', 'name'])->toArray();   // select ordered desc-ordered tags
         
+        if (!$amount) {
+            return response()->json($tags, 200);
+        }
+
         return response()->json(array_slice($tags, 0, $amount), 200);
     }
 
@@ -36,6 +40,10 @@ class TagsController extends Controller
 
         $tags = TagsModel::orderBy('popularity', 'asc')->get(['id', 'name'])->toArray();    // select ordered asc-ordered tags
         
+        if (!$amount) {
+            return response()->json($tags, 200);
+        }
+
         return response()->json(array_slice($tags, 0, $amount), 200);
     }
 

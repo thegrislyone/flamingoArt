@@ -80,6 +80,15 @@ Route::get('/item/{item_id}', function ($item_id = '') {
     return view('index');
 });
 
+Route::get('/search', function () {
+    if (Auth::check()) {
+        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        // return view('index')->with('userInfo', $userInfo);
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
 // Route::get('/{any}', function () {
 //     return view('index');
 // })->where('any', '.*');

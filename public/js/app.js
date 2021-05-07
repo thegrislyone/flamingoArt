@@ -6054,6 +6054,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -6086,6 +6088,10 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {// this.searchQueryDebounced = debounce(this.searchQuery, 400)
   },
   methods: {
+    clickTip: function clickTip(item) {
+      this.searchValue = item.name;
+      this.getSearchResults();
+    },
     getSearchTip: function getSearchTip() {
       var _this = this;
 
@@ -6101,7 +6107,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getSearchResults: function getSearchResults() {
       this.$router.push('/search?search-query=' + this.searchValue);
-      this.searchValue = '';
+      this.searchClose();
     },
     hideResults: function hideResults() {
       this.searchOpened = false;
@@ -7452,7 +7458,29 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
+/* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
+/* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
+/* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7470,19 +7498,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Search: _components_Search_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ItemsTilesList: _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Search: _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Tag: _components_Tag_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
       searchLoading: true,
-      errors: []
+      errors: [],
+      data: null
     };
   },
   computed: {
     searchValue: function searchValue() {
       return this.$route.query['search-query'];
+    },
+    tags: function tags() {
+      return this.data.tags;
+    },
+    items: function items() {
+      return this.data.items.concat(this.data.items_by_tags);
     }
   },
   created: function created() {
@@ -7495,6 +7534,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!data.success && 'errors' in data) {
         _this.errors = data.errors;
+      } else if (data.success) {
+        _this.data = data;
       }
     }).then(function () {
       _this.searchLoading = false;
@@ -23432,7 +23473,15 @@ var render = function() {
                   _vm._l(_vm.tipsTags, function(tipTag) {
                     return _c(
                       "div",
-                      { key: tipTag.id, staticClass: "search__tip pointer" },
+                      {
+                        key: tipTag.id,
+                        staticClass: "search__tip pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.clickTip(tipTag)
+                          }
+                        }
+                      },
                       [
                         _c("div", { staticClass: "search__tag" }, [
                           _vm._v(
@@ -23453,7 +23502,15 @@ var render = function() {
                   _vm._l(_vm.tipsItems, function(tipItem) {
                     return _c(
                       "div",
-                      { key: tipItem.id, staticClass: "search__tip pointer" },
+                      {
+                        key: tipItem.id,
+                        staticClass: "search__tip pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.clickTip(tipItem)
+                          }
+                        }
+                      },
                       [
                         _c("div", { staticClass: "search__item" }, [
                           _vm._v(
@@ -24468,14 +24525,40 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "search" }, [
+  return _c("div", { staticClass: "search-page" }, [
     _vm.searchLoading
       ? _c("div", { staticClass: "preloader" })
-      : _c("div", { staticClass: "search__results-block" }, [
-          _vm.errors.length
-            ? _c("div", [_vm._v("\n      " + _vm._s(_vm.errors[0]) + "\n    ")])
-            : _vm._e()
-        ])
+      : _c(
+          "div",
+          { staticClass: "search-page__results-block" },
+          [
+            _c("search", { staticClass: "search-page__search" }),
+            _vm._v(" "),
+            _c("h2", [_vm._v("Результаты поиска")]),
+            _vm._v(" "),
+            _vm.tags.length
+              ? _c(
+                  "div",
+                  { staticClass: "search-page__tags" },
+                  _vm._l(_vm.tags, function(tag) {
+                    return _c("tag", {
+                      key: tag.id,
+                      staticClass: "tag pointer no-select",
+                      attrs: { tag: tag }
+                    })
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.items.length
+              ? _c("items-tiles-list", {
+                  attrs: { tilesList: _vm.items, outOfItems: true }
+                })
+              : _vm._e()
+          ],
+          1
+        )
   ])
 }
 var staticRenderFns = []

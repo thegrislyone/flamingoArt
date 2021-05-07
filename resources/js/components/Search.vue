@@ -35,6 +35,7 @@
             v-for="tipTag in tipsTags"
             :key="tipTag.id"
             class="search__tip pointer"
+            @click="clickTip(tipTag)"
           >
             
             <div class="search__tag">
@@ -51,6 +52,7 @@
             v-for="tipItem in tipsItems"
             :key="tipItem.id"
             class="search__tip pointer"
+            @click="clickTip(tipItem)"
           >
             
             <div class="search__item">
@@ -105,6 +107,10 @@ export default {
     // this.searchQueryDebounced = debounce(this.searchQuery, 400)
   },
   methods: {
+    clickTip(item) {
+      this.searchValue = item.name
+      this.getSearchResults()
+    },
     getSearchTip() {
       
       let url = new URL(window.location.origin + '/api/items/get-search-tips')
@@ -126,7 +132,7 @@ export default {
 
       this.$router.push('/search?search-query=' + this.searchValue)
 
-      this.searchValue = ''
+      this.searchClose()
 
     },
     hideResults() {

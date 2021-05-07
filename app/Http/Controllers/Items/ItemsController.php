@@ -218,6 +218,45 @@ class ItemsController extends Controller
     */
 
     public function getSearchTips(Request $request) {
+        
+        $search = $request['search-query'];   // get search
+
+        /* search items */
+
+        $items = ItemsModel::search($search)->get();
+
+        /* filter search only by name */
+
+        $items = array_filter($items->toArray(), function($item) use ($search) {
+            $name = strtolower($item['name']);
+            if (stristr($name, $search)) {
+                return true;
+            }
+            return false;
+        });
+
+        /* search tags */
+
+        $tags = TagsModel::search($search)->get();
+
+        // return result
+
+        $result;
+
+        if (!count($items) && !count($tags)) {
+            $result = [
+                'success' => false,
+                'errors' => ['Нет результатов']
+            ];
+        } else {
+            $result = [
+                'success' => true,
+                'items' => $items,
+                'tags' => $tags
+            ];
+        }
+
+        return $result;
 
     }
 
@@ -229,7 +268,7 @@ class ItemsController extends Controller
 
     public function getSearchResults(Request $request) {
 
-        $search = $request['search'];   // get search
+        $search = $request['search-query'];   // get search
 
         /* search items */
 
@@ -263,7 +302,7 @@ class ItemsController extends Controller
         if (!count($items) && !count($items_by_tags) && !count($tags)) {
             $result = [
                 'success' => false,
-                'error' => ['Нет результатов']
+                'errors' => ['Нет результатов']
             ];
         } else {
             $result = [

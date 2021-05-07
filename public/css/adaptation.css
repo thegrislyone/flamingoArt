@@ -351,4 +351,8 @@
   .upload__headline {
     color: #696969;
   }
+  /* SEARCH */
+  .search-page {
+    padding: 48px 64px;
+  }
 }

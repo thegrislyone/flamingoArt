@@ -9,6 +9,7 @@ import ItemList from '../views/ItemsList.vue'
 import Profile from '../views/Profile.vue'
 import Item from '../views/Item.vue'
 import UploadItem from '../views/UploadItem.vue'
+import Search from '../views/Search.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,11 @@ const routes = [
     name: 'upload-item',
     meta: { requiresAuth: true },
     component: UploadItem
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: Search
   },
   {
     path: "*",

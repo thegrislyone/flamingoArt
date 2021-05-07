@@ -34,7 +34,7 @@
     
     <div class="main">
       
-      <router-view :key="$route.path"></router-view>
+      <router-view :key="$route.fullPath"></router-view>
 
         <transition name="fade">
           <div 
