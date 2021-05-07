@@ -5561,6 +5561,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5570,7 +5597,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      desctopMenuShow: false,
       mobileFeedListShow: false,
+      desctopMenu: [{
+        caption: 'Мой профиль',
+        link: '/profile'
+      }, {
+        caption: 'Избранное',
+        link: ''
+      }, {
+        caption: 'Мои сделки',
+        link: ''
+      }, {
+        caption: 'Настройки',
+        link: ''
+      }, {
+        caption: 'Помощь',
+        link: ''
+      }],
       formMode: 'reg',
       searchOpened: false,
       feeds: {
@@ -5646,6 +5690,36 @@ __webpack_require__.r(__webpack_exports__);
     },
     setFormMode: function setFormMode(mode) {
       this.formMode = mode;
+    },
+    openDesctopMenu: function openDesctopMenu() {
+      this.desctopMenuShow = true;
+    },
+    hideDesctopMenu: function hideDesctopMenu() {
+      if (event.target.classList.contains('header__user-menu')) {
+        return;
+      }
+
+      this.desctopMenuShow = false;
+    },
+    mobileFeedListHide: function mobileFeedListHide() {
+      this.desctopMenuShow = false;
+    },
+    desctopMenuItemSelect: function desctopMenuItemSelect(item) {
+      this.$router.push(item.link);
+      this.hideDesctopMenu();
+    },
+    logout: function logout() {
+      var _this = this;
+
+      this.$http.get('/api/auth/logout').then(function (response) {
+        var data = response.data;
+
+        _this.$store.commit('setUser', {});
+
+        _this.$router.push('/');
+
+        _this.$root.showNotification(data.success, 'success');
+      });
     }
   }
 });
@@ -22880,10 +22954,8 @@ var render = function() {
                     {
                       name: "click-outside",
                       rawName: "v-click-outside",
-                      value: function() {
-                        return (_vm.mobileFeedListShow = false)
-                      },
-                      expression: "() => mobileFeedListShow = false"
+                      value: _vm.mobileFeedListHide,
+                      expression: "mobileFeedListHide"
                     }
                   ],
                   staticClass: "feed-mobile__list"
@@ -23051,8 +23123,61 @@ var render = function() {
                 _vm._v(" "),
                 _c("img", {
                   staticClass: "header__user-menu",
-                  attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" }
-                })
+                  attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" },
+                  on: { click: _vm.openDesctopMenu }
+                }),
+                _vm._v(" "),
+                _vm.desctopMenuShow
+                  ? _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "click-outside",
+                            rawName: "v-click-outside",
+                            value: _vm.hideDesctopMenu,
+                            expression: "hideDesctopMenu"
+                          }
+                        ],
+                        staticClass: "header__desctop-menu"
+                      },
+                      [
+                        _vm._l(_vm.desctopMenu, function(desctopItem, key) {
+                          return _c(
+                            "button",
+                            {
+                              key: key,
+                              staticClass:
+                                "header__desctop-menu-item pointer no-select",
+                              on: {
+                                click: function($event) {
+                                  return _vm.desctopMenuItemSelect(desctopItem)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n          " +
+                                  _vm._s(desctopItem.caption) +
+                                  "\n        "
+                              )
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "header__desctop-logout pointer no-select",
+                            on: { click: _vm.logout }
+                          },
+                          [_vm._v("\n          Выйти\n        ")]
+                        )
+                      ],
+                      2
+                    )
+                  : _vm._e()
               ])
             ],
             1

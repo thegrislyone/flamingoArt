@@ -46,7 +46,7 @@
       <div 
         class="feed-mobile__list"
         v-if="mobileFeedListShow"
-        v-click-outside="() => mobileFeedListShow = false"
+        v-click-outside="mobileFeedListHide"
       >
         <div 
           v-for="(feed, key) in feeds"
@@ -135,6 +135,7 @@
       </router-link>
 
       <div class="header__user">
+
         <div class="headet__user-avatar">
           <router-link to="/profile">
             <img 
@@ -143,11 +144,37 @@
             >
           </router-link>
         </div>
+
         <img
           class="header__user-menu"
           src="/assets/images/i-arrow_small.svg"
           alt=""
+          @click="openDesctopMenu"
+        >
+
+        <div
+          v-if="desctopMenuShow"
+          class="header__desctop-menu"
+          v-click-outside="hideDesctopMenu"
+        >
+          <button
+            v-for="(desctopItem, key) in desctopMenu"
+            :key="key"
+            class="header__desctop-menu-item pointer no-select"
+            @click="desctopMenuItemSelect(desctopItem)"
           >
+            {{ desctopItem.caption }}
+          </button>
+
+          <button 
+            class="header__desctop-logout pointer no-select"
+            @click="logout"
+          >
+            Выйти
+          </button>
+
+        </div>
+
       </div>
       
     </div>
@@ -182,7 +209,32 @@ export default {
   data() {
     return {
 
+      desctopMenuShow: false,
+
       mobileFeedListShow: false,
+
+      desctopMenu: [
+        {
+          caption: 'Мой профиль',
+          link: '/profile',
+        },
+        {
+          caption: 'Избранное',
+          link: '',
+        },
+        {
+          caption: 'Мои сделки',
+          link: '',
+        },
+        {
+          caption: 'Настройки',
+          link: '',
+        },
+        {
+          caption: 'Помощь',
+          link: '',
+        },
+      ],
 
       formMode: 'reg',
       searchOpened: false,
@@ -260,6 +312,40 @@ export default {
     },
     setFormMode(mode) {
       this.formMode = mode
+    },
+    openDesctopMenu() {
+      this.desctopMenuShow = true
+    },
+    hideDesctopMenu() {
+      if (event.target.classList.contains('header__user-menu')) {
+        return
+      }
+      this.desctopMenuShow = false
+    },
+    mobileFeedListHide() {
+      this.desctopMenuShow = false
+    },
+    desctopMenuItemSelect(item) {
+      
+      this.$router.push(item.link)
+
+      this.hideDesctopMenu()
+
+    },
+    logout() {
+
+      this.$http.get('/api/auth/logout')
+        .then(response => {
+          const data = response.data
+
+          this.$store.commit('setUser', {})
+
+          this.$router.push('/')
+
+          this.$root.showNotification(data.success, 'success')
+
+        })
+
     }
   },
 }

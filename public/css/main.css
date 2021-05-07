@@ -876,12 +876,40 @@ img[lazy=loading] {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  position: relative;
   align-items: center;
   cursor: default;
 }
 .header__user > * {
   cursor: pointer;
 }
+.header__desctop-menu {
+  display: flex;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  gap: 24px;
+  text-align: left !important;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 210px;
+  padding: 24px 32px 16px 32px;
+  flex-direction: column;
+  background: rgba(11, 11, 11, 0.75);
+  box-shadow: 0px 18px 21px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(50px);
+  border-radius: 0px 0px 16px 16px;
+}
+.header__desctop-menu-item {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+}
+.header__desctop-logout {
+  margin-top: 8px;
+  background: transparent;
+  color: #FF5E5E;
+}
+
 .headet__user-avatar img {
   width: 32px;
   border-radius: 55%;
