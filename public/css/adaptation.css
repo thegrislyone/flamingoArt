@@ -55,6 +55,9 @@
   .sign-buttons {
     display: block;
   } */
+  .header__search-block_wide {
+    margin-left: 100px;
+  }
   /* UPLOAD-ITEM */
   .upload-item__button {
     width: auto;
@@ -110,37 +113,7 @@
 \*------------------------------------*/
 
 @media (min-width: 1024px) {
-  /* HEADER */
   
-  .header {
-    padding: 20px 64px;
-  }
-  .header__logo {
-    display: block;
-    margin-right: 27px;
-  }
-  .header__menu-block {
-    display: none;
-  }
-  .header__feed-type {
-    display: flex;
-    margin-right: 16px;
-  }
-  .header__icons-bar {
-    display: flex;
-    flex-grow: 1;
-    padding-left: 100px;
-  }
-  .search-short {
-    display: none;
-  }
-  .sign-buttons {
-    display: block;
-  }
-  .search-full {
-    display: block;
-    flex-grow: 1;
-  }
   /* PROFILE */
   .profile-tab {
     padding: 10px 32px 11px;
@@ -185,9 +158,9 @@
 
 @media (min-width: 1280px) {
   /* HEADER */
-  .header {
+  /* .header {
     padding: 20px 82px;
-  }
+  } */
   /* ITEMS LIST */
   .item-list__tiles {
     grid-template-columns: repeat(5, 1fr);
@@ -203,6 +176,39 @@
 
 @media (min-width: 1366px) {
   /* HEADER */
+  
+  .header {
+    padding: 20px 82px;
+  }
+  .header__logo {
+    display: block;
+    margin-right: 27px;
+  }
+  .feed-mobile {
+    display: none;
+  }
+  .header__menu-block {
+    display: none;
+  }
+  .header__feed-type {
+    display: flex;
+    margin-right: 32px;
+  }
+  .header__icons-bar {
+    display: flex;
+    flex-grow: 1;
+    padding-left: 100px;
+  }
+  .search-short {
+    display: none;
+  }
+  .sign-buttons {
+    display: block;
+  }
+  .search-full {
+    display: block;
+    flex-grow: 1;
+  }
   .header__search-block {
     flex-grow: 1;
   }
@@ -307,13 +313,6 @@
   .header__search-block {
     flex-grow: 1;
   }
-  .header__icons-bar {
-    gap: 32px;
-    flex-grow: 1;
-  }
-  .header__user-login {
-    display: block;
-  }
   /* ITEMS-LIST */
   .item-list {
     padding: 15px 64px;
@@ -325,10 +324,20 @@
 \*------------------------------------*/
 
 @media (min-width: 1920px) {
+  .header {
+    gap: 64px;
+  }
   .item-list {
     padding: 64px;
   }
   /* HEADER */
+  .header__icons-bar {
+    gap: 32px;
+    flex-grow: 1;
+  }
+  .header__user-login {
+    display: block;
+  }
 
   /* ITEMS LIST */
   .item-list__tiles {

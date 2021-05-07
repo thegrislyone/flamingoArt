@@ -5508,6 +5508,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5517,6 +5570,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      mobileFeedListShow: false,
       formMode: 'reg',
       searchOpened: false,
       feeds: {
@@ -5536,6 +5590,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    activeFeed: function activeFeed() {
+      for (var index in this.feeds) {
+        if (this.feeds[index].active) {
+          return this.feeds[index];
+        }
+      }
+    },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
     },
@@ -5547,10 +5608,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     shortSearchOpened: {
       get: function get() {
-        return this.searchOpened && this.$store.getters.windowWidth < 1024;
+        return this.searchOpened; // && this.$store.getters.windowWidth < 1024
       },
       set: function set(value) {
         this.searchOpened = value;
+      }
+    }
+  },
+  watch: {
+    searchOpened: function searchOpened() {
+      if (this.windowWidth > 500 && this.windowWidth < 1366 && this.searchOpened) {
+        setTimeout(function () {
+          document.querySelector("#main-searh").focus();
+        }, 10);
       }
     }
   },
@@ -5568,6 +5638,7 @@ __webpack_require__.r(__webpack_exports__);
       this.feeds[key].active = true;
       this.$eventBus.$emit('feed-change', key);
       this.$cookies.set('items-list-feed', key, "1d");
+      this.mobileFeedListShow = false;
     },
     openForm: function openForm(mode) {
       this.formMode = mode;
@@ -5948,6 +6019,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -5961,19 +6067,36 @@ __webpack_require__.r(__webpack_exports__);
     return {
       searchValue: '',
       searchResults: [],
-      searchOpened: false // searchQueryDebounced: null
+      searchOpened: false,
+      searchTips: null // searchQueryDebounced: null
 
     };
+  },
+  computed: {
+    tipsTags: function tipsTags() {
+      return this.searchTips.tags || [];
+    },
+    tipsItems: function tipsItems() {
+      return this.searchTips ? this.searchTips.items : [];
+    },
+    windowWidth: function windowWidth() {
+      return this.$store.getters.windowWidth;
+    }
   },
   created: function created() {// this.searchQueryDebounced = debounce(this.searchQuery, 400)
   },
   methods: {
     getSearchTip: function getSearchTip() {
+      var _this = this;
+
       var url = new URL(window.location.origin + '/api/items/get-search-tips');
-      url.searchParams.set('search', this.searchValue);
+      url.searchParams.set('search-query', this.searchValue);
       this.$http.get(url).then(function (response) {
         var data = response.data;
-        console.log(data);
+        _this.searchTips = data;
+        _this.searchOpened = true;
+        console.log(_this.tipsTags);
+        console.log(_this.tipsItems);
       });
     },
     getSearchResults: function getSearchResults() {
@@ -5982,6 +6105,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     hideResults: function hideResults() {
       this.searchOpened = false;
+    },
+    searchClose: function searchClose() {
+      this.searchValue = '';
+      this.searchTips = null;
+      this.searchOpened = false;
+
+      if (this.windowWidth <= 1366) {
+        this.$emit('mobile-close');
+      } else {
+        document.querySelector('#main-searh').blur();
+      }
     }
   }
 });
@@ -22668,6 +22802,84 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
+        {
+          staticClass: "feed-mobile",
+          class: {
+            "header__feed-type_search-opened":
+              _vm.searchOpened && _vm.windowWidth > 500
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "feed-mobile__active",
+              class: {
+                "feed-mobile__active_hide": _vm.mobileFeedListShow
+              },
+              on: {
+                click: function($event) {
+                  _vm.mobileFeedListShow = true
+                }
+              }
+            },
+            [
+              _vm._v("\n      " + _vm._s(_vm.activeFeed.title) + "\n      "),
+              _c("img", {
+                attrs: { src: "/assets/images/i-arrow_white.svg", alt: "" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _vm.mobileFeedListShow
+            ? _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "click-outside",
+                      rawName: "v-click-outside",
+                      value: function() {
+                        return (_vm.mobileFeedListShow = false)
+                      },
+                      expression: "() => mobileFeedListShow = false"
+                    }
+                  ],
+                  staticClass: "feed-mobile__list"
+                },
+                _vm._l(_vm.feeds, function(feed, key) {
+                  return _c(
+                    "div",
+                    {
+                      key: key,
+                      on: {
+                        click: function($event) {
+                          return _vm.feedChange(key)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "feed-mobile__feed pointer",
+                          class: {
+                            "feed-mobile__feed_active": feed == _vm.activeFeed
+                          }
+                        },
+                        [_vm._v(_vm._s(feed.title))]
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
         { staticClass: "header__logo" },
         [_c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])],
         1
@@ -22697,49 +22909,70 @@ var render = function() {
         0
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "header__search-block" }, [
-        _c(
-          "div",
-          { staticClass: "search-short" },
-          [
-            _c("img", {
-              staticClass: "pointer",
-              attrs: { src: "/assets/images/i-search.svg" },
-              on: {
-                click: function($event) {
-                  _vm.searchOpened = !_vm.searchOpened
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "transition",
-              { attrs: { name: "fade" } },
-              [
-                _vm.shortSearchOpened
-                  ? _c("search", {
-                      directives: [
-                        {
-                          name: "click-outside",
-                          rawName: "v-click-outside",
-                          value: function() {
-                            return (_vm.searchOpened = false)
-                          },
-                          expression: "() => searchOpened = false"
+      _c(
+        "div",
+        {
+          staticClass: "header__search-block",
+          class: {
+            "header__search-block_wide":
+              _vm.searchOpened &&
+              _vm.windowWidth > 500 &&
+              _vm.windowWidth < 1366
+          }
+        },
+        [
+          _vm.windowWidth < 1366
+            ? _c(
+                "div",
+                { staticClass: "search-short" },
+                [
+                  (!_vm.searchOpened && _vm.windowWidth > 500) ||
+                  _vm.windowWidth < 500
+                    ? _c("img", {
+                        key: "lupa",
+                        staticClass: "pointer",
+                        attrs: { src: "/assets/images/i-search.svg" },
+                        on: {
+                          click: function($event) {
+                            _vm.searchOpened = !_vm.searchOpened
+                          }
                         }
-                      ],
-                      staticClass: "search-short__field"
-                    })
-                  : _vm._e()
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "search-full" }, [_c("search")], 1)
-      ]),
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.shortSearchOpened
+                    ? _c("search", {
+                        directives: [
+                          {
+                            name: "click-outside",
+                            rawName: "v-click-outside",
+                            value: function() {
+                              return (_vm.searchOpened = false)
+                            },
+                            expression: "() => searchOpened = false"
+                          }
+                        ],
+                        key: "pole",
+                        staticClass: "search-short__field",
+                        class: {
+                          "search-short__field_wide":
+                            _vm.searchOpened && _vm.windowWidth > 500
+                        },
+                        on: {
+                          "mobile-close": function($event) {
+                            _vm.searchOpened = false
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "search-full" }, [_c("search")], 1)
+        ]
+      ),
       _vm._v(" "),
       !_vm.$isEmpty(_vm.user)
         ? _c(
@@ -23175,19 +23408,66 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _vm.searchOpened || _vm.windowWidth < 1366
+        ? _c("button", {
+            staticClass: "search__close pointer",
+            on: { click: _vm.searchClose }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _c("transition", { attrs: { name: "fade" } }, [
         _vm.searchOpened
           ? _c(
               "div",
-              { staticClass: "search__results" },
-              _vm._l(_vm.searchResults, function(result, key) {
-                return _c("div", { key: key, staticClass: "search__result" }, [
-                  _c("span", { staticClass: "search__result-text" }, [
-                    _vm._v(_vm._s(result))
-                  ])
-                ])
-              }),
-              0
+              {
+                staticClass: "search__tips",
+                class: {
+                  search__tips_wide: _vm.windowWidth < 1366
+                }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "search__tip-tags" },
+                  _vm._l(_vm.tipsTags, function(tipTag) {
+                    return _c(
+                      "div",
+                      { key: tipTag.id, staticClass: "search__tip pointer" },
+                      [
+                        _c("div", { staticClass: "search__tag" }, [
+                          _vm._v(
+                            "\n            #" +
+                              _vm._s(tipTag.name) +
+                              "\n          "
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "search__tip-items" },
+                  _vm._l(_vm.tipsItems, function(tipItem) {
+                    return _c(
+                      "div",
+                      { key: tipItem.id, staticClass: "search__tip pointer" },
+                      [
+                        _c("div", { staticClass: "search__item" }, [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(tipItem.name) +
+                              "\n          "
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
             )
           : _vm._e()
       ])

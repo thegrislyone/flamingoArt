@@ -26,11 +26,48 @@
       </div>
     </div>
 
+    <div 
+      class="feed-mobile"
+      :class="{
+        'header__feed-type_search-opened': searchOpened && windowWidth > 500
+      }"
+    >
+      <div 
+        class="feed-mobile__active"
+        :class="{
+          'feed-mobile__active_hide': mobileFeedListShow
+        }"
+        @click="mobileFeedListShow = true"
+      >
+        {{ activeFeed.title }}
+        <img src="/assets/images/i-arrow_white.svg" alt="">
+      </div>
+
+      <div 
+        class="feed-mobile__list"
+        v-if="mobileFeedListShow"
+        v-click-outside="() => mobileFeedListShow = false"
+      >
+        <div 
+          v-for="(feed, key) in feeds"
+          :key="key"
+          @click="feedChange(key)"
+        >
+          <span class="feed-mobile__feed pointer" :class="{
+            'feed-mobile__feed_active': feed == activeFeed
+          }">{{ feed.title }}</span>
+        </div>
+      </div>
+
+    </div>
+
     <div class="header__logo">
       <router-link to="/">FlamingoArt</router-link>
     </div>
 
-    <div class="header__feed-type">
+    <div 
+      class="header__feed-type"
+    >
       <div 
         v-for="(feed, key) in feeds"
         :key="key"
@@ -44,20 +81,36 @@
       </div>
     </div>
     
-    <div class="header__search-block">
-      <div class="search-short">
-        <img 
-          class="pointer"
-          src="/assets/images/i-search.svg"
-          @click="searchOpened = !searchOpened"
-        >
-        <transition name="fade">
+    <div 
+      class="header__search-block"
+      :class="{
+        'header__search-block_wide': searchOpened && windowWidth > 500 && windowWidth < 1366
+      }"
+    >
+      <div 
+        v-if="windowWidth < 1366"
+        class="search-short"
+      >
+
+          <img 
+            v-if="(!searchOpened && windowWidth > 500) || windowWidth < 500"
+            key="lupa"
+            class="pointer"
+            src="/assets/images/i-search.svg"
+            @click="searchOpened = !searchOpened"
+          >
+
           <search 
             v-if="shortSearchOpened"
+            key="pole"
             class="search-short__field"
+            :class="{
+              'search-short__field_wide': searchOpened && windowWidth > 500
+            }"
             v-click-outside="() => searchOpened = false"
+            @mobile-close="searchOpened = false"
           />
-        </transition>
+
       </div>
       <div class="search-full">
         <search/>
@@ -128,6 +181,9 @@ export default {
   },
   data() {
     return {
+
+      mobileFeedListShow: false,
+
       formMode: 'reg',
       searchOpened: false,
       feeds: {
@@ -147,6 +203,13 @@ export default {
     }
   },
   computed: {
+    activeFeed() {
+      for (const index in this.feeds) {
+        if (this.feeds[index].active) {
+          return this.feeds[index]
+        }
+      }
+    },
     windowWidth() {
       return this.$store.getters.windowWidth
     },
@@ -158,12 +221,21 @@ export default {
     },
     shortSearchOpened: {
       get() {
-        return this.searchOpened && this.$store.getters.windowWidth < 1024
+        return this.searchOpened // && this.$store.getters.windowWidth < 1024
       },
       set(value) {
         this.searchOpened = value
       }
     },
+  },
+  watch: {
+    searchOpened() {
+      if (this.windowWidth > 500 && this.windowWidth < 1366 && this.searchOpened) {
+        setTimeout(() => {
+          document.querySelector("#main-searh").focus()
+        }, 10)
+      }
+    }
   },
   created() {
     if (this.$cookies.get('items-list-feed')) {
@@ -178,6 +250,9 @@ export default {
       this.feeds[key].active = true
       this.$eventBus.$emit('feed-change', key)
       this.$cookies.set('items-list-feed', key, "1d")
+
+      this.mobileFeedListShow = false
+
     },
     openForm(mode) {
       this.formMode = mode

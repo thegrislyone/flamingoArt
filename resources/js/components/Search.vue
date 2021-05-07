@@ -14,25 +14,62 @@
       v-debounce:400ms.lock="getSearchTip"
       @keydown.enter="getSearchResults"
     >
+
+    <button 
+      v-if="searchOpened || windowWidth < 1366" class="search__close pointer"
+      @click="searchClose"
+    ></button>
+
     <transition name="fade">
       <div
         v-if="searchOpened"
-        class="search__results"
+        class="search__tips"
+        :class="{
+          'search__tips_wide': windowWidth < 1366
+        }"
       >
-        <div
-          v-for="(result, key) in searchResults"
-          :key="key"
-          class="search__result"
-        >
-          <span class="search__result-text">{{ result }}</span>
+
+        <div class="search__tip-tags">
+
+          <div 
+            v-for="tipTag in tipsTags"
+            :key="tipTag.id"
+            class="search__tip pointer"
+          >
+            
+            <div class="search__tag">
+              #{{ tipTag.name }}
+            </div>
+
+          </div>
+
         </div>
+
+        <div class="search__tip-items">
+
+          <div 
+            v-for="tipItem in tipsItems"
+            :key="tipItem.id"
+            class="search__tip pointer"
+          >
+            
+            <div class="search__item">
+              {{ tipItem.name }}
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+
 import { debounce } from 'vue-debounce'
+
 export default {
   props: {
     close: {
@@ -48,8 +85,21 @@ export default {
       searchResults: [],
       searchOpened: false,
 
+      searchTips: null
+
       // searchQueryDebounced: null
     }
+  },
+  computed: {
+    tipsTags() {
+      return this.searchTips.tags || []
+    },
+    tipsItems() {
+      return (this.searchTips) ? this.searchTips.items : []
+    },
+    windowWidth() {
+      return this.$store.getters.windowWidth
+    },
   },
   created() {
     // this.searchQueryDebounced = debounce(this.searchQuery, 400)
@@ -58,35 +108,42 @@ export default {
     getSearchTip() {
       
       let url = new URL(window.location.origin + '/api/items/get-search-tips')
-      url.searchParams.set('search', this.searchValue)
+      url.searchParams.set('search-query', this.searchValue)
 
       this.$http.get(url)
         .then(response => {
           const data = response.data
 
-          console.log(data)
+          this.searchTips = data
+          this.searchOpened = true
+
+          console.log(this.tipsTags)
+          console.log(this.tipsItems)
         })
 
     },
     getSearchResults() {
 
-      let url = new URL(window.location.origin + '/api/items/get-search-results')
-      url.searchParams.set('search', this.searchValue)
+      this.$router.push('/search?search-query=' + this.searchValue)
 
       this.searchValue = ''
-
-      console.log(url)
-
-      this.$http.get(url)
-        .then(response => {
-          const data = response.data
-
-          console.log(data)
-        })
 
     },
     hideResults() {
       this.searchOpened = false
+    },
+    searchClose() {
+
+      this.searchValue = ''
+      this.searchTips = null
+      this.searchOpened = false
+
+      if (this.windowWidth <= 1366) {
+        this.$emit('mobile-close')
+      } else {
+        document.querySelector('#main-searh').blur()
+      }
+      
     }
   }
 }
