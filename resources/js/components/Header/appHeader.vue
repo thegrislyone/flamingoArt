@@ -18,8 +18,21 @@
       />
     </modal>
 
+    <mobile-menu
+      :class="{
+        'mobile-menu_opened': mobileMenuOpenedFlag
+      }"
+      @close="mobileMenuOpened = false"
+      @logout="logout"
+      @formOpen="openForm"
+      v-click-outside="mobileMenuClickOutside"
+    />
+
     <div class="header__menu-block">
-      <div class="menu-short pointer">
+      <div 
+        class="menu-short pointer"
+        @click="mobileMenuOpened = true"
+      >
         <div></div>
         <div></div>
         <div></div>
@@ -198,16 +211,24 @@
 
 
 <script>
+
+import MobileMenu from '../MobileMenu.vue'
+
 import Search from '../Search.vue'
 import SignForm from '../SignForm.vue'
 
 export default {
   components: {
+
+    MobileMenu,
+
     Search,
     SignForm
   },
   data() {
     return {
+
+      mobileMenuOpened: false,
 
       desctopMenuShow: false,
 
@@ -255,6 +276,9 @@ export default {
     }
   },
   computed: {
+    mobileMenuOpenedFlag() {
+      return this.mobileMenuOpened && this.windowWidth < 1366
+    },
     activeFeed() {
       for (const index in this.feeds) {
         if (this.feeds[index].active) {
@@ -296,7 +320,12 @@ export default {
   },
   methods: {
     feedChange(key) {
+
       for (const index in this.feeds) {
+        if (this.feeds[index].active && key == index) {
+          this.mobileFeedListShow = false
+          return
+        }
         this.feeds[index].active = false
       }
       this.feeds[key].active = true
@@ -323,7 +352,7 @@ export default {
       this.desctopMenuShow = false
     },
     mobileFeedListHide() {
-      this.desctopMenuShow = false
+      this.mobileFeedListShow = false
     },
     desctopMenuItemSelect(item) {
       
@@ -346,6 +375,12 @@ export default {
 
         })
 
+    },
+    mobileMenuClickOutside() {
+      const isFullyShowed = document.getElementById('mobile-menu').getBoundingClientRect().left == 0
+      if (isFullyShowed) {
+        this.mobileMenuOpened = false
+      }
     }
   },
 }
