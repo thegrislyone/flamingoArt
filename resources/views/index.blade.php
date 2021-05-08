@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="yandex-verification" content="abc11bf9124776d9" />
 
   <!-- common css -->
   <link rel="stylesheet" href="/css/main.css">
