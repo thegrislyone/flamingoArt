@@ -1395,7 +1395,7 @@ img {
   gap: 32px;
 }
 .upload-item__form {
-  min-width: 400px;
+  /* min-width: 400px; */
 }
 .upload-item__form > *:not(:last-child) {
   margin-bottom: 32px;
