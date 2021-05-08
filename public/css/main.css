@@ -645,6 +645,16 @@ img[lazy=loading] {
 .search {
   position: relative;
 }
+.search__tips-loading {
+  background-image: url(../assets/images/loader.gif);
+  background-image: url(../assets/images/loader.gif);
+  width: 25px;
+  height: 25px;
+  background-size: 25px;
+  position: absolute;
+  top: calc(50% - 12.5px);
+  right: 45px;
+}
 .search__close {
   background: url('../assets/images/i-close_gray.svg') no-repeat center;
   width: 15px;
@@ -657,7 +667,7 @@ img[lazy=loading] {
   background-color: #121212;
   background-image: url('../assets/images/i-search.svg');
   background-repeat: no-repeat;
-  padding: 12px 12px 12px 48px;
+  padding: 12px 55px 12px 48px;
   border-radius: 20px;
   background-position: 18px center;
   color: #fff;

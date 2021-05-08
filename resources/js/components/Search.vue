@@ -15,6 +15,13 @@
       @keydown.enter="getSearchResults"
     >
 
+    <div
+      v-show="tipsLoading"
+      class="search__tips-loading"
+    >
+      
+    </div>
+
     <button 
       v-if="searchOpened || windowWidth < 1366" class="search__close pointer"
       @click="searchClose"
@@ -29,39 +36,47 @@
         }"
       >
 
-        <div class="search__tip-tags">
+        <template v-if="tipsErrors.length">
+          {{ tipsErrors[0] }}
+        </template>
 
-          <div 
-            v-for="tipTag in tipsTags"
-            :key="tipTag.id"
-            class="search__tip pointer"
-            @click="clickTip(tipTag)"
-          >
-            
-            <div class="search__tag">
-              #{{ tipTag.name }}
+        <template v-else>
+          <div class="search__tip-tags">
+
+            <div 
+              v-for="tipTag in tipsTags"
+              :key="tipTag.id"
+              class="search__tip pointer"
+              @click="clickTip(tipTag)"
+            >
+              
+              <div class="search__tag">
+                #{{ tipTag.name }}
+              </div>
+
             </div>
 
           </div>
 
-        </div>
+          <div class="search__tip-items">
 
-        <div class="search__tip-items">
+            <div 
+              v-for="tipItem in tipsItems"
+              :key="tipItem.id"
+              class="search__tip pointer"
+              @click="clickTip(tipItem)"
+            >
+              
+              <div class="search__item">
+                {{ tipItem.name }}
+              </div>
 
-          <div 
-            v-for="tipItem in tipsItems"
-            :key="tipItem.id"
-            class="search__tip pointer"
-            @click="clickTip(tipItem)"
-          >
-            
-            <div class="search__item">
-              {{ tipItem.name }}
             </div>
 
           </div>
+        </template>
 
-        </div>
+        
 
       </div>
     </transition>
@@ -82,22 +97,27 @@ export default {
   },
   data() {
     return {
+
+      tipsLoading: false,
+      searchTips: null,
+
       searchValue: '',
 
       searchResults: [],
       searchOpened: false,
 
-      searchTips: null
-
       // searchQueryDebounced: null
     }
   },
   computed: {
+    tipsErrors() {
+      return (this.searchTips && this.searchTips.errors) ? this.searchTips.errors : []
+    },
     tipsTags() {
-      return this.searchTips.tags || []
+      return (this.searchTips && this.searchTips.tags) ? this.searchTips.tags : []
     },
     tipsItems() {
-      return (this.searchTips) ? this.searchTips.items : []
+      return (this.searchTips && this.searchTips.items) ? this.searchTips.items : []
     },
     windowWidth() {
       return this.$store.getters.windowWidth
@@ -112,6 +132,13 @@ export default {
       this.getSearchResults()
     },
     getSearchTip() {
+
+      this.tipsLoading = true
+      this.searchTips = null
+
+      if (!this.searchValue) {
+        return
+      }
       
       let url = new URL(window.location.origin + '/api/items/get-search-tips')
       url.searchParams.set('search-query', this.searchValue)
@@ -123,8 +150,9 @@ export default {
           this.searchTips = data
           this.searchOpened = true
 
-          console.log(this.tipsTags)
-          console.log(this.tipsItems)
+        })
+        .then(() => {
+          this.tipsLoading = false
         })
 
     },
