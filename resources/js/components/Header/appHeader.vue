@@ -103,7 +103,9 @@
       </div>
 
       <div class="header__logo">
-        <router-link to="/">FlamingoArt</router-link>
+        <h1>
+          <router-link to="/">FlamingoArt</router-link>
+        </h1>
       </div>
 
       <div 

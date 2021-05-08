@@ -5608,6 +5608,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -23327,12 +23329,15 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "header__logo" },
-          [_c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])],
-          1
-        ),
+        _c("div", { staticClass: "header__logo" }, [
+          _c(
+            "h1",
+            [
+              _c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])
+            ],
+            1
+          )
+        ]),
         _vm._v(" "),
         _c(
           "div",

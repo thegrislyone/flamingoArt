@@ -894,6 +894,8 @@ img[lazy=loading] {
   display: none;
   font-weight: bold;
   flex-shrink: 0;
+}
+.header__logo h1 {
   font-size: 20px;
   line-height: 24px;
   letter-spacing: -0.017em;
