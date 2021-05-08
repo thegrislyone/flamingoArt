@@ -306,7 +306,7 @@ export default {
   },
   watch: {
     searchOpened() {
-      if (this.windowWidth > 500 && this.windowWidth < 1366 && this.searchOpened) {
+      if (this.windowWidth < 1366 && this.searchOpened) {
         setTimeout(() => {
           document.querySelector("#main-searh").focus()
         }, 10)

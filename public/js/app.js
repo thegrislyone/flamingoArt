@@ -5681,7 +5681,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     searchOpened: function searchOpened() {
-      if (this.windowWidth > 500 && this.windowWidth < 1366 && this.searchOpened) {
+      if (this.windowWidth < 1366 && this.searchOpened) {
         setTimeout(function () {
           document.querySelector("#main-searh").focus();
         }, 10);
