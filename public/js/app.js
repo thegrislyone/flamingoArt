@@ -7772,6 +7772,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7793,10 +7800,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$route.query['search-query'];
     },
     tags: function tags() {
-      return this.data.tags;
+      return this.data ? this.data.tags : [];
     },
     items: function items() {
-      return this.data.items.concat(this.data.items_by_tags);
+      return this.data ? this.data.items.concat(this.data.items_by_tags) : [];
     }
   },
   created: function created() {
@@ -25159,6 +25166,10 @@ var render = function() {
   return _c("div", { staticClass: "search-page" }, [
     _vm.searchLoading
       ? _c("div", { staticClass: "preloader" })
+      : _vm.errors.length
+      ? _c("div", { staticClass: "search-page" }, [
+          _vm._v("\n    " + _vm._s(_vm.errors[0]) + "\n  ")
+        ])
       : _c(
           "div",
           { staticClass: "search-page__results-block" },

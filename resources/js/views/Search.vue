@@ -3,6 +3,13 @@
 
     <div v-if="searchLoading" class="preloader"></div>
 
+    <div
+      v-else-if="errors.length"
+      class="search-page"
+    >
+      {{ errors[0] }}
+    </div>
+
     <div v-else class="search-page__results-block">
 
       <search
@@ -61,10 +68,10 @@ export default {
       return this.$route.query['search-query']
     },
     tags() {
-      return this.data.tags
+      return (this.data) ? this.data.tags : []
     },
     items() {
-      return this.data.items.concat(this.data.items_by_tags)
+      return (this.data) ? this.data.items.concat(this.data.items_by_tags) : []
     }
   },
   created() {
