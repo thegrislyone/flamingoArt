@@ -749,7 +749,7 @@ img[lazy=loading] {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(100px);
   z-index: 5;
-  transition: height .35s;
+  transition: left .35s;
 }
 .mobile-menu_opened {
   left: 0;
