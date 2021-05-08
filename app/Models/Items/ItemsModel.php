@@ -5,7 +5,8 @@ namespace App\Models\Items;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Nicolaslopezj\Searchable\SearchableTrait;   // search plugin
+// use Nicolaslopezj\Searchable\SearchableTrait;   // search plugin
+use App\SearchTrait;    // search plugin
 
 class ItemsModel extends Model
 {
@@ -14,14 +15,18 @@ class ItemsModel extends Model
      * * SEARCH PLUGIN => 
     */
 
-    use SearchableTrait;    
+    use SearchTrait;
 
-    protected $searchable = [
-        'columns' => [
-            'items.name' => 10,
-            'items.description' => 10,
-        ],
-    ];
+    protected $search = ['name', 'description'];
+
+    // use SearchableTrait;    
+
+    // protected $searchable = [
+    //     'columns' => [
+    //         'items.name' => 10,
+    //         'items.description' => 10,
+    //     ],
+    // ];
 
     /**
      * * <= SEARCH PLUGIN

@@ -5,7 +5,8 @@ namespace App\Models\Tags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Nicolaslopezj\Searchable\SearchableTrait;   // search plugin
+// use Nicolaslopezj\Searchable\SearchableTrait;   // search plugin
+use App\SearchTrait;    // search plugin
 
 class TagsModel extends Model
 {
@@ -14,13 +15,17 @@ class TagsModel extends Model
      * * SEARCH PLUGIN => 
     */
 
-    use SearchableTrait;    
+    use SearchTrait;
 
-    protected $searchable = [
-        'columns' => [
-            'tags.name' => 10,
-        ],
-    ];
+    protected $search = ['name'];
+
+    // use SearchableTrait;    
+
+    // protected $searchable = [
+    //     'columns' => [
+    //         'tags.name' => 10,
+    //     ],
+    // ];
 
     /**
      * * <= SEARCH PLUGIN
