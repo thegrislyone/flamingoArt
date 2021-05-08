@@ -87,23 +87,25 @@
         </div>
       </div>
 
-      <div class="mobile-menu__text">
-        Войдите или создайте аккаунт на сайте, чтобы получить доступ ко всем функциям:
-      </div>
+      <div class="mobile-menu__bottom-part">
+        <div class="mobile-menu__text">
+          Войдите или создайте аккаунт на сайте, чтобы получить доступ ко всем функциям:
+        </div>
 
-      <div class="mobile-menu__buttons">
-        <button 
-          class="btn mobile-menu__btn mobile-menu__login"
-          @click="formOpen('auth')"
-        >
-          Войти
-        </button>
-        <button 
-          class="btn mobile-menu__btn mobile-menu__register"
-          @click="formOpen('reg')"
-        >
-          Регистрация
-        </button>
+        <div class="mobile-menu__buttons">
+          <button 
+            class="btn mobile-menu__btn mobile-menu__login"
+            @click="formOpen('auth')"
+          >
+            Войти
+          </button>
+          <button 
+            class="btn mobile-menu__btn mobile-menu__register"
+            @click="formOpen('reg')"
+          >
+            Регистрация
+          </button>
+        </div>
       </div>
 
     </div>

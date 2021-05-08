@@ -18,7 +18,7 @@
       />
     </modal>
 
-    <mobile-menu
+    <MobileMenu
       :class="{
         'mobile-menu_opened': mobileMenuOpenedFlag
       }"
@@ -212,7 +212,7 @@
 
 <script>
 
-import MobileMenu from '../MobileMenu.vue'
+import MobileMenu from './MobileMenu.vue'
 
 import Search from '../Search.vue'
 import SignForm from '../SignForm.vue'
