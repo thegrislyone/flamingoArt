@@ -304,9 +304,9 @@
 
 @media (min-width: 1440px) {
   /* HEADER */
-  .header {
+  /* .header {
     padding: 20px 112px;
-  }
+  } */
   /* .header__feed-type {
     gap: 48px;
   } */
@@ -326,6 +326,10 @@
 @media (min-width: 1920px) {
   .header {
     gap: 64px;
+    padding: 20px 112px;
+  }
+  .header__desctop-menu {
+    right: 96px;
   }
   .header__logo {
     margin-right: 0;

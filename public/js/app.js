@@ -5602,6 +5602,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -5614,6 +5619,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       mobileMenuOpened: false,
+      menuOpened: false,
       desctopMenuShow: false,
       mobileFeedListShow: false,
       desctopMenu: [{
@@ -5651,8 +5657,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    mobileMenuOpenedFlag: function mobileMenuOpenedFlag() {
-      return this.mobileMenuOpened && this.windowWidth < 1366;
+    mobileFeedListShowFlag: function mobileFeedListShowFlag() {
+      return this.mobileFeedListShow && this.windowWidth < 1366;
     },
     activeFeed: function activeFeed() {
       for (var index in this.feeds) {
@@ -5717,14 +5723,14 @@ __webpack_require__.r(__webpack_exports__);
       this.formMode = mode;
     },
     openDesctopMenu: function openDesctopMenu() {
-      this.desctopMenuShow = true;
+      this.menuOpened = true;
     },
     hideDesctopMenu: function hideDesctopMenu() {
       if (event.target.classList.contains('header__user-menu')) {
         return;
       }
 
-      this.desctopMenuShow = false;
+      this.menuOpened = false;
     },
     mobileFeedListHide: function mobileFeedListHide() {
       this.mobileFeedListShow = false;
@@ -5750,7 +5756,7 @@ __webpack_require__.r(__webpack_exports__);
       var isFullyShowed = document.getElementById('mobile-menu').getBoundingClientRect().left == 0;
 
       if (isFullyShowed) {
-        this.mobileMenuOpened = false;
+        this.menuOpened = false;
       }
     }
   }
@@ -23096,8 +23102,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "header",
-    { staticClass: "header" },
+    "div",
+    { staticClass: "header-wrapper" },
     [
       _c(
         "modal",
@@ -23133,333 +23139,329 @@ var render = function() {
           }
         ],
         class: {
-          "mobile-menu_opened": _vm.mobileMenuOpenedFlag
+          "mobile-menu_opened": _vm.menuOpened && _vm.windowWidth < 1366
         },
         on: {
           close: function($event) {
-            _vm.mobileMenuOpened = false
+            _vm.menuOpened = false
           },
           logout: _vm.logout,
           formOpen: _vm.openForm
         }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "header__menu-block" }, [
-        _c(
-          "div",
-          {
-            staticClass: "menu-short pointer",
-            on: {
-              click: function($event) {
-                _vm.mobileMenuOpened = true
-              }
-            }
-          },
-          [_c("div"), _vm._v(" "), _c("div"), _vm._v(" "), _c("div")]
-        )
-      ]),
+      _vm.mobileFeedListShowFlag
+        ? _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "click-outside",
+                  rawName: "v-click-outside",
+                  value: _vm.mobileFeedListHide,
+                  expression: "mobileFeedListHide"
+                }
+              ],
+              staticClass: "feed-mobile__list"
+            },
+            _vm._l(_vm.feeds, function(feed, key) {
+              return _c(
+                "div",
+                {
+                  key: key,
+                  on: {
+                    click: function($event) {
+                      return _vm.feedChange(key)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "feed-mobile__feed pointer",
+                      class: {
+                        "feed-mobile__feed_active": feed == _vm.activeFeed
+                      }
+                    },
+                    [_vm._v(_vm._s(feed.title))]
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "feed-mobile",
-          class: {
-            "header__feed-type_search-opened":
-              _vm.searchOpened && _vm.windowWidth > 500
-          }
-        },
-        [
+      _vm.menuOpened && _vm.windowWidth >= 1366
+        ? _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "click-outside",
+                  rawName: "v-click-outside",
+                  value: _vm.hideDesctopMenu,
+                  expression: "hideDesctopMenu"
+                }
+              ],
+              staticClass: "header__desctop-menu"
+            },
+            [
+              _vm._l(_vm.desctopMenu, function(desctopItem, key) {
+                return _c(
+                  "button",
+                  {
+                    key: key,
+                    staticClass: "header__desctop-menu-item pointer no-select",
+                    on: {
+                      click: function($event) {
+                        return _vm.desctopMenuItemSelect(desctopItem)
+                      }
+                    }
+                  },
+                  [_vm._v("\n      " + _vm._s(desctopItem.caption) + "\n    ")]
+                )
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "header__desctop-logout pointer no-select",
+                  on: { click: _vm.logout }
+                },
+                [_vm._v("\n      Выйти\n    ")]
+              )
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("header", { staticClass: "header" }, [
+        _c("div", { staticClass: "header__menu-block" }, [
           _c(
             "div",
             {
-              staticClass: "feed-mobile__active",
-              class: {
-                "feed-mobile__active_hide": _vm.mobileFeedListShow
-              },
+              staticClass: "menu-short pointer",
               on: {
                 click: function($event) {
-                  _vm.mobileFeedListShow = true
+                  _vm.menuOpened = true
                 }
               }
             },
-            [
-              _vm._v("\n      " + _vm._s(_vm.activeFeed.title) + "\n      "),
-              _c("img", {
-                attrs: { src: "/assets/images/i-arrow_white.svg", alt: "" }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _vm.mobileFeedListShow
-            ? _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "click-outside",
-                      rawName: "v-click-outside",
-                      value: _vm.mobileFeedListHide,
-                      expression: "mobileFeedListHide"
-                    }
-                  ],
-                  staticClass: "feed-mobile__list"
-                },
-                _vm._l(_vm.feeds, function(feed, key) {
-                  return _c(
-                    "div",
-                    {
-                      key: key,
-                      on: {
-                        click: function($event) {
-                          return _vm.feedChange(key)
-                        }
-                      }
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "feed-mobile__feed pointer",
-                          class: {
-                            "feed-mobile__feed_active": feed == _vm.activeFeed
-                          }
-                        },
-                        [_vm._v(_vm._s(feed.title))]
-                      )
-                    ]
-                  )
-                }),
-                0
-              )
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "header__logo" },
-        [_c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "header__feed-type" },
-        _vm._l(_vm.feeds, function(feed, key) {
-          return _c(
-            "div",
-            {
-              key: key,
-              staticClass: "header__feed",
-              class: {
-                header__feed_active: feed.active
-              },
-              on: {
-                click: function($event) {
-                  return _vm.feedChange(key)
-                }
-              }
-            },
-            [_vm._v("\n      " + _vm._s(feed.title) + "\n    ")]
+            [_c("div"), _vm._v(" "), _c("div"), _vm._v(" "), _c("div")]
           )
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "header__search-block",
-          class: {
-            "header__search-block_wide":
-              _vm.searchOpened &&
-              _vm.windowWidth > 500 &&
-              _vm.windowWidth < 1366
-          }
-        },
-        [
-          _vm.windowWidth < 1366
-            ? _c(
-                "div",
-                { staticClass: "search-short" },
-                [
-                  (!_vm.searchOpened && _vm.windowWidth > 500) ||
-                  _vm.windowWidth < 500
-                    ? _c("img", {
-                        key: "lupa",
-                        staticClass: "pointer",
-                        attrs: { src: "/assets/images/i-search.svg" },
-                        on: {
-                          click: function($event) {
-                            _vm.searchOpened = !_vm.searchOpened
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.shortSearchOpened
-                    ? _c("search", {
-                        directives: [
-                          {
-                            name: "click-outside",
-                            rawName: "v-click-outside",
-                            value: function() {
-                              return (_vm.searchOpened = false)
-                            },
-                            expression: "() => searchOpened = false"
-                          }
-                        ],
-                        key: "pole",
-                        staticClass: "search-short__field",
-                        class: {
-                          "search-short__field_wide":
-                            _vm.searchOpened && _vm.windowWidth > 500
-                        },
-                        on: {
-                          "mobile-close": function($event) {
-                            _vm.searchOpened = false
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "search-full" }, [_c("search")], 1)
-        ]
-      ),
-      _vm._v(" "),
-      !_vm.$isEmpty(_vm.user)
-        ? _c(
-            "div",
-            { staticClass: "header__icons-bar" },
-            [
-              _vm._m(0),
-              _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  staticClass: "header__user-login",
-                  attrs: { to: "/profile" }
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "feed-mobile",
+            class: {
+              "header__feed-type_search-opened":
+                _vm.searchOpened && _vm.windowWidth > 500
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "feed-mobile__active",
+                class: {
+                  "feed-mobile__active_hide": _vm.mobileFeedListShow
                 },
-                [
-                  _c("span", { staticClass: "header__user-login" }, [
-                    _vm._v(_vm._s(_vm.user.login))
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "header__user" }, [
-                _c(
+                on: {
+                  click: function($event) {
+                    _vm.mobileFeedListShow = true
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n        " + _vm._s(_vm.activeFeed.title) + "\n        "
+                ),
+                _c("img", {
+                  attrs: { src: "/assets/images/i-arrow_white.svg", alt: "" }
+                })
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "header__logo" },
+          [_c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "header__feed-type" },
+          _vm._l(_vm.feeds, function(feed, key) {
+            return _c(
+              "div",
+              {
+                key: key,
+                staticClass: "header__feed",
+                class: {
+                  header__feed_active: feed.active
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.feedChange(key)
+                  }
+                }
+              },
+              [_vm._v("\n        " + _vm._s(feed.title) + "\n      ")]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "header__search-block",
+            class: {
+              "header__search-block_wide":
+                _vm.searchOpened &&
+                _vm.windowWidth > 500 &&
+                _vm.windowWidth < 1366
+            }
+          },
+          [
+            _vm.windowWidth < 1366
+              ? _c(
                   "div",
-                  { staticClass: "headet__user-avatar" },
+                  { staticClass: "search-short" },
                   [
-                    _c("router-link", { attrs: { to: "/profile" } }, [
-                      _c("img", {
-                        attrs: {
-                          src:
-                            _vm.user.avatar ||
-                            "/assets/images/unknown-user.png",
-                          alt: ""
-                        }
-                      })
-                    ])
+                    (!_vm.searchOpened && _vm.windowWidth > 500) ||
+                    _vm.windowWidth < 500
+                      ? _c("img", {
+                          key: "lupa",
+                          staticClass: "pointer",
+                          attrs: { src: "/assets/images/i-search.svg" },
+                          on: {
+                            click: function($event) {
+                              _vm.searchOpened = !_vm.searchOpened
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.shortSearchOpened
+                      ? _c("search", {
+                          directives: [
+                            {
+                              name: "click-outside",
+                              rawName: "v-click-outside",
+                              value: function() {
+                                return (_vm.searchOpened = false)
+                              },
+                              expression: "() => searchOpened = false"
+                            }
+                          ],
+                          key: "pole",
+                          staticClass: "search-short__field",
+                          class: {
+                            "search-short__field_wide":
+                              _vm.searchOpened && _vm.windowWidth > 500
+                          },
+                          on: {
+                            "mobile-close": function($event) {
+                              _vm.searchOpened = false
+                            }
+                          }
+                        })
+                      : _vm._e()
                   ],
                   1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "search-full" }, [_c("search")], 1)
+          ]
+        ),
+        _vm._v(" "),
+        !_vm.$isEmpty(_vm.user)
+          ? _c(
+              "div",
+              { staticClass: "header__icons-bar" },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "header__user-login",
+                    attrs: { to: "/profile" }
+                  },
+                  [
+                    _c("span", { staticClass: "header__user-login" }, [
+                      _vm._v(_vm._s(_vm.user.login))
+                    ])
+                  ]
                 ),
                 _vm._v(" "),
-                _c("img", {
-                  staticClass: "header__user-menu",
-                  attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" },
-                  on: { click: _vm.openDesctopMenu }
-                }),
-                _vm._v(" "),
-                _vm.desctopMenuShow
-                  ? _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "click-outside",
-                            rawName: "v-click-outside",
-                            value: _vm.hideDesctopMenu,
-                            expression: "hideDesctopMenu"
+                _c("div", { staticClass: "header__user" }, [
+                  _c(
+                    "div",
+                    { staticClass: "headet__user-avatar" },
+                    [
+                      _c("router-link", { attrs: { to: "/profile" } }, [
+                        _c("img", {
+                          attrs: {
+                            src:
+                              _vm.user.avatar ||
+                              "/assets/images/unknown-user.png",
+                            alt: ""
                           }
-                        ],
-                        staticClass: "header__desctop-menu"
-                      },
-                      [
-                        _vm._l(_vm.desctopMenu, function(desctopItem, key) {
-                          return _c(
-                            "button",
-                            {
-                              key: key,
-                              staticClass:
-                                "header__desctop-menu-item pointer no-select",
-                              on: {
-                                click: function($event) {
-                                  return _vm.desctopMenuItemSelect(desctopItem)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n          " +
-                                  _vm._s(desctopItem.caption) +
-                                  "\n        "
-                              )
-                            ]
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass:
-                              "header__desctop-logout pointer no-select",
-                            on: { click: _vm.logout }
-                          },
-                          [_vm._v("\n          Выйти\n        ")]
-                        )
-                      ],
-                      2
-                    )
-                  : _vm._e()
-              ])
-            ],
-            1
-          )
-        : _c("div", { staticClass: "sign-buttons" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn_no-bg",
-                on: {
-                  click: function($event) {
-                    return _vm.openForm("auth")
-                  }
-                }
-              },
-              [_vm._v("\n      Войти\n    ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn",
-                on: {
-                  click: function($event) {
-                    return _vm.openForm("reg")
-                  }
-                }
-              },
-              [_vm._v("\n      Регистрация\n    ")]
+                        })
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("img", {
+                    staticClass: "header__user-menu",
+                    attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" },
+                    on: { click: _vm.openDesctopMenu }
+                  })
+                ])
+              ],
+              1
             )
-          ])
+          : _c("div", { staticClass: "sign-buttons" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn_no-bg",
+                  on: {
+                    click: function($event) {
+                      return _vm.openForm("auth")
+                    }
+                  }
+                },
+                [_vm._v("\n        Войти\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn",
+                  on: {
+                    click: function($event) {
+                      return _vm.openForm("reg")
+                    }
+                  }
+                },
+                [_vm._v("\n        Регистрация\n      ")]
+              )
+            ])
+      ])
     ],
     1
   )

@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <div class="header-wrapper">
 
     <modal
       name="signForm"
@@ -20,193 +20,198 @@
 
     <MobileMenu
       :class="{
-        'mobile-menu_opened': mobileMenuOpenedFlag
+        'mobile-menu_opened': menuOpened && windowWidth < 1366
       }"
-      @close="mobileMenuOpened = false"
+      @close="menuOpened = false"
       @logout="logout"
       @formOpen="openForm"
       v-click-outside="mobileMenuClickOutside"
     />
 
-    <div class="header__menu-block">
-      <div 
-        class="menu-short pointer"
-        @click="mobileMenuOpened = true"
-      >
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-
     <div 
-      class="feed-mobile"
-      :class="{
-        'header__feed-type_search-opened': searchOpened && windowWidth > 500
-      }"
-    >
-      <div 
-        class="feed-mobile__active"
-        :class="{
-          'feed-mobile__active_hide': mobileFeedListShow
-        }"
-        @click="mobileFeedListShow = true"
-      >
-        {{ activeFeed.title }}
-        <img src="/assets/images/i-arrow_white.svg" alt="">
-      </div>
-
-      <div 
-        class="feed-mobile__list"
-        v-if="mobileFeedListShow"
-        v-click-outside="mobileFeedListHide"
-      >
-        <div 
-          v-for="(feed, key) in feeds"
-          :key="key"
-          @click="feedChange(key)"
-        >
-          <span class="feed-mobile__feed pointer" :class="{
-            'feed-mobile__feed_active': feed == activeFeed
-          }">{{ feed.title }}</span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="header__logo">
-      <router-link to="/">FlamingoArt</router-link>
-    </div>
-
-    <div 
-      class="header__feed-type"
+      class="feed-mobile__list"
+      v-if="mobileFeedListShowFlag"
+      v-click-outside="mobileFeedListHide"
     >
       <div 
         v-for="(feed, key) in feeds"
         :key="key"
-        class="header__feed"
-        :class="{
-          'header__feed_active': feed.active
-        }"
         @click="feedChange(key)"
       >
-        {{ feed.title }}
-      </div>
-    </div>
-    
-    <div 
-      class="header__search-block"
-      :class="{
-        'header__search-block_wide': searchOpened && windowWidth > 500 && windowWidth < 1366
-      }"
-    >
-      <div 
-        v-if="windowWidth < 1366"
-        class="search-short"
-      >
-
-          <img 
-            v-if="(!searchOpened && windowWidth > 500) || windowWidth < 500"
-            key="lupa"
-            class="pointer"
-            src="/assets/images/i-search.svg"
-            @click="searchOpened = !searchOpened"
-          >
-
-          <search 
-            v-if="shortSearchOpened"
-            key="pole"
-            class="search-short__field"
-            :class="{
-              'search-short__field_wide': searchOpened && windowWidth > 500
-            }"
-            v-click-outside="() => searchOpened = false"
-            @mobile-close="searchOpened = false"
-          />
-
-      </div>
-      <div class="search-full">
-        <search/>
+        <span class="feed-mobile__feed pointer" :class="{
+          'feed-mobile__feed_active': feed == activeFeed
+        }">{{ feed.title }}</span>
       </div>
     </div>
 
     <div
-      v-if="!$isEmpty(user)"
-      class="header__icons-bar"
+      v-if="menuOpened && windowWidth >= 1366"
+      class="header__desctop-menu"
+      v-click-outside="hideDesctopMenu"
     >
+      <button
+        v-for="(desctopItem, key) in desctopMenu"
+        :key="key"
+        class="header__desctop-menu-item pointer no-select"
+        @click="desctopMenuItemSelect(desctopItem)"
+      >
+        {{ desctopItem.caption }}
+      </button>
 
-      <div class="header__messages">
-        <img src="/assets/images/i-message.svg" alt="">
-      </div>
-
-      <div class="header__notifications">
-        <img src="/assets/images/i-notification.svg" alt="">
-      </div>
-
-      <router-link to="/profile" class="header__user-login">
-        <span class="header__user-login">{{ user.login }}</span>
-      </router-link>
-
-      <div class="header__user">
-
-        <div class="headet__user-avatar">
-          <router-link to="/profile">
-            <img 
-              :src="user.avatar || '/assets/images/unknown-user.png'"
-              alt=""
-            >
-          </router-link>
-        </div>
-
-        <img
-          class="header__user-menu"
-          src="/assets/images/i-arrow_small.svg"
-          alt=""
-          @click="openDesctopMenu"
-        >
-
-        <div
-          v-if="desctopMenuShow"
-          class="header__desctop-menu"
-          v-click-outside="hideDesctopMenu"
-        >
-          <button
-            v-for="(desctopItem, key) in desctopMenu"
-            :key="key"
-            class="header__desctop-menu-item pointer no-select"
-            @click="desctopMenuItemSelect(desctopItem)"
-          >
-            {{ desctopItem.caption }}
-          </button>
-
-          <button 
-            class="header__desctop-logout pointer no-select"
-            @click="logout"
-          >
-            Выйти
-          </button>
-
-        </div>
-
-      </div>
-      
-    </div>
-
-    <div 
-      v-else
-      class="sign-buttons"
-    >
-      <button class="btn btn_no-bg" @click="openForm('auth')">
-        Войти
-      </button> 
-
-      <button class="btn" @click="openForm('reg')">
-        Регистрация
+      <button 
+        class="header__desctop-logout pointer no-select"
+        @click="logout"
+      >
+        Выйти
       </button>
 
     </div>
 
-  </header>
+    <!-- HEADER -->
+
+    <header class="header">
+
+      <div class="header__menu-block">
+        <div 
+          class="menu-short pointer"
+          @click="menuOpened = true"
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <div 
+        class="feed-mobile"
+        :class="{
+          'header__feed-type_search-opened': searchOpened && windowWidth > 500
+        }"
+      >
+        <div 
+          class="feed-mobile__active"
+          :class="{
+            'feed-mobile__active_hide': mobileFeedListShow
+          }"
+          @click="mobileFeedListShow = true"
+        >
+          {{ activeFeed.title }}
+          <img src="/assets/images/i-arrow_white.svg" alt="">
+        </div>
+
+      </div>
+
+      <div class="header__logo">
+        <router-link to="/">FlamingoArt</router-link>
+      </div>
+
+      <div 
+        class="header__feed-type"
+      >
+        <div 
+          v-for="(feed, key) in feeds"
+          :key="key"
+          class="header__feed"
+          :class="{
+            'header__feed_active': feed.active
+          }"
+          @click="feedChange(key)"
+        >
+          {{ feed.title }}
+        </div>
+      </div>
+      
+      <div 
+        class="header__search-block"
+        :class="{
+          'header__search-block_wide': searchOpened && windowWidth > 500 && windowWidth < 1366
+        }"
+      >
+        <div 
+          v-if="windowWidth < 1366"
+          class="search-short"
+        >
+
+            <img 
+              v-if="(!searchOpened && windowWidth > 500) || windowWidth < 500"
+              key="lupa"
+              class="pointer"
+              src="/assets/images/i-search.svg"
+              @click="searchOpened = !searchOpened"
+            >
+
+            <search 
+              v-if="shortSearchOpened"
+              key="pole"
+              class="search-short__field"
+              :class="{
+                'search-short__field_wide': searchOpened && windowWidth > 500
+              }"
+              v-click-outside="() => searchOpened = false"
+              @mobile-close="searchOpened = false"
+            />
+
+        </div>
+        <div class="search-full">
+          <search/>
+        </div>
+      </div>
+
+      <div
+        v-if="!$isEmpty(user)"
+        class="header__icons-bar"
+      >
+
+        <div class="header__messages">
+          <img src="/assets/images/i-message.svg" alt="">
+        </div>
+
+        <div class="header__notifications">
+          <img src="/assets/images/i-notification.svg" alt="">
+        </div>
+
+        <router-link to="/profile" class="header__user-login">
+          <span class="header__user-login">{{ user.login }}</span>
+        </router-link>
+
+        <div class="header__user">
+
+          <div class="headet__user-avatar">
+            <router-link to="/profile">
+              <img 
+                :src="user.avatar || '/assets/images/unknown-user.png'"
+                alt=""
+              >
+            </router-link>
+          </div>
+
+          <img
+            class="header__user-menu"
+            src="/assets/images/i-arrow_small.svg"
+            alt=""
+            @click="openDesctopMenu"
+          >
+
+        </div>
+        
+      </div>
+
+      <div 
+        v-else
+        class="sign-buttons"
+      >
+        <button class="btn btn_no-bg" @click="openForm('auth')">
+          Войти
+        </button> 
+
+        <button class="btn" @click="openForm('reg')">
+          Регистрация
+        </button>
+
+      </div>
+
+    </header>
+  </div>
 </template>
 
 
@@ -229,6 +234,8 @@ export default {
     return {
 
       mobileMenuOpened: false,
+
+      menuOpened: false,
 
       desctopMenuShow: false,
 
@@ -276,8 +283,8 @@ export default {
     }
   },
   computed: {
-    mobileMenuOpenedFlag() {
-      return this.mobileMenuOpened && this.windowWidth < 1366
+    mobileFeedListShowFlag() {
+      return this.mobileFeedListShow && this.windowWidth < 1366
     },
     activeFeed() {
       for (const index in this.feeds) {
@@ -343,13 +350,13 @@ export default {
       this.formMode = mode
     },
     openDesctopMenu() {
-      this.desctopMenuShow = true
+      this.menuOpened = true
     },
     hideDesctopMenu() {
       if (event.target.classList.contains('header__user-menu')) {
         return
       }
-      this.desctopMenuShow = false
+      this.menuOpened = false
     },
     mobileFeedListHide() {
       this.mobileFeedListShow = false
@@ -379,7 +386,7 @@ export default {
     mobileMenuClickOutside() {
       const isFullyShowed = document.getElementById('mobile-menu').getBoundingClientRect().left == 0
       if (isFullyShowed) {
-        this.mobileMenuOpened = false
+        this.menuOpened = false
       }
     }
   },

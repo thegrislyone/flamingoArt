@@ -734,7 +734,7 @@ img[lazy=loading] {
   top: 0;
   left: -300px;
   padding: 0 32px;
-  background: rgba(18, 18, 18);
+  background: rgba(18, 18, 18, .75);
   /* background: coral; */
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(100px);
@@ -859,13 +859,16 @@ img[lazy=loading] {
 
 /* HEADER */
 
-.header {
-  display: flex;
+.header-wrapper {
+  z-index: 999;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+}
+.header {
+  display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 20px 27px;
@@ -926,13 +929,14 @@ img[lazy=loading] {
 .feed-mobile__list {
   position: absolute;
   width: 180px;
+  z-index: 1;
   padding: 16px 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  top: -16px;
-  left: -16px;
-  background: rgba(18, 18, 18);
+  top: 5px;
+  left: 64px;
+  background: rgba(18, 18, 18, .35);
   box-shadow: 0px 8px 20px rgb(0 0 0 / 35%);
   backdrop-filter: blur(50px);
   border-radius: 20px;
@@ -1024,8 +1028,8 @@ img[lazy=loading] {
 .header__desctop-menu {
   display: flex;
   position: absolute;
-  top: 48px;
-  right: -15px;
+  top: 64px;
+  right: 66px;
   gap: 24px;
   text-align: left !important;
   justify-content: flex-start;
