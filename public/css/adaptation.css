@@ -327,6 +327,12 @@
   .header {
     gap: 64px;
   }
+  .header__logo {
+    margin-right: 0;
+  }
+  .header__feed-type {
+    margin-right: 0;
+  }
   .item-list {
     padding: 64px;
   }

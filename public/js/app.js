@@ -23338,11 +23338,18 @@ var render = function() {
               _vm._v(" "),
               _vm._m(1),
               _vm._v(" "),
-              _c("router-link", { attrs: { to: "/profile" } }, [
-                _c("span", { staticClass: "header__user-login" }, [
-                  _vm._v(_vm._s(_vm.user.login))
-                ])
-              ]),
+              _c(
+                "router-link",
+                {
+                  staticClass: "header__user-login",
+                  attrs: { to: "/profile" }
+                },
+                [
+                  _c("span", { staticClass: "header__user-login" }, [
+                    _vm._v(_vm._s(_vm.user.login))
+                  ])
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "header__user" }, [
                 _c(

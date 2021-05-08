@@ -938,6 +938,7 @@ img[lazy=loading] {
   color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all .35s;
+  font-size: 14px;
   
   padding: 7px 24px 8px;
   font-weight: 600;
@@ -968,7 +969,7 @@ img[lazy=loading] {
 }
 .header__icons-bar {
   display: none;
-  gap: 15px;
+  gap: 32px;
   cursor: default;
   align-items: center;
   flex-shrink: 0;
@@ -1005,8 +1006,8 @@ img[lazy=loading] {
 .header__desctop-menu {
   display: flex;
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: 48px;
+  right: -15px;
   gap: 24px;
   text-align: left !important;
   justify-content: flex-start;
@@ -1021,12 +1022,14 @@ img[lazy=loading] {
 }
 .header__desctop-menu-item {
   background: transparent;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.5);
 }
 .header__desctop-logout {
   margin-top: 8px;
   background: transparent;
   color: #FF5E5E;
+  font-size: 16px;
 }
 
 .headet__user-avatar img {

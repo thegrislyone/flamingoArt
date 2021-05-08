@@ -143,7 +143,7 @@
         <img src="/assets/images/i-notification.svg" alt="">
       </div>
 
-      <router-link to="/profile">
+      <router-link to="/profile" class="header__user-login">
         <span class="header__user-login">{{ user.login }}</span>
       </router-link>
 
