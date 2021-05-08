@@ -83,6 +83,7 @@
       </div>
 
       <div 
+        v-if="$route.name == 'index'"
         class="feed-mobile"
         :class="{
           'header__feed-type_search-opened': searchOpened && windowWidth > 500

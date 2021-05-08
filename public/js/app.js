@@ -5607,6 +5607,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -5773,6 +5774,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -23279,40 +23287,45 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "feed-mobile",
-            class: {
-              "header__feed-type_search-opened":
-                _vm.searchOpened && _vm.windowWidth > 500
-            }
-          },
-          [
-            _c(
+        _vm.$route.name == "index"
+          ? _c(
               "div",
               {
-                staticClass: "feed-mobile__active",
+                staticClass: "feed-mobile",
                 class: {
-                  "feed-mobile__active_hide": _vm.mobileFeedListShow
-                },
-                on: {
-                  click: function($event) {
-                    _vm.mobileFeedListShow = true
-                  }
+                  "header__feed-type_search-opened":
+                    _vm.searchOpened && _vm.windowWidth > 500
                 }
               },
               [
-                _vm._v(
-                  "\n        " + _vm._s(_vm.activeFeed.title) + "\n        "
-                ),
-                _c("img", {
-                  attrs: { src: "/assets/images/i-arrow_white.svg", alt: "" }
-                })
+                _c(
+                  "div",
+                  {
+                    staticClass: "feed-mobile__active",
+                    class: {
+                      "feed-mobile__active_hide": _vm.mobileFeedListShow
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.mobileFeedListShow = true
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n        " + _vm._s(_vm.activeFeed.title) + "\n        "
+                    ),
+                    _c("img", {
+                      attrs: {
+                        src: "/assets/images/i-arrow_white.svg",
+                        alt: ""
+                      }
+                    })
+                  ]
+                )
               ]
             )
-          ]
-        ),
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "div",
@@ -23551,15 +23564,30 @@ var render = function() {
             _c("div", { staticClass: "mobile-menu__user" }, [
               _c("div", { staticClass: "mobile-menu__avatar" }, [
                 _c("img", {
+                  staticClass: "pointer",
                   attrs: {
                     src: _vm.user.avatar || "/assets/images/unknown-user.png"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.goTo("/profile")
+                    }
                   }
                 })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "mobile-menu__nickname" }, [
-                _vm._v("\n        " + _vm._s(_vm.user.login) + "\n      ")
-              ])
+              _c(
+                "div",
+                {
+                  staticClass: "mobile-menu__nickname pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.goTo("/profile")
+                    }
+                  }
+                },
+                [_vm._v("\n        " + _vm._s(_vm.user.login) + "\n      ")]
+              )
             ]),
             _vm._v(" "),
             _c(

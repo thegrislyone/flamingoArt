@@ -13,10 +13,17 @@
       <div class="mobile-menu__user">
 
         <div class="mobile-menu__avatar">
-          <img :src="user.avatar || '/assets/images/unknown-user.png'">
+          <img 
+            class="pointer"
+            :src="user.avatar || '/assets/images/unknown-user.png'"
+            @click="goTo('/profile')"
+          >
         </div>
 
-        <div class="mobile-menu__nickname">
+        <div 
+          class="mobile-menu__nickname pointer"
+          @click="goTo('/profile')"
+        >
           {{ user.login }}
         </div>
 
