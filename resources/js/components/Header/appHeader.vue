@@ -19,13 +19,10 @@
     </modal>
 
     <MobileMenu
-      :class="{
-        'mobile-menu_opened': menuOpened && windowWidth < 1366
-      }"
-      @close="menuOpened = false"
+      :opened="menuOpened && windowWidth < 1366"
+      @close="menuClose"
       @logout="logout"
       @formOpen="openForm"
-      v-click-outside="mobileMenuClickOutside"
     />
 
     <div 
@@ -47,7 +44,7 @@
     <div
       v-if="menuOpened && windowWidth >= 1366"
       class="header__desctop-menu"
-      v-click-outside="hideDesctopMenu"
+      v-click-outside="menuClose"
     >
       <button
         v-for="(desctopItem, key) in desctopMenu"
@@ -74,7 +71,7 @@
       <div class="header__menu-block">
         <div 
           class="menu-short pointer"
-          @click="menuOpened = true"
+          @click="menuOpen"
         >
           <div></div>
           <div></div>
@@ -192,7 +189,7 @@
             class="header__user-menu"
             src="/assets/images/i-arrow_small.svg"
             alt=""
-            @click="openDesctopMenu"
+            @click="menuOpen"
           >
 
         </div>
@@ -236,11 +233,7 @@ export default {
   data() {
     return {
 
-      mobileMenuOpened: false,
-
       menuOpened: false,
-
-      desctopMenuShow: false,
 
       mobileFeedListShow: false,
 
@@ -315,6 +308,19 @@ export default {
     },
   },
   watch: {
+    windowWidth() {
+
+      let bodyStyles = document.querySelector('body').style
+
+      if (this.menuOpened && this.windowWidth >= 1366 && bodyStyles.overflowY == 'hidden') {
+        bodyStyles.overflowY = 'scroll'
+      }
+
+      if (this.menuOpened && this.windowWidth < 1366 && bodyStyles.overflowY != 'hidden') {
+        bodyStyles.overflowY = 'hidden'
+      }
+      
+    },
     searchOpened() {
       if (this.windowWidth < 1366 && this.searchOpened) {
         setTimeout(() => {
@@ -329,6 +335,20 @@ export default {
     }
   },
   methods: {
+
+    menuOpen() {
+      if (this.windowWidth < 1366) {
+        document.querySelector('body').style.overflowY = 'hidden'
+      }
+      this.menuOpened = true
+    },
+    menuClose() {
+      if (this.windowWidth < 1366) {
+        document.querySelector('body').style.overflowY = 'scroll'
+      }
+      this.menuOpened = false
+    },
+
     feedChange(key) {
 
       for (const index in this.feeds) {
@@ -352,15 +372,6 @@ export default {
     setFormMode(mode) {
       this.formMode = mode
     },
-    openDesctopMenu() {
-      this.menuOpened = true
-    },
-    hideDesctopMenu() {
-      if (event.target.classList.contains('header__user-menu')) {
-        return
-      }
-      this.menuOpened = false
-    },
     mobileFeedListHide() {
       this.mobileFeedListShow = false
     },
@@ -368,7 +379,7 @@ export default {
       
       this.$router.push(item.link)
 
-      this.hideDesctopMenu()
+      this.menuClose()
 
     },
     logout() {
@@ -386,12 +397,6 @@ export default {
         })
 
     },
-    mobileMenuClickOutside() {
-      const isFullyShowed = document.getElementById('mobile-menu').getBoundingClientRect().left == 0
-      if (isFullyShowed) {
-        this.menuOpened = false
-      }
-    }
   },
 }
 </script>

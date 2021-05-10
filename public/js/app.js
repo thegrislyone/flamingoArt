@@ -5607,9 +5607,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -5621,9 +5618,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      mobileMenuOpened: false,
       menuOpened: false,
-      desctopMenuShow: false,
       mobileFeedListShow: false,
       desctopMenu: [{
         caption: 'Мой профиль',
@@ -5689,6 +5684,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
+    windowWidth: function windowWidth() {
+      var bodyStyles = document.querySelector('body').style;
+
+      if (this.menuOpened && this.windowWidth >= 1366 && bodyStyles.overflowY == 'hidden') {
+        bodyStyles.overflowY = 'scroll';
+      }
+
+      if (this.menuOpened && this.windowWidth < 1366 && bodyStyles.overflowY != 'hidden') {
+        bodyStyles.overflowY = 'hidden';
+      }
+    },
     searchOpened: function searchOpened() {
       if (this.windowWidth < 1366 && this.searchOpened) {
         setTimeout(function () {
@@ -5703,6 +5709,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    menuOpen: function menuOpen() {
+      if (this.windowWidth < 1366) {
+        document.querySelector('body').style.overflowY = 'hidden';
+      }
+
+      this.menuOpened = true;
+    },
+    menuClose: function menuClose() {
+      if (this.windowWidth < 1366) {
+        document.querySelector('body').style.overflowY = 'scroll';
+      }
+
+      this.menuOpened = false;
+    },
     feedChange: function feedChange(key) {
       for (var index in this.feeds) {
         if (this.feeds[index].active && key == index) {
@@ -5725,22 +5745,12 @@ __webpack_require__.r(__webpack_exports__);
     setFormMode: function setFormMode(mode) {
       this.formMode = mode;
     },
-    openDesctopMenu: function openDesctopMenu() {
-      this.menuOpened = true;
-    },
-    hideDesctopMenu: function hideDesctopMenu() {
-      if (event.target.classList.contains('header__user-menu')) {
-        return;
-      }
-
-      this.menuOpened = false;
-    },
     mobileFeedListHide: function mobileFeedListHide() {
       this.mobileFeedListShow = false;
     },
     desctopMenuItemSelect: function desctopMenuItemSelect(item) {
       this.$router.push(item.link);
-      this.hideDesctopMenu();
+      this.menuClose();
     },
     logout: function logout() {
       var _this = this;
@@ -5754,13 +5764,6 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$root.showNotification(data.success, 'success');
       });
-    },
-    mobileMenuClickOutside: function mobileMenuClickOutside() {
-      var isFullyShowed = document.getElementById('mobile-menu').getBoundingClientRect().left == 0;
-
-      if (isFullyShowed) {
-        this.menuOpened = false;
-      }
     }
   }
 });
@@ -5898,7 +5901,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    opened: Boolean
+  },
   data: function data() {
     return {
       notAuthorizedMenu: [{
@@ -23166,24 +23189,8 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("MobileMenu", {
-        directives: [
-          {
-            name: "click-outside",
-            rawName: "v-click-outside",
-            value: _vm.mobileMenuClickOutside,
-            expression: "mobileMenuClickOutside"
-          }
-        ],
-        class: {
-          "mobile-menu_opened": _vm.menuOpened && _vm.windowWidth < 1366
-        },
-        on: {
-          close: function($event) {
-            _vm.menuOpened = false
-          },
-          logout: _vm.logout,
-          formOpen: _vm.openForm
-        }
+        attrs: { opened: _vm.menuOpened && _vm.windowWidth < 1366 },
+        on: { close: _vm.menuClose, logout: _vm.logout, formOpen: _vm.openForm }
       }),
       _vm._v(" "),
       _vm.mobileFeedListShowFlag
@@ -23237,8 +23244,8 @@ var render = function() {
                 {
                   name: "click-outside",
                   rawName: "v-click-outside",
-                  value: _vm.hideDesctopMenu,
-                  expression: "hideDesctopMenu"
+                  value: _vm.menuClose,
+                  expression: "menuClose"
                 }
               ],
               staticClass: "header__desctop-menu"
@@ -23277,14 +23284,7 @@ var render = function() {
         _c("div", { staticClass: "header__menu-block" }, [
           _c(
             "div",
-            {
-              staticClass: "menu-short pointer",
-              on: {
-                click: function($event) {
-                  _vm.menuOpened = true
-                }
-              }
-            },
+            { staticClass: "menu-short pointer", on: { click: _vm.menuOpen } },
             [_c("div"), _vm._v(" "), _c("div"), _vm._v(" "), _c("div")]
           )
         ]),
@@ -23472,7 +23472,7 @@ var render = function() {
                   _c("img", {
                     staticClass: "header__user-menu",
                     attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" },
-                    on: { click: _vm.openDesctopMenu }
+                    on: { click: _vm.menuOpen }
                   })
                 ])
               ],
@@ -23551,177 +23551,69 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "aside",
-    { staticClass: "mobile-menu", attrs: { id: "mobile-menu" } },
-    [
-      _c("button", {
-        staticClass: "mobile-menu__close pointer",
-        on: {
-          click: function($event) {
-            return _vm.$emit("close")
+  return _c("div", { staticClass: "mobile-menu-wrapper" }, [
+    _vm.opened
+      ? _c("div", {
+          staticClass: "mobile-menu__overlay",
+          on: {
+            click: function($event) {
+              return _vm.$emit("close")
+            }
           }
-        }
-      }),
-      _vm._v(" "),
-      _vm.isAuthorized
-        ? _c("div", { staticClass: "mobile-menu__authorized" }, [
-            _c("div", { staticClass: "mobile-menu__user" }, [
-              _c("div", { staticClass: "mobile-menu__avatar" }, [
-                _c("img", {
-                  staticClass: "pointer",
-                  attrs: {
-                    src: _vm.user.avatar || "/assets/images/unknown-user.png"
-                  },
-                  on: {
-                    click: function($event) {
-                      return _vm.goTo("/profile")
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "mobile-menu__nickname pointer",
-                  on: {
-                    click: function($event) {
-                      return _vm.goTo("/profile")
-                    }
-                  }
-                },
-                [_vm._v("\n        " + _vm._s(_vm.user.login) + "\n      ")]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "mobile-menu__menu-items mobile-menu__menu-items_auth"
-              },
-              [
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "pointer",
-                      on: {
-                        click: function($event) {
-                          return _vm.goTo("/")
-                        }
-                      }
+        })
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "aside",
+      {
+        staticClass: "mobile-menu",
+        class: {
+          "mobile-menu_opened": _vm.opened
+        },
+        attrs: { id: "mobile-menu" }
+      },
+      [
+        _c("button", {
+          staticClass: "mobile-menu__close pointer",
+          on: {
+            click: function($event) {
+              return _vm.$emit("close")
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.isAuthorized
+          ? _c("div", { staticClass: "mobile-menu__authorized" }, [
+              _c("div", { staticClass: "mobile-menu__user" }, [
+                _c("div", { staticClass: "mobile-menu__avatar" }, [
+                  _c("img", {
+                    staticClass: "pointer",
+                    attrs: {
+                      src: _vm.user.avatar || "/assets/images/unknown-user.png"
                     },
-                    [_vm._v("Главная")]
-                  )
+                    on: {
+                      click: function($event) {
+                        return _vm.goTo("/profile")
+                      }
+                    }
+                  })
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "pointer",
-                      on: {
-                        click: function($event) {
-                          return _vm.goTo("/profile")
-                        }
-                      }
-                    },
-                    [_vm._v("Мой профиль")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "pointer",
-                      on: {
-                        click: function($event) {
-                          return _vm.goTo("")
-                        }
-                      }
-                    },
-                    [_vm._v("Сообщения")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "pointer",
-                      on: {
-                        click: function($event) {
-                          return _vm.goTo("")
-                        }
-                      }
-                    },
-                    [_vm._v("Уведомления")]
-                  )
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "mobile-menu__auth-menu" }, [
-              _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
                 _c(
-                  "button",
+                  "div",
                   {
-                    staticClass: "pointer",
+                    staticClass: "mobile-menu__nickname pointer",
                     on: {
                       click: function($event) {
-                        return _vm.goTo("")
+                        return _vm.goTo("/profile")
                       }
                     }
                   },
-                  [_vm._v("Избранное")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "pointer",
-                    on: {
-                      click: function($event) {
-                        return _vm.goTo("")
-                      }
-                    }
-                  },
-                  [_vm._v("Мои сделки")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "pointer",
-                    on: {
-                      click: function($event) {
-                        return _vm.goTo("")
-                      }
-                    }
-                  },
-                  [_vm._v("Настройки")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "pointer",
-                    on: {
-                      click: function($event) {
-                        return _vm.goTo("")
-                      }
-                    }
-                  },
-                  [_vm._v("Помощь")]
+                  [
+                    _vm._v(
+                      "\n          " + _vm._s(_vm.user.login) + "\n        "
+                    )
+                  ]
                 )
               ]),
               _vm._v(" "),
@@ -23729,53 +23621,118 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "mobile-menu__auth-menu-item mobile-menu__auth-menu-logout"
+                    "mobile-menu__menu-items mobile-menu__menu-items_auth"
                 },
                 [
-                  _c(
-                    "button",
-                    { staticClass: "pointer", on: { click: _vm.logout } },
-                    [_vm._v("Выйти")]
-                  )
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("/")
+                          }
+                        }
+                      },
+                      [_vm._v("Главная")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("/profile")
+                          }
+                        }
+                      },
+                      [_vm._v("Мой профиль")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("")
+                          }
+                        }
+                      },
+                      [_vm._v("Сообщения")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("")
+                          }
+                        }
+                      },
+                      [_vm._v("Уведомления")]
+                    )
+                  ])
                 ]
-              )
-            ])
-          ])
-        : _c("div", { staticClass: "mobile-menu__not-authorized" }, [
-            _c(
-              "div",
-              { staticClass: "mobile-menu__logo" },
-              [
-                _c("router-link", { attrs: { to: "/" } }, [
-                  _vm._v("FlamingoArt")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "mobile-menu__menu-items mobile-menu__menu-items_not-auth"
-              },
-              [
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "mobile-menu__auth-menu" }, [
+                _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
                   _c(
                     "button",
                     {
                       staticClass: "pointer",
                       on: {
                         click: function($event) {
-                          return _vm.goTo("/")
+                          return _vm.goTo("")
                         }
                       }
                     },
-                    [_vm._v("Главная")]
+                    [_vm._v("Избранное")]
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "pointer",
+                      on: {
+                        click: function($event) {
+                          return _vm.goTo("")
+                        }
+                      }
+                    },
+                    [_vm._v("Мои сделки")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "pointer",
+                      on: {
+                        click: function($event) {
+                          return _vm.goTo("")
+                        }
+                      }
+                    },
+                    [_vm._v("Настройки")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mobile-menu__auth-menu-item" }, [
                   _c(
                     "button",
                     {
@@ -23788,48 +23745,114 @@ var render = function() {
                     },
                     [_vm._v("Помощь")]
                   )
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "mobile-menu__bottom-part" }, [
-              _c("div", { staticClass: "mobile-menu__text" }, [
-                _vm._v(
-                  "\n        Войдите или создайте аккаунт на сайте, чтобы получить доступ ко всем функциям:\n      "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mobile-menu__buttons" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn mobile-menu__btn mobile-menu__login",
-                    on: {
-                      click: function($event) {
-                        return _vm.formOpen("auth")
-                      }
-                    }
-                  },
-                  [_vm._v("\n          Войти\n        ")]
-                ),
+                ]),
                 _vm._v(" "),
                 _c(
-                  "button",
+                  "div",
                   {
-                    staticClass: "btn mobile-menu__btn mobile-menu__register",
-                    on: {
-                      click: function($event) {
-                        return _vm.formOpen("reg")
-                      }
-                    }
+                    staticClass:
+                      "mobile-menu__auth-menu-item mobile-menu__auth-menu-logout"
                   },
-                  [_vm._v("\n          Регистрация\n        ")]
+                  [
+                    _c(
+                      "button",
+                      { staticClass: "pointer", on: { click: _vm.logout } },
+                      [_vm._v("Выйти")]
+                    )
+                  ]
                 )
               ])
             ])
-          ])
-    ]
-  )
+          : _c("div", { staticClass: "mobile-menu__not-authorized" }, [
+              _c(
+                "div",
+                { staticClass: "mobile-menu__logo" },
+                [
+                  _c("router-link", { attrs: { to: "/" } }, [
+                    _vm._v("FlamingoArt")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "mobile-menu__menu-items mobile-menu__menu-items_not-auth"
+                },
+                [
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("/")
+                          }
+                        }
+                      },
+                      [_vm._v("Главная")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mobile-menu__menu-item" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.goTo("")
+                          }
+                        }
+                      },
+                      [_vm._v("Помощь")]
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "mobile-menu__bottom-part" }, [
+                _c("div", { staticClass: "mobile-menu__text" }, [
+                  _vm._v(
+                    "\n          Войдите или создайте аккаунт на сайте, чтобы получить доступ ко всем функциям:\n        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mobile-menu__buttons" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn mobile-menu__btn mobile-menu__login",
+                      on: {
+                        click: function($event) {
+                          return _vm.formOpen("auth")
+                        }
+                      }
+                    },
+                    [_vm._v("\n            Войти\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn mobile-menu__btn mobile-menu__register",
+                      on: {
+                        click: function($event) {
+                          return _vm.formOpen("reg")
+                        }
+                      }
+                    },
+                    [_vm._v("\n            Регистрация\n          ")]
+                  )
+                ])
+              ])
+            ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
