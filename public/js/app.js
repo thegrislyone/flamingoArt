@@ -6938,6 +6938,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -6947,6 +6949,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      popularTagsOriginal: [],
       popularTags: [],
       // popularTagsChoosen: [],
       tag: '',
@@ -6958,6 +6961,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$http.get('/api/tags/get-popular-tags?amount=10').then(function (response) {
       var data = response.data;
+      _this.popularTagsOriginal = data;
       _this.popularTags = data;
     });
   },
@@ -6974,16 +6978,28 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('add-tag', this.tags);
     },
     deleteTag: function deleteTag() {
+      var _this2 = this;
+
       if (event.key == 'Backspace' && this.tag) {
         return;
-      } // if (this.popularTagsChoosen.find((tag) => {
-      //   if (tag.name == this.tags[this.tags.length - 1]) {
-      //     return true
-      //   }
-      // })) {
-      //   this.popularTags.push(this.tags[this.tags.length - 1])
-      // }
+      }
 
+      var findedIndex = null;
+      var finded = this.popularTagsOriginal.find(function (tag, index) {
+        if (tag.name == _this2.tags[_this2.tags.length - 1]) {
+          findedIndex = index;
+          return true;
+        }
+
+        return false;
+      });
+
+      if (finded) {
+        var firstPart = this.popularTags.slice(0, findedIndex);
+        var secondPart = this.popularTags.slice(findedIndex);
+        firstPart.push(finded);
+        this.popularTags = firstPart.concat(secondPart);
+      }
 
       this.tags.pop();
       this.$emit('add-tag', this.tags);
@@ -24664,17 +24680,17 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "tags-input__popular" },
-      [
-        _c("h4", [_vm._v("Варианты тегов:")]),
-        _vm._v(" "),
-        !_vm.popularTags.length
-          ? [_c("div", { staticClass: "preloader" })]
-          : [
-              _vm.popularTags.length
-                ? _c(
+    _vm.popularTags.length
+      ? _c(
+          "div",
+          { staticClass: "tags-input__popular" },
+          [
+            _c("h4", [_vm._v("Варианты тегов:")]),
+            _vm._v(" "),
+            !_vm.popularTags.length
+              ? [_c("div", { staticClass: "preloader" })]
+              : [
+                  _c(
                     "div",
                     { staticClass: "tags-input__popular-tags" },
                     _vm._l(_vm.popularTags, function(tag, key) {
@@ -24699,11 +24715,11 @@ var render = function() {
                     }),
                     0
                   )
-                : _vm._e()
-            ]
-      ],
-      2
-    )
+                ]
+          ],
+          2
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

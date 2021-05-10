@@ -19,14 +19,16 @@
 
     </div>
 
-    <div class="tags-input__popular">
+    <div 
+      v-if="popularTags.length"
+      class="tags-input__popular"
+    >
       <h4>Варианты тегов:</h4>
       <template v-if="!popularTags.length">
         <div class="preloader"></div>
       </template>
       <template v-else>
         <div 
-          v-if="popularTags.length"
           class="tags-input__popular-tags"
         >
           <span 
@@ -53,6 +55,7 @@ export default {
   },
   data() {
     return {
+      popularTagsOriginal: [],
       popularTags: [],
       // popularTagsChoosen: [],
       tag: '',
@@ -64,7 +67,9 @@ export default {
       .then(response => {
         const data = response.data
 
+        this.popularTagsOriginal = data
         this.popularTags = data
+        
       })
   },
   methods: {
@@ -87,13 +92,26 @@ export default {
         return
       }
 
-      // if (this.popularTagsChoosen.find((tag) => {
-      //   if (tag.name == this.tags[this.tags.length - 1]) {
-      //     return true
-      //   }
-      // })) {
-      //   this.popularTags.push(this.tags[this.tags.length - 1])
-      // }
+      let findedIndex = null
+
+      const finded = this.popularTagsOriginal.find((tag, index) => {
+        if (tag.name == this.tags[this.tags.length - 1]) {
+          findedIndex = index
+          return true
+        }
+        return false
+      })
+
+      if (finded) {
+
+        let firstPart = this.popularTags.slice(0, findedIndex)
+        let secondPart = this.popularTags.slice(findedIndex)
+
+        firstPart.push(finded)
+
+        this.popularTags = firstPart.concat(secondPart)
+
+      }
 
       this.tags.pop()
       this.$emit('add-tag', this.tags)
