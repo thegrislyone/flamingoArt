@@ -439,6 +439,10 @@ img[lazy=loading] {
   border-radius: 6px;
   transition: all .35s !important;
 }
+.tag_big {
+  font-size: 22px;
+  padding: 2px 12px;
+}
 .tag:hover {
   background: #DA71FF;
   color: rgb(32, 20, 20);

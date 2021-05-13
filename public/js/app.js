@@ -6872,9 +6872,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    tag: Object
+    tag: Object,
+    big: {
+      type: Boolean,
+      "default": false
+    }
   },
   methods: {
     tagSearch: function tagSearch() {
@@ -7381,6 +7388,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -7821,6 +7829,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
+//
 //
 //
 //
@@ -24594,7 +24603,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "tag pointer no-select", on: { click: _vm.tagSearch } },
+    {
+      staticClass: "tag pointer no-select",
+      class: {
+        tag_big: _vm.big
+      },
+      on: { click: _vm.tagSearch }
+    },
     [_vm._v("\n  #" + _vm._s(_vm.tag.name) + "\n")]
   )
 }
@@ -25015,7 +25030,7 @@ var render = function() {
                       return _c("tag", {
                         key: tag.id,
                         staticClass: "swiper-slide",
-                        attrs: { tag: tag }
+                        attrs: { tag: tag, big: true }
                       })
                     }),
                     1
@@ -25320,7 +25335,7 @@ var render = function() {
                     return _c("tag", {
                       key: tag.id,
                       staticClass: "tag pointer no-select",
-                      attrs: { tag: tag }
+                      attrs: { tag: tag, big: true }
                     })
                   }),
                   1

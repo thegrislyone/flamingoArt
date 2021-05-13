@@ -1,6 +1,9 @@
 <template>
   <div 
     class="tag pointer no-select"
+    :class="{
+      'tag_big': big
+    }"
     @click="tagSearch"
   >
     #{{ tag.name }}
@@ -10,7 +13,11 @@
 <script>
 export default {
   props: {
-    tag: Object
+    tag: Object,
+    big: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     tagSearch() {

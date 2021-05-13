@@ -32,6 +32,7 @@
               v-for="tag in popularTags"
               :key="tag.id"
               :tag="tag"
+              :big="true"
               class="swiper-slide"
             />
             

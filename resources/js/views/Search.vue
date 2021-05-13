@@ -26,6 +26,7 @@
           v-for="tag in tags"
           :key="tag.id"
           :tag="tag"
+          :big="true"
           class="tag pointer no-select"
         />
       </div>
