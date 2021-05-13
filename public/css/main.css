@@ -1110,6 +1110,9 @@ img[lazy=loading] {
 }
 .popular-tags__block {
   margin-bottom: 48px;
+  width: calc(100% + 64px);
+  margin-left: -32px !important;
+  padding-left: 32px !important;
 }
 /* .popular-tags__wrapper {
   white-space: nowrap;
@@ -1608,7 +1611,9 @@ img {
   color: rgba(255, 255, 255, 0.4);
 }
 .item__author-items {
-
+  width: calc(100% + 32px);
+  margin-left: -16px !important;
+  padding-left: 16px !important;
 }
 .item__swiper {
   align-items: center;
