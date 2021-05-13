@@ -4,6 +4,15 @@
     <div v-if="loading" class="preloader"></div>
 
     <div v-else class="item__wrapper">
+
+      <purchase-confirmation
+        v-if="purchaseConfirmationShow"
+        :name="item.name"
+        :author="item.author.login"
+        :price="item.price"
+        @close="buyClose"
+      />
+
       <div class="item__block">
         <div class="item__thumbnail-block">
           <img 
@@ -59,8 +68,13 @@
 
             </button>
 
-            <div class="item__buy">
-              <button class="btn">Купить</button>
+            <div
+              class="item__buy"
+              :class="{
+                'item__buy_hidden': purchaseConfirmationShow
+              }"
+            >
+              <button class="btn" @click="buy">Купить</button>
               <span class="item__price">{{ item.price }} ₽</span>
             </div>
 
@@ -126,16 +140,19 @@
 import Swiper from 'swiper'
 
 import Tag from '../components/Tag.vue'
+import PurchaseConfirmation from '../components/PurchaseConfirmation.vue'
 
 export default {
   components: {
-    Tag
+    Tag,
+    PurchaseConfirmation
   },
   data() {
     return {
       loading: false,
       item: null,
-      slider: null
+      slider: null,
+      purchaseConfirmationShow: false
     }
   },
   watch: {
@@ -216,6 +233,12 @@ export default {
   mounted() {
   },
   methods: {
+    buy() {
+      this.purchaseConfirmationShow = true
+    },
+    buyClose() {
+      this.purchaseConfirmationShow = false
+    },
     sliderInit() {
       this.slider = new Swiper('.item__author-items', {
         direction: 'horizontal',

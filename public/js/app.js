@@ -6298,6 +6298,69 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    author: String,
+    name: String,
+    price: String
+  },
+  created: function created() {},
+  mounted: function mounted() {
+    this.$modal.show('purchase');
+  },
+  methods: {
+    close: function close() {
+      this.$emit('close');
+      this.$modal.hide('purchase');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Search.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Search.vue?vue&type=script&lang=js& ***!
@@ -7079,6 +7142,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 /* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
+/* harmony import */ var _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/PurchaseConfirmation.vue */ "./resources/js/components/PurchaseConfirmation.vue");
 //
 //
 //
@@ -7202,17 +7266,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Tag: _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Tag: _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    PurchaseConfirmation: _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
       loading: false,
       item: null,
-      slider: null
+      slider: null,
+      purchaseConfirmationShow: false
     };
   },
   watch: {
@@ -7280,6 +7361,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   methods: {
+    buy: function buy() {
+      this.purchaseConfirmationShow = true;
+    },
+    buyClose: function buyClose() {
+      this.purchaseConfirmationShow = false;
+    },
     sliderInit: function sliderInit() {
       this.slider = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.item__author-items', {
         direction: 'horizontal',
@@ -23204,7 +23291,7 @@ var render = function() {
           attrs: {
             name: "signForm",
             classes: ["modal", "sign-in-form"],
-            height: "auto",
+            height: _vm.windowWidth <= 560 ? "100%" : "auto",
             scrollable: true,
             "min-width": 320,
             "min-height": 580,
@@ -24158,6 +24245,87 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "modal",
+    {
+      attrs: {
+        name: "purchase",
+        classes: ["modal", "purchase-confirmation"],
+        width: 408,
+        scrollable: true,
+        height: "auto",
+        shiftY: 0.2
+      },
+      on: { closed: _vm.close }
+    },
+    [
+      _c("button", { staticClass: "modal__close", on: { click: _vm.close } }),
+      _vm._v(" "),
+      _c("div", { staticClass: "purchase-confirmation_block" }, [
+        _c("h2", { staticClass: "purchase-confirmation__headline" }, [
+          _vm._v("Купить “" + _vm._s(_vm.name) + "”")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "purchase-confirmation__paragraph" }, [
+          _vm._v(
+            "Вы собираетесь приобрести товар “" +
+              _vm._s(_vm.name) +
+              "” от автора " +
+              _vm._s(_vm.author) +
+              ". После оплаты вы получите оригиналы файлов и цифровые права на использование этого изображения."
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "p",
+          {
+            staticClass:
+              "purchase-confirmation__paragraph purchase-confirmation__paragraph_second"
+          },
+          [
+            _vm._v(
+              "Покупая товар на сайте Flamingo-art.ru   вы соглашаетесь с тем, что процент от продажи берёт платформа."
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "purchase-confirmation__line" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "purchase-confirmation__buy-block" }, [
+          _c("div", { staticClass: "purchase-confirmation__price" }, [
+            _vm._v("Итого: " + _vm._s(_vm.price) + " ₽")
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "purchase-confirmation__buy btn" }, [
+            _vm._v("Купить")
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Search.vue?vue&type=template&id=5026ffd3&":
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Search.vue?vue&type=template&id=5026ffd3& ***!
@@ -24847,163 +25015,194 @@ var render = function() {
   return _c("div", { staticClass: "item" }, [
     _vm.loading
       ? _c("div", { staticClass: "preloader" })
-      : _c("div", { staticClass: "item__wrapper" }, [
-          _c("div", { staticClass: "item__block" }, [
-            _c("div", { staticClass: "item__thumbnail-block" }, [
-              _c("img", {
-                staticClass: "item__thumbnail",
-                attrs: { src: _vm.item.thumbnail }
-              })
-            ]),
+      : _c(
+          "div",
+          { staticClass: "item__wrapper" },
+          [
+            _vm.purchaseConfirmationShow
+              ? _c("purchase-confirmation", {
+                  attrs: {
+                    name: _vm.item.name,
+                    author: _vm.item.author.login,
+                    price: _vm.item.price
+                  },
+                  on: { close: _vm.buyClose }
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "item__information-block" }, [
-              _c("div", { staticClass: "item__information" }, [
-                _c("h1", { staticClass: "item__name" }, [
-                  _vm._v(_vm._s(_vm.item.name))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "item__description" }, [
-                  _vm._v(
-                    "\n            " +
-                      _vm._s(_vm.item.description) +
-                      "\n          "
+            _c("div", { staticClass: "item__block" }, [
+              _c("div", { staticClass: "item__thumbnail-block" }, [
+                _c("img", {
+                  staticClass: "item__thumbnail",
+                  attrs: { src: _vm.item.thumbnail }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "item__information-block" }, [
+                _c("div", { staticClass: "item__information" }, [
+                  _c("h1", { staticClass: "item__name" }, [
+                    _vm._v(_vm._s(_vm.item.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__description" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.item.description) +
+                        "\n          "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__tags" },
+                    _vm._l(_vm.item.tags, function(tag) {
+                      return _c("tag", { key: tag.id, attrs: { tag: tag } })
+                    }),
+                    1
                   )
                 ]),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "item__tags" },
-                  _vm._l(_vm.item.tags, function(tag) {
-                    return _c("tag", { key: tag.id, attrs: { tag: tag } })
-                  }),
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "item__actions",
-                  class: {
-                    "item__actions_no-favorites": !_vm.isAuthorized
-                  }
-                },
-                [
-                  _vm.isAuthorized
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "item__to-favorite pointer no-select",
-                          class: {
-                            "item__to-favorite_added": _vm.isInFavorite
-                          },
-                          on: { click: _vm.addOrRemoveFavorite }
-                        },
-                        [
-                          _vm.isInFavorite
-                            ? [
-                                _vm._v(
-                                  "\n              В избранном\n            "
-                                )
-                              ]
-                            : [
-                                _vm._v(
-                                  "\n              В избранное\n            "
-                                )
-                              ]
-                        ],
-                        2
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__buy" }, [
-                    _c("button", { staticClass: "btn" }, [_vm._v("Купить")]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "item__price" }, [
-                      _vm._v(_vm._s(_vm.item.price) + " ₽")
-                    ])
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.moreOfAuthor.length
-            ? _c("div", { staticClass: "item__author-more" }, [
-                _c(
-                  "div",
-                  { staticClass: "item__author" },
+                  {
+                    staticClass: "item__actions",
+                    class: {
+                      "item__actions_no-favorites": !_vm.isAuthorized
+                    }
+                  },
                   [
+                    _vm.isAuthorized
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "item__to-favorite pointer no-select",
+                            class: {
+                              "item__to-favorite_added": _vm.isInFavorite
+                            },
+                            on: { click: _vm.addOrRemoveFavorite }
+                          },
+                          [
+                            _vm.isInFavorite
+                              ? [
+                                  _vm._v(
+                                    "\n              В избранном\n            "
+                                  )
+                                ]
+                              : [
+                                  _vm._v(
+                                    "\n              В избранное\n            "
+                                  )
+                                ]
+                          ],
+                          2
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c(
-                      "router-link",
+                      "div",
                       {
-                        staticClass: "item__author-nickname-block pointer",
-                        attrs: {
-                          to: _vm.isAuthor
-                            ? "/profile"
-                            : "/profile/" + _vm.item.author.id
+                        staticClass: "item__buy",
+                        class: {
+                          item__buy_hidden: _vm.purchaseConfirmationShow
                         }
                       },
                       [
-                        _vm.item.author.avatar
-                          ? _c("img", {
-                              staticClass: "item__author-avatar",
-                              attrs: { src: _vm.item.author.avatar }
-                            })
-                          : _c("img", {
-                              staticClass: "item__author-avatar",
-                              attrs: { src: "/assets/images/unknown-user.png" }
-                            }),
+                        _c(
+                          "button",
+                          { staticClass: "btn", on: { click: _vm.buy } },
+                          [_vm._v("Купить")]
+                        ),
                         _vm._v(" "),
-                        _c("span", { staticClass: "item__author-nickname" }, [
-                          _vm._v(_vm._s(_vm.item.author.login))
+                        _c("span", { staticClass: "item__price" }, [
+                          _vm._v(_vm._s(_vm.item.price) + " ₽")
                         ])
                       ]
-                    ),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "item__more-from-author" }, [
-                      _vm._v("Ещё от автора:")
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "item__author-items swiper-container" },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "item__swiper swiper-wrapper" },
-                      _vm._l(_vm.moreOfAuthor, function(item) {
-                        return _c(
-                          "div",
-                          {
-                            key: item.id,
-                            staticClass: "item__author-item swiper-slide"
-                          },
-                          [
-                            _c(
-                              "router-link",
-                              { attrs: { to: "/item/" + item.id } },
-                              [
-                                _c("img", {
-                                  staticClass: "item__author-item-img",
-                                  attrs: { src: item.thumbnail, alt: "" }
-                                })
-                              ]
-                            )
-                          ],
-                          1
-                        )
-                      }),
-                      0
                     )
                   ]
                 )
               ])
-            : _vm._e()
-        ])
+            ]),
+            _vm._v(" "),
+            _vm.moreOfAuthor.length
+              ? _c("div", { staticClass: "item__author-more" }, [
+                  _c(
+                    "div",
+                    { staticClass: "item__author" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "item__author-nickname-block pointer",
+                          attrs: {
+                            to: _vm.isAuthor
+                              ? "/profile"
+                              : "/profile/" + _vm.item.author.id
+                          }
+                        },
+                        [
+                          _vm.item.author.avatar
+                            ? _c("img", {
+                                staticClass: "item__author-avatar",
+                                attrs: { src: _vm.item.author.avatar }
+                              })
+                            : _c("img", {
+                                staticClass: "item__author-avatar",
+                                attrs: {
+                                  src: "/assets/images/unknown-user.png"
+                                }
+                              }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "item__author-nickname" }, [
+                            _vm._v(_vm._s(_vm.item.author.login))
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "item__more-from-author" }, [
+                        _vm._v("Ещё от автора:")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__author-items swiper-container" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "item__swiper swiper-wrapper" },
+                        _vm._l(_vm.moreOfAuthor, function(item) {
+                          return _c(
+                            "div",
+                            {
+                              key: item.id,
+                              staticClass: "item__author-item swiper-slide"
+                            },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "/item/" + item.id } },
+                                [
+                                  _c("img", {
+                                    staticClass: "item__author-item-img",
+                                    attrs: { src: item.thumbnail, alt: "" }
+                                  })
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              : _vm._e()
+          ],
+          1
+        )
   ])
 }
 var staticRenderFns = []
@@ -44745,6 +44944,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PurchaseConfirmation.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/PurchaseConfirmation.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PurchaseConfirmation.vue?vue&type=template&id=5739fc7e& */ "./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e&");
+/* harmony import */ var _PurchaseConfirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PurchaseConfirmation.vue?vue&type=script&lang=js& */ "./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PurchaseConfirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PurchaseConfirmation.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseConfirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PurchaseConfirmation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PurchaseConfirmation.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseConfirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PurchaseConfirmation.vue?vue&type=template&id=5739fc7e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PurchaseConfirmation.vue?vue&type=template&id=5739fc7e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseConfirmation_vue_vue_type_template_id_5739fc7e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

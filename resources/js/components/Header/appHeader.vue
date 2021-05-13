@@ -4,7 +4,7 @@
     <modal
       name="signForm"
       :classes="['modal','sign-in-form']"
-      :height="'auto'"
+      :height="(windowWidth <= 560) ? '100%' : 'auto'"
       :scrollable="true"
       :min-width="320"
       :min-height="580"
