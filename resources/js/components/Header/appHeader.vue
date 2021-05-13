@@ -46,14 +46,17 @@
       class="header__desctop-menu"
       v-click-outside="menuClose"
     >
-      <button
-        v-for="(desctopItem, key) in desctopMenu"
-        :key="key"
-        class="header__desctop-menu-item pointer no-select"
-        @click="desctopMenuItemSelect(desctopItem)"
-      >
-        {{ desctopItem.caption }}
-      </button>
+
+      <div class="header__desctop-menu-items">
+        <button
+          v-for="(desctopItem, key) in desctopMenu"
+          :key="key"
+          class="header__desctop-menu-item pointer no-select"
+          @click="desctopMenuItemSelect(desctopItem)"
+        >
+          {{ desctopItem.caption }}
+        </button>
+      </div>
 
       <button 
         class="header__desctop-logout pointer no-select"
@@ -130,6 +133,9 @@
         <div 
           v-if="windowWidth < 1366"
           class="search-short"
+          :class="{
+            'search-short_320': windowWidth <= 500
+          }"
         >
 
             <img 
@@ -383,6 +389,8 @@ export default {
 
     },
     logout() {
+
+      this.menuClose()
 
       this.$http.get('/api/auth/logout')
         .then(response => {

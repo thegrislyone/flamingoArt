@@ -5607,6 +5607,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5755,6 +5761,7 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
+      this.menuClose();
       this.$http.get('/api/auth/logout').then(function (response) {
         var data = response.data;
 
@@ -23278,21 +23285,31 @@ var render = function() {
               staticClass: "header__desctop-menu"
             },
             [
-              _vm._l(_vm.desctopMenu, function(desctopItem, key) {
-                return _c(
-                  "button",
-                  {
-                    key: key,
-                    staticClass: "header__desctop-menu-item pointer no-select",
-                    on: {
-                      click: function($event) {
-                        return _vm.desctopMenuItemSelect(desctopItem)
+              _c(
+                "div",
+                { staticClass: "header__desctop-menu-items" },
+                _vm._l(_vm.desctopMenu, function(desctopItem, key) {
+                  return _c(
+                    "button",
+                    {
+                      key: key,
+                      staticClass:
+                        "header__desctop-menu-item pointer no-select",
+                      on: {
+                        click: function($event) {
+                          return _vm.desctopMenuItemSelect(desctopItem)
+                        }
                       }
-                    }
-                  },
-                  [_vm._v("\n      " + _vm._s(desctopItem.caption) + "\n    ")]
-                )
-              }),
+                    },
+                    [
+                      _vm._v(
+                        "\n        " + _vm._s(desctopItem.caption) + "\n      "
+                      )
+                    ]
+                  )
+                }),
+                0
+              ),
               _vm._v(" "),
               _c(
                 "button",
@@ -23302,8 +23319,7 @@ var render = function() {
                 },
                 [_vm._v("\n      Выйти\n    ")]
               )
-            ],
-            2
+            ]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -23405,7 +23421,12 @@ var render = function() {
             _vm.windowWidth < 1366
               ? _c(
                   "div",
-                  { staticClass: "search-short" },
+                  {
+                    staticClass: "search-short",
+                    class: {
+                      "search-short_320": _vm.windowWidth <= 500
+                    }
+                  },
                   [
                     (!_vm.searchOpened && _vm.windowWidth > 500) ||
                     _vm.windowWidth < 500
