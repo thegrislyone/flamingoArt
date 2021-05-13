@@ -6437,6 +6437,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
+      this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.searchValue);
       var url = new URL(window.location.origin + '/api/items/get-search-tips');
       url.searchParams.set('search-query', this.searchValue);
       this.$http.get(url).then(function (response) {
@@ -6877,6 +6878,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     tagSearch: function tagSearch() {
+      this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.tag.name);
       this.$router.push('/search?search-query=' + this.tag.name);
     }
   }

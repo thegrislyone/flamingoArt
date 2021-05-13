@@ -139,6 +139,8 @@ export default {
       if (!this.searchValue) {
         return
       }
+
+      this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.searchValue)
       
       let url = new URL(window.location.origin + '/api/items/get-search-tips')
       url.searchParams.set('search-query', this.searchValue)

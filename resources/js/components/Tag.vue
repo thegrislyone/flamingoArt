@@ -14,6 +14,9 @@ export default {
   },
   methods: {
     tagSearch() {
+
+      this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.tag.name)
+
       this.$router.push('/search?search-query=' + this.tag.name)
     }
   }
