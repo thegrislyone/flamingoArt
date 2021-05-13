@@ -7280,6 +7280,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -25059,7 +25072,17 @@ var render = function() {
                       return _c("tag", { key: tag.id, attrs: { tag: tag } })
                     }),
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__statistics" }, [
+                    _c("div", { staticClass: "item__favorites-number" }, [
+                      _vm._v(_vm._s(_vm.item.favorited))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "item__views" }, [
+                      _vm._v(_vm._s(_vm.item.transitions))
+                    ])
+                  ])
                 ]),
                 _vm._v(" "),
                 _c(
@@ -25071,7 +25094,7 @@ var render = function() {
                     }
                   },
                   [
-                    _vm.isAuthorized
+                    _vm.isAuthorized && !_vm.isAuthor
                       ? _c(
                           "button",
                           {
@@ -25095,6 +25118,12 @@ var render = function() {
                                 ]
                           ],
                           2
+                        )
+                      : _vm.isAuthor
+                      ? _c(
+                          "button",
+                          { staticClass: "item__delete pointer no-select" },
+                          [_vm._v("\n            Удалить\n          ")]
                         )
                       : _vm._e(),
                     _vm._v(" "),

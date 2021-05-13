@@ -1579,8 +1579,33 @@ img {
   flex-wrap: wrap;
   flex-direction: row;
   gap: 8px;
+  margin-bottom: 32px;
 }
-
+.item__statistics {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.011em;
+  color: #696969;
+}
+.item__statistics > * {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+.item__favorites-number {
+  margin-right: 24px;
+  padding-left: 28px;
+  background-image: url(../assets/images/i-favorites.svg);
+  cursor: default;
+}
+.item__views {
+  padding-left: 28px;
+  background-image: url(../assets/images/i-views.svg);
+  cursor: default;
+}
 .item__actions {
   display: flex;
   flex-direction: column;
@@ -1606,6 +1631,17 @@ img {
 .item__to-favorite_added {
   color: #DA71FF;
   background-image: url(../assets/images/i-in-favorite.svg);
+}
+.item__delete {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.011em;
+  color: #B4B4B4;
+  padding-left: 28px;
+  background: url(../assets/images/i-trash.svg) no-repeat left -1px;
 }
 .item__buy {
   display: flex;

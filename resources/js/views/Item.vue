@@ -36,6 +36,12 @@
                 :tag="tag"
               />
             </div>
+
+            <div class="item__statistics">
+              <div class="item__favorites-number">{{ item.favorited }}</div>
+              <div class="item__views">{{ item.transitions }}</div>
+            </div>
+
           </div>
 
           <div 
@@ -46,7 +52,7 @@
           >
 
             <button
-              v-if="isAuthorized"
+              v-if="isAuthorized && !isAuthor"
               class="item__to-favorite pointer no-select"
               :class="{
                 'item__to-favorite_added': isInFavorite
@@ -66,6 +72,13 @@
                 В избранное
               </template>
 
+            </button>
+
+            <button
+              v-else-if="isAuthor"
+              class="item__delete pointer no-select"
+            >
+              Удалить
             </button>
 
             <div
