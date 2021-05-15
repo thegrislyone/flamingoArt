@@ -27,6 +27,7 @@ Route::post('items/item-load','App\Http\Controllers\Items\ItemsController@itemUp
 Route::get('items/user-items','App\Http\Controllers\Items\ItemsController@getUserItems');
 Route::get('items/single-item','App\Http\Controllers\Items\ItemsController@getSingleItem');
 Route::put('items/transition-to-item','App\Http\Controllers\Items\ItemsController@transitionToItem');
+Route::delete('items/delete-item','App\Http\Controllers\Items\ItemsController@deleteItem');
 
 /*
  ! SEARCH

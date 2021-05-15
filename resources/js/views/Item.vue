@@ -13,6 +13,12 @@
         @close="buyClose"
       />
 
+      <delete-confirmation
+        v-if="deletingProcess"
+        :item="item"
+        @close="deleteItemHide"
+      />
+
       <div class="item__block">
         <div class="item__thumbnail-block">
           <img 
@@ -77,6 +83,7 @@
             <button
               v-else-if="isAuthor"
               class="item__delete pointer no-select"
+              @click="deleteItemShow"
             >
               Удалить
             </button>
@@ -153,19 +160,25 @@
 import Swiper from 'swiper'
 
 import Tag from '../components/Tag.vue'
+
 import PurchaseConfirmation from '../components/PurchaseConfirmation.vue'
+import DeleteConfirmation from '../components/Delete-confirmation.vue'
 
 export default {
   components: {
     Tag,
-    PurchaseConfirmation
+
+    PurchaseConfirmation,
+    DeleteConfirmation
   },
   data() {
     return {
       loading: false,
       item: null,
       slider: null,
-      purchaseConfirmationShow: false
+      purchaseConfirmationShow: false,
+
+      deletingProcess: false
     }
   },
   watch: {
@@ -224,8 +237,6 @@ export default {
     this.$http.get('/api/items/single-item?item_id=' + this.id)
       .then(response => {
         const data = response.data
-
-        console.log(data)
 
         if (data.errors) {
 
@@ -295,6 +306,37 @@ export default {
 
           })
       }
+    },
+    deleteItemShow() {
+
+      this.deletingProcess = true
+      // this.$modal.show('delete-confirmation')
+      
+      // const itemId = this.item.id
+      // const userId = this.$store.getters.user.id
+
+      // const url_string = window.location.origin + '/api/items/delete-item'
+      // let url = new URL(url_string)
+      // url.searchParams.set('item_id', itemId)
+      // url.searchParams.set('request_from', userId)
+      
+      // this.$http.delete(url.href)
+      //   .then(response => {
+
+      //     const data = response.data
+
+      //     if (data.success) {
+      //       this.$router.push('/profile')
+      //       this.$root.showNotification(data.success, 'success')
+      //     } else if (data.errors) {
+      //       this.$root.showNotification(data.errors[0], 'success')
+      //     }
+
+      //   })
+
+    },
+    deleteItemHide() {
+      this.deletingProcess = false
     }
   }
 }

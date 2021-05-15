@@ -5017,6 +5017,89 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    item: Object
+  },
+  mounted: function mounted() {
+    this.$modal.show('delete');
+  },
+  methods: {
+    close: function close() {
+      this.$modal.hide('delete');
+      this.$emit('close');
+    },
+    deleteItem: function deleteItem() {
+      var _this = this;
+
+      var itemId = this.item.id;
+      var userId = this.$store.getters.user.id;
+      var url_string = window.location.origin + '/api/items/delete-item';
+      var url = new URL(url_string);
+      url.searchParams.set('item_id', itemId);
+      url.searchParams.set('request_from', userId);
+      this.$http["delete"](url.href).then(function (response) {
+        var data = response.data;
+
+        if (data.success) {
+          _this.$router.push('/profile');
+
+          _this.$root.showNotification(data.success, 'success');
+        } else if (data.errors) {
+          _this.$root.showNotification(data.errors[0], 'success');
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FileUploader.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FileUploader.vue?vue&type=script&lang=js& ***!
@@ -6345,7 +6428,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     author: String,
     name: String,
-    price: String
+    price: Number
   },
   created: function created() {},
   mounted: function mounted() {
@@ -7145,6 +7228,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 /* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
 /* harmony import */ var _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/PurchaseConfirmation.vue */ "./resources/js/components/PurchaseConfirmation.vue");
+/* harmony import */ var _components_Delete_confirmation_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Delete-confirmation.vue */ "./resources/js/components/Delete-confirmation.vue");
 //
 //
 //
@@ -7295,20 +7379,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Tag: _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    PurchaseConfirmation: _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    PurchaseConfirmation: _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    DeleteConfirmation: _components_Delete_confirmation_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
       loading: false,
       item: null,
       slider: null,
-      purchaseConfirmationShow: false
+      purchaseConfirmationShow: false,
+      deletingProcess: false
     };
   },
   watch: {
@@ -7363,7 +7457,6 @@ __webpack_require__.r(__webpack_exports__);
     this.loading = true;
     this.$http.get('/api/items/single-item?item_id=' + this.id).then(function (response) {
       var data = response.data;
-      console.log(data);
 
       if (data.errors) {} else {
         _this3.item = data;
@@ -7419,6 +7512,28 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
       }
+    },
+    deleteItemShow: function deleteItemShow() {
+      this.deletingProcess = true; // this.$modal.show('delete-confirmation')
+      // const itemId = this.item.id
+      // const userId = this.$store.getters.user.id
+      // const url_string = window.location.origin + '/api/items/delete-item'
+      // let url = new URL(url_string)
+      // url.searchParams.set('item_id', itemId)
+      // url.searchParams.set('request_from', userId)
+      // this.$http.delete(url.href)
+      //   .then(response => {
+      //     const data = response.data
+      //     if (data.success) {
+      //       this.$router.push('/profile')
+      //       this.$root.showNotification(data.success, 'success')
+      //     } else if (data.errors) {
+      //       this.$root.showNotification(data.errors[0], 'success')
+      //     }
+      //   })
+    },
+    deleteItemHide: function deleteItemHide() {
+      this.deletingProcess = false;
     }
   }
 });
@@ -22839,6 +22954,68 @@ var index = {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "modal",
+    {
+      attrs: {
+        name: "delete",
+        classes: ["modal", "delete-confirmation"],
+        width: 300,
+        scrollable: true,
+        height: "auto",
+        shiftY: 0.5
+      },
+      on: { closed: _vm.close }
+    },
+    [
+      _c("h2", [_vm._v("Удалить “" + _vm._s(_vm.item.name) + "”?")]),
+      _vm._v(" "),
+      _c("p", [_vm._v("После удаления работы вы не сможете её восстановить.")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "delete-confirmation__buttons" }, [
+        _c(
+          "button",
+          {
+            staticClass: "delete-confirmation__button pointer",
+            on: { click: _vm.close }
+          },
+          [_vm._v("\n      Отмена\n    ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "delete-confirmation__button pointer",
+            on: { click: _vm.deleteItem }
+          },
+          [_vm._v("\n      Удалить\n    ")]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FileUploader.vue?vue&type=template&id=4ce61af5&":
 /*!***************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FileUploader.vue?vue&type=template&id=4ce61af5& ***!
@@ -25052,6 +25229,13 @@ var render = function() {
                 })
               : _vm._e(),
             _vm._v(" "),
+            _vm.deletingProcess
+              ? _c("delete-confirmation", {
+                  attrs: { item: _vm.item },
+                  on: { close: _vm.deleteItemHide }
+                })
+              : _vm._e(),
+            _vm._v(" "),
             _c("div", { staticClass: "item__block" }, [
               _c("div", { staticClass: "item__thumbnail-block" }, [
                 _c("img", {
@@ -25131,7 +25315,10 @@ var render = function() {
                       : _vm.isAuthor
                       ? _c(
                           "button",
-                          { staticClass: "item__delete pointer no-select" },
+                          {
+                            staticClass: "item__delete pointer no-select",
+                            on: { click: _vm.deleteItemShow }
+                          },
                           [_vm._v("\n            Удалить\n          ")]
                         )
                       : _vm._e(),
@@ -44294,6 +44481,75 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete-confirmation.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/Delete-confirmation.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Delete-confirmation.vue?vue&type=template&id=7a95f37c& */ "./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&");
+/* harmony import */ var _Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Delete-confirmation.vue?vue&type=script&lang=js& */ "./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Delete-confirmation.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete-confirmation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete-confirmation.vue?vue&type=template&id=7a95f37c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

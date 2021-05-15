@@ -444,4 +444,60 @@ class ItemsController extends Controller
         return $request['img'];
         
     }
+
+    /**
+     * * Method that deleting item
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function deleteItem(Request $request) {
+
+        $item_id = $request['item_id']; // get id of item to delete
+        $request_from = $request['request_from'];  // get id of user who deleting that
+
+        if ($request_from != Auth::user()->id) {
+
+            $status = [
+                'errors' => ['Ошибка доступа']
+            ];
+            
+            return response()->json($status, 200);
+
+        }
+
+            try {
+
+                $item = ItemsModel::find($item_id);
+
+                $item->delete();
+                
+                // $tagsId = $item->tags;
+
+                // $userTags = UserTagsModel::where('item_id', '=', $tagsId);
+                
+
+
+                // return $userTags->get();
+
+            } catch (Exception $e) {
+
+                $status = [
+                    'errors' => [
+                        'Ошибка при удалении работы',
+                        $e
+                    ]
+                ];
+
+                return response()->json($status, 200);
+
+            }
+
+            $status = [
+                'success' => 'Работа успешно удалена'
+            ];
+
+            return response()->json($status, 200);
+
+    }
 }

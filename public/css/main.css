@@ -1776,3 +1776,61 @@ img {
   letter-spacing: -0.014em;
   color: #FFFFFF;
 }
+
+/* delete confirmation */
+
+.delete-confirmation {
+  padding-top: 32px;
+}
+.delete-confirmation h2 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 12px 0px;
+  padding: 0 32px;
+}
+.delete-confirmation p {
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: -0.011em;
+  color: rgba(255, 255, 255, 0.4);
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 12px 0 24px 0;
+  padding: 0 32px;
+}
+.delete-confirmation__buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.delete-confirmation__buttons:hover
+.delete-confirmation__button {
+  border-color: transparent !important;
+}
+.delete-confirmation__button {
+  width: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: -0.011em;
+  padding: 16px 0;
+  transition: all .35s;
+}
+.delete-confirmation__button:hover {
+  background: rgba(0, 0, 0, .4);
+}
+.delete-confirmation__button:nth-child(1) {
+  color: rgba(255, 255, 255, 0.7);
+  border-right: 2px solid rgba(0, 0, 0, 0.1);
+}
+.delete-confirmation__button:nth-child(2) {
+  color: rgba(236, 56, 56, 0.9);
+  border-left: 2px solid rgba(0, 0, 0, 0.1);
+}

@@ -37,7 +37,7 @@ export default {
   props: {
     author: String,
     name: String,
-    price: String
+    price: Number
   },
   created() {
     
