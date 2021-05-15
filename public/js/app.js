@@ -6838,6 +6838,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _this.$store.commit('setUser', data.user);
 
             _this.$modal.hide('signForm');
+
+            _this.$eventBus.$emit('login');
           } else if (data.errors || data.email) {
             _this.$root.showNotification(data.errors[0], 'error');
           }
@@ -7856,6 +7858,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    this.$eventBus.$on('login', this.login);
     this.favorites = this.$store.getters.favorites;
 
     if (this.isForeign) {
@@ -7864,6 +7867,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.get('/api/auth/get-author?author_id=' + this.authorId).then(function (response) {
         var data = response.data;
         _this.user = data;
+        console.log(_this.user);
       }).then(function () {
         _this.profileLoading = false;
       }); // get favorites
@@ -7886,6 +7890,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    login: function login() {
+      if (this.user.id == this.$store.getters.user.id) {
+        this.$router.push('/profile');
+      }
+    },
     loadMoreItems: function loadMoreItems(url) {
       var _this2 = this;
 

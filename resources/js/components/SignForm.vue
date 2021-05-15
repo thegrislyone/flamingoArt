@@ -281,6 +281,7 @@ export default {
               this.$root.showNotification(data.success, 'success')
               this.$store.commit('setUser', data.user)
               this.$modal.hide('signForm')
+              this.$eventBus.$emit('login')
             } else if (data.errors || data.email) {
               this.$root.showNotification(data.errors[0], 'error')
             }

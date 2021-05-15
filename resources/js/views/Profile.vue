@@ -197,6 +197,8 @@ export default {
   },
   created() {
 
+    this.$eventBus.$on('login', this.login)
+
     this.favorites = this.$store.getters.favorites
 
     if (this.isForeign) {
@@ -210,6 +212,7 @@ export default {
           const data = response.data
 
           this.user = data
+          console.log(this.user)
         })
         .then(() => {
           this.profileLoading = false
@@ -241,6 +244,11 @@ export default {
     }
   },
   methods: {
+    login() {
+      if (this.user.id == this.$store.getters.user.id) {
+        this.$router.push('/profile')
+      }
+    },
     loadMoreItems(url) {
 
       this.itemsLoading = true
