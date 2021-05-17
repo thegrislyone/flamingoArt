@@ -77,6 +77,11 @@ const app = new Vue({
 
     },
     mounted() {
+
+        if (this.$store.getters.user.banned) {
+            this.showNotification('Вы забанены', 'error')
+        }
+        
         document.querySelector('#app').classList.add('app_' + this.theme)
     },
     methods: {

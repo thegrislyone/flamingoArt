@@ -91,6 +91,37 @@ class AuthController extends Controller
     }
 
     /**
+     * * Method, that returns users for admin-panel
+     * * returns users
+    */
+
+    public function getUsers() {
+
+        return User::get();
+
+    }
+
+    /**
+     * * Method, that ban user
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function banUser(Request $request) {
+
+        $user_id = $request['user_id'];
+        $user = User::find($user_id);
+        $isBanned = ($user['banned']) ? true : false;
+
+        $user->update(['banned' => ($isBanned) ? null : 1]);
+
+        $userItems = ItemsModel::where('author', '=', $user_id)->update(['banned' => ($isBanned) ? null : 1]);
+
+        return $user;
+
+    }
+
+    /**
      * * Not-api method that authenticate user using credentials
      * @param credentials - user credentials-data
      * * returns status and logged user

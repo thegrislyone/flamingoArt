@@ -25,6 +25,7 @@ class CreateFirstDbKit extends Migration
             $table->integer('author');
             $table->integer('views');
             $table->integer('transitions');
+            $table->integer('banned')->nullable();
         });
 
         Schema::create('tags', function (Blueprint $table) {

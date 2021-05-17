@@ -10,6 +10,7 @@ import Profile from '../views/Profile.vue'
 import Item from '../views/Item.vue'
 import UploadItem from '../views/UploadItem.vue'
 import Search from '../views/Search.vue'
+import AdminPanel from '../views/AdminPanel.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,18 @@ const routes = [
     path: '/search',
     name: 'search',
     component: Search
+  },
+  {
+    path: '/admin-panel',
+    name: 'admin',
+    component: AdminPanel,
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user.is_admin) {
+        next()
+      } else {
+        next({ name: 'index' })
+      }
+    }
   },
   {
     path: "*",

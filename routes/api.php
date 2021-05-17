@@ -68,3 +68,6 @@ Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
 Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
 
 Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor'); // ! AUTHOR
+
+Route::get('auth/get-users','App\Http\Controllers\Auth\AuthController@getUsers'); // ! USERS
+Route::get('auth/ban-user','App\Http\Controllers\Auth\AuthController@banUser'); // ! USERS

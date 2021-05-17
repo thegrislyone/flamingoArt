@@ -1835,3 +1835,20 @@ img {
   color: rgba(236, 56, 56, 0.9);
   border-left: 2px solid rgba(0, 0, 0, 0.1);
 }
+
+/* ADMIN PANEL */
+
+.admin-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.admin-panel table td {
+  border: 1px solid white;
+  text-align: center;
+}
+.admin-panel table td button {
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}

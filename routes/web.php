@@ -101,6 +101,15 @@ Route::get('/search', function () {
     return view('index');
 });
 
+Route::get('/admin-panel', function () {
+    if (Auth::check()) {
+        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+        // return view('index')->with('userInfo', $userInfo);
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
 // Route::get('/{any}', function () {
 //     return view('index');
 // })->where('any', '.*');

@@ -37,11 +37,11 @@ class ItemsController extends Controller
         /* get items depending on feed type */
 
         if (!$feed || $feed == 'main') {
-            $items = ItemsModel::simplePaginate(30)->toArray();
+            $items = ItemsModel::whereNull('banned')->simplePaginate(30)->toArray();
         } elseif ($feed == 'popular') {
-            $items = ItemsModel::orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
+            $items = ItemsModel::whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
         } elseif ($feed == 'new') {
-            $items = $items = ItemsModel::orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
+            $items = $items = ItemsModel::whereNull('banned')->orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
         }
 
         /* detach pagination information from items list */
