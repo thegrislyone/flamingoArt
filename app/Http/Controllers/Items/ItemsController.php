@@ -288,9 +288,16 @@ class ItemsController extends Controller
 
             $connections = UserTagsModel::where('tag_id', '=', $tag['id'])->get()->toArray();
 
+            // return $connections;
+
             foreach ($connections as $index=>$connection) {
+
                 $item = ItemsModel::find($connection['item_id']);
-                array_push($items_by_tags, $item);
+
+                if ($item) {
+                    array_push($items_by_tags, $item);
+                }
+
             }
 
         }
@@ -469,16 +476,25 @@ class ItemsController extends Controller
             try {
 
                 $item = ItemsModel::find($item_id);
+                
+                $tagsId = $item->tags;
 
+                $itemTags = UserTagsModel::where('item_id', '=', $tagsId)->get();
+
+                foreach ($itemTags as $key=>$tag) {
+
+                    $tagsUsing = UserTagsModel::where('tag_id', '=', $tag['tag_id']);
+                    $tag = TagsModel::find($tag['tag_id']);
+
+                    if (count($tagsUsing->get()) == 1) {
+                        $tagsUsing->delete();
+                        $tag->delete();
+                    }
+
+                }
+
+                
                 $item->delete();
-                
-                // $tagsId = $item->tags;
-
-                // $userTags = UserTagsModel::where('item_id', '=', $tagsId);
-                
-
-
-                // return $userTags->get();
 
             } catch (Exception $e) {
 
