@@ -1645,6 +1645,7 @@ img {
 }
 .item__buy {
   display: flex;
+  flex-grow: 1;
   gap: 0 24px;
   align-items: center;
 }

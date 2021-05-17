@@ -81,7 +81,7 @@
             </button>
 
             <button
-              v-else-if="isAuthor"
+              v-if="isAuthor || user.is_admin"
               class="item__delete pointer no-select"
               @click="deleteItemShow"
             >
@@ -182,13 +182,15 @@ export default {
     }
   },
   watch: {
-    slidesAmount() {
+    // slidesAmount() {
 
-      this.slider.destroy(true, true)
+    //   console.log(this.slidesAmount)
 
-      this.sliderInit()
+    //   this.slider.destroy(true, true)
+
+    //   this.sliderInit()
       
-    }
+    // }
   },
   computed: {
     id() {
@@ -208,8 +210,11 @@ export default {
       
       return !this.$isEmpty(favorite)
     },
+    user() {
+      return this.$store.getters.user
+    },
     isAuthor() {
-      return this.$store.getters.user.id == this.item.author.id
+      return this.user.id == this.item.author.id
     },
     moreOfAuthor() {
       return this.item.author.items.filter(item => {
@@ -222,13 +227,13 @@ export default {
     windowWidth() {
       return this.$store.getters.windowWidth
     },
-    slidesAmount() {
-      if (this.windowWidth < 640) return 2
-      else if (this.windowWidth > 640 && this.windowWidth < 960) return 3
-      else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4
-      else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5
-      else if (this.windowWidth > 1440) return 6
-    }
+    // slidesAmount() {
+    //   if (this.windowWidth < 640) return 2
+    //   else if (this.windowWidth > 640 && this.windowWidth < 960) return 3
+    //   else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4
+    //   else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5
+    //   else if (this.windowWidth > 1440) return 6
+    // }
   },
   created() {
 
@@ -264,10 +269,27 @@ export default {
       this.purchaseConfirmationShow = false
     },
     sliderInit() {
+
       this.slider = new Swiper('.item__author-items', {
         direction: 'horizontal',
         spaceBetween: 16,
-        slidesPerView: this.slidesAmount,
+        breakpoints: {
+          0: {
+            slidesPerView: 2
+          },
+          640: {
+            slidesPerView: 3
+          },
+          960: {
+            slidesPerView: 4
+          },
+          1280: {
+            slidesPerView: 5
+          },
+          1440: {
+            slidesPerView: 6
+          },
+        },
         freeMode: true,
         loop: false,
         observer: true

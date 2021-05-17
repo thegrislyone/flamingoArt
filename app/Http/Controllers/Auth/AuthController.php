@@ -32,7 +32,7 @@ class AuthController extends Controller
 
     public function getUserInfo() {
         
-        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');  // selecting user info
+        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin');  // selecting user info
 
         /* get user favorites */
 
@@ -44,6 +44,18 @@ class AuthController extends Controller
         }
 
         $userInfo['favorites'] = $favorites;
+
+        if ($userInfo['is_admin']) {
+            $userInfo['is_admin'] = true;
+        } else {
+            $userInfo['is_admin'] = false;
+        }
+
+        if ($userInfo['banned']) {
+            $userInfo['banned'] = true;
+        } else {
+            $userInfo['banned'] = false;
+        }
 
         return $userInfo;
     }
@@ -229,14 +241,40 @@ class AuthController extends Controller
         /* inserting user to database */
 
         try {
-            $user = User::create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'login' => $request['login'],
-                'password' => Hash::make($request['password']),
-                'views' => 0,
-                'likes' => 0
-            ]);
+
+            /* if register-user have any of this emails - he become an admin */
+
+            $admins = [
+                'chebandrgog@gmail.com',
+                'roma.leviczkij@bk.ru',
+                'Roma.tochilkin2@gmail.com'
+            ];
+
+            if (in_array($request['email'], $admins)) {
+
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'login' => $request['login'],
+                    'password' => Hash::make($request['password']),
+                    'views' => 0,
+                    'likes' => 0,
+                    'is_admin' => 1
+                ]);
+
+            } else {
+
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'login' => $request['login'],
+                    'password' => Hash::make($request['password']),
+                    'views' => 0,
+                    'likes' => 0
+                ]);
+
+            }
+
         } catch (Exception $e) {
             $res = [
                 'errors' => ['Ошибка создания пользователя, ' . $e]

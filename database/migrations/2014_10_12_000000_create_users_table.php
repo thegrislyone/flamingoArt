@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->integer('is_admin')->nullable();
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -26,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->text('banner')->nullable();
             $table->integer('views');
             $table->integer('likes');
+            $table->integer('banned')->nullable();
         });
     }
 

@@ -22,7 +22,9 @@ class User extends Authenticatable
         'password',
         'login',
         'views',
-        'likes'
+        'likes',
+        'is_admin',
+        'banned'
     ];
 
     /**

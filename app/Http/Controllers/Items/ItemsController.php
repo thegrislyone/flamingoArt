@@ -463,7 +463,7 @@ class ItemsController extends Controller
         $item_id = $request['item_id']; // get id of item to delete
         $request_from = $request['request_from'];  // get id of user who deleting that
 
-        if ($request_from != Auth::user()->id) {
+        if ($request_from != Auth::user()->id && Auth::user()->is_admin) {
 
             $status = [
                 'errors' => ['Ошибка доступа']

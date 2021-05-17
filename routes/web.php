@@ -19,7 +19,7 @@ use App\Models\Items\ItemsModel;
 */
 
 function getUserInfo() {
-    $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
+    $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned');
     // $userInfo['favorites'] = [];
     $favorites = [];
 
@@ -31,6 +31,18 @@ function getUserInfo() {
     }
 
     $userInfo['favorites'] = $favorites;
+
+    if ($userInfo['is_admin']) {
+        $userInfo['is_admin'] = true;
+    } else {
+        $userInfo['is_admin'] = false;
+    }
+
+    if ($userInfo['banned']) {
+        $userInfo['banned'] = true;
+    } else {
+        $userInfo['banned'] = false;
+    }
 
     return $userInfo;
 }

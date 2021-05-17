@@ -5807,7 +5807,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     menuClose: function menuClose() {
       if (this.windowWidth < 1366) {
-        document.querySelector('body').style.overflowY = 'scroll';
+        document.querySelector('body').style.overflowY = 'auto';
       }
 
       this.menuOpened = false;
@@ -7405,11 +7405,11 @@ __webpack_require__.r(__webpack_exports__);
       deletingProcess: false
     };
   },
-  watch: {
-    slidesAmount: function slidesAmount() {
-      this.slider.destroy(true, true);
-      this.sliderInit();
-    }
+  watch: {// slidesAmount() {
+    //   console.log(this.slidesAmount)
+    //   this.slider.destroy(true, true)
+    //   this.sliderInit()
+    // }
   },
   computed: {
     id: function id() {
@@ -7430,8 +7430,11 @@ __webpack_require__.r(__webpack_exports__);
       });
       return !this.$isEmpty(favorite);
     },
+    user: function user() {
+      return this.$store.getters.user;
+    },
     isAuthor: function isAuthor() {
-      return this.$store.getters.user.id == this.item.author.id;
+      return this.user.id == this.item.author.id;
     },
     moreOfAuthor: function moreOfAuthor() {
       var _this2 = this;
@@ -7446,10 +7449,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
-    },
-    slidesAmount: function slidesAmount() {
-      if (this.windowWidth < 640) return 2;else if (this.windowWidth > 640 && this.windowWidth < 960) return 3;else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4;else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5;else if (this.windowWidth > 1440) return 6;
-    }
+    } // slidesAmount() {
+    //   if (this.windowWidth < 640) return 2
+    //   else if (this.windowWidth > 640 && this.windowWidth < 960) return 3
+    //   else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4
+    //   else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5
+    //   else if (this.windowWidth > 1440) return 6
+    // }
+
   },
   created: function created() {
     var _this3 = this;
@@ -7479,7 +7486,23 @@ __webpack_require__.r(__webpack_exports__);
       this.slider = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.item__author-items', {
         direction: 'horizontal',
         spaceBetween: 16,
-        slidesPerView: this.slidesAmount,
+        breakpoints: {
+          0: {
+            slidesPerView: 2
+          },
+          640: {
+            slidesPerView: 3
+          },
+          960: {
+            slidesPerView: 4
+          },
+          1280: {
+            slidesPerView: 5
+          },
+          1440: {
+            slidesPerView: 6
+          }
+        },
         freeMode: true,
         loop: false,
         observer: true
@@ -7758,7 +7781,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     scrollCheck: function scrollCheck() {
-      if (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight && !this.outOfItems) {
+      if (document.querySelector(".item-list__tiles") && window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight && !this.outOfItems) {
         var url = new URL("".concat(window.location.origin, "/api/items/get-items"));
         url.searchParams.set('page', this.page);
 
@@ -25312,7 +25335,9 @@ var render = function() {
                           ],
                           2
                         )
-                      : _vm.isAuthor
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isAuthor || _vm.user.is_admin
                       ? _c(
                           "button",
                           {

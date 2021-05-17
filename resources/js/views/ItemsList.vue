@@ -232,6 +232,7 @@ export default {
     },
     scrollCheck() {
       if (
+        (document.querySelector(".item-list__tiles")) &&
         (window.pageYOffset + window.innerHeight >= document.querySelector(".item-list__tiles").scrollHeight) &&
         !this.outOfItems
       ) {
