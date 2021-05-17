@@ -113,6 +113,13 @@ class AuthController extends Controller
         $user = User::find($user_id);
         $isBanned = ($user['banned']) ? true : false;
 
+        if ($user['is_admin']) {
+            $status = [
+                'errors' => ['нельзя забанить админа']
+            ];
+            return response()->json($status, 200);
+        }
+
         $user->update(['banned' => ($isBanned) ? null : 1]);
 
         $userItems = ItemsModel::where('author', '=', $user_id)->update(['banned' => ($isBanned) ? null : 1]);

@@ -1838,10 +1838,14 @@ img {
 
 /* ADMIN PANEL */
 
+.admin-panel {
+  overflow-x: auto;
+}
 .admin-panel table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  overflow-x: auto;
 }
 .admin-panel table td {
   border: 1px solid white;
