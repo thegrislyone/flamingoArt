@@ -8052,6 +8052,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -25845,6 +25846,7 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn profile-card__edit-button",
+                            attrs: { disabled: _vm.user.banned },
                             on: {
                               click: function($event) {
                                 return _vm.$router.push("/upload-item")
@@ -45996,7 +45998,16 @@ var routes = [// {
   meta: {
     requiresAuth: true
   },
-  component: _views_UploadItem_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+  component: _views_UploadItem_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (_store_index_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.user.banned) {
+      next({
+        name: 'index'
+      });
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/search',
   name: 'search',

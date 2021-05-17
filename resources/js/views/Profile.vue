@@ -66,6 +66,7 @@
               v-if="!isForeign"
               class="btn profile-card__edit-button"
               @click="$router.push('/upload-item')"
+              :disabled="user.banned"
             >
               Выложить работу
             </button>

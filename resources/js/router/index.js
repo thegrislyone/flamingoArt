@@ -52,7 +52,14 @@ const routes = [
     path: '/upload-item',
     name: 'upload-item',
     meta: { requiresAuth: true },
-    component: UploadItem
+    component: UploadItem,
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user.banned) {
+        next({ name: 'index' })
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/search',
