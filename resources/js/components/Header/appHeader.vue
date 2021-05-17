@@ -350,7 +350,7 @@ export default {
     },
     menuClose() {
       if (this.windowWidth < 1366) {
-        document.querySelector('body').style.overflowY = 'scroll'
+        document.querySelector('body').style.overflowY = 'auto'
       }
       this.menuOpened = false
     },
