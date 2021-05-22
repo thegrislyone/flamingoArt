@@ -607,10 +607,18 @@ class ItemsController extends Controller
 
         // make items-list-version
 
+        if (!file_exists('storage/items/items_list/')) {
+            mkdir('storage/items/items_list/', 666, true);
+        }
+
         $image = Image::make(implode('/', $originalPathExploded_optimized));
         $image->save('storage/items/items_list/' . $fileName, 10);
 
         // make item-page-version
+
+        if (!file_exists('storage/items/item_page/')) {
+            mkdir('storage/items/item_page/', 666, true);
+        }
 
         $image = Image::make(implode('/', $originalPathExploded_optimized));
         // $image = $this->putWatermark($image);
