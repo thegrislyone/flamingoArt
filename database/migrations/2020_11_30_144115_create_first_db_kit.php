@@ -19,7 +19,9 @@ class CreateFirstDbKit extends Migration
             $table->float('price', 10, 2);
             $table->timestamps();
             $table->text('description')->nullable();
-            $table->text('thumbnail');
+            $table->text('thumbnail_items-list');
+            $table->text('thumbnail_item-page');
+            $table->text('thumbnail_original');
             $table->text('tags')->nullable();;
             $table->integer('favorited');
             $table->integer('author');

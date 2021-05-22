@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Items;
 
+use Intervention\Image\Facades\Image;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,6 +24,10 @@ use Illuminate\Support\Facades\Auth;
 class ItemsController extends Controller
 {
 
+    public function formatItems($items) {
+
+    }
+
     /**
      * * Method, that returns items to use it in itemsList 
      * @param request - get parameters for this api-address
@@ -34,13 +40,33 @@ class ItemsController extends Controller
 
         $items = [];    // init empty items arr
 
+        // $only = [
+        //     'author',
+        //     'banned',
+        //     'created_at',
+        //     'description',
+        //     'favorited',
+        //     'id',
+        //     'name',
+        //     'price',
+        //     'tags',
+        //     'thumbnail_item-page',
+        //     'thumbnail_items-list',
+        //     'transitions',
+        //     'updated_at',
+        //     'views'
+        // ];
+
         /* get items depending on feed type */
 
         if (!$feed || $feed == 'main') {
+            // $items = ItemsModel::select($only)->whereNull('banned')->simplePaginate(30)->toArray();
             $items = ItemsModel::whereNull('banned')->simplePaginate(30)->toArray();
         } elseif ($feed == 'popular') {
+            // $items = ItemsModel::select($only)->whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
             $items = ItemsModel::whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
         } elseif ($feed == 'new') {
+            // $items = $items = ItemsModel::select($only)->whereNull('banned')->orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
             $items = $items = ItemsModel::whereNull('banned')->orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
         }
 
@@ -48,6 +74,16 @@ class ItemsController extends Controller
 
         $meta = [];                 // pagination information
         $data = $items['data'];     // items list
+
+        /* set thumbnail */
+
+        $thumbnail = 'thumbnail_items-list';
+
+        $data = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $data);
         
         foreach ($items as $key=>$value) {
             if ($key != 'data') {
@@ -76,11 +112,44 @@ class ItemsController extends Controller
 
         $item = ItemsModel::find($itemId);  // find item by id
 
+        unset($item['thumbnail_original']); // delete original img path
+
         /* getting author items for more-section */
 
         $authorId = $item['author'];
         $item['author'] = User::find($authorId);
-        $item['author']['items'] = ItemsModel::where('author', '=', $authorId)->get();
+
+        // $only = [
+        //     'author',
+        //     'banned',
+        //     'created_at',
+        //     'description',
+        //     'favorited',
+        //     'id',
+        //     'name',
+        //     'price',
+        //     'tags',
+        //     'thumbnail_item-page',
+        //     'thumbnail_items-list',
+        //     'transitions',
+        //     'updated_at',
+        //     'views'
+        // ];
+
+        // $item['author']['items'] = ItemsModel::select($only)->where('author', '=', $authorId)->get()->toArray();
+        $item['author']['items'] = ItemsModel::where('author', '=', $authorId)->get()->toArray();
+
+        /* set thumbnail */
+
+        $thumbnail = 'thumbnail_item-page';
+
+        $item['thumbnail'] = $item[$thumbnail];
+
+        $item['author']['items'] = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $item['author']['items']);
 
         /* getting item tags */
 
@@ -131,6 +200,16 @@ class ItemsController extends Controller
             array_push($favorites, ItemsModel::find($favorite['item_id']));
         }
 
+        /* set thumbnail */
+
+        $thumbnail = 'thumbnail_item-page';
+
+        $favorites = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $favorites);
+
         $success = [
             'success' => 'Товар добавлен в избранное',
             'favorites' => $favorites
@@ -167,6 +246,16 @@ class ItemsController extends Controller
         foreach ($favoritesConnections as $favorite) {
             array_push($favorites, ItemsModel::find($favorite['item_id']));
         }
+
+        /* set thumbnail */
+
+        $thumbnail = 'thumbnail_item-page';
+
+        $favorites = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $favorites);
 
         $success = [
             'success' => 'Товар удалён из избранного',
@@ -314,6 +403,26 @@ class ItemsController extends Controller
             }
         }
 
+        /* set thumbnail for search-items */
+
+        $thumbnail = 'thumbnail_items-list';
+
+        $items = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $items);
+
+        /* set thumbnail for tag-items */
+
+        $thumbnail = 'thumbnail_items-list';
+
+        $items_by_tags = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $items_by_tags);
+
         /* return result */
 
         $result;
@@ -363,7 +472,17 @@ class ItemsController extends Controller
             $userId = Auth::user()->only('id')['id'];
         }
 
-        $items = ItemsModel::where('author', '=', $userId)->get(); // get items by author
+        $items = ItemsModel::where('author', '=', $userId)->get()->toArray(); // get items by author
+
+        /* set thumbnail */
+
+        $thumbnail = 'thumbnail_items-list';
+
+        $items = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $items);
 
         return response()->json($items, 200);
 
@@ -391,28 +510,35 @@ class ItemsController extends Controller
 
         $userId = Auth::user()->only('id')['id'];
 
-        $fileName = Storage::put('public/items', $request['img']);  // saving file, getting path
-        $pathArray = explode('/', $fileName);                       // explode file path to array
+        $savedFile = Storage::put('public/items/originals', $request['img']);  // saving file, getting path
+        $savedFilePathArray = explode('/', $savedFile);
 
-        // renaming file to make the first char an user id
+        $savedFiles = $this->saveAllFileVersions($savedFile, $img);
 
-        $fileNameWithAuthor = implode('/', array_slice($pathArray, 0, count($pathArray) - 1)) . '/' . $userId . '_' . end($pathArray);
+        // $savedFilePathArray = explode('/', $savedFile);                       // explode file path to array
 
-        $pathArray = explode('/', $fileNameWithAuthor);
+        // // renaming file to make the first char an user id
 
-        Storage::move($fileName, $fileNameWithAuthor);
+        // $fileNameWithAuthor = implode('/', array_slice($pathArray, 0, count($pathArray) - 1)) . '/' . $userId . '_' . end($pathArray);
+
+        // $pathArray = explode('/', $fileNameWithAuthor);
+
+        // Storage::move($fileName, $fileNameWithAuthor);
         
         // saving item
         
-        array_shift($pathArray);
+        array_shift($savedFilePathArray);
+        array_unshift($savedFilePathArray, 'storage');
 
-        $path = '/storage/' . implode('/', $pathArray);     // creating reght path to insert into img-tag
+        // $path = '/storage/' . implode('/', $pathArray);     // creating reght path to insert into img-tag
 
         $item = ItemsModel::create([
             'name' => $itemName,
             'price' => $itemsPrice,
             'description' => $itemDescription,
-            'thumbnail' => $path,
+            'thumbnail_original' => '/' . implode('/', $savedFilePathArray),
+            'thumbnail_item-page' => $savedFiles['thumbnail_item-page'],
+            'thumbnail_items-list' => $savedFiles['thumbnail_items-list'],
             'tags' => '',
             'favorited' => 0,
             'views' => 0,
@@ -460,8 +586,61 @@ class ItemsController extends Controller
 
         $item->save();
 
-        return $request['img'];
+        return $savedFiles;
         
+    }
+
+    /**
+     * * Method that save all three types of item thumbnail
+     * @param originalPath - path of original img
+     * * returns array with paths
+    */
+
+    public function saveAllFileVersions($originalPath, $img) {
+        
+        $originalPathExploded = explode('/', $originalPath);
+        $fileName = end($originalPathExploded);
+
+        $originalPathExploded_optimized = $originalPathExploded;
+        array_shift($originalPathExploded_optimized);
+        array_unshift($originalPathExploded_optimized, 'storage');
+
+        // make items-list-version
+
+        $image = Image::make(implode('/', $originalPathExploded_optimized));
+        $image->save('storage/items/items_list/' . $fileName, 10);
+
+        // make item-page-version
+
+        $image = Image::make(implode('/', $originalPathExploded_optimized));
+        // $image = $this->putWatermark($image);
+        $image->save('storage/items/item_page/' . $fileName, 40);
+        
+
+        return [
+            'thumbnail_item-page' => '/storage/items/item_page/' . $fileName,
+            'thumbnail_items-list' => '/storage/items/items_list/' . $fileName
+        ];
+        
+    }
+
+    /**
+     * * Method that put watermark on item thumbnail
+     * @param path - path of img that will be watermarked
+     * * returns image with watermark
+    */
+
+    public function putWatermark($img) {
+
+        $image = $img;
+        $watermark = Image::make('storage/watermark.png')->opacity(60);
+
+        if (gettype($image) == 'string') {
+            $image = $image = Image::make($image);
+        }
+
+        return $image->insert($watermark, 'bottom-right', 10, 10);
+
     }
 
     /**

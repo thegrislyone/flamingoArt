@@ -30,6 +30,16 @@ function getUserInfo() {
         array_push($favorites, ItemsModel::find($favorite['item_id']));
     }
 
+    /* set thumbnail */
+
+    $thumbnail = 'thumbnail_item-page';
+
+    $favorites = array_map(function($item) use ($thumbnail) {
+        unset($item['thumbnail_original']);
+        $item['thumbnail'] = $item[$thumbnail];
+        return $item;
+    }, $favorites);
+
     $userInfo['favorites'] = $favorites;
 
     if ($userInfo['is_admin']) {
