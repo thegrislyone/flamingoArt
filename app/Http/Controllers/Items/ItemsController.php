@@ -272,7 +272,7 @@ class ItemsController extends Controller
 
         /* search items */
 
-        $items = ItemsModel::search($search)->get();
+        $items = ItemsModel::search($search)->get()->toArray();
 
         /* search tags */
 
@@ -302,7 +302,19 @@ class ItemsController extends Controller
 
         }
 
-        // return result
+        /* sorting that removes the same elements that match the search term in the name / description and in tags */
+
+        foreach($items_by_tags as $key=>$item_by_tag) {
+            foreach($items as $index=>$item) {
+
+                if ($item['id'] == $item_by_tag['id']) {
+                    unset($items_by_tags[$key]);
+                }
+
+            }
+        }
+
+        /* return result */
 
         $result;
 
@@ -320,7 +332,7 @@ class ItemsController extends Controller
             ];
         }
 
-        return $result;
+        return response()->json($result, 200);
 
     }
 
