@@ -491,7 +491,7 @@ class ItemsController extends Controller
     /**
      * * Method that uploads item: saving thumbnail to storage, insert into database
      * @param request - get parameters for this api-address
-     * * returns thumbnail-path // ! it's useless for now
+     * * returns status
     */
 
     public function itemUpload(Request $request) {
@@ -514,16 +514,6 @@ class ItemsController extends Controller
         $savedFilePathArray = explode('/', $savedFile);
 
         $savedFiles = $this->saveAllFileVersions($savedFile, $img);
-
-        // $savedFilePathArray = explode('/', $savedFile);                       // explode file path to array
-
-        // // renaming file to make the first char an user id
-
-        // $fileNameWithAuthor = implode('/', array_slice($pathArray, 0, count($pathArray) - 1)) . '/' . $userId . '_' . end($pathArray);
-
-        // $pathArray = explode('/', $fileNameWithAuthor);
-
-        // Storage::move($fileName, $fileNameWithAuthor);
         
         // saving item
         
@@ -586,7 +576,11 @@ class ItemsController extends Controller
 
         $item->save();
 
-        return $savedFiles;
+        $status = [
+            'success' => true
+        ];
+
+        return response()->json($status, 200);
         
     }
 
@@ -597,6 +591,8 @@ class ItemsController extends Controller
     */
 
     public function saveAllFileVersions($originalPath, $img) {
+
+        \Tinify\setKey("BCqq8bclMFByt56n3VJckRVbN9jTKg61"); // set tinypng api key
         
         $originalPathExploded = explode('/', $originalPath);
         $fileName = end($originalPathExploded);
@@ -605,7 +601,7 @@ class ItemsController extends Controller
         array_shift($originalPathExploded_optimized);
         array_unshift($originalPathExploded_optimized, 'storage');
 
-        // make items-list-version
+        /* MAKE ITEMS-LIST VERSION */
 
         if (!file_exists('storage/items/items_list/')) {
             mkdir('storage/items/items_list/', 0777, true);
@@ -614,7 +610,12 @@ class ItemsController extends Controller
         $image = Image::make(implode('/', $originalPathExploded_optimized));
         $image->save('storage/items/items_list/' . $fileName, 10);
 
-        // make item-page-version
+        /* tinypng compress */
+
+        $source = \Tinify\fromFile('storage/items/items_list/' . $fileName);
+        $source->toFile('storage/items/items_list/' . $fileName); 
+
+        /* MAKE ITEM-PAGE VERSION */
 
         if (!file_exists('storage/items/item_page/')) {
             mkdir('storage/items/item_page/', 0777, true);
@@ -622,7 +623,12 @@ class ItemsController extends Controller
 
         $image = Image::make(implode('/', $originalPathExploded_optimized));
         // $image = $this->putWatermark($image);
-        $image->save('storage/items/item_page/' . $fileName, 40);
+        $image->save('storage/items/item_page/' . $fileName, 30);
+
+        /* tinypng compress */
+
+        $source = \Tinify\fromFile('storage/items/item_page/' . $fileName);
+        $source->toFile('storage/items/item_page/' . $fileName); 
         
 
         return [
