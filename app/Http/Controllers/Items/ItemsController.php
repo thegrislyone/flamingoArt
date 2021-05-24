@@ -681,12 +681,29 @@ class ItemsController extends Controller
             try {
 
                 $item = ItemsModel::find($item_id);
+
+                $images = [$item['thumbnail_item-page'], $item['thumbnail_items-list'], $item['thumbnail_original']];
+
+                $images = array_map(function ($image) {
+
+                    $imageExploded = explode('/', $image);
+                    
+                    array_shift($imageExploded);
+                    array_shift($imageExploded);
+
+                    $image = 'public/' . implode('/', $imageExploded);
+
+                    return $image;
+
+                }, $images);
+
+                Storage::delete($images);
                 
                 $tagsId = $item->tags;
 
-                $itemTags = UserTagsModel::where('item_id', '=', $tagsId)->get();
+                $itemTags = UserTagsModel::where('item_id', '=', $tagsId);
 
-                foreach ($itemTags as $key=>$tag) {
+                foreach ($itemTags->get() as $key=>$tag) {
 
                     $tagsUsing = UserTagsModel::where('tag_id', '=', $tag['tag_id']);
                     $tag = TagsModel::find($tag['tag_id']);
@@ -697,7 +714,8 @@ class ItemsController extends Controller
                     }
 
                 }
-
+                
+                $itemTags->delete();
                 
                 $item->delete();
 
