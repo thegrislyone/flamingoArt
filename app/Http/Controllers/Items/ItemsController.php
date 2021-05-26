@@ -511,11 +511,11 @@ class ItemsController extends Controller
         $userId = Auth::user()->only('id')['id'];
 
         $savedFile = Storage::put('public/items/originals', $request['img']);  // saving file, getting path
-        $savedFilePathArray = explode('/', $savedFile);
-
         $savedFiles = $this->saveAllFileVersions($savedFile, $img);
         
         // saving item
+
+        $savedFilePathArray = explode('/', $savedFile);
         
         array_shift($savedFilePathArray);
         array_unshift($savedFilePathArray, 'storage');
