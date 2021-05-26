@@ -678,65 +678,67 @@ class ItemsController extends Controller
 
         }
 
-            try {
+        try {
 
-                $item = ItemsModel::find($item_id);
+            $item = ItemsModel::find($item_id);
 
-                $images = [$item['thumbnail_item-page'], $item['thumbnail_items-list'], $item['thumbnail_original']];
+            $images = [$item['thumbnail_item-page'], $item['thumbnail_items-list'], $item['thumbnail_original']];
 
-                $images = array_map(function ($image) {
+            $images = array_map(function ($image) {
 
-                    $imageExploded = explode('/', $image);
-                    
-                    array_shift($imageExploded);
-                    array_shift($imageExploded);
-
-                    $image = 'public/' . implode('/', $imageExploded);
-
-                    return $image;
-
-                }, $images);
-
-                Storage::delete($images);
+                $imageExploded = explode('/', $image);
                 
-                $tagsId = $item->tags;
+                array_shift($imageExploded);
+                array_shift($imageExploded);
 
-                $itemTags = UserTagsModel::where('item_id', '=', $tagsId);
+                $image = 'public/' . implode('/', $imageExploded);
 
-                foreach ($itemTags->get() as $key=>$tag) {
+                return $image;
 
-                    $tagsUsing = UserTagsModel::where('tag_id', '=', $tag['tag_id']);
-                    $tag = TagsModel::find($tag['tag_id']);
+            }, $images);
 
-                    if (count($tagsUsing->get()) == 1) {
-                        $tagsUsing->delete();
-                        $tag->delete();
-                    }
+            Storage::delete($images);
+            
+            $tagsId = $item->tags;
 
+            $itemTags = UserTagsModel::where('item_id', '=', $tagsId);
+
+            foreach ($itemTags->get() as $key=>$tag) {
+
+                $tagsUsing = UserTagsModel::where('tag_id', '=', $tag['tag_id']);
+                $tag = TagsModel::find($tag['tag_id']);
+
+                if (count($tagsUsing->get()) == 1) {
+                    $tagsUsing->delete();
+                    $tag->delete();
                 }
-                
-                $itemTags->delete();
-                
-                $item->delete();
-
-            } catch (Exception $e) {
-
-                $status = [
-                    'errors' => [
-                        'Ошибка при удалении работы',
-                        $e
-                    ]
-                ];
-
-                return response()->json($status, 200);
 
             }
+            
+            $itemTags->delete();
+
+            FavoritesModel::where('item_id', '=', $item->id)->delete();
+            
+            $item->delete();
+
+        } catch (Exception $e) {
 
             $status = [
-                'success' => 'Работа успешно удалена'
+                'errors' => [
+                    'Ошибка при удалении работы',
+                    $e
+                ]
             ];
 
             return response()->json($status, 200);
+
+        }
+
+        $status = [
+            'success' => 'Работа успешно удалена'
+        ];
+
+        return response()->json($status, 200);
 
     }
 }
