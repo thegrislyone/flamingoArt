@@ -1,10 +1,18 @@
 <template>
   <div class="tags-input">
-    <div class="tags-input__tags" @click="inputFocus">
+    <div 
+      class="tags-input__tags" 
+      @click="inputFocus"
+    >
+    
       <span 
         v-for="(tag, key) in tags"
         :key="key"
-        class="tags-input__tag no-select"
+        class="tags-input__tag no-select pointer"
+        :class="{
+          'tags-input__tag_selected': tag == selectedTag
+        }"
+        @click="selectTag(tag)"
       >
         {{ '#' + tag }}
       </span>
@@ -59,7 +67,8 @@ export default {
       popularTags: [],
       // popularTagsChoosen: [],
       tag: '',
-      tags: []
+      tags: [],
+      selectedTag: null
     }
   },
   created() {
@@ -73,7 +82,22 @@ export default {
       })
   },
   methods: {
+    selectTag(tag) {
+      this.selectedTag = tag
+    },
     addTag(tag, key) {
+
+      const alreadyIs = this.tags.find((tag) => {
+        if (tag == this.tag) {
+          return true
+        }
+        return false
+      })
+
+      if (alreadyIs) {
+        this.tag = ''
+        return
+      }
 
       if (tag) {
         this.tags.push(tag)
@@ -113,8 +137,30 @@ export default {
 
       }
 
-      this.tags.pop()
+      if (!this.selectedTag) {
+        this.tags.pop()
+      } else {
+
+        let selectedTagIndex = this.tags.length - 1
+
+        this.tags.find((tag, index) => {
+
+          if (this.selectedTag == tag) {
+            selectedTagIndex = index
+            return true
+          }
+
+          return false
+
+        })
+
+        this.tags = this.tags.slice(0, selectedTagIndex).concat(this.tags.slice(selectedTagIndex + 1))
+
+        this.selectedTag = null
+      }
+
       this.$emit('add-tag', this.tags)
+
     },
     inputFocus() {
       document.querySelector('.tags-input__input').focus()

@@ -7104,6 +7104,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -7117,7 +7125,8 @@ __webpack_require__.r(__webpack_exports__);
       popularTags: [],
       // popularTagsChoosen: [],
       tag: '',
-      tags: []
+      tags: [],
+      selectedTag: null
     };
   },
   created: function created() {
@@ -7130,7 +7139,25 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    selectTag: function selectTag(tag) {
+      this.selectedTag = tag;
+    },
     addTag: function addTag(tag, key) {
+      var _this2 = this;
+
+      var alreadyIs = this.tags.find(function (tag) {
+        if (tag == _this2.tag) {
+          return true;
+        }
+
+        return false;
+      });
+
+      if (alreadyIs) {
+        this.tag = '';
+        return;
+      }
+
       if (tag) {
         this.tags.push(tag);
         this.popularTags = this.popularTags.slice(0, key).concat(this.popularTags.slice(key + 1)); // this.popularTagsChoosen.push(tag)
@@ -7142,7 +7169,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('add-tag', this.tags);
     },
     deleteTag: function deleteTag() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (event.key == 'Backspace' && this.tag) {
         return;
@@ -7150,7 +7177,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var findedIndex = null;
       var finded = this.popularTagsOriginal.find(function (tag, index) {
-        if (tag.name == _this2.tags[_this2.tags.length - 1]) {
+        if (tag.name == _this3.tags[_this3.tags.length - 1]) {
           findedIndex = index;
           return true;
         }
@@ -7165,7 +7192,22 @@ __webpack_require__.r(__webpack_exports__);
         this.popularTags = firstPart.concat(secondPart);
       }
 
-      this.tags.pop();
+      if (!this.selectedTag) {
+        this.tags.pop();
+      } else {
+        var selectedTagIndex = this.tags.length - 1;
+        this.tags.find(function (tag, index) {
+          if (_this3.selectedTag == tag) {
+            selectedTagIndex = index;
+            return true;
+          }
+
+          return false;
+        });
+        this.tags = this.tags.slice(0, selectedTagIndex).concat(this.tags.slice(selectedTagIndex + 1));
+        this.selectedTag = null;
+      }
+
       this.$emit('add-tag', this.tags);
     },
     inputFocus: function inputFocus() {
@@ -25159,7 +25201,18 @@ var render = function() {
         _vm._l(_vm.tags, function(tag, key) {
           return _c(
             "span",
-            { key: key, staticClass: "tags-input__tag no-select" },
+            {
+              key: key,
+              staticClass: "tags-input__tag no-select pointer",
+              class: {
+                "tags-input__tag_selected": tag == _vm.selectedTag
+              },
+              on: {
+                click: function($event) {
+                  return _vm.selectTag(tag)
+                }
+              }
+            },
             [_vm._v("\n      " + _vm._s("#" + tag) + "\n    ")]
           )
         }),
