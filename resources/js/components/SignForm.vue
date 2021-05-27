@@ -7,7 +7,7 @@
       @click="$modal.hide('signForm')"
     >
 
-    <a :href="window.location.origin + '/vk/auth'">через вк</a>
+    <a :href="vkLink">через вк</a>
 
     <transition name="fade" mode="out-in">
 
@@ -208,7 +208,9 @@ export default {
     }
   },
   computed: {
-
+    vkLink() {
+      return window.location.origin + '/vk/auth'
+    }
   },
   validations() {
 

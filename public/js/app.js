@@ -6843,7 +6843,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: {},
+  computed: {
+    vkLink: function vkLink() {
+      return window.location.origin + '/vk/auth';
+    }
+  },
   validations: function validations() {
     var formModel = {};
     var activeForm = this.mode == 'auth' ? this.authForm : this.regForm;
@@ -24910,9 +24914,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("a", { attrs: { href: _vm.window.location.origin + "/vk/auth" } }, [
-        _vm._v("через вк")
-      ]),
+      _c("a", { attrs: { href: _vm.vkLink } }, [_vm._v("через вк")]),
       _vm._v(" "),
       _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
         _vm.mode == "reg"
