@@ -64,6 +64,11 @@ Route::get('/', function () {
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
+})->name('index');
+
+Route::group([], function () {
+    Route::get('/vk/auth', 'App\Http\Controllers\Auth\SocialAuth@index');
+    Route::get('/vk/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@callback');
 });
 
 Route::get('/profile', function () {

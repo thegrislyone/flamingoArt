@@ -6751,6 +6751,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -24906,6 +24909,10 @@ var render = function() {
           }
         }
       }),
+      _vm._v(" "),
+      _c("a", { attrs: { href: "http://flamingo:8080/vk/auth" } }, [
+        _vm._v("через вк")
+      ]),
       _vm._v(" "),
       _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
         _vm.mode == "reg"

@@ -6,6 +6,9 @@
       alt=""
       @click="$modal.hide('signForm')"
     >
+
+    <a href="http://flamingo:8080/vk/auth">через вк</a>
+
     <transition name="fade" mode="out-in">
 
       <!-- registration form -->

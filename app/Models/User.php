@@ -24,7 +24,9 @@ class User extends Authenticatable
         'views',
         'likes',
         'is_admin',
-        'banned'
+        'banned',
+        'avatar',
+        'banner'
     ];
 
     /**
