@@ -7,7 +7,7 @@
       @click="$modal.hide('signForm')"
     >
 
-    <a href="http://flamingo:8080/vk/auth">через вк</a>
+    <a :href="window.location.origin + '/vk/auth'">через вк</a>
 
     <transition name="fade" mode="out-in">
 

@@ -24910,7 +24910,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("a", { attrs: { href: "http://flamingo:8080/vk/auth" } }, [
+      _c("a", { attrs: { href: _vm.window.location.origin + "/vk/auth" } }, [
         _vm._v("через вк")
       ]),
       _vm._v(" "),
