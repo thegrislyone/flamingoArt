@@ -51,6 +51,24 @@ class SocialAuth extends Controller
         
     }
 
+    /* FACEBOOK */
+
+    public function facebookIndex() {
+
+        return Socialite::driver('facebook')->redirect();
+
+    }
+
+    public function facebookCallback() {
+
+        $user = Socialite::driver('facebook')->user();
+
+        $this->userHandle($user);
+
+        return redirect()->route('index');
+        
+    }
+
     /* DATA HANDLING */
 
     public function userHandle($user) {

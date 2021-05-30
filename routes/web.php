@@ -58,7 +58,7 @@ if (!function_exists('getUserInfo')) {
         }
     
         return $userInformation;
-        
+
     }
 
 }
@@ -140,4 +140,11 @@ Route::group([], function () {
 Route::group([], function () {
     Route::get('/google/auth', 'App\Http\Controllers\Auth\SocialAuth@googleIndex');
     Route::get('/google/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@googleCallback');
+});
+
+// through facebook
+
+Route::group([], function () {
+    Route::get('/facebook/auth', 'App\Http\Controllers\Auth\SocialAuth@googleIndex');
+    Route::get('/facebook/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@googleCallback');
 });

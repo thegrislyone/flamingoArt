@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
         "nicolaslopezj/searchable": "1.*",
+        "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/vkontakte": "^4.2",
         "tinify/tinify": "^1.5"
