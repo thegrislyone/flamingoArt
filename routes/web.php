@@ -18,43 +18,49 @@ use App\Models\Items\ItemsModel;
 |
 */
 
-function getUserInfo() {
-    $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned');
-    // $userInfo['favorites'] = [];
-    $favorites = [];
+if (!function_exists('getUserInfo')) {
 
+    function getUserInfo() {
 
-    $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
-
-    foreach ($favoritesConnections as $favorite) {
-        array_push($favorites, ItemsModel::find($favorite['item_id']));
+        $userInformation = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned');
+        // $userInfo['favorites'] = [];
+        $favorites = [];
+    
+    
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userInformation['id'])->get();
+    
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
+        }
+    
+        /* set thumbnail */
+    
+        $thumbnail = 'thumbnail_item-page';
+    
+        $favorites = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $favorites);
+    
+        $userInformation['favorites'] = $favorites;
+    
+        if ($userInformation['is_admin']) {
+            $userInformation['is_admin'] = true;
+        } else {
+            $userInformation['is_admin'] = false;
+        }
+    
+        if ($userInformation['banned']) {
+            $userInformation['banned'] = true;
+        } else {
+            $userInformation['banned'] = false;
+        }
+    
+        return $userInformation;
+        
     }
 
-    /* set thumbnail */
-
-    $thumbnail = 'thumbnail_item-page';
-
-    $favorites = array_map(function($item) use ($thumbnail) {
-        unset($item['thumbnail_original']);
-        $item['thumbnail'] = $item[$thumbnail];
-        return $item;
-    }, $favorites);
-
-    $userInfo['favorites'] = $favorites;
-
-    if ($userInfo['is_admin']) {
-        $userInfo['is_admin'] = true;
-    } else {
-        $userInfo['is_admin'] = false;
-    }
-
-    if ($userInfo['banned']) {
-        $userInfo['banned'] = true;
-    } else {
-        $userInfo['banned'] = false;
-    }
-
-    return $userInfo;
 }
 
 Route::get('/', function () {
