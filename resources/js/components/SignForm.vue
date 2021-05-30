@@ -8,6 +8,8 @@
     >
 
     <a :href="vkLink">через вк</a>
+    <br>
+    <a :href="googleLink">через google</a>
 
     <transition name="fade" mode="out-in">
 
@@ -210,6 +212,9 @@ export default {
   computed: {
     vkLink() {
       return window.location.origin + '/vk/auth'
+    },
+    googleLink() {
+      return window.location.origin + '/google/auth'
     }
   },
   validations() {

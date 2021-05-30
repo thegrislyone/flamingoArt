@@ -6754,6 +6754,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6846,6 +6848,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: {
     vkLink: function vkLink() {
       return window.location.origin + '/vk/auth';
+    },
+    googleLink: function googleLink() {
+      return window.location.origin + '/google/auth';
     }
   },
   validations: function validations() {
@@ -24915,6 +24920,10 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("a", { attrs: { href: _vm.vkLink } }, [_vm._v("через вк")]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("a", { attrs: { href: _vm.googleLink } }, [_vm._v("через google")]),
       _vm._v(" "),
       _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
         _vm.mode == "reg"

@@ -15,13 +15,45 @@ use Illuminate\Support\Facades\Auth;
 class SocialAuth extends Controller
 {
 
-    public function index() {
-        return Socialite::driver('vkontakte')->redirect();
+    /* GOOGLE */
+    
+    public function googleIndex() {
+
+        return Socialite::driver('google')->redirect();
+
     }
 
-    public function callback() {
+    public function googleCallback() {
+
+        $user = Socialite::driver('google')->user();
+
+        $this->userHandle($user);
+
+        return redirect()->route('index');
+
+    }
+
+    /* VKONTAKTE */
+
+    public function vkIndex() {
+
+        return Socialite::driver('vkontakte')->redirect();
+
+    }
+
+    public function vkCallback() {
 
         $user = Socialite::driver('vkontakte')->user();
+
+        $this->userHandle($user);
+
+        return redirect()->route('index');
+        
+    }
+
+    /* DATA HANDLING */
+
+    public function userHandle($user) {
 
         $userNickname = $user->getNickname();
         $userName = $user->getName();
@@ -63,7 +95,6 @@ class SocialAuth extends Controller
 
         Auth::login($createdUser);
 
-        return redirect()->route('index');
     }
 
 }

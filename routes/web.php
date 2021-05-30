@@ -66,11 +66,6 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::group([], function () {
-    Route::get('/vk/auth', 'App\Http\Controllers\Auth\SocialAuth@index');
-    Route::get('/vk/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@callback');
-});
-
 Route::get('/profile', function () {
     if (Auth::check()) {
         // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
@@ -125,10 +120,18 @@ Route::get('/admin-panel', function () {
     return view('index');
 });
 
-// Route::get('/{any}', function () {
-//     return view('index');
-// })->where('any', '.*');
+/* SOCIAL NETWORK AUTHENTIFICATION */
 
-// Auth::routes();
+// through vk
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group([], function () {
+    Route::get('/vk/auth', 'App\Http\Controllers\Auth\SocialAuth@vkIndex');
+    Route::get('/vk/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@vkCallback');
+});
+
+// through google
+
+Route::group([], function () {
+    Route::get('/google/auth', 'App\Http\Controllers\Auth\SocialAuth@googleIndex');
+    Route::get('/google/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@googleCallback');
+});
