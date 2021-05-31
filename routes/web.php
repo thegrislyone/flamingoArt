@@ -145,6 +145,6 @@ Route::group([], function () {
 // through facebook
 
 Route::group([], function () {
-    Route::get('/facebook/auth', 'App\Http\Controllers\Auth\SocialAuth@googleIndex');
-    Route::get('/facebook/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@googleCallback');
+    Route::get('/facebook/auth', 'App\Http\Controllers\Auth\SocialAuth@facebookIndex');
+    Route::get('/facebook/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@facebookCallback');
 });
