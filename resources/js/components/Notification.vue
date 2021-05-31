@@ -26,14 +26,13 @@
     >
 
     <span
+      v-html="data.title"
       class="notification__text"
       :class="{
         'notification__text_success': data.status == 'success',
         'notification__text_error': data.status == 'error'
       }"
-    >
-      {{ data.title }}
-    </span>
+    ></span>
   </div>
 </template>
 
@@ -66,23 +65,31 @@ export default {
   },
   methods: {
     showPopper() {
+
       this.show = true
+      
     },
     hidePopper() {
+
       this.show = false
       this.$root.deleteNotification()
+
     },
     enter() {
+
       if (this.show == true) {
         clearTimeout(this.timeOut)
       }
+
     },
     leave() {
+
       if (this.show == true) {
         this.timeOut = setTimeout(() => {
           this.show = false
         }, 3000)
       }
+
     }
   }
 }

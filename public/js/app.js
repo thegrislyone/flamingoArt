@@ -5695,7 +5695,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -6291,7 +6290,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -23663,7 +23661,6 @@ var render = function() {
             height: _vm.windowWidth <= 560 ? "100%" : "auto",
             scrollable: true,
             "min-width": 320,
-            "min-height": 580,
             adaptive: true,
             "max-width": 480,
             shiftY: 0.1
@@ -24593,17 +24590,14 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "span",
-        {
-          staticClass: "notification__text",
-          class: {
-            notification__text_success: _vm.data.status == "success",
-            notification__text_error: _vm.data.status == "error"
-          }
+      _c("span", {
+        staticClass: "notification__text",
+        class: {
+          notification__text_success: _vm.data.status == "success",
+          notification__text_error: _vm.data.status == "error"
         },
-        [_vm._v("\n    " + _vm._s(_vm.data.title) + "\n  ")]
-      )
+        domProps: { innerHTML: _vm._s(_vm.data.title) }
+      })
     ]
   )
 }
@@ -44731,6 +44725,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   mounted: function mounted() {
     if (this.$store.getters.user.banned) {
       this.showNotification('Вы забанены', 'error');
+    }
+
+    if (window.MESSAGE) {
+      this.showNotification(window.MESSAGE, 'success');
     }
 
     document.querySelector('#app').classList.add('app_' + this.theme);

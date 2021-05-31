@@ -81,6 +81,10 @@ const app = new Vue({
         if (this.$store.getters.user.banned) {
             this.showNotification('Вы забанены', 'error')
         }
+
+        if (window.MESSAGE) {
+            this.showNotification(window.MESSAGE, 'success')
+        }
         
         document.querySelector('#app').classList.add('app_' + this.theme)
     },

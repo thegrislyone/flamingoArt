@@ -7,7 +7,6 @@
       :height="(windowWidth <= 560) ? '100%' : 'auto'"
       :scrollable="true"
       :min-width="320"
-      :min-height="580"
       :adaptive="true"
       :max-width="480"
       :shiftY="0.1"

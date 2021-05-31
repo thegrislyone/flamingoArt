@@ -18,53 +18,67 @@ use App\Models\Items\ItemsModel;
 |
 */
 
-function getUserInfo() {
-    $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned');
-    // $userInfo['favorites'] = [];
-    $favorites = [];
+if (!function_exists('getUserInfo')) {
 
+    function getUserInfo() {
 
-    $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
+        $userInformation = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned');
+        // $userInfo['favorites'] = [];
+        $favorites = [];
+    
+    
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userInformation['id'])->get();
+    
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
+        }
+    
+        /* set thumbnail */
+    
+        $thumbnail = 'thumbnail_item-page';
+    
+        $favorites = array_map(function($item) use ($thumbnail) {
+            unset($item['thumbnail_original']);
+            $item['thumbnail'] = $item[$thumbnail];
+            return $item;
+        }, $favorites);
+    
+        $userInformation['favorites'] = $favorites;
+    
+        if ($userInformation['is_admin']) {
+            $userInformation['is_admin'] = true;
+        } else {
+            $userInformation['is_admin'] = false;
+        }
+    
+        if ($userInformation['banned']) {
+            $userInformation['banned'] = true;
+        } else {
+            $userInformation['banned'] = false;
+        }
+    
+        return $userInformation;
 
-    foreach ($favoritesConnections as $favorite) {
-        array_push($favorites, ItemsModel::find($favorite['item_id']));
     }
 
-    /* set thumbnail */
-
-    $thumbnail = 'thumbnail_item-page';
-
-    $favorites = array_map(function($item) use ($thumbnail) {
-        unset($item['thumbnail_original']);
-        $item['thumbnail'] = $item[$thumbnail];
-        return $item;
-    }, $favorites);
-
-    $userInfo['favorites'] = $favorites;
-
-    if ($userInfo['is_admin']) {
-        $userInfo['is_admin'] = true;
-    } else {
-        $userInfo['is_admin'] = false;
-    }
-
-    if ($userInfo['banned']) {
-        $userInfo['banned'] = true;
-    } else {
-        $userInfo['banned'] = false;
-    }
-
-    return $userInfo;
 }
 
 Route::get('/', function () {
+
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
+
         return view('index')->with('userInfo', getUserInfo());
     }
+
     return view('index');
-});
+
+})->name('index');
+
+Route::get('/', function () {
+    
+    return view('index')->with(['userInfo' => getUserInfo(), 'message' => 'Почта успешно подтверждена']);
+
+})->name('email-confirmed');
 
 Route::get('/profile', function () {
     if (Auth::check()) {
@@ -119,11 +133,3 @@ Route::get('/admin-panel', function () {
     }
     return view('index');
 });
-
-// Route::get('/{any}', function () {
-//     return view('index');
-// })->where('any', '.*');
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

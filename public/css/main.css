@@ -449,6 +449,10 @@ img[lazy=loading] {
 .notification__text_error {
   color: #EC3838;
 }
+.notification a {
+  text-decoration: underline;
+  color: lightslategray;
+}
 
 /* tag */
 

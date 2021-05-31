@@ -76,6 +76,14 @@
 
   @endisset
 
+  @isset ($message)
+
+  <script>
+    window.MESSAGE = @json($message);
+  </script>
+
+  @endisset
+
   <script src="/js/app.js"></script>
   
 </body>

@@ -67,6 +67,9 @@ Route::post('auth/data-check','App\Http\Controllers\Auth\AuthController@unicData
 Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
 Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
 
+Route::get('auth/email/email-confirm-request','App\Http\Controllers\Auth\EmailConfirm@emailConfirmRequest');
+Route::get('auth/email/email-confirm','App\Http\Controllers\Auth\EmailConfirm@emailConfirm')->name('confirm-email');;
+
 Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor'); // ! AUTHOR
 
 Route::get('auth/get-users','App\Http\Controllers\Auth\AuthController@getUsers'); // ! USERS
