@@ -82,8 +82,13 @@ Route::get('/', function () {
 
 Route::get('/profile', function () {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
+Route::get('/profile-settings', function () {
+    if (Auth::check()) {
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
@@ -91,8 +96,6 @@ Route::get('/profile', function () {
 
 Route::get('/profile/{author_id}', function ($author_id = '') {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
@@ -100,8 +103,6 @@ Route::get('/profile/{author_id}', function ($author_id = '') {
 
 Route::get('/upload-item', function () {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
@@ -109,8 +110,6 @@ Route::get('/upload-item', function () {
 
 Route::get('/item/{item_id}', function ($item_id = '') {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
@@ -118,8 +117,6 @@ Route::get('/item/{item_id}', function ($item_id = '') {
 
 Route::get('/search', function () {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
@@ -127,8 +124,6 @@ Route::get('/search', function () {
 
 Route::get('/admin-panel', function () {
     if (Auth::check()) {
-        // $userInfo = Auth::user()->only('name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes');
-        // return view('index')->with('userInfo', $userInfo);
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');

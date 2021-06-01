@@ -65,10 +65,10 @@
             <button 
               v-if="!isForeign"
               class="btn profile-card__edit-button"
-              @click="$router.push('/upload-item')"
+              @click="$router.push('/profile-settings')"
               :disabled="user.banned"
             >
-              Выложить работу
+              Редактировать
             </button>
             <button
               v-else-if="isAuthorizate"

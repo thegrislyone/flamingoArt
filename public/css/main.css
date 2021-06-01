@@ -427,7 +427,7 @@ img[lazy=loading] {
   border-radius: 16px;
   font-size: 14px;
   transition: bottom .35s;
-  transition-timing-function: cubic-bezier(.42,.97,.52,1.49);
+  transition-timing-function: cubic-bezier(.14,.91,.84,1.01);
 }
 .notification_show {
   bottom: 15px;
@@ -1890,4 +1890,164 @@ img {
   color: white;
   cursor: pointer;
   margin: 5px;
+}
+
+/* PROFILE SETTINGS */
+
+.profile-settings {
+  padding: 32px 20px;
+}
+.profile-settings-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.profile-settings__uploaders {
+  margin-bottom: calc(64px + 40px);
+}
+/* banner upload */
+.banner-upload__non-uploaded {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: #1A1A1A;
+  border-radius: 16px;
+}
+.banner-upload__logo path {
+  transition: fill .35s;
+}
+.banner-upload__non-uploaded:hover .banner-upload__logo path {
+  fill: #DA71FF;
+}
+.banner-upload__img {
+  width: 100%;
+}
+/* avatar upload */
+.avatar-upload {
+  position: relative;
+}
+.avatar-upload__container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
+  height: 128px;
+  border-radius: 55%;
+  background-color: #121212;
+  top: -64px;
+  left: 48px;
+  overflow: hidden;
+}
+.avatar-upload__logo path {
+  transition: fill .35s;
+}
+.avatar-upload__container:hover .avatar-upload__logo path {
+  fill: #DA71FF;
+}
+.banner-upload__img {
+  width: 100%;
+  height: 100%;
+}
+/* settins-form */
+.settings-form__headline {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: -0.014em;
+  color: #FFFFFF;
+  margin-left: 48px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.settings-form__field {
+  padding-left: 48px;
+  display: flex;
+  background-repeat: no-repeat;
+  background-position: left center;
+  position: relative;
+}
+.settings-form__field:not(:last-child) {
+  margin-bottom: 16px;
+}
+.settings-form__nickname {
+  display: flex;
+  align-items: center;
+}
+.settings-form__nickname-span,
+.settings-form__mail-span {
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -0.017em;
+  color: #696969;
+  word-break: break-all;
+}
+.settings-form__edit-icon {
+  margin-left: 19px;
+  flex-shrink: 0;
+}
+.settings-form__icon {
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 12px;
+}
+.settings-form__icon-profile {
+  background-image: url(../assets/images/i-settings-nickname.svg);
+  margin-top: 0;
+}
+.settings-form__icon-vk {
+  background-image: url(../assets/images/i-settings-vk.svg);
+}
+.settings-form__icon-fb {
+  background-image: url(../assets/images/i-settings-facebook.svg);
+}
+.settings-form__icon-tw {
+  background-image: url(../assets/images/i-settings-twitter.svg);
+}
+.settings-form__icon-inst {
+  background-image: url(../assets/images/i-settings-instagram.svg);
+}
+.settings-form__icon-mail {
+  margin-top: 2px;
+  background-image: url(../assets/images/i-settings-mail.svg);
+}
+.settings-form__icon-password {
+  background-image: url(../assets/images/i-settings-password.svg);
+  margin-top: 8px;
+}
+.settings-form__icon-auth {
+  background-image: url(../assets/images/i-settings-auth.svg);
+  margin-top: 8px;
+}
+.settings-form__field input {
+  background-color: #0D0D0D;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.014em;
+  width: 100%;
+  color: #FFFFFF;
+}
+.settings-form__field input::placeholder {
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.014em;
+  color: #696969;
+}
+.settings-form__field input:focus {
+  background-color: #2A2A2A;
+}
+.settings-form__group {
+  margin-top: 64px;
+}
+.settings-form__social .settings-form__headline {
+  margin-bottom: 20px;
+}
+.settings-form__auth .settings-form__headline,
+.settings-form__password .settings-form__headline {
+  margin-bottom: 24px;
 }

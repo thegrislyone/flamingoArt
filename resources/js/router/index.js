@@ -11,6 +11,7 @@ import Item from '../views/Item.vue'
 import UploadItem from '../views/UploadItem.vue'
 import Search from '../views/Search.vue'
 import AdminPanel from '../views/AdminPanel.vue'
+import ProfileSettings from '../views/ProfileSettings.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,12 @@ const routes = [
     name: 'profile',
     meta: { requiresAuth: true },
     component: Profile,
+  },
+  {
+    path: '/profile-settings',
+    name: 'profile-settings',
+    meta: { requiresAuth: true },
+    component: ProfileSettings,
   },
   {
     path: '/profile/:author_id',
