@@ -298,6 +298,7 @@ export default {
       this.slider.init()
     },
     addOrRemoveFavorite() {
+
       if (!this.isInFavorite) {
 
         const itemId = this.item.id
@@ -306,8 +307,8 @@ export default {
           .then(response => {
             const data = response.data
 
-            if ('success' in data) {
-              this.$root.showNotification(data.success, 'success')
+            if (data.notification) {
+              this.$root.showNotification(data.notification)
               this.$store.commit('setFavorites', data.favorites)
             }
 
@@ -321,17 +322,19 @@ export default {
           .then(response => {
             const data = response.data
 
-            if ('success' in data) {
-              this.$root.showNotification(data.success, 'success')
+            if (data.notification) {
+              this.$root.showNotification(data.notification)
               this.$store.commit('setFavorites', data.favorites)
             }
 
           })
       }
+
     },
     deleteItemShow() {
 
       this.deletingProcess = true
+      
       // this.$modal.show('delete-confirmation')
       
       // const itemId = this.item.id

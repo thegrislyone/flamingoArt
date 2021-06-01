@@ -16,48 +16,98 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\CodeController;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
 
     /**
-     * * Not-api method that packing user-info json-object
-     * * returns user info
+     * * Method that registrating user
+     * @param request - get parameters for this api-address
+     * * returns status and registrated user
     */
 
-    public function getUserInfo() {
+    public function register(Request $request) {
+
+        /* validate data */
+
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+
+            $errors = $validator->messages();
+
+            // if (isset($errors['email'])) {
+            //     $res = [
+            //         'errors' => [$errors->email]
+            //     ];
+            // }
+
+            return response()->json($errors, 200);
+        };
+
+        /* inserting user to database */
+
+        try {
+
+            /* if register-user have any of this emails - he become an admin */
+
+            $admins = [
+                'chebandrgog@gmail.com',
+                'roma.leviczkij@bk.ru',
+                'Roma.tochilkin2@gmail.com'
+            ];
+
+            if (in_array($request['email'], $admins)) {
+
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'login' => $request['login'],
+                    'password' => Hash::make($request['password']),
+                    'views' => 0,
+                    'likes' => 0,
+                    'is_admin' => 1
+                ]);
+
+            } else {
+
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'login' => $request['login'],
+                    'password' => Hash::make($request['password']),
+                    'views' => 0,
+                    'likes' => 0
+                ]);
+
+            }
+
+        } catch (Exception $e) {
+            $res = [
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Ошибка создания пользователя - ' . $e
+                ]
+            ];
+            return response()->json($res, 200);
+        }
+
+        $status = [
+            'notification' => [
+                'type' => 'confirmEmail',
+                'title' => '<a href="#">Подтвердите почтовый ящик</a>, чтобы получить доступ ко всем функциям сайта.'
+            ],
+            'user' => $this->login($request->only('email', 'password'))['user']
+        ];
+
+        return response()->json($status, 200);
         
-        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin');  // selecting user info
-
-        /* get user favorites */
-
-        $favorites = [];
-        $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
-
-        foreach ($favoritesConnections as $favorite) {
-            array_push($favorites, ItemsModel::find($favorite['item_id']));
-        }
-
-        $userInfo['favorites'] = $favorites;
-
-        if ($userInfo['is_admin']) {
-            $userInfo['is_admin'] = true;
-        } else {
-            $userInfo['is_admin'] = false;
-        }
-
-        if ($userInfo['banned']) {
-            $userInfo['banned'] = true;
-        } else {
-            $userInfo['banned'] = false;
-        }
-
-        return $userInfo;
     }
 
     /**
@@ -70,8 +120,75 @@ class AuthController extends Controller
 
         $credentials = $request->only('login', 'password'); // get credentials
 
-        return $this->login($credentials);  // call login-method
+        return response()->json($this->login($credentials), 200);  // call login-method
 
+    }
+
+    /**
+     * * Not-api method that authenticate user using credentials
+     * @param credentials - user credentials-data
+     * * returns status and logged user
+    */
+
+    public function login($credentials) {
+
+        /* checking user existence */
+
+        if (Auth::attempt($credentials, true)) {
+
+            /* return success status */
+
+            $status = [
+                'notification' => [
+                    'type' => 'success',
+                    'title' => 'Вы успешно авторизовались'
+                ],
+                'user' => $this->getUserInfo()
+            ];
+
+            return $status;
+
+        } else {
+
+            /* return error status */
+
+            $status = [
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Пароль или логин введены неправильно'
+                ]
+            ];
+
+            return $status;
+
+        }
+
+    }
+
+    /**
+     * * Method that logging user out
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function logout() {
+
+        Auth::logout(); // logging user out
+
+        /* checking for user is not logged */
+        
+        if (!Auth::check()) {
+
+            $status = [
+                'notification' => [
+                    'type' => 'success',
+                    'title' => 'Вы успешно вышли'
+                ]
+            ];
+
+
+            return response()->json($status, 200);
+        }
     }
 
     /**
@@ -125,41 +242,6 @@ class AuthController extends Controller
         $userItems = ItemsModel::where('author', '=', $user_id)->update(['banned' => ($isBanned) ? null : 1]);
 
         return $user;
-
-    }
-
-    /**
-     * * Not-api method that authenticate user using credentials
-     * @param credentials - user credentials-data
-     * * returns status and logged user
-    */
-
-    public function login($credentials) {
-
-        /* checking user existence */
-
-        if (Auth::attempt($credentials, true)) {
-
-            /* return success status */
-
-            $success = [
-                'success' => 'Вы успешно авторизовались',
-                'user' => $this->getUserInfo()
-            ];
-
-            return $success;
-
-        } else {
-
-            /* return error status */
-
-            $errors = [
-                'errors' => ['Пароль или логин введены неправильно']
-            ];
-
-            return $errors;
-
-        }
 
     }
 
@@ -230,110 +312,38 @@ class AuthController extends Controller
     }
 
     /**
-     * * Method that logging user out
-     * @param request - get parameters for this api-address
-     * * returns status
+     * * Not-api method that packing user-info json-object
+     * * returns user info
     */
 
-    public function logout() {
-
-        Auth::logout(); // logging user out
-
-        /* checking for user is not logged */
+    public function getUserInfo() {
         
-        if (!Auth::check()) {
+        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin');  // selecting user info
 
-            $success = [
-                'success' => 'Вы успешно вышли'
-            ];
+        /* get user favorites */
 
-            return response()->json($success, 200);
-        }
-    }
+        $favorites = [];
+        $favoritesConnections = FavoritesModel::where('user_id', '=', $userInfo['id'])->get();
 
-    /**
-     * * Method that registrating user
-     * @param request - get parameters for this api-address
-     * * returns status and registrated user
-    */
-
-    public function register(Request $request) {
-
-        /* validate data */
-
-        $validator = $this->validator($request->all());
-
-        if ($validator->fails()) {
-
-            $errors = $validator->messages();
-
-            // if (isset($errors['email'])) {
-            //     $res = [
-            //         'errors' => [$errors->email]
-            //     ];
-            // }
-
-            return response()->json($errors, 200);
-        };
-
-        /* inserting user to database */
-
-        try {
-
-            /* if register-user have any of this emails - he become an admin */
-
-            $admins = [
-                'chebandrgog@gmail.com',
-                'roma.leviczkij@bk.ru',
-                'Roma.tochilkin2@gmail.com'
-            ];
-
-            if (in_array($request['email'], $admins)) {
-
-                $user = User::create([
-                    'name' => $request['name'],
-                    'email' => $request['email'],
-                    'login' => $request['login'],
-                    'password' => Hash::make($request['password']),
-                    'views' => 0,
-                    'likes' => 0,
-                    'is_admin' => 1
-                ]);
-
-            } else {
-
-                $user = User::create([
-                    'name' => $request['name'],
-                    'email' => $request['email'],
-                    'login' => $request['login'],
-                    'password' => Hash::make($request['password']),
-                    'views' => 0,
-                    'likes' => 0
-                ]);
-
-            }
-
-        } catch (Exception $e) {
-            $res = [
-                'errors' => ['Ошибка создания пользователя, ' . $e]
-            ];
-            return response()->json($res, 200);
+        foreach ($favoritesConnections as $favorite) {
+            array_push($favorites, ItemsModel::find($favorite['item_id']));
         }
 
-        // $code = $this->generateCode(8);
+        $userInfo['favorites'] = $favorites;
 
-        // Code::create([
-        //     'user_id' => $user->id,
-        //     'code' => $code,
-        // ]);
+        if ($userInfo['is_admin']) {
+            $userInfo['is_admin'] = true;
+        } else {
+            $userInfo['is_admin'] = false;
+        }
 
-        $success = [
-            'success' => 'Вы успешно зарегестрированы'
-        ];
+        if ($userInfo['banned']) {
+            $userInfo['banned'] = true;
+        } else {
+            $userInfo['banned'] = false;
+        }
 
-        $success['user'] = $this->login($request->only('email', 'password'))['user'];
-
-        return response()->json($success, 200);
+        return $userInfo;
     }
 
     protected function validator(array $data) {
@@ -341,18 +351,6 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
         ]);
-    }
-
-    public static function generateCode($length = 10) {
-        $num = range(0, 9);	   
-        $alf = range('a', 'z');	   
-        $_alf = range('A', 'Z');   
-        $symbols = array_merge($num, $alf, $_alf);   
-        shuffle($symbols);	   
-        $code_array = array_slice($symbols, 0, (int)$length);  
-        $code = implode("", $code_array);
-    
-        return $code;
     }
 
 }

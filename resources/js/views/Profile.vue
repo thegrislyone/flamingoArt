@@ -241,7 +241,10 @@ export default {
   },
   mounted() {
     if (!this.isAuthorizate) {
-      this.$root.showNotification('Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем', 'success')
+      this.$root.showNotification({
+        title: 'Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем',
+        type: 'success'
+      })
     }
   },
   methods: {

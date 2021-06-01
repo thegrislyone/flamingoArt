@@ -413,9 +413,13 @@ img[lazy=loading] {
 /* notification */
 .notification {
   z-index: 999;
-  display: block;
+  display: flex;
+  align-items: center;
+  margin-left: 60px;
   position: fixed;
   bottom: -100px;
+  max-width: 395px;
+  min-width: 300px;
   right: 15px;
   background-color: #121212;
   padding: 20px 32px 20px 26px;
@@ -442,12 +446,20 @@ img[lazy=loading] {
 }
 .notification__status-icon {
   margin-right: 18px;
+  flex-shrink: 0;
 }
 .notification__text_success {
   color: #17B556;
 }
 .notification__text_error {
   color: #EC3838;
+}
+.notification__text_email {
+  color: #fff;
+}
+.notification__text_email a {
+  color: #DA71FF;
+  text-decoration-line: underline;
 }
 
 /* tag */

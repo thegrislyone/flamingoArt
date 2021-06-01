@@ -7,7 +7,6 @@
       :height="(windowWidth <= 560) ? '100%' : 'auto'"
       :scrollable="true"
       :min-width="320"
-      :min-height="580"
       :adaptive="true"
       :max-width="480"
       :shiftY="0.1"
@@ -400,7 +399,7 @@ export default {
 
           this.$router.push('/')
 
-          this.$root.showNotification(data.success, 'success')
+          this.$root.showNotification(data.notification)
 
         })
 

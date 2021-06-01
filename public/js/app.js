@@ -5086,12 +5086,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$http["delete"](url.href).then(function (response) {
         var data = response.data;
 
-        if (data.success) {
+        if (data.notification) {
           _this.$router.push('/profile');
 
-          _this.$root.showNotification(data.success, 'success');
-        } else if (data.errors) {
-          _this.$root.showNotification(data.errors[0], 'success');
+          _this.$root.showNotification(data.notification);
         }
       });
     }
@@ -5214,7 +5212,10 @@ __webpack_require__.r(__webpack_exports__);
       var file = outsideFile ? outsideFile : event.target.files[0];
 
       if (!file.type.includes('image')) {
-        this.$root.showNotification('Неверный формат файла', 'error');
+        this.$root.showNotification({
+          title: 'Неверный формат файла',
+          type: 'error'
+        });
         return;
       }
 
@@ -5227,7 +5228,10 @@ __webpack_require__.r(__webpack_exports__);
             vm.imgSrc = reader.result;
             vm.$emit('fileUpload', file);
           } else {
-            vm.$root.showNotification('Изображение не соответствует минимальным размерам', 'error');
+            vm.$root.showNotification({
+              title: 'Изображение не соответствует минимальным размерам',
+              type: 'error'
+            });
           }
         });
         img.src = reader.result; // let data = new FormData()
@@ -5695,7 +5699,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -5852,7 +5855,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$router.push('/');
 
-        _this.$root.showNotification(data.success, 'success');
+        _this.$root.showNotification(data.notification);
       });
     }
   }
@@ -6330,6 +6333,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     data: {
@@ -6343,14 +6352,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    show: function show() {
-      var _this = this;
-
-      if (this.show == true) {
-        this.timeOut = setTimeout(function () {
-          _this.show = false;
-        }, 3000);
-      }
+    show: function show() {// if (this.show == true) {
+      //   this.timeOut = setTimeout(() => {
+      //     this.show = false
+      //   }, 3000)
+      // }
     }
   },
   mounted: function mounted() {},
@@ -6358,23 +6364,18 @@ __webpack_require__.r(__webpack_exports__);
     showPopper: function showPopper() {
       this.show = true;
     },
-    hidePopper: function hidePopper() {
-      this.show = false;
-      this.$root.deleteNotification();
+    hidePopper: function hidePopper() {// this.show = false
+      // this.$root.deleteNotification()
     },
-    enter: function enter() {
-      if (this.show == true) {
-        clearTimeout(this.timeOut);
-      }
+    enter: function enter() {// if (this.show == true) {
+      //   clearTimeout(this.timeOut)
+      // }
     },
-    leave: function leave() {
-      var _this2 = this;
-
-      if (this.show == true) {
-        this.timeOut = setTimeout(function () {
-          _this2.show = false;
-        }, 3000);
-      }
+    leave: function leave() {// if (this.show == true) {
+      //   this.timeOut = setTimeout(() => {
+      //     this.show = false
+      //   }, 3000)
+      // }
     }
   }
 });
@@ -6915,16 +6916,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$http.post(form.submit, formData).then(function (response) {
           var data = response.data;
 
-          if (data.success) {
-            _this.$root.showNotification(data.success, 'success');
+          if (data.notification) {
+            _this.$root.showNotification(data.notification);
 
             _this.$store.commit('setUser', data.user);
 
-            _this.$modal.hide('signForm');
+            if (data.notification.type == 'success' || data.notification.type == 'confirmEmail') {
+              _this.$modal.hide('signForm');
 
-            _this.$eventBus.$emit('login');
-          } else if (data.errors || data.email) {
-            _this.$root.showNotification(data.errors[0], 'error');
+              _this.$eventBus.$emit('login');
+            }
           }
         })["catch"](function (error) {}).then(function () {});
         console.log(formData, form);
@@ -7663,8 +7664,8 @@ __webpack_require__.r(__webpack_exports__);
         this.$http.get('/api/items/add-to-favorite?item_id=' + itemId).then(function (response) {
           var data = response.data;
 
-          if ('success' in data) {
-            _this4.$root.showNotification(data.success, 'success');
+          if (data.notification) {
+            _this4.$root.showNotification(data.notification);
 
             _this4.$store.commit('setFavorites', data.favorites);
           }
@@ -7674,8 +7675,8 @@ __webpack_require__.r(__webpack_exports__);
         this.$http.get('/api/items/remove-from-favorite?item_id=' + _itemId).then(function (response) {
           var data = response.data;
 
-          if ('success' in data) {
-            _this4.$root.showNotification(data.success, 'success');
+          if (data.notification) {
+            _this4.$root.showNotification(data.notification);
 
             _this4.$store.commit('setFavorites', data.favorites);
           }
@@ -8171,7 +8172,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     if (!this.isAuthorizate) {
-      this.$root.showNotification('Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем', 'success');
+      this.$root.showNotification({
+        title: 'Войдите в аккаунт/зарегестрируйтесь, если хотите связаться с этим пользователем',
+        type: 'success'
+      });
     }
   },
   methods: {
@@ -8538,7 +8542,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.$v.$invalid) {
         this.$v.$touch();
-        this.$root.showNotification('Заполните данные', 'error');
+        this.$root.showNotification({
+          title: 'Заполните данные',
+          type: 'error'
+        });
         return;
       }
 
@@ -23663,7 +23670,6 @@ var render = function() {
             height: _vm.windowWidth <= 560 ? "100%" : "auto",
             scrollable: true,
             "min-width": 320,
-            "min-height": 580,
             adaptive: true,
             "max-width": 480,
             shiftY: 0.1
@@ -24591,19 +24597,22 @@ var render = function() {
             staticClass: "notification__status-icon",
             attrs: { src: "/assets/images/i-notification_error.svg" }
           })
+        : _vm.data.status == "confirmEmail"
+        ? _c("img", {
+            staticClass: "notification__status-icon",
+            attrs: { src: "/assets/images/i-mail.svg" }
+          })
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "span",
-        {
-          staticClass: "notification__text",
-          class: {
-            notification__text_success: _vm.data.status == "success",
-            notification__text_error: _vm.data.status == "error"
-          }
+      _c("span", {
+        staticClass: "notification__text",
+        class: {
+          notification__text_success: _vm.data.status == "success",
+          notification__text_error: _vm.data.status == "error",
+          notification__text_email: _vm.data.status == "confirmEmail"
         },
-        [_vm._v("\n    " + _vm._s(_vm.data.title) + "\n  ")]
-      )
+        domProps: { innerHTML: _vm._s(_vm.data.title) }
+      })
     ]
   )
 }
@@ -44733,6 +44742,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.showNotification('Вы забанены', 'error');
     }
 
+    if (window.MESSAGE) {
+      this.showNotification(window.MESSAGE, 'success');
+    }
+
     document.querySelector('#app').classList.add('app_' + this.theme);
   },
   methods: {
@@ -44740,10 +44753,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.$cookies.set('cookie_agreement_set', 1, "1y");
       this.cookieAgreementShow = false;
     },
-    showNotification: function showNotification(title, status) {
+    showNotification: function showNotification(notification) {
       this.notification = {
-        title: title,
-        status: status
+        title: notification.title,
+        status: notification.type
       };
       this.$refs.notification.showPopper();
     },

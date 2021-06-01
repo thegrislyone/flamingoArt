@@ -25,15 +25,21 @@
       src="/assets/images/i-notification_error.svg"
     >
 
+    <img 
+      v-else-if="data.status == 'confirmEmail'"
+      class="notification__status-icon"
+      src="/assets/images/i-mail.svg"
+    >
+
     <span
+      v-html="data.title"
       class="notification__text"
       :class="{
         'notification__text_success': data.status == 'success',
-        'notification__text_error': data.status == 'error'
+        'notification__text_error': data.status == 'error',
+        'notification__text_email': data.status == 'confirmEmail'
       }"
-    >
-      {{ data.title }}
-    </span>
+    ></span>
   </div>
 </template>
 
@@ -53,12 +59,12 @@ export default {
   watch: {
     show() {
 
-      if (this.show == true) {
+      // if (this.show == true) {
 
-        this.timeOut = setTimeout(() => {
-          this.show = false
-        }, 3000)
-      }
+      //   this.timeOut = setTimeout(() => {
+      //     this.show = false
+      //   }, 3000)
+      // }
       
     }
   },
@@ -66,23 +72,31 @@ export default {
   },
   methods: {
     showPopper() {
+
       this.show = true
+      
     },
     hidePopper() {
-      this.show = false
-      this.$root.deleteNotification()
+
+      // this.show = false
+      // this.$root.deleteNotification()
+
     },
     enter() {
-      if (this.show == true) {
-        clearTimeout(this.timeOut)
-      }
+
+      // if (this.show == true) {
+      //   clearTimeout(this.timeOut)
+      // }
+
     },
     leave() {
-      if (this.show == true) {
-        this.timeOut = setTimeout(() => {
-          this.show = false
-        }, 3000)
-      }
+
+      // if (this.show == true) {
+      //   this.timeOut = setTimeout(() => {
+      //     this.show = false
+      //   }, 3000)
+      // }
+
     }
   }
 }

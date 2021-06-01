@@ -275,16 +275,21 @@ export default {
 
         this.$http.post(form.submit, formData)
           .then(response => {
+
             const data = response.data
 
-            if (data.success) {
-              this.$root.showNotification(data.success, 'success')
+            if (data.notification) {
+
+              this.$root.showNotification(data.notification)
               this.$store.commit('setUser', data.user)
-              this.$modal.hide('signForm')
-              this.$eventBus.$emit('login')
-            } else if (data.errors || data.email) {
-              this.$root.showNotification(data.errors[0], 'error')
+
+              if (data.notification.type == 'success' || data.notification.type == 'confirmEmail') {
+                this.$modal.hide('signForm')
+                this.$eventBus.$emit('login')
+              }
+
             }
+
           })
           .catch(error => {
 
