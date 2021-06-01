@@ -196,7 +196,10 @@ export default {
 
       if (this.$v.$invalid) {
         this.$v.$touch()
-        this.$root.showNotification('Заполните данные', 'error')
+        this.$root.showNotification({
+          title: 'Заполните данные', 
+          type: 'error'
+        })
         return
       }
 

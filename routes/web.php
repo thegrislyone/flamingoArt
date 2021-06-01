@@ -64,6 +64,12 @@ if (!function_exists('getUserInfo')) {
 }
 
 Route::get('/', function () {
+    
+    return view('index')->with(['userInfo' => getUserInfo(), 'message' => 'Почта успешно подтверждена']);
+
+})->name('email-confirmed');
+
+Route::get('/', function () {
 
     if (Auth::check()) {
 
@@ -73,12 +79,6 @@ Route::get('/', function () {
     return view('index');
 
 })->name('index');
-
-Route::get('/', function () {
-    
-    return view('index')->with(['userInfo' => getUserInfo(), 'message' => 'Почта успешно подтверждена']);
-
-})->name('email-confirmed');
 
 Route::get('/profile', function () {
     if (Auth::check()) {

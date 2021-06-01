@@ -40,33 +40,13 @@ class ItemsController extends Controller
 
         $items = [];    // init empty items arr
 
-        // $only = [
-        //     'author',
-        //     'banned',
-        //     'created_at',
-        //     'description',
-        //     'favorited',
-        //     'id',
-        //     'name',
-        //     'price',
-        //     'tags',
-        //     'thumbnail_item-page',
-        //     'thumbnail_items-list',
-        //     'transitions',
-        //     'updated_at',
-        //     'views'
-        // ];
-
         /* get items depending on feed type */
 
         if (!$feed || $feed == 'main') {
-            // $items = ItemsModel::select($only)->whereNull('banned')->simplePaginate(30)->toArray();
             $items = ItemsModel::whereNull('banned')->simplePaginate(30)->toArray();
         } elseif ($feed == 'popular') {
-            // $items = ItemsModel::select($only)->whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
             $items = ItemsModel::whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
         } elseif ($feed == 'new') {
-            // $items = $items = ItemsModel::select($only)->whereNull('banned')->orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
             $items = $items = ItemsModel::whereNull('banned')->orderBy('created_at', 'desc')->simplePaginate(30)->toArray();
         }
 
@@ -119,24 +99,6 @@ class ItemsController extends Controller
         $authorId = $item['author'];
         $item['author'] = User::find($authorId);
 
-        // $only = [
-        //     'author',
-        //     'banned',
-        //     'created_at',
-        //     'description',
-        //     'favorited',
-        //     'id',
-        //     'name',
-        //     'price',
-        //     'tags',
-        //     'thumbnail_item-page',
-        //     'thumbnail_items-list',
-        //     'transitions',
-        //     'updated_at',
-        //     'views'
-        // ];
-
-        // $item['author']['items'] = ItemsModel::select($only)->where('author', '=', $authorId)->get()->toArray();
         $item['author']['items'] = ItemsModel::where('author', '=', $authorId)->get()->toArray();
 
         /* set thumbnail */
@@ -210,12 +172,16 @@ class ItemsController extends Controller
             return $item;
         }, $favorites);
 
-        $success = [
-            'success' => 'Товар добавлен в избранное',
+        $status = [
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Товар добавлен в избранное'
+            ],
+            'status' => true,
             'favorites' => $favorites
         ];
         
-        return response()->json($success, 200);
+        return response()->json($status, 200);
 
     }
 
@@ -257,12 +223,16 @@ class ItemsController extends Controller
             return $item;
         }, $favorites);
 
-        $success = [
-            'success' => 'Товар удалён из избранного',
+        $status = [
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Товар удалён из избранного'
+            ],
+            'status' => true,
             'favorites' => $favorites
         ];
         
-        return response()->json($success, 200);
+        return response()->json($status, 200);
 
     }
 
@@ -293,11 +263,11 @@ class ItemsController extends Controller
         $transitionsAmount = ItemsModel::find($itemId)['transitions'];
         ItemsModel::find($itemId)->update(['transitions' => $transitionsAmount + 1]);
 
-        $success = [
-            'success' => 'Ок',
+        $status = [
+            'status' => true,
         ];
         
-        return response()->json($success, 200);
+        return response()->json($status, 200);
     }
 
     /**
@@ -334,12 +304,12 @@ class ItemsController extends Controller
 
         if (!count($items) && !count($tags)) {
             $result = [
-                'success' => false,
+                'status' => false,
                 'errors' => ['Нет результатов']
             ];
         } else {
             $result = [
-                'success' => true,
+                'status' => true,
                 'items' => $items,
                 'tags' => $tags
             ];
@@ -429,12 +399,12 @@ class ItemsController extends Controller
 
         if (!count($items) && !count($items_by_tags) && !count($tags)) {
             $result = [
-                'success' => false,
+                'status' => false,
                 'errors' => ['Нет результатов']
             ];
         } else {
             $result = [
-                'success' => true,
+                'status' => true,
                 'items' => $items,
                 'tags' => $tags,
                 'items_by_tags' => $items_by_tags
@@ -577,7 +547,7 @@ class ItemsController extends Controller
         $item->save();
 
         $status = [
-            'success' => true
+            'status' => true
         ];
 
         return response()->json($status, 200);
@@ -671,7 +641,10 @@ class ItemsController extends Controller
         if ($request_from != Auth::user()->id && Auth::user()->is_admin) {
 
             $status = [
-                'errors' => ['Ошибка доступа']
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Ошибка доступа'
+                ]
             ];
             
             return response()->json($status, 200);
@@ -724,9 +697,9 @@ class ItemsController extends Controller
         } catch (Exception $e) {
 
             $status = [
-                'errors' => [
-                    'Ошибка при удалении работы',
-                    $e
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Ошибка при удалении работы - ' . $e
                 ]
             ];
 
@@ -735,7 +708,11 @@ class ItemsController extends Controller
         }
 
         $status = [
-            'success' => 'Работа успешно удалена'
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Работа успешно удалена'
+            ],
+            'status' => true
         ];
 
         return response()->json($status, 200);

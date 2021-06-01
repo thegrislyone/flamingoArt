@@ -62,11 +62,9 @@ export default {
 
           const data = response.data
 
-          if (data.success) {
+          if (data.notification) {
             this.$router.push('/profile')
-            this.$root.showNotification(data.success, 'success')
-          } else if (data.errors) {
-            this.$root.showNotification(data.errors[0], 'success')
+            this.$root.showNotification(data.notification)
           }
 
         })

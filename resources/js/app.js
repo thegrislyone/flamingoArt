@@ -93,10 +93,10 @@ const app = new Vue({
             this.$cookies.set('cookie_agreement_set', 1, "1y")
             this.cookieAgreementShow = false
         },
-        showNotification(title, status) {
+        showNotification(notification) {
             this.notification = {
-                title: title,
-                status: status
+                title: notification.title,
+                status: notification.type
             }
             this.$refs.notification.showPopper()
         },

@@ -399,7 +399,7 @@ export default {
 
           this.$router.push('/')
 
-          this.$root.showNotification(data.success, 'success')
+          this.$root.showNotification(data.notification)
 
         })
 

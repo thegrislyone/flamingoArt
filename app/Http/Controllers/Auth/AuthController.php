@@ -90,18 +90,24 @@ class AuthController extends Controller
 
         } catch (Exception $e) {
             $res = [
-                'errors' => ['Ошибка создания пользователя, ' . $e]
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Ошибка создания пользователя - ' . $e
+                ]
             ];
             return response()->json($res, 200);
         }
 
-        $success = [
-            'success' => 'Вы успешно зарегестрированы. Чтобы подтвердить почту, перейдите в <a href="#">настройки</a>.'
+        $status = [
+            'notification' => [
+                'type' => 'confirmEmail',
+                'title' => '<a href="#">Подтвердите почтовый ящик</a>, чтобы получить доступ ко всем функциям сайта.'
+            ],
+            'user' => $this->login($request->only('email', 'password'))['user']
         ];
 
-        $success['user'] = $this->login($request->only('email', 'password'))['user'];
-
-        return response()->json($success, 200);
+        return response()->json($status, 200);
+        
     }
 
     /**
@@ -114,7 +120,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('login', 'password'); // get credentials
 
-        return $this->login($credentials);  // call login-method
+        return response()->json($this->login($credentials), 200);  // call login-method
 
     }
 
@@ -132,22 +138,28 @@ class AuthController extends Controller
 
             /* return success status */
 
-            $success = [
-                'success' => 'Вы успешно авторизовались',
+            $status = [
+                'notification' => [
+                    'type' => 'success',
+                    'title' => 'Вы успешно авторизовались'
+                ],
                 'user' => $this->getUserInfo()
             ];
 
-            return $success;
+            return $status;
 
         } else {
 
             /* return error status */
 
-            $errors = [
-                'errors' => ['Пароль или логин введены неправильно']
+            $status = [
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Пароль или логин введены неправильно'
+                ]
             ];
 
-            return $errors;
+            return $status;
 
         }
 
@@ -167,11 +179,15 @@ class AuthController extends Controller
         
         if (!Auth::check()) {
 
-            $success = [
-                'success' => 'Вы успешно вышли'
+            $status = [
+                'notification' => [
+                    'type' => 'success',
+                    'title' => 'Вы успешно вышли'
+                ]
             ];
 
-            return response()->json($success, 200);
+
+            return response()->json($status, 200);
         }
     }
 
