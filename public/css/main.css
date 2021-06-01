@@ -417,9 +417,9 @@ img[lazy=loading] {
   align-items: center;
   margin-left: 60px;
   position: fixed;
-  bottom: -100px;
+  bottom: -1000px;
   max-width: 395px;
-  min-width: 300px;
+  /* min-width: 300px; */
   right: 15px;
   background-color: #121212;
   padding: 20px 32px 20px 26px;

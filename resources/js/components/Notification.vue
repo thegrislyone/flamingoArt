@@ -59,12 +59,12 @@ export default {
   watch: {
     show() {
 
-      // if (this.show == true) {
+      if (this.show == true) {
 
-      //   this.timeOut = setTimeout(() => {
-      //     this.show = false
-      //   }, 3000)
-      // }
+        this.timeOut = setTimeout(() => {
+          this.show = false
+        }, 3000)
+      }
       
     }
   },
@@ -78,24 +78,24 @@ export default {
     },
     hidePopper() {
 
-      // this.show = false
-      // this.$root.deleteNotification()
+      this.show = false
+      this.$root.deleteNotification()
 
     },
     enter() {
 
-      // if (this.show == true) {
-      //   clearTimeout(this.timeOut)
-      // }
+      if (this.show == true) {
+        clearTimeout(this.timeOut)
+      }
 
     },
     leave() {
 
-      // if (this.show == true) {
-      //   this.timeOut = setTimeout(() => {
-      //     this.show = false
-      //   }, 3000)
-      // }
+      if (this.show == true) {
+        this.timeOut = setTimeout(() => {
+          this.show = false
+        }, 3000)
+      }
 
     }
   }

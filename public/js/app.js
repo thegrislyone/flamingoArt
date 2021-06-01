@@ -6352,11 +6352,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    show: function show() {// if (this.show == true) {
-      //   this.timeOut = setTimeout(() => {
-      //     this.show = false
-      //   }, 3000)
-      // }
+    show: function show() {
+      var _this = this;
+
+      if (this.show == true) {
+        this.timeOut = setTimeout(function () {
+          _this.show = false;
+        }, 3000);
+      }
     }
   },
   mounted: function mounted() {},
@@ -6364,18 +6367,23 @@ __webpack_require__.r(__webpack_exports__);
     showPopper: function showPopper() {
       this.show = true;
     },
-    hidePopper: function hidePopper() {// this.show = false
-      // this.$root.deleteNotification()
+    hidePopper: function hidePopper() {
+      this.show = false;
+      this.$root.deleteNotification();
     },
-    enter: function enter() {// if (this.show == true) {
-      //   clearTimeout(this.timeOut)
-      // }
+    enter: function enter() {
+      if (this.show == true) {
+        clearTimeout(this.timeOut);
+      }
     },
-    leave: function leave() {// if (this.show == true) {
-      //   this.timeOut = setTimeout(() => {
-      //     this.show = false
-      //   }, 3000)
-      // }
+    leave: function leave() {
+      var _this2 = this;
+
+      if (this.show == true) {
+        this.timeOut = setTimeout(function () {
+          _this2.show = false;
+        }, 3000);
+      }
     }
   }
 });
