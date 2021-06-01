@@ -93,7 +93,8 @@ class AuthController extends Controller
                 'notification' => [
                     'type' => 'error',
                     'title' => 'Ошибка создания пользователя - ' . $e
-                ]
+                ],
+                'status' => false
             ];
             return response()->json($res, 200);
         }
@@ -103,6 +104,7 @@ class AuthController extends Controller
                 'type' => 'confirmEmail',
                 'title' => '<a href="#">Подтвердите почтовый ящик</a>, чтобы получить доступ ко всем функциям сайта.'
             ],
+            'status' => true,
             'user' => $this->login($request->only('email', 'password'))['user']
         ];
 
