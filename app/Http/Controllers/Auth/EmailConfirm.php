@@ -42,7 +42,11 @@ class EmailConfirm extends Controller
         Mail::to($user->email)->send(new EmailConfirmation($user, $token));
 
         $status = [
-            'success' => "Письмо с подтверждением выслано на вашу почту"
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Письмо с подтверждением выслано на вашу почту'
+            ],
+            'status' => true
         ];
 
         return response()->json($status, 200);
