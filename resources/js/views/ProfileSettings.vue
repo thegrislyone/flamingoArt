@@ -178,7 +178,11 @@
             class="settings-form__unconfirmed-email"
           >
             <span class="settings-form__unconfirmed-email-text">Почта не подтверждена</span>
-            <button class="settings-form__unconfirmed-email-button btn">Подтвердить</button>
+            <button 
+              class="settings-form__unconfirmed-email-button btn"
+              type="button"
+              @click="emailConfirm"
+            >Подтвердить</button>
           </div>
 
         </div>
@@ -433,6 +437,20 @@ export default {
 
       this.$http.post('/api/auth/set-user-banner', formData)
 
+    },
+    emailConfirm() {
+
+      this.$http.get('/api/auth/email/email-confirm-request')
+        .then(response => {
+
+          const data = response.data
+
+          if (data.notification) {
+            this.$root.showNotification(data.notification)
+          }
+
+        })
+      
     }
   }
 }

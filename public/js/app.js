@@ -8884,6 +8884,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -9062,6 +9066,17 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('banner', file);
       this.$http.post('/api/auth/set-user-banner', formData);
+    },
+    emailConfirm: function emailConfirm() {
+      var _this = this;
+
+      this.$http.get('/api/auth/email/email-confirm-request').then(function (response) {
+        var data = response.data;
+
+        if (data.notification) {
+          _this.$root.showNotification(data.notification);
+        }
+      });
     }
   }
 });
@@ -37650,7 +37665,9 @@ var render = function() {
                           "button",
                           {
                             staticClass:
-                              "settings-form__unconfirmed-email-button btn"
+                              "settings-form__unconfirmed-email-button btn",
+                            attrs: { type: "button" },
+                            on: { click: _vm.emailConfirm }
                           },
                           [_vm._v("Подтвердить")]
                         )

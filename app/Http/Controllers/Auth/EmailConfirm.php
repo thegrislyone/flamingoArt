@@ -70,7 +70,7 @@ class EmailConfirm extends Controller
 
             $target->update(['email_verify_token' => null, 'email_verified_at' => now()]);
 
-            return redirect()->route('email-confirmed');
+            // return redirect()->route('email-confirmed');
         }
 
         return redirect()->route('index');
