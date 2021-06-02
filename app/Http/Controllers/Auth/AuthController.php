@@ -12,6 +12,8 @@ use App\Models\Code;
 use App\Models\Items\FavoritesModel;
 use App\Models\Items\ItemsModel;
 
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -339,11 +341,69 @@ class AuthController extends Controller
             'instagram' => $instagramLink,
         ]);
 
-        $success = [
+        $status = [
             'success' => true
         ];
 
-        return response()->json($success, 200);
+        return response()->json($status, 200);
+        
+    }
+
+    /**
+     * * Method that sets user avatar
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function setAvatar(Request $request) {
+
+        $avatar = $request['avatar'];
+
+        $avatarSrc = Storage::put('public/avatars', $avatar);
+
+        $avatarSrcArray = explode('/', $avatarSrc);
+        
+        array_shift($avatarSrcArray);
+        array_unshift($avatarSrcArray, 'storage');
+
+        User::find(Auth::user()->id)->update([
+            'avatar' => '/' . implode('/', $avatarSrcArray)
+        ]);
+
+        $status = [
+            'success' => true
+        ];
+
+        return response()->json($status, 200);
+        
+    }
+
+    /**
+     * * Method that sets user banner
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function setBanner(Request $request) {
+
+        $banner = $request['banner'];
+
+        $bannerSrc = Storage::put('public/banners', $banner);
+
+        $bannerSrcArray = explode('/', $bannerSrc);
+        
+        array_shift($bannerSrcArray);
+        array_unshift($bannerSrcArray, 'storage');
+
+        User::find(Auth::user()->id)->update([
+            'banner' => '/' . implode('/', $bannerSrcArray)
+        ]);
+
+        $status = [
+            'success' => true
+        ];
+
+        return response()->json($status, 200);
         
     }
 

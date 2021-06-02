@@ -5104,7 +5104,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     eventsInit: function eventsInit() {
-      this.loaderContainer = document.querySelector('.avatar-upload__non-uploaded');
+      this.loaderContainer = document.querySelector('.avatar-upload__non-uploaded') || document.querySelector('.avatar-upload__uploaded-overflow');
       this.events.forEach(function (evt) {
         this.loaderContainer.addEventListener(evt, this.addDefaultEvent);
       }.bind(this));
@@ -5143,7 +5143,8 @@ __webpack_require__.r(__webpack_exports__);
         img.addEventListener('load', function () {
           // if (this.width >= 1920 && this.height >= 400) {
           vm.avatarSrc = reader.result;
-          vm.$emit('fileUpload', file); // } else {
+          vm.$emit('fileUpload', file);
+          vm.eventsInit(); // } else {
           //   vm.$root.showNotification({
           //     title: 'Изображение не соответствует минимальным размерам 1920×400',
           //     type: 'error'
@@ -6910,7 +6911,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     eventsInit: function eventsInit() {
-      this.loaderContainer = document.querySelector('.banner-upload__non-uploaded');
+      this.loaderContainer = document.querySelector('.banner-upload__non-uploaded') || document.querySelector('.banner-upload__uploaded-overflow');
       this.events.forEach(function (evt) {
         this.loaderContainer.addEventListener(evt, this.addDefaultEvent);
       }.bind(this));
@@ -8882,6 +8883,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -8896,8 +8898,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      banner: null,
-      avatar: null,
       social: {
         vkLink: '',
         facebookLink: '',
@@ -9054,10 +9054,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.post('/api/auth/set-user-socials', this.social);
     },
     avatarUpload: function avatarUpload(file) {
-      this.banner = file;
+      var formData = new FormData();
+      formData.append('avatar', file);
+      this.$http.post('/api/auth/set-user-avatar', formData);
     },
     bannerUpload: function bannerUpload(file) {
-      this.avatar = file;
+      var formData = new FormData();
+      formData.append('banner', file);
+      this.$http.post('/api/auth/set-user-banner', formData);
     }
   }
 });
@@ -37290,7 +37294,8 @@ var render = function() {
           { staticClass: "profile-settings__uploaders" },
           [
             _c("settings-banner-upload", {
-              attrs: { banner: _vm.user.banner }
+              attrs: { banner: _vm.user.banner },
+              on: { fileUpload: _vm.bannerUpload }
             }),
             _vm._v(" "),
             _c("avatar-upload", {

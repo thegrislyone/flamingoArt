@@ -76,3 +76,6 @@ Route::get('auth/get-users','App\Http\Controllers\Auth\AuthController@getUsers')
 Route::get('auth/ban-user','App\Http\Controllers\Auth\AuthController@banUser'); // ! USERS
 
 Route::post('auth/set-user-socials', 'App\Http\Controllers\Auth\AuthController@setSocials');
+
+Route::post('auth/set-user-avatar', 'App\Http\Controllers\Auth\AuthController@setAvatar');
+Route::post('auth/set-user-banner', 'App\Http\Controllers\Auth\AuthController@setBanner');

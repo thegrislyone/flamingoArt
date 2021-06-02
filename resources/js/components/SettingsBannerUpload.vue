@@ -136,7 +136,7 @@ export default {
   methods: {
     eventsInit() {
 
-      this.loaderContainer = document.querySelector('.banner-upload__non-uploaded')
+      this.loaderContainer = document.querySelector('.banner-upload__non-uploaded') || document.querySelector('.banner-upload__uploaded-overflow')
 
       this.events.forEach(function(evt) {
         this.loaderContainer.addEventListener(evt, this.addDefaultEvent)

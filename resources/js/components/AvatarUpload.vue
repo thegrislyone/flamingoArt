@@ -78,7 +78,7 @@ export default {
   methods: {
     eventsInit() {
 
-      this.loaderContainer = document.querySelector('.avatar-upload__non-uploaded')
+      this.loaderContainer = document.querySelector('.avatar-upload__non-uploaded') || document.querySelector('.avatar-upload__uploaded-overflow')
 
       this.events.forEach(function(evt) {
         this.loaderContainer.addEventListener(evt, this.addDefaultEvent)
@@ -133,6 +133,7 @@ export default {
 
             vm.avatarSrc = reader.result
             vm.$emit('fileUpload', file)
+            vm.eventsInit()
 
           // } else {
 

@@ -21,6 +21,7 @@
 
         <settings-banner-upload
           :banner="user.banner"
+          @fileUpload="bannerUpload"
         />
 
         <avatar-upload
@@ -233,9 +234,6 @@ export default {
   data() {
     return {
 
-      banner: null,
-      avatar: null,
-
       social: {
         vkLink: '',
         facebookLink: '',
@@ -419,10 +417,22 @@ export default {
 
     },
     avatarUpload(file) {
-      this.banner = file
+
+      let formData = new FormData()
+
+      formData.append('avatar', file)
+
+      this.$http.post('/api/auth/set-user-avatar', formData)
+
     },
     bannerUpload(file) {
-      this.avatar = file
+
+      let formData = new FormData()
+
+      formData.append('banner', file)
+
+      this.$http.post('/api/auth/set-user-banner', formData)
+
     }
   }
 }
