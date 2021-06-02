@@ -5831,7 +5831,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -7515,6 +7514,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     placeholder: {
@@ -7543,7 +7546,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     selectTag: function selectTag(tag) {
+      if (this.selectedTag == tag) {
+        this.unselectTag();
+        return;
+      }
+
       this.selectedTag = tag;
+    },
+    unselectTag: function unselectTag(tag) {
+      this.selectedTag = null;
     },
     addTag: function addTag(tag, key) {
       var _this2 = this;
@@ -9174,9 +9185,9 @@ __webpack_require__.r(__webpack_exports__);
     this.$http.get(url).then(function (response) {
       var data = response.data;
 
-      if (!data.success && 'errors' in data) {
+      if (!data.status && 'errors' in data) {
         _this.errors = data.errors;
-      } else if (data.success) {
+      } else if (data.status) {
         _this.data = data;
       }
     }).then(function () {
@@ -34458,55 +34469,42 @@ var render = function() {
         ),
         _vm._v(" "),
         !_vm.$isEmpty(_vm.user)
-          ? _c(
-              "div",
-              { staticClass: "header__icons-bar" },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "header__user-login",
-                    attrs: { to: "/profile" }
-                  },
-                  [
-                    _c("span", { staticClass: "header__user-login" }, [
-                      _vm._v(_vm._s(_vm.user.login))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "header__user" }, [
-                  _c(
-                    "div",
-                    { staticClass: "headet__user-avatar" },
-                    [
-                      _c("router-link", { attrs: { to: "/profile" } }, [
-                        _c("img", {
-                          attrs: {
-                            src:
-                              _vm.user.avatar ||
-                              "/assets/images/unknown-user.png",
-                            alt: ""
-                          }
-                        })
-                      ])
-                    ],
-                    1
-                  ),
+          ? _c("div", { staticClass: "header__icons-bar" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "user-area", on: { click: _vm.menuOpen } },
+                [
+                  _c("span", { staticClass: "header__user-login" }, [
+                    _vm._v(_vm._s(_vm.user.login))
+                  ]),
                   _vm._v(" "),
-                  _c("img", {
-                    staticClass: "header__user-menu",
-                    attrs: { src: "/assets/images/i-arrow_small.svg", alt: "" },
-                    on: { click: _vm.menuOpen }
-                  })
-                ])
-              ],
-              1
-            )
+                  _c("div", { staticClass: "header__user" }, [
+                    _c("div", { staticClass: "headet__user-avatar" }, [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            _vm.user.avatar ||
+                            "/assets/images/unknown-user.png",
+                          alt: ""
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("img", {
+                      staticClass: "header__user-menu",
+                      attrs: {
+                        src: "/assets/images/i-arrow_small.svg",
+                        alt: ""
+                      }
+                    })
+                  ])
+                ]
+              )
+            ])
           : _c("div", { staticClass: "sign-buttons" }, [
               _c(
                 "button",
@@ -36445,6 +36443,14 @@ var render = function() {
           return _c(
             "span",
             {
+              directives: [
+                {
+                  name: "click-outside",
+                  rawName: "v-click-outside",
+                  value: _vm.unselectTag,
+                  expression: "unselectTag"
+                }
+              ],
               key: key,
               staticClass: "tags-input__tag no-select pointer",
               class: {
@@ -37186,10 +37192,10 @@ var render = function() {
                               class: {
                                 "profile-tab_active":
                                   _vm.itemsMode == "my-items" &&
-                                  _vm.$store.getters.windowWidth < 1024,
+                                  _vm.$store.getters.windowWidth < 1366,
                                 btn:
                                   _vm.itemsMode == "my-items" &&
-                                  _vm.$store.getters.windowWidth > 1024
+                                  _vm.$store.getters.windowWidth > 1366
                               },
                               on: {
                                 click: function($event) {
@@ -37207,10 +37213,10 @@ var render = function() {
                               class: {
                                 "profile-tab_active":
                                   _vm.itemsMode == "favorites" &&
-                                  _vm.$store.getters.windowWidth < 1024,
+                                  _vm.$store.getters.windowWidth < 1366,
                                 btn:
                                   _vm.itemsMode == "favorites" &&
-                                  _vm.$store.getters.windowWidth > 1024
+                                  _vm.$store.getters.windowWidth > 1366
                               },
                               on: {
                                 click: function($event) {

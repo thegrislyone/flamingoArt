@@ -84,9 +84,9 @@ export default {
       .then(response => {
         const data = response.data
 
-        if (!data.success && 'errors' in data) {
+        if (!data.status && 'errors' in data) {
           this.errors = data.errors
-        } else if (data.success) {
+        } else if (data.status) {
           this.data = data
         }
 

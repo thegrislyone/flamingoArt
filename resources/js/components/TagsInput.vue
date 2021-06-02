@@ -13,6 +13,7 @@
           'tags-input__tag_selected': tag == selectedTag
         }"
         @click="selectTag(tag)"
+        v-click-outside="unselectTag"
       >
         {{ '#' + tag }}
       </span>
@@ -44,7 +45,10 @@
             :key="tag.id"
             class="tags-input__popular-tag"
           >
-            <span class="pointer no-select" @click="addTag(tag.name, key)">{{ '#' + tag.name }}</span>
+            <span 
+              class="pointer no-select" 
+              @click="addTag(tag.name, key)"
+            >{{ '#' + tag.name }}</span>
           </span>
         </div>
       </template>
@@ -83,7 +87,14 @@ export default {
   },
   methods: {
     selectTag(tag) {
+      if (this.selectedTag == tag) {
+        this.unselectTag()
+        return
+      }
       this.selectedTag = tag
+    },
+    unselectTag(tag) {
+      this.selectedTag = null
     },
     addTag(tag, key) {
 

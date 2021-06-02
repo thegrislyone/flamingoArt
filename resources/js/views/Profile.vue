@@ -91,16 +91,16 @@
             <span 
               class="profile-tab"
               :class="{
-                'profile-tab_active': itemsMode == 'my-items' && $store.getters.windowWidth < 1024,
-                'btn': itemsMode == 'my-items' && $store.getters.windowWidth > 1024
+                'profile-tab_active': itemsMode == 'my-items' && $store.getters.windowWidth < 1366,
+                'btn': itemsMode == 'my-items' && $store.getters.windowWidth > 1366
               }"
               @click="changeItems('my-items')"
             >Мои работы</span>
             <span 
               class="profile-tab"
               :class="{
-                'profile-tab_active': itemsMode == 'favorites' && $store.getters.windowWidth < 1024,
-                'btn': itemsMode == 'favorites' && $store.getters.windowWidth > 1024
+                'profile-tab_active': itemsMode == 'favorites' && $store.getters.windowWidth < 1366,
+                'btn': itemsMode == 'favorites' && $store.getters.windowWidth > 1366
               }"
               @click="changeItems('favorites')"
             >Избранное</span>

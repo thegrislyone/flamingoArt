@@ -175,27 +175,26 @@
           <img src="/assets/images/i-notification.svg" alt="">
         </div>
 
-        <router-link to="/profile" class="header__user-login">
+        <div class="user-area" @click="menuOpen">
+
           <span class="header__user-login">{{ user.login }}</span>
-        </router-link>
 
-        <div class="header__user">
+          <div class="header__user">
 
-          <div class="headet__user-avatar">
-            <router-link to="/profile">
+            <div class="headet__user-avatar">
               <img 
                 :src="user.avatar || '/assets/images/unknown-user.png'"
                 alt=""
               >
-            </router-link>
-          </div>
+            </div>
 
-          <img
-            class="header__user-menu"
-            src="/assets/images/i-arrow_small.svg"
-            alt=""
-            @click="menuOpen"
-          >
+            <img
+              class="header__user-menu"
+              src="/assets/images/i-arrow_small.svg"
+              alt=""
+            >
+
+          </div>
 
         </div>
         

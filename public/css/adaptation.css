@@ -115,10 +115,7 @@
 @media (min-width: 1024px) {
   
   /* PROFILE */
-  .profile-tab {
-    padding: 10px 32px 11px;
-    line-height: 19px;
-  }
+ 
   /* UPLOAD-ITEM */
   .upload-item {
     padding: 64px 192px;
@@ -242,6 +239,12 @@
   .profile-card__edit,
   .profile-card__nickname {
     order: 1;
+  }
+  .profile-tab {
+    padding: 6px 24px;
+    line-height: 19px;
+    border-radius: 20px;
+    font-size: 14px;
   }
   .profile-card__information {
     order: 2;
