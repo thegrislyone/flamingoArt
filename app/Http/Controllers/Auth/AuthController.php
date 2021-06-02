@@ -72,7 +72,10 @@ class AuthController extends Controller
                     'password' => Hash::make($request['password']),
                     'views' => 0,
                     'likes' => 0,
-                    'is_admin' => 1
+                    'is_admin' => 1,
+                    'email_changed_at' => now(),
+                    'password_changed_at' => now(),
+                    'login_changed_at' => now()
                 ]);
 
             } else {
@@ -83,7 +86,10 @@ class AuthController extends Controller
                     'login' => $request['login'],
                     'password' => Hash::make($request['password']),
                     'views' => 0,
-                    'likes' => 0
+                    'likes' => 0,
+                    'email_changed_at' => now(),
+                    'password_changed_at' => now(),
+                    'login_changed_at' => now()
                 ]);
 
             }
@@ -314,13 +320,41 @@ class AuthController extends Controller
     }
 
     /**
+     * * Method that sets user socials
+     * @param request - get parameters for this api-address
+     * * returns status
+    */
+
+    public function setSocials(Request $request) {
+
+        $vkLink = ($request['vkLink']) ? $request['vkLink'] : null;
+        $twitterLink = ($request['vkLink']) ? $request['twitterLink'] : null;
+        $instagramLink = ($request['instagramLink']) ? $request['instagramLink'] : null;
+        $facebookLink = ($request['facebookLink']) ? $request['facebookLink'] : null;
+
+        User::find(Auth::user()->id)->update([
+            'vkontakte' => $vkLink,
+            'facebook' => $facebookLink,
+            'twitter' => $twitterLink,
+            'instagram' => $instagramLink,
+        ]);
+
+        $success = [
+            'success' => true
+        ];
+
+        return response()->json($success, 200);
+        
+    }
+
+    /**
      * * Not-api method that packing user-info json-object
      * * returns user info
     */
 
     public function getUserInfo() {
         
-        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin');  // selecting user info
+        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
 
         /* get user favorites */
 

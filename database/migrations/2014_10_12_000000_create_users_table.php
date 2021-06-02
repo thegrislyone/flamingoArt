@@ -23,12 +23,19 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('vkontakte')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('login');
             $table->text('avatar')->nullable();
             $table->text('banner')->nullable();
             $table->integer('views');
             $table->integer('likes');
             $table->integer('banned')->nullable();
+            $table->timestamp('email_changed_at')->nullable();
+            $table->timestamp('password_changed_at')->nullable();
+            $table->timestamp('login_changed_at')->nullable();
         });
     }
 

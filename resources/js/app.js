@@ -11,6 +11,8 @@ import vClickOutside from 'v-click-outside'
 import VueCookies from 'vue-cookies'
 import VueLazyload from 'vue-lazyload'
 import { createPopper } from '@popperjs/core'
+import VueMoment from 'vue-moment'
+import VTooltip from 'v-tooltip'
 
 //properties
 import { empty, exist } from './properties/'
@@ -49,6 +51,8 @@ Vue.use(VueLazyload, {
     loading: '/assets/images/loader_70.gif',
     attempt: 1
   })
+Vue.use(VueMoment)
+Vue.use(VTooltip)
 
 const app = new Vue({
     el: '#app',

@@ -5072,7 +5072,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    avatar: String
+  },
   data: function data() {
     return {
       loaderContainer: null,
@@ -5082,6 +5098,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.eventsInit();
+  },
+  created: function created() {
+    this.avatarSrc = this.avatar;
   },
   methods: {
     eventsInit: function eventsInit() {
@@ -5122,15 +5141,14 @@ __webpack_require__.r(__webpack_exports__);
       reader.addEventListener("load", function () {
         var img = new Image();
         img.addEventListener('load', function () {
-          if (this.width >= 1920 && this.height >= 400) {
-            vm.avatarSrc = reader.result;
-            vm.$emit('fileUpload', file);
-          } else {
-            vm.$root.showNotification({
-              title: 'Изображение не соответствует минимальным размерам 1920×400',
-              type: 'error'
-            });
-          }
+          // if (this.width >= 1920 && this.height >= 400) {
+          vm.avatarSrc = reader.result;
+          vm.$emit('fileUpload', file); // } else {
+          //   vm.$root.showNotification({
+          //     title: 'Изображение не соответствует минимальным размерам 1920×400',
+          //     type: 'error'
+          //   })
+          // }
         });
         img.src = reader.result; // let data = new FormData()
         // data.append("file", file)
@@ -5142,10 +5160,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Confirmation.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Confirmation.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5186,37 +5204,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    item: Object
+    headline: String,
+    text: String,
+    resetButtonText: String,
+    confirmButtonText: String
   },
   mounted: function mounted() {
-    this.$modal.show('delete');
+    this.$modal.show('confirm');
   },
   methods: {
     close: function close() {
-      this.$modal.hide('delete');
-      this.$emit('close');
+      this.$modal.hide('confirm');
+      this.$emit('reset');
     },
-    deleteItem: function deleteItem() {
-      var _this = this;
-
-      var itemId = this.item.id;
-      var userId = this.$store.getters.user.id;
-      var url_string = window.location.origin + '/api/items/delete-item';
-      var url = new URL(url_string);
-      url.searchParams.set('item_id', itemId);
-      url.searchParams.set('request_from', userId);
-      this.$http["delete"](url.href).then(function (response) {
-        var data = response.data;
-
-        if (data.notification) {
-          _this.$router.push('/profile');
-
-          _this.$root.showNotification(data.notification);
-        }
-      });
+    clickReset: function clickReset() {
+      this.$emit('reset');
+    },
+    clickConfirm: function clickConfirm() {
+      this.$emit('apply');
     }
   }
 });
@@ -6841,13 +6848,62 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    banner: String
+  },
   data: function data() {
     return {
       loaderContainer: null,
       bannerSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
     };
+  },
+  created: function created() {
+    this.bannerSrc = this.banner;
   },
   mounted: function mounted() {
     this.eventsInit();
@@ -6907,6 +6963,63 @@ __webpack_require__.r(__webpack_exports__);
         // data.append("file", file)
       });
       reader.readAsDataURL(file);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      formType: ''
+    };
+  },
+  methods: {
+    showModal: function showModal(type) {
+      this.formType = type;
+      this.$modal.show('settingsForm');
     }
   }
 });
@@ -7663,7 +7776,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 /* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
 /* harmony import */ var _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/PurchaseConfirmation.vue */ "./resources/js/components/PurchaseConfirmation.vue");
-/* harmony import */ var _components_Delete_confirmation_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Delete-confirmation.vue */ "./resources/js/components/Delete-confirmation.vue");
+/* harmony import */ var _components_Confirmation_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Confirmation.vue */ "./resources/js/components/Confirmation.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -7829,7 +7946,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Tag: _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     PurchaseConfirmation: _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    DeleteConfirmation: _components_Delete_confirmation_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Confirmation: _components_Confirmation_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -7991,7 +8108,27 @@ __webpack_require__.r(__webpack_exports__);
       //   })
     },
     deleteItemHide: function deleteItemHide() {
+      this.$modal.hide('confirm');
       this.deletingProcess = false;
+    },
+    deleteItem: function deleteItem() {
+      var _this5 = this;
+
+      var itemId = this.item.id;
+      var userId = this.$store.getters.user.id;
+      var url_string = window.location.origin + '/api/items/delete-item';
+      var url = new URL(url_string);
+      url.searchParams.set('item_id', itemId);
+      url.searchParams.set('request_from', userId);
+      this.$http["delete"](url.href).then(function (response) {
+        var data = response.data;
+
+        if (data.notification) {
+          _this5.$router.push('/profile');
+
+          _this5.$root.showNotification(data.notification);
+        }
+      });
     }
   }
 });
@@ -8521,6 +8658,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SettingsBannerUpload_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/SettingsBannerUpload.vue */ "./resources/js/components/SettingsBannerUpload.vue");
 /* harmony import */ var _components_AvatarUpload_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AvatarUpload.vue */ "./resources/js/components/AvatarUpload.vue");
+/* harmony import */ var _components_Confirmation_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Confirmation.vue */ "./resources/js/components/Confirmation.vue");
+/* harmony import */ var _components_SettingsFormModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/SettingsFormModal.vue */ "./resources/js/components/SettingsFormModal.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__);
 //
 //
 //
@@ -8659,15 +8800,265 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     SettingsBannerUpload: _components_SettingsBannerUpload_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    AvatarUpload: _components_AvatarUpload_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    AvatarUpload: _components_AvatarUpload_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Confirmation: _components_Confirmation_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    SettingsFormModal: _components_SettingsFormModal_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      banner: null,
+      avatar: null,
+      social: {
+        vkLink: '',
+        facebookLink: '',
+        twitterLink: '',
+        instagramLink: ''
+      },
+      showConfirm: false,
+      activeConfirm: null,
+      activeConfirmType: '',
+      confirms: {
+        nickname: {
+          allowen: {
+            headline: 'Изменить никнейм?',
+            text: 'В следущий раз вы сможете изменить его через месяц.',
+            resetButtonText: 'Отмена',
+            confirmButtonText: 'Изменить'
+          },
+          notAllowen: {
+            headline: 'Действие невозможно',
+            text: "\u041C\u0435\u043D\u044F\u0442\u044C \u043D\u0438\u043A\u0435\u0439\u043C \u043C\u043E\u0436\u043D\u043E \u0440\u0430\u0437 \u0432  \u043C\u0435\u0441\u044F\u0446. \u0412 \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u0440\u0430\u0437 \u0432\u044B \u0438\u0437\u043C\u0435\u043D\u044F\u043B\u0438 \u0435\u0433\u043E ".concat(this.$moment(this.$store.getters.user.login_changed_at).format('DD.MM.YYYY')),
+            resetButtonText: 'Отмена',
+            confirmButtonText: 'Ок'
+          }
+        },
+        email: {
+          allowen: {
+            headline: 'Изменить почтовый ящик?',
+            text: 'В следущий раз вы сможете изменить его через месяц.',
+            resetButtonText: 'Отмена',
+            confirmButtonText: 'Изменить'
+          },
+          notAllowen: {
+            headline: 'Действие невозможно',
+            text: "\u041C\u0435\u043D\u044F\u0442\u044C \u043F\u0430\u0440\u043E\u043B\u044C \u043C\u043E\u0436\u043D\u043E \u0440\u0430\u0437 \u0432  \u043C\u0435\u0441\u044F\u0446. \u0412 \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u0440\u0430\u0437 \u0432\u044B \u0438\u0437\u043C\u0435\u043D\u044F\u043B\u0438 \u0435\u0433\u043E ".concat(this.$moment(this.$store.getters.user.password_changed_at).format('DD.MM.YYYY')),
+            resetButtonText: 'Отмена',
+            confirmButtonText: 'Ок'
+          }
+        },
+        password: {
+          allowen: {
+            headline: '',
+            text: '',
+            resetButtonText: '',
+            confirmButtonText: ''
+          },
+          notAllowen: {
+            headline: '',
+            text: '',
+            resetButtonText: '',
+            confirmButtonText: ''
+          }
+        },
+        auth: {
+          allowen: {
+            headline: '',
+            text: '',
+            resetButtonText: '',
+            confirmButtonText: ''
+          },
+          notAllowen: {
+            headline: '',
+            text: '',
+            resetButtonText: '',
+            confirmButtonText: ''
+          }
+        }
+      },
+      showError: false
+    };
+  },
+  validations: function validations() {
+    var form = {};
+
+    for (var index in this.social) {
+      var isLink = function isLink(value) {
+        return value.indexOf('https://') >= 0 || !value;
+      };
+
+      form[index] = {};
+      form[index]['linkValidator'] = isLink;
+    }
+
+    return {
+      social: form
+    };
+  },
+  computed: {
+    user: function user() {
+      return this.$store.getters.user;
+    }
+  },
+  created: function created() {
+    this.social['vkLink'] = this.user.vkontakte || '';
+    this.social['twitterLink'] = this.user.twitter || '';
+    this.social['facebookLink'] = this.user.facebook || '';
+    this.social['instagramLink'] = this.user.instagram || '';
+  },
+  methods: {
+    showConfirmAction: function showConfirmAction(type) {
+      this.activeConfirmType = type;
+
+      if (type == 'nickname') {
+        if (this.getIsAllowen('nickname')) {
+          this.activeConfirm = this.confirms.nickname.allowen;
+        } else {
+          this.activeConfirm = this.confirms.nickname.notAllowen;
+        }
+      } else if (type == 'email') {
+        if (this.getIsAllowen('email')) {
+          this.activeConfirm = this.confirms.email.allowen;
+        } else {
+          this.activeConfirm = this.confirms.email.notAllowen;
+        }
+      }
+
+      this.showConfirm = true;
+    },
+    getIsAllowen: function getIsAllowen(type) {
+      var now = new Date();
+      var updated;
+
+      if (type == 'nickname') {
+        updated = this.user.login_changed_at;
+      } else if (type == 'email') {
+        updated = this.user.email_changed_at;
+      } else if (type == 'password') {}
+
+      if (!updated) {
+        return true;
+      }
+
+      var updatedDate = new Date(updated);
+      return !!Math.floor(Math.abs(now.getTime() - updatedDate.getTime()) / (1000 * 3600 * 24 * 30));
+    },
+    confirmReset: function confirmReset() {
+      this.$modal.hide('confirm');
+      this.showConfirm = false;
+      this.activeConfirm = null;
+    },
+    confirmApply: function confirmApply() {
+      this.$modal.hide('confirm');
+      this.showConfirm = false;
+      this.activeConfirm = null;
+
+      if (this.activeConfirmType == 'nickname') {
+        this.$refs['formModal'].showModal('nickname');
+      }
+    },
+    socialUpdate: function socialUpdate() {
+      if (this.$v.social.$invalid) {
+        return;
+      }
+
+      this.$http.post('/api/auth/set-user-socials', this.social);
+    },
+    avatarUpload: function avatarUpload(file) {
+      this.banner = file;
+    },
+    bannerUpload: function bannerUpload(file) {
+      this.avatar = file;
+    }
   }
 });
 
@@ -10811,6 +11202,2636 @@ var scroll = shortcut('scroll');
 /* harmony default export */ __webpack_exports__["default"] = ($);
 
 
+
+/***/ }),
+
+/***/ "./node_modules/popper.js/dist/esm/popper.js":
+/*!***************************************************!*\
+  !*** ./node_modules/popper.js/dist/esm/popper.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/**!
+ * @fileOverview Kickass library to create and place poppers near their reference elements.
+ * @version 1.16.1
+ * @license
+ * Copyright (c) 2016 Federico Zivolo and contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof navigator !== 'undefined';
+
+var timeoutDuration = function () {
+  var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+  for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+    if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
+      return 1;
+    }
+  }
+  return 0;
+}();
+
+function microtaskDebounce(fn) {
+  var called = false;
+  return function () {
+    if (called) {
+      return;
+    }
+    called = true;
+    window.Promise.resolve().then(function () {
+      called = false;
+      fn();
+    });
+  };
+}
+
+function taskDebounce(fn) {
+  var scheduled = false;
+  return function () {
+    if (!scheduled) {
+      scheduled = true;
+      setTimeout(function () {
+        scheduled = false;
+        fn();
+      }, timeoutDuration);
+    }
+  };
+}
+
+var supportsMicroTasks = isBrowser && window.Promise;
+
+/**
+* Create a debounced version of a method, that's asynchronously deferred
+* but called in the minimum time possible.
+*
+* @method
+* @memberof Popper.Utils
+* @argument {Function} fn
+* @returns {Function}
+*/
+var debounce = supportsMicroTasks ? microtaskDebounce : taskDebounce;
+
+/**
+ * Check if the given variable is a function
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Any} functionToCheck - variable to check
+ * @returns {Boolean} answer to: is a function?
+ */
+function isFunction(functionToCheck) {
+  var getType = {};
+  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
+
+/**
+ * Get CSS computed property of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Eement} element
+ * @argument {String} property
+ */
+function getStyleComputedProperty(element, property) {
+  if (element.nodeType !== 1) {
+    return [];
+  }
+  // NOTE: 1 DOM access here
+  var window = element.ownerDocument.defaultView;
+  var css = window.getComputedStyle(element, null);
+  return property ? css[property] : css;
+}
+
+/**
+ * Returns the parentNode or the host of the element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} parent
+ */
+function getParentNode(element) {
+  if (element.nodeName === 'HTML') {
+    return element;
+  }
+  return element.parentNode || element.host;
+}
+
+/**
+ * Returns the scrolling parent of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} scroll parent
+ */
+function getScrollParent(element) {
+  // Return body, `getScroll` will take care to get the correct `scrollTop` from it
+  if (!element) {
+    return document.body;
+  }
+
+  switch (element.nodeName) {
+    case 'HTML':
+    case 'BODY':
+      return element.ownerDocument.body;
+    case '#document':
+      return element.body;
+  }
+
+  // Firefox want us to check `-x` and `-y` variations as well
+
+  var _getStyleComputedProp = getStyleComputedProperty(element),
+      overflow = _getStyleComputedProp.overflow,
+      overflowX = _getStyleComputedProp.overflowX,
+      overflowY = _getStyleComputedProp.overflowY;
+
+  if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
+    return element;
+  }
+
+  return getScrollParent(getParentNode(element));
+}
+
+/**
+ * Returns the reference node of the reference object, or the reference object itself.
+ * @method
+ * @memberof Popper.Utils
+ * @param {Element|Object} reference - the reference element (the popper will be relative to this)
+ * @returns {Element} parent
+ */
+function getReferenceNode(reference) {
+  return reference && reference.referenceNode ? reference.referenceNode : reference;
+}
+
+var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
+var isIE10 = isBrowser && /MSIE 10/.test(navigator.userAgent);
+
+/**
+ * Determines if the browser is Internet Explorer
+ * @method
+ * @memberof Popper.Utils
+ * @param {Number} version to check
+ * @returns {Boolean} isIE
+ */
+function isIE(version) {
+  if (version === 11) {
+    return isIE11;
+  }
+  if (version === 10) {
+    return isIE10;
+  }
+  return isIE11 || isIE10;
+}
+
+/**
+ * Returns the offset parent of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} offset parent
+ */
+function getOffsetParent(element) {
+  if (!element) {
+    return document.documentElement;
+  }
+
+  var noOffsetParent = isIE(10) ? document.body : null;
+
+  // NOTE: 1 DOM access here
+  var offsetParent = element.offsetParent || null;
+  // Skip hidden elements which don't have an offsetParent
+  while (offsetParent === noOffsetParent && element.nextElementSibling) {
+    offsetParent = (element = element.nextElementSibling).offsetParent;
+  }
+
+  var nodeName = offsetParent && offsetParent.nodeName;
+
+  if (!nodeName || nodeName === 'BODY' || nodeName === 'HTML') {
+    return element ? element.ownerDocument.documentElement : document.documentElement;
+  }
+
+  // .offsetParent will return the closest TH, TD or TABLE in case
+  // no offsetParent is present, I hate this job...
+  if (['TH', 'TD', 'TABLE'].indexOf(offsetParent.nodeName) !== -1 && getStyleComputedProperty(offsetParent, 'position') === 'static') {
+    return getOffsetParent(offsetParent);
+  }
+
+  return offsetParent;
+}
+
+function isOffsetContainer(element) {
+  var nodeName = element.nodeName;
+
+  if (nodeName === 'BODY') {
+    return false;
+  }
+  return nodeName === 'HTML' || getOffsetParent(element.firstElementChild) === element;
+}
+
+/**
+ * Finds the root node (document, shadowDOM root) of the given element
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} node
+ * @returns {Element} root node
+ */
+function getRoot(node) {
+  if (node.parentNode !== null) {
+    return getRoot(node.parentNode);
+  }
+
+  return node;
+}
+
+/**
+ * Finds the offset parent common to the two provided nodes
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element1
+ * @argument {Element} element2
+ * @returns {Element} common offset parent
+ */
+function findCommonOffsetParent(element1, element2) {
+  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  if (!element1 || !element1.nodeType || !element2 || !element2.nodeType) {
+    return document.documentElement;
+  }
+
+  // Here we make sure to give as "start" the element that comes first in the DOM
+  var order = element1.compareDocumentPosition(element2) & Node.DOCUMENT_POSITION_FOLLOWING;
+  var start = order ? element1 : element2;
+  var end = order ? element2 : element1;
+
+  // Get common ancestor container
+  var range = document.createRange();
+  range.setStart(start, 0);
+  range.setEnd(end, 0);
+  var commonAncestorContainer = range.commonAncestorContainer;
+
+  // Both nodes are inside #document
+
+  if (element1 !== commonAncestorContainer && element2 !== commonAncestorContainer || start.contains(end)) {
+    if (isOffsetContainer(commonAncestorContainer)) {
+      return commonAncestorContainer;
+    }
+
+    return getOffsetParent(commonAncestorContainer);
+  }
+
+  // one of the nodes is inside shadowDOM, find which one
+  var element1root = getRoot(element1);
+  if (element1root.host) {
+    return findCommonOffsetParent(element1root.host, element2);
+  } else {
+    return findCommonOffsetParent(element1, getRoot(element2).host);
+  }
+}
+
+/**
+ * Gets the scroll value of the given element in the given side (top and left)
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @argument {String} side `top` or `left`
+ * @returns {number} amount of scrolled pixels
+ */
+function getScroll(element) {
+  var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
+
+  var upperSide = side === 'top' ? 'scrollTop' : 'scrollLeft';
+  var nodeName = element.nodeName;
+
+  if (nodeName === 'BODY' || nodeName === 'HTML') {
+    var html = element.ownerDocument.documentElement;
+    var scrollingElement = element.ownerDocument.scrollingElement || html;
+    return scrollingElement[upperSide];
+  }
+
+  return element[upperSide];
+}
+
+/*
+ * Sum or subtract the element scroll values (left and top) from a given rect object
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} rect - Rect object you want to change
+ * @param {HTMLElement} element - The element from the function reads the scroll values
+ * @param {Boolean} subtract - set to true if you want to subtract the scroll values
+ * @return {Object} rect - The modifier rect object
+ */
+function includeScroll(rect, element) {
+  var subtract = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  var scrollTop = getScroll(element, 'top');
+  var scrollLeft = getScroll(element, 'left');
+  var modifier = subtract ? -1 : 1;
+  rect.top += scrollTop * modifier;
+  rect.bottom += scrollTop * modifier;
+  rect.left += scrollLeft * modifier;
+  rect.right += scrollLeft * modifier;
+  return rect;
+}
+
+/*
+ * Helper to detect borders of a given element
+ * @method
+ * @memberof Popper.Utils
+ * @param {CSSStyleDeclaration} styles
+ * Result of `getStyleComputedProperty` on the given element
+ * @param {String} axis - `x` or `y`
+ * @return {number} borders - The borders size of the given axis
+ */
+
+function getBordersSize(styles, axis) {
+  var sideA = axis === 'x' ? 'Left' : 'Top';
+  var sideB = sideA === 'Left' ? 'Right' : 'Bottom';
+
+  return parseFloat(styles['border' + sideA + 'Width']) + parseFloat(styles['border' + sideB + 'Width']);
+}
+
+function getSize(axis, body, html, computedStyle) {
+  return Math.max(body['offset' + axis], body['scroll' + axis], html['client' + axis], html['offset' + axis], html['scroll' + axis], isIE(10) ? parseInt(html['offset' + axis]) + parseInt(computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')]) + parseInt(computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')]) : 0);
+}
+
+function getWindowSizes(document) {
+  var body = document.body;
+  var html = document.documentElement;
+  var computedStyle = isIE(10) && getComputedStyle(html);
+
+  return {
+    height: getSize('Height', body, html, computedStyle),
+    width: getSize('Width', body, html, computedStyle)
+  };
+}
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+/**
+ * Given element offsets, generate an output similar to getBoundingClientRect
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Object} offsets
+ * @returns {Object} ClientRect like output
+ */
+function getClientRect(offsets) {
+  return _extends({}, offsets, {
+    right: offsets.left + offsets.width,
+    bottom: offsets.top + offsets.height
+  });
+}
+
+/**
+ * Get bounding client rect of given element
+ * @method
+ * @memberof Popper.Utils
+ * @param {HTMLElement} element
+ * @return {Object} client rect
+ */
+function getBoundingClientRect(element) {
+  var rect = {};
+
+  // IE10 10 FIX: Please, don't ask, the element isn't
+  // considered in DOM in some circumstances...
+  // This isn't reproducible in IE10 compatibility mode of IE11
+  try {
+    if (isIE(10)) {
+      rect = element.getBoundingClientRect();
+      var scrollTop = getScroll(element, 'top');
+      var scrollLeft = getScroll(element, 'left');
+      rect.top += scrollTop;
+      rect.left += scrollLeft;
+      rect.bottom += scrollTop;
+      rect.right += scrollLeft;
+    } else {
+      rect = element.getBoundingClientRect();
+    }
+  } catch (e) {}
+
+  var result = {
+    left: rect.left,
+    top: rect.top,
+    width: rect.right - rect.left,
+    height: rect.bottom - rect.top
+  };
+
+  // subtract scrollbar size from sizes
+  var sizes = element.nodeName === 'HTML' ? getWindowSizes(element.ownerDocument) : {};
+  var width = sizes.width || element.clientWidth || result.width;
+  var height = sizes.height || element.clientHeight || result.height;
+
+  var horizScrollbar = element.offsetWidth - width;
+  var vertScrollbar = element.offsetHeight - height;
+
+  // if an hypothetical scrollbar is detected, we must be sure it's not a `border`
+  // we make this check conditional for performance reasons
+  if (horizScrollbar || vertScrollbar) {
+    var styles = getStyleComputedProperty(element);
+    horizScrollbar -= getBordersSize(styles, 'x');
+    vertScrollbar -= getBordersSize(styles, 'y');
+
+    result.width -= horizScrollbar;
+    result.height -= vertScrollbar;
+  }
+
+  return getClientRect(result);
+}
+
+function getOffsetRectRelativeToArbitraryNode(children, parent) {
+  var fixedPosition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  var isIE10 = isIE(10);
+  var isHTML = parent.nodeName === 'HTML';
+  var childrenRect = getBoundingClientRect(children);
+  var parentRect = getBoundingClientRect(parent);
+  var scrollParent = getScrollParent(children);
+
+  var styles = getStyleComputedProperty(parent);
+  var borderTopWidth = parseFloat(styles.borderTopWidth);
+  var borderLeftWidth = parseFloat(styles.borderLeftWidth);
+
+  // In cases where the parent is fixed, we must ignore negative scroll in offset calc
+  if (fixedPosition && isHTML) {
+    parentRect.top = Math.max(parentRect.top, 0);
+    parentRect.left = Math.max(parentRect.left, 0);
+  }
+  var offsets = getClientRect({
+    top: childrenRect.top - parentRect.top - borderTopWidth,
+    left: childrenRect.left - parentRect.left - borderLeftWidth,
+    width: childrenRect.width,
+    height: childrenRect.height
+  });
+  offsets.marginTop = 0;
+  offsets.marginLeft = 0;
+
+  // Subtract margins of documentElement in case it's being used as parent
+  // we do this only on HTML because it's the only element that behaves
+  // differently when margins are applied to it. The margins are included in
+  // the box of the documentElement, in the other cases not.
+  if (!isIE10 && isHTML) {
+    var marginTop = parseFloat(styles.marginTop);
+    var marginLeft = parseFloat(styles.marginLeft);
+
+    offsets.top -= borderTopWidth - marginTop;
+    offsets.bottom -= borderTopWidth - marginTop;
+    offsets.left -= borderLeftWidth - marginLeft;
+    offsets.right -= borderLeftWidth - marginLeft;
+
+    // Attach marginTop and marginLeft because in some circumstances we may need them
+    offsets.marginTop = marginTop;
+    offsets.marginLeft = marginLeft;
+  }
+
+  if (isIE10 && !fixedPosition ? parent.contains(scrollParent) : parent === scrollParent && scrollParent.nodeName !== 'BODY') {
+    offsets = includeScroll(offsets, parent);
+  }
+
+  return offsets;
+}
+
+function getViewportOffsetRectRelativeToArtbitraryNode(element) {
+  var excludeScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var html = element.ownerDocument.documentElement;
+  var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
+  var width = Math.max(html.clientWidth, window.innerWidth || 0);
+  var height = Math.max(html.clientHeight, window.innerHeight || 0);
+
+  var scrollTop = !excludeScroll ? getScroll(html) : 0;
+  var scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
+
+  var offset = {
+    top: scrollTop - relativeOffset.top + relativeOffset.marginTop,
+    left: scrollLeft - relativeOffset.left + relativeOffset.marginLeft,
+    width: width,
+    height: height
+  };
+
+  return getClientRect(offset);
+}
+
+/**
+ * Check if the given element is fixed or is inside a fixed parent
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @argument {Element} customContainer
+ * @returns {Boolean} answer to "isFixed?"
+ */
+function isFixed(element) {
+  var nodeName = element.nodeName;
+  if (nodeName === 'BODY' || nodeName === 'HTML') {
+    return false;
+  }
+  if (getStyleComputedProperty(element, 'position') === 'fixed') {
+    return true;
+  }
+  var parentNode = getParentNode(element);
+  if (!parentNode) {
+    return false;
+  }
+  return isFixed(parentNode);
+}
+
+/**
+ * Finds the first parent of an element that has a transformed property defined
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Element} first transformed parent or documentElement
+ */
+
+function getFixedPositionOffsetParent(element) {
+  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  if (!element || !element.parentElement || isIE()) {
+    return document.documentElement;
+  }
+  var el = element.parentElement;
+  while (el && getStyleComputedProperty(el, 'transform') === 'none') {
+    el = el.parentElement;
+  }
+  return el || document.documentElement;
+}
+
+/**
+ * Computed the boundaries limits and return them
+ * @method
+ * @memberof Popper.Utils
+ * @param {HTMLElement} popper
+ * @param {HTMLElement} reference
+ * @param {number} padding
+ * @param {HTMLElement} boundariesElement - Element used to define the boundaries
+ * @param {Boolean} fixedPosition - Is in fixed position mode
+ * @returns {Object} Coordinates of the boundaries
+ */
+function getBoundaries(popper, reference, padding, boundariesElement) {
+  var fixedPosition = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+  // NOTE: 1 DOM access here
+
+  var boundaries = { top: 0, left: 0 };
+  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+
+  // Handle viewport case
+  if (boundariesElement === 'viewport') {
+    boundaries = getViewportOffsetRectRelativeToArtbitraryNode(offsetParent, fixedPosition);
+  } else {
+    // Handle other cases based on DOM element used as boundaries
+    var boundariesNode = void 0;
+    if (boundariesElement === 'scrollParent') {
+      boundariesNode = getScrollParent(getParentNode(reference));
+      if (boundariesNode.nodeName === 'BODY') {
+        boundariesNode = popper.ownerDocument.documentElement;
+      }
+    } else if (boundariesElement === 'window') {
+      boundariesNode = popper.ownerDocument.documentElement;
+    } else {
+      boundariesNode = boundariesElement;
+    }
+
+    var offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent, fixedPosition);
+
+    // In case of HTML, we need a different computation
+    if (boundariesNode.nodeName === 'HTML' && !isFixed(offsetParent)) {
+      var _getWindowSizes = getWindowSizes(popper.ownerDocument),
+          height = _getWindowSizes.height,
+          width = _getWindowSizes.width;
+
+      boundaries.top += offsets.top - offsets.marginTop;
+      boundaries.bottom = height + offsets.top;
+      boundaries.left += offsets.left - offsets.marginLeft;
+      boundaries.right = width + offsets.left;
+    } else {
+      // for all the other DOM elements, this one is good
+      boundaries = offsets;
+    }
+  }
+
+  // Add paddings
+  padding = padding || 0;
+  var isPaddingNumber = typeof padding === 'number';
+  boundaries.left += isPaddingNumber ? padding : padding.left || 0;
+  boundaries.top += isPaddingNumber ? padding : padding.top || 0;
+  boundaries.right -= isPaddingNumber ? padding : padding.right || 0;
+  boundaries.bottom -= isPaddingNumber ? padding : padding.bottom || 0;
+
+  return boundaries;
+}
+
+function getArea(_ref) {
+  var width = _ref.width,
+      height = _ref.height;
+
+  return width * height;
+}
+
+/**
+ * Utility used to transform the `auto` placement to the placement with more
+ * available space.
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function computeAutoPlacement(placement, refRect, popper, reference, boundariesElement) {
+  var padding = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+
+  if (placement.indexOf('auto') === -1) {
+    return placement;
+  }
+
+  var boundaries = getBoundaries(popper, reference, padding, boundariesElement);
+
+  var rects = {
+    top: {
+      width: boundaries.width,
+      height: refRect.top - boundaries.top
+    },
+    right: {
+      width: boundaries.right - refRect.right,
+      height: boundaries.height
+    },
+    bottom: {
+      width: boundaries.width,
+      height: boundaries.bottom - refRect.bottom
+    },
+    left: {
+      width: refRect.left - boundaries.left,
+      height: boundaries.height
+    }
+  };
+
+  var sortedAreas = Object.keys(rects).map(function (key) {
+    return _extends({
+      key: key
+    }, rects[key], {
+      area: getArea(rects[key])
+    });
+  }).sort(function (a, b) {
+    return b.area - a.area;
+  });
+
+  var filteredAreas = sortedAreas.filter(function (_ref2) {
+    var width = _ref2.width,
+        height = _ref2.height;
+    return width >= popper.clientWidth && height >= popper.clientHeight;
+  });
+
+  var computedPlacement = filteredAreas.length > 0 ? filteredAreas[0].key : sortedAreas[0].key;
+
+  var variation = placement.split('-')[1];
+
+  return computedPlacement + (variation ? '-' + variation : '');
+}
+
+/**
+ * Get offsets to the reference element
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} state
+ * @param {Element} popper - the popper element
+ * @param {Element} reference - the reference element (the popper will be relative to this)
+ * @param {Element} fixedPosition - is in fixed position mode
+ * @returns {Object} An object containing the offsets which will be applied to the popper
+ */
+function getReferenceOffsets(state, popper, reference) {
+  var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
+}
+
+/**
+ * Get the outer sizes of the given element (offset size + margins)
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element
+ * @returns {Object} object containing width and height properties
+ */
+function getOuterSizes(element) {
+  var window = element.ownerDocument.defaultView;
+  var styles = window.getComputedStyle(element);
+  var x = parseFloat(styles.marginTop || 0) + parseFloat(styles.marginBottom || 0);
+  var y = parseFloat(styles.marginLeft || 0) + parseFloat(styles.marginRight || 0);
+  var result = {
+    width: element.offsetWidth + y,
+    height: element.offsetHeight + x
+  };
+  return result;
+}
+
+/**
+ * Get the opposite placement of the given one
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement
+ * @returns {String} flipped placement
+ */
+function getOppositePlacement(placement) {
+  var hash = { left: 'right', right: 'left', bottom: 'top', top: 'bottom' };
+  return placement.replace(/left|right|bottom|top/g, function (matched) {
+    return hash[matched];
+  });
+}
+
+/**
+ * Get offsets to the popper
+ * @method
+ * @memberof Popper.Utils
+ * @param {Object} position - CSS position the Popper will get applied
+ * @param {HTMLElement} popper - the popper element
+ * @param {Object} referenceOffsets - the reference offsets (the popper will be relative to this)
+ * @param {String} placement - one of the valid placement options
+ * @returns {Object} popperOffsets - An object containing the offsets which will be applied to the popper
+ */
+function getPopperOffsets(popper, referenceOffsets, placement) {
+  placement = placement.split('-')[0];
+
+  // Get popper node sizes
+  var popperRect = getOuterSizes(popper);
+
+  // Add position, width and height to our offsets object
+  var popperOffsets = {
+    width: popperRect.width,
+    height: popperRect.height
+  };
+
+  // depending by the popper placement we have to compute its offsets slightly differently
+  var isHoriz = ['right', 'left'].indexOf(placement) !== -1;
+  var mainSide = isHoriz ? 'top' : 'left';
+  var secondarySide = isHoriz ? 'left' : 'top';
+  var measurement = isHoriz ? 'height' : 'width';
+  var secondaryMeasurement = !isHoriz ? 'height' : 'width';
+
+  popperOffsets[mainSide] = referenceOffsets[mainSide] + referenceOffsets[measurement] / 2 - popperRect[measurement] / 2;
+  if (placement === secondarySide) {
+    popperOffsets[secondarySide] = referenceOffsets[secondarySide] - popperRect[secondaryMeasurement];
+  } else {
+    popperOffsets[secondarySide] = referenceOffsets[getOppositePlacement(secondarySide)];
+  }
+
+  return popperOffsets;
+}
+
+/**
+ * Mimics the `find` method of Array
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Array} arr
+ * @argument prop
+ * @argument value
+ * @returns index or -1
+ */
+function find(arr, check) {
+  // use native find if supported
+  if (Array.prototype.find) {
+    return arr.find(check);
+  }
+
+  // use `filter` to obtain the same behavior of `find`
+  return arr.filter(check)[0];
+}
+
+/**
+ * Return the index of the matching object
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Array} arr
+ * @argument prop
+ * @argument value
+ * @returns index or -1
+ */
+function findIndex(arr, prop, value) {
+  // use native findIndex if supported
+  if (Array.prototype.findIndex) {
+    return arr.findIndex(function (cur) {
+      return cur[prop] === value;
+    });
+  }
+
+  // use `find` + `indexOf` if `findIndex` isn't supported
+  var match = find(arr, function (obj) {
+    return obj[prop] === value;
+  });
+  return arr.indexOf(match);
+}
+
+/**
+ * Loop trough the list of modifiers and run them in order,
+ * each of them will then edit the data object.
+ * @method
+ * @memberof Popper.Utils
+ * @param {dataObject} data
+ * @param {Array} modifiers
+ * @param {String} ends - Optional modifier name used as stopper
+ * @returns {dataObject}
+ */
+function runModifiers(modifiers, data, ends) {
+  var modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
+
+  modifiersToRun.forEach(function (modifier) {
+    if (modifier['function']) {
+      // eslint-disable-line dot-notation
+      console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
+    }
+    var fn = modifier['function'] || modifier.fn; // eslint-disable-line dot-notation
+    if (modifier.enabled && isFunction(fn)) {
+      // Add properties to offsets to make them a complete clientRect object
+      // we do this before each modifier to make sure the previous one doesn't
+      // mess with these values
+      data.offsets.popper = getClientRect(data.offsets.popper);
+      data.offsets.reference = getClientRect(data.offsets.reference);
+
+      data = fn(data, modifier);
+    }
+  });
+
+  return data;
+}
+
+/**
+ * Updates the position of the popper, computing the new offsets and applying
+ * the new style.<br />
+ * Prefer `scheduleUpdate` over `update` because of performance reasons.
+ * @method
+ * @memberof Popper
+ */
+function update() {
+  // if popper is destroyed, don't perform any further update
+  if (this.state.isDestroyed) {
+    return;
+  }
+
+  var data = {
+    instance: this,
+    styles: {},
+    arrowStyles: {},
+    attributes: {},
+    flipped: false,
+    offsets: {}
+  };
+
+  // compute reference element offsets
+  data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference, this.options.positionFixed);
+
+  // compute auto placement, store placement inside the data object,
+  // modifiers will be able to edit `placement` if needed
+  // and refer to originalPlacement to know the original value
+  data.placement = computeAutoPlacement(this.options.placement, data.offsets.reference, this.popper, this.reference, this.options.modifiers.flip.boundariesElement, this.options.modifiers.flip.padding);
+
+  // store the computed placement inside `originalPlacement`
+  data.originalPlacement = data.placement;
+
+  data.positionFixed = this.options.positionFixed;
+
+  // compute the popper offsets
+  data.offsets.popper = getPopperOffsets(this.popper, data.offsets.reference, data.placement);
+
+  data.offsets.popper.position = this.options.positionFixed ? 'fixed' : 'absolute';
+
+  // run the modifiers
+  data = runModifiers(this.modifiers, data);
+
+  // the first `update` will call `onCreate` callback
+  // the other ones will call `onUpdate` callback
+  if (!this.state.isCreated) {
+    this.state.isCreated = true;
+    this.options.onCreate(data);
+  } else {
+    this.options.onUpdate(data);
+  }
+}
+
+/**
+ * Helper used to know if the given modifier is enabled.
+ * @method
+ * @memberof Popper.Utils
+ * @returns {Boolean}
+ */
+function isModifierEnabled(modifiers, modifierName) {
+  return modifiers.some(function (_ref) {
+    var name = _ref.name,
+        enabled = _ref.enabled;
+    return enabled && name === modifierName;
+  });
+}
+
+/**
+ * Get the prefixed supported property name
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} property (camelCase)
+ * @returns {String} prefixed property (camelCase or PascalCase, depending on the vendor prefix)
+ */
+function getSupportedPropertyName(property) {
+  var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
+  var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
+
+  for (var i = 0; i < prefixes.length; i++) {
+    var prefix = prefixes[i];
+    var toCheck = prefix ? '' + prefix + upperProp : property;
+    if (typeof document.body.style[toCheck] !== 'undefined') {
+      return toCheck;
+    }
+  }
+  return null;
+}
+
+/**
+ * Destroys the popper.
+ * @method
+ * @memberof Popper
+ */
+function destroy() {
+  this.state.isDestroyed = true;
+
+  // touch DOM only if `applyStyle` modifier is enabled
+  if (isModifierEnabled(this.modifiers, 'applyStyle')) {
+    this.popper.removeAttribute('x-placement');
+    this.popper.style.position = '';
+    this.popper.style.top = '';
+    this.popper.style.left = '';
+    this.popper.style.right = '';
+    this.popper.style.bottom = '';
+    this.popper.style.willChange = '';
+    this.popper.style[getSupportedPropertyName('transform')] = '';
+  }
+
+  this.disableEventListeners();
+
+  // remove the popper if user explicitly asked for the deletion on destroy
+  // do not use `remove` because IE11 doesn't support it
+  if (this.options.removeOnDestroy) {
+    this.popper.parentNode.removeChild(this.popper);
+  }
+  return this;
+}
+
+/**
+ * Get the window associated with the element
+ * @argument {Element} element
+ * @returns {Window}
+ */
+function getWindow(element) {
+  var ownerDocument = element.ownerDocument;
+  return ownerDocument ? ownerDocument.defaultView : window;
+}
+
+function attachToScrollParents(scrollParent, event, callback, scrollParents) {
+  var isBody = scrollParent.nodeName === 'BODY';
+  var target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
+  target.addEventListener(event, callback, { passive: true });
+
+  if (!isBody) {
+    attachToScrollParents(getScrollParent(target.parentNode), event, callback, scrollParents);
+  }
+  scrollParents.push(target);
+}
+
+/**
+ * Setup needed event listeners used to update the popper position
+ * @method
+ * @memberof Popper.Utils
+ * @private
+ */
+function setupEventListeners(reference, options, state, updateBound) {
+  // Resize event listener on window
+  state.updateBound = updateBound;
+  getWindow(reference).addEventListener('resize', state.updateBound, { passive: true });
+
+  // Scroll event listener on scroll parents
+  var scrollElement = getScrollParent(reference);
+  attachToScrollParents(scrollElement, 'scroll', state.updateBound, state.scrollParents);
+  state.scrollElement = scrollElement;
+  state.eventsEnabled = true;
+
+  return state;
+}
+
+/**
+ * It will add resize/scroll events and start recalculating
+ * position of the popper element when they are triggered.
+ * @method
+ * @memberof Popper
+ */
+function enableEventListeners() {
+  if (!this.state.eventsEnabled) {
+    this.state = setupEventListeners(this.reference, this.options, this.state, this.scheduleUpdate);
+  }
+}
+
+/**
+ * Remove event listeners used to update the popper position
+ * @method
+ * @memberof Popper.Utils
+ * @private
+ */
+function removeEventListeners(reference, state) {
+  // Remove resize event listener on window
+  getWindow(reference).removeEventListener('resize', state.updateBound);
+
+  // Remove scroll event listener on scroll parents
+  state.scrollParents.forEach(function (target) {
+    target.removeEventListener('scroll', state.updateBound);
+  });
+
+  // Reset state
+  state.updateBound = null;
+  state.scrollParents = [];
+  state.scrollElement = null;
+  state.eventsEnabled = false;
+  return state;
+}
+
+/**
+ * It will remove resize/scroll events and won't recalculate popper position
+ * when they are triggered. It also won't trigger `onUpdate` callback anymore,
+ * unless you call `update` method manually.
+ * @method
+ * @memberof Popper
+ */
+function disableEventListeners() {
+  if (this.state.eventsEnabled) {
+    cancelAnimationFrame(this.scheduleUpdate);
+    this.state = removeEventListeners(this.reference, this.state);
+  }
+}
+
+/**
+ * Tells if a given input is a number
+ * @method
+ * @memberof Popper.Utils
+ * @param {*} input to check
+ * @return {Boolean}
+ */
+function isNumeric(n) {
+  return n !== '' && !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+/**
+ * Set the style to the given popper
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element - Element to apply the style to
+ * @argument {Object} styles
+ * Object with a list of properties and values which will be applied to the element
+ */
+function setStyles(element, styles) {
+  Object.keys(styles).forEach(function (prop) {
+    var unit = '';
+    // add unit if the value is numeric and is one of the following
+    if (['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !== -1 && isNumeric(styles[prop])) {
+      unit = 'px';
+    }
+    element.style[prop] = styles[prop] + unit;
+  });
+}
+
+/**
+ * Set the attributes to the given popper
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Element} element - Element to apply the attributes to
+ * @argument {Object} styles
+ * Object with a list of properties and values which will be applied to the element
+ */
+function setAttributes(element, attributes) {
+  Object.keys(attributes).forEach(function (prop) {
+    var value = attributes[prop];
+    if (value !== false) {
+      element.setAttribute(prop, attributes[prop]);
+    } else {
+      element.removeAttribute(prop);
+    }
+  });
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} data.styles - List of style properties - values to apply to popper element
+ * @argument {Object} data.attributes - List of attribute properties - values to apply to popper element
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The same data object
+ */
+function applyStyle(data) {
+  // any property present in `data.styles` will be applied to the popper,
+  // in this way we can make the 3rd party modifiers add custom styles to it
+  // Be aware, modifiers could override the properties defined in the previous
+  // lines of this modifier!
+  setStyles(data.instance.popper, data.styles);
+
+  // any property present in `data.attributes` will be applied to the popper,
+  // they will be set as HTML attributes of the element
+  setAttributes(data.instance.popper, data.attributes);
+
+  // if arrowElement is defined and arrowStyles has some properties
+  if (data.arrowElement && Object.keys(data.arrowStyles).length) {
+    setStyles(data.arrowElement, data.arrowStyles);
+  }
+
+  return data;
+}
+
+/**
+ * Set the x-placement attribute before everything else because it could be used
+ * to add margins to the popper margins needs to be calculated to get the
+ * correct popper offsets.
+ * @method
+ * @memberof Popper.modifiers
+ * @param {HTMLElement} reference - The reference element used to position the popper
+ * @param {HTMLElement} popper - The HTML element used as popper
+ * @param {Object} options - Popper.js options
+ */
+function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
+  // compute reference element offsets
+  var referenceOffsets = getReferenceOffsets(state, popper, reference, options.positionFixed);
+
+  // compute auto placement, store placement inside the data object,
+  // modifiers will be able to edit `placement` if needed
+  // and refer to originalPlacement to know the original value
+  var placement = computeAutoPlacement(options.placement, referenceOffsets, popper, reference, options.modifiers.flip.boundariesElement, options.modifiers.flip.padding);
+
+  popper.setAttribute('x-placement', placement);
+
+  // Apply `position` to popper before anything else because
+  // without the position applied we can't guarantee correct computations
+  setStyles(popper, { position: options.positionFixed ? 'fixed' : 'absolute' });
+
+  return options;
+}
+
+/**
+ * @function
+ * @memberof Popper.Utils
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Boolean} shouldRound - If the offsets should be rounded at all
+ * @returns {Object} The popper's position offsets rounded
+ *
+ * The tale of pixel-perfect positioning. It's still not 100% perfect, but as
+ * good as it can be within reason.
+ * Discussion here: https://github.com/FezVrasta/popper.js/pull/715
+ *
+ * Low DPI screens cause a popper to be blurry if not using full pixels (Safari
+ * as well on High DPI screens).
+ *
+ * Firefox prefers no rounding for positioning and does not have blurriness on
+ * high DPI screens.
+ *
+ * Only horizontal placement and left/right values need to be considered.
+ */
+function getRoundedOffsets(data, shouldRound) {
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+  var round = Math.round,
+      floor = Math.floor;
+
+  var noRound = function noRound(v) {
+    return v;
+  };
+
+  var referenceWidth = round(reference.width);
+  var popperWidth = round(popper.width);
+
+  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
+  var isVariation = data.placement.indexOf('-') !== -1;
+  var sameWidthParity = referenceWidth % 2 === popperWidth % 2;
+  var bothOddWidth = referenceWidth % 2 === 1 && popperWidth % 2 === 1;
+
+  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthParity ? round : floor;
+  var verticalToInteger = !shouldRound ? noRound : round;
+
+  return {
+    left: horizontalToInteger(bothOddWidth && !isVariation && shouldRound ? popper.left - 1 : popper.left),
+    top: verticalToInteger(popper.top),
+    bottom: verticalToInteger(popper.bottom),
+    right: horizontalToInteger(popper.right)
+  };
+}
+
+var isFirefox = isBrowser && /Firefox/i.test(navigator.userAgent);
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function computeStyle(data, options) {
+  var x = options.x,
+      y = options.y;
+  var popper = data.offsets.popper;
+
+  // Remove this legacy support in Popper.js v2
+
+  var legacyGpuAccelerationOption = find(data.instance.modifiers, function (modifier) {
+    return modifier.name === 'applyStyle';
+  }).gpuAcceleration;
+  if (legacyGpuAccelerationOption !== undefined) {
+    console.warn('WARNING: `gpuAcceleration` option moved to `computeStyle` modifier and will not be supported in future versions of Popper.js!');
+  }
+  var gpuAcceleration = legacyGpuAccelerationOption !== undefined ? legacyGpuAccelerationOption : options.gpuAcceleration;
+
+  var offsetParent = getOffsetParent(data.instance.popper);
+  var offsetParentRect = getBoundingClientRect(offsetParent);
+
+  // Styles
+  var styles = {
+    position: popper.position
+  };
+
+  var offsets = getRoundedOffsets(data, window.devicePixelRatio < 2 || !isFirefox);
+
+  var sideA = x === 'bottom' ? 'top' : 'bottom';
+  var sideB = y === 'right' ? 'left' : 'right';
+
+  // if gpuAcceleration is set to `true` and transform is supported,
+  //  we use `translate3d` to apply the position to the popper we
+  // automatically use the supported prefixed version if needed
+  var prefixedProperty = getSupportedPropertyName('transform');
+
+  // now, let's make a step back and look at this code closely (wtf?)
+  // If the content of the popper grows once it's been positioned, it
+  // may happen that the popper gets misplaced because of the new content
+  // overflowing its reference element
+  // To avoid this problem, we provide two options (x and y), which allow
+  // the consumer to define the offset origin.
+  // If we position a popper on top of a reference element, we can set
+  // `x` to `top` to make the popper grow towards its top instead of
+  // its bottom.
+  var left = void 0,
+      top = void 0;
+  if (sideA === 'bottom') {
+    // when offsetParent is <html> the positioning is relative to the bottom of the screen (excluding the scrollbar)
+    // and not the bottom of the html element
+    if (offsetParent.nodeName === 'HTML') {
+      top = -offsetParent.clientHeight + offsets.bottom;
+    } else {
+      top = -offsetParentRect.height + offsets.bottom;
+    }
+  } else {
+    top = offsets.top;
+  }
+  if (sideB === 'right') {
+    if (offsetParent.nodeName === 'HTML') {
+      left = -offsetParent.clientWidth + offsets.right;
+    } else {
+      left = -offsetParentRect.width + offsets.right;
+    }
+  } else {
+    left = offsets.left;
+  }
+  if (gpuAcceleration && prefixedProperty) {
+    styles[prefixedProperty] = 'translate3d(' + left + 'px, ' + top + 'px, 0)';
+    styles[sideA] = 0;
+    styles[sideB] = 0;
+    styles.willChange = 'transform';
+  } else {
+    // othwerise, we use the standard `top`, `left`, `bottom` and `right` properties
+    var invertTop = sideA === 'bottom' ? -1 : 1;
+    var invertLeft = sideB === 'right' ? -1 : 1;
+    styles[sideA] = top * invertTop;
+    styles[sideB] = left * invertLeft;
+    styles.willChange = sideA + ', ' + sideB;
+  }
+
+  // Attributes
+  var attributes = {
+    'x-placement': data.placement
+  };
+
+  // Update `data` attributes, styles and arrowStyles
+  data.attributes = _extends({}, attributes, data.attributes);
+  data.styles = _extends({}, styles, data.styles);
+  data.arrowStyles = _extends({}, data.offsets.arrow, data.arrowStyles);
+
+  return data;
+}
+
+/**
+ * Helper used to know if the given modifier depends from another one.<br />
+ * It checks if the needed modifier is listed and enabled.
+ * @method
+ * @memberof Popper.Utils
+ * @param {Array} modifiers - list of modifiers
+ * @param {String} requestingName - name of requesting modifier
+ * @param {String} requestedName - name of requested modifier
+ * @returns {Boolean}
+ */
+function isModifierRequired(modifiers, requestingName, requestedName) {
+  var requesting = find(modifiers, function (_ref) {
+    var name = _ref.name;
+    return name === requestingName;
+  });
+
+  var isRequired = !!requesting && modifiers.some(function (modifier) {
+    return modifier.name === requestedName && modifier.enabled && modifier.order < requesting.order;
+  });
+
+  if (!isRequired) {
+    var _requesting = '`' + requestingName + '`';
+    var requested = '`' + requestedName + '`';
+    console.warn(requested + ' modifier is required by ' + _requesting + ' modifier in order to work, be sure to include it before ' + _requesting + '!');
+  }
+  return isRequired;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function arrow(data, options) {
+  var _data$offsets$arrow;
+
+  // arrow depends on keepTogether in order to work
+  if (!isModifierRequired(data.instance.modifiers, 'arrow', 'keepTogether')) {
+    return data;
+  }
+
+  var arrowElement = options.element;
+
+  // if arrowElement is a string, suppose it's a CSS selector
+  if (typeof arrowElement === 'string') {
+    arrowElement = data.instance.popper.querySelector(arrowElement);
+
+    // if arrowElement is not found, don't run the modifier
+    if (!arrowElement) {
+      return data;
+    }
+  } else {
+    // if the arrowElement isn't a query selector we must check that the
+    // provided DOM node is child of its popper node
+    if (!data.instance.popper.contains(arrowElement)) {
+      console.warn('WARNING: `arrow.element` must be child of its popper element!');
+      return data;
+    }
+  }
+
+  var placement = data.placement.split('-')[0];
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var isVertical = ['left', 'right'].indexOf(placement) !== -1;
+
+  var len = isVertical ? 'height' : 'width';
+  var sideCapitalized = isVertical ? 'Top' : 'Left';
+  var side = sideCapitalized.toLowerCase();
+  var altSide = isVertical ? 'left' : 'top';
+  var opSide = isVertical ? 'bottom' : 'right';
+  var arrowElementSize = getOuterSizes(arrowElement)[len];
+
+  //
+  // extends keepTogether behavior making sure the popper and its
+  // reference have enough pixels in conjunction
+  //
+
+  // top/left side
+  if (reference[opSide] - arrowElementSize < popper[side]) {
+    data.offsets.popper[side] -= popper[side] - (reference[opSide] - arrowElementSize);
+  }
+  // bottom/right side
+  if (reference[side] + arrowElementSize > popper[opSide]) {
+    data.offsets.popper[side] += reference[side] + arrowElementSize - popper[opSide];
+  }
+  data.offsets.popper = getClientRect(data.offsets.popper);
+
+  // compute center of the popper
+  var center = reference[side] + reference[len] / 2 - arrowElementSize / 2;
+
+  // Compute the sideValue using the updated popper offsets
+  // take popper margin in account because we don't have this info available
+  var css = getStyleComputedProperty(data.instance.popper);
+  var popperMarginSide = parseFloat(css['margin' + sideCapitalized]);
+  var popperBorderSide = parseFloat(css['border' + sideCapitalized + 'Width']);
+  var sideValue = center - data.offsets.popper[side] - popperMarginSide - popperBorderSide;
+
+  // prevent arrowElement from being placed not contiguously to its popper
+  sideValue = Math.max(Math.min(popper[len] - arrowElementSize, sideValue), 0);
+
+  data.arrowElement = arrowElement;
+  data.offsets.arrow = (_data$offsets$arrow = {}, defineProperty(_data$offsets$arrow, side, Math.round(sideValue)), defineProperty(_data$offsets$arrow, altSide, ''), _data$offsets$arrow);
+
+  return data;
+}
+
+/**
+ * Get the opposite placement variation of the given one
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement variation
+ * @returns {String} flipped placement variation
+ */
+function getOppositeVariation(variation) {
+  if (variation === 'end') {
+    return 'start';
+  } else if (variation === 'start') {
+    return 'end';
+  }
+  return variation;
+}
+
+/**
+ * List of accepted placements to use as values of the `placement` option.<br />
+ * Valid placements are:
+ * - `auto`
+ * - `top`
+ * - `right`
+ * - `bottom`
+ * - `left`
+ *
+ * Each placement can have a variation from this list:
+ * - `-start`
+ * - `-end`
+ *
+ * Variations are interpreted easily if you think of them as the left to right
+ * written languages. Horizontally (`top` and `bottom`), `start` is left and `end`
+ * is right.<br />
+ * Vertically (`left` and `right`), `start` is top and `end` is bottom.
+ *
+ * Some valid examples are:
+ * - `top-end` (on top of reference, right aligned)
+ * - `right-start` (on right of reference, top aligned)
+ * - `bottom` (on bottom, centered)
+ * - `auto-end` (on the side with more space available, alignment depends by placement)
+ *
+ * @static
+ * @type {Array}
+ * @enum {String}
+ * @readonly
+ * @method placements
+ * @memberof Popper
+ */
+var placements = ['auto-start', 'auto', 'auto-end', 'top-start', 'top', 'top-end', 'right-start', 'right', 'right-end', 'bottom-end', 'bottom', 'bottom-start', 'left-end', 'left', 'left-start'];
+
+// Get rid of `auto` `auto-start` and `auto-end`
+var validPlacements = placements.slice(3);
+
+/**
+ * Given an initial placement, returns all the subsequent placements
+ * clockwise (or counter-clockwise).
+ *
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} placement - A valid placement (it accepts variations)
+ * @argument {Boolean} counter - Set to true to walk the placements counterclockwise
+ * @returns {Array} placements including their variations
+ */
+function clockwise(placement) {
+  var counter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var index = validPlacements.indexOf(placement);
+  var arr = validPlacements.slice(index + 1).concat(validPlacements.slice(0, index));
+  return counter ? arr.reverse() : arr;
+}
+
+var BEHAVIORS = {
+  FLIP: 'flip',
+  CLOCKWISE: 'clockwise',
+  COUNTERCLOCKWISE: 'counterclockwise'
+};
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function flip(data, options) {
+  // if `inner` modifier is enabled, we can't use the `flip` modifier
+  if (isModifierEnabled(data.instance.modifiers, 'inner')) {
+    return data;
+  }
+
+  if (data.flipped && data.placement === data.originalPlacement) {
+    // seems like flip is trying to loop, probably there's not enough space on any of the flippable sides
+    return data;
+  }
+
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, options.boundariesElement, data.positionFixed);
+
+  var placement = data.placement.split('-')[0];
+  var placementOpposite = getOppositePlacement(placement);
+  var variation = data.placement.split('-')[1] || '';
+
+  var flipOrder = [];
+
+  switch (options.behavior) {
+    case BEHAVIORS.FLIP:
+      flipOrder = [placement, placementOpposite];
+      break;
+    case BEHAVIORS.CLOCKWISE:
+      flipOrder = clockwise(placement);
+      break;
+    case BEHAVIORS.COUNTERCLOCKWISE:
+      flipOrder = clockwise(placement, true);
+      break;
+    default:
+      flipOrder = options.behavior;
+  }
+
+  flipOrder.forEach(function (step, index) {
+    if (placement !== step || flipOrder.length === index + 1) {
+      return data;
+    }
+
+    placement = data.placement.split('-')[0];
+    placementOpposite = getOppositePlacement(placement);
+
+    var popperOffsets = data.offsets.popper;
+    var refOffsets = data.offsets.reference;
+
+    // using floor because the reference offsets may contain decimals we are not going to consider here
+    var floor = Math.floor;
+    var overlapsRef = placement === 'left' && floor(popperOffsets.right) > floor(refOffsets.left) || placement === 'right' && floor(popperOffsets.left) < floor(refOffsets.right) || placement === 'top' && floor(popperOffsets.bottom) > floor(refOffsets.top) || placement === 'bottom' && floor(popperOffsets.top) < floor(refOffsets.bottom);
+
+    var overflowsLeft = floor(popperOffsets.left) < floor(boundaries.left);
+    var overflowsRight = floor(popperOffsets.right) > floor(boundaries.right);
+    var overflowsTop = floor(popperOffsets.top) < floor(boundaries.top);
+    var overflowsBottom = floor(popperOffsets.bottom) > floor(boundaries.bottom);
+
+    var overflowsBoundaries = placement === 'left' && overflowsLeft || placement === 'right' && overflowsRight || placement === 'top' && overflowsTop || placement === 'bottom' && overflowsBottom;
+
+    // flip the variation if required
+    var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
+
+    // flips variation if reference element overflows boundaries
+    var flippedVariationByRef = !!options.flipVariations && (isVertical && variation === 'start' && overflowsLeft || isVertical && variation === 'end' && overflowsRight || !isVertical && variation === 'start' && overflowsTop || !isVertical && variation === 'end' && overflowsBottom);
+
+    // flips variation if popper content overflows boundaries
+    var flippedVariationByContent = !!options.flipVariationsByContent && (isVertical && variation === 'start' && overflowsRight || isVertical && variation === 'end' && overflowsLeft || !isVertical && variation === 'start' && overflowsBottom || !isVertical && variation === 'end' && overflowsTop);
+
+    var flippedVariation = flippedVariationByRef || flippedVariationByContent;
+
+    if (overlapsRef || overflowsBoundaries || flippedVariation) {
+      // this boolean to detect any flip loop
+      data.flipped = true;
+
+      if (overlapsRef || overflowsBoundaries) {
+        placement = flipOrder[index + 1];
+      }
+
+      if (flippedVariation) {
+        variation = getOppositeVariation(variation);
+      }
+
+      data.placement = placement + (variation ? '-' + variation : '');
+
+      // this object contains `position`, we want to preserve it along with
+      // any additional property we may add in the future
+      data.offsets.popper = _extends({}, data.offsets.popper, getPopperOffsets(data.instance.popper, data.offsets.reference, data.placement));
+
+      data = runModifiers(data.instance.modifiers, data, 'flip');
+    }
+  });
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function keepTogether(data) {
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var placement = data.placement.split('-')[0];
+  var floor = Math.floor;
+  var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
+  var side = isVertical ? 'right' : 'bottom';
+  var opSide = isVertical ? 'left' : 'top';
+  var measurement = isVertical ? 'width' : 'height';
+
+  if (popper[side] < floor(reference[opSide])) {
+    data.offsets.popper[opSide] = floor(reference[opSide]) - popper[measurement];
+  }
+  if (popper[opSide] > floor(reference[side])) {
+    data.offsets.popper[opSide] = floor(reference[side]);
+  }
+
+  return data;
+}
+
+/**
+ * Converts a string containing value + unit into a px value number
+ * @function
+ * @memberof {modifiers~offset}
+ * @private
+ * @argument {String} str - Value + unit string
+ * @argument {String} measurement - `height` or `width`
+ * @argument {Object} popperOffsets
+ * @argument {Object} referenceOffsets
+ * @returns {Number|String}
+ * Value in pixels, or original string if no values were extracted
+ */
+function toValue(str, measurement, popperOffsets, referenceOffsets) {
+  // separate value from unit
+  var split = str.match(/((?:\-|\+)?\d*\.?\d*)(.*)/);
+  var value = +split[1];
+  var unit = split[2];
+
+  // If it's not a number it's an operator, I guess
+  if (!value) {
+    return str;
+  }
+
+  if (unit.indexOf('%') === 0) {
+    var element = void 0;
+    switch (unit) {
+      case '%p':
+        element = popperOffsets;
+        break;
+      case '%':
+      case '%r':
+      default:
+        element = referenceOffsets;
+    }
+
+    var rect = getClientRect(element);
+    return rect[measurement] / 100 * value;
+  } else if (unit === 'vh' || unit === 'vw') {
+    // if is a vh or vw, we calculate the size based on the viewport
+    var size = void 0;
+    if (unit === 'vh') {
+      size = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    } else {
+      size = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    }
+    return size / 100 * value;
+  } else {
+    // if is an explicit pixel unit, we get rid of the unit and keep the value
+    // if is an implicit unit, it's px, and we return just the value
+    return value;
+  }
+}
+
+/**
+ * Parse an `offset` string to extrapolate `x` and `y` numeric offsets.
+ * @function
+ * @memberof {modifiers~offset}
+ * @private
+ * @argument {String} offset
+ * @argument {Object} popperOffsets
+ * @argument {Object} referenceOffsets
+ * @argument {String} basePlacement
+ * @returns {Array} a two cells array with x and y offsets in numbers
+ */
+function parseOffset(offset, popperOffsets, referenceOffsets, basePlacement) {
+  var offsets = [0, 0];
+
+  // Use height if placement is left or right and index is 0 otherwise use width
+  // in this way the first offset will use an axis and the second one
+  // will use the other one
+  var useHeight = ['right', 'left'].indexOf(basePlacement) !== -1;
+
+  // Split the offset string to obtain a list of values and operands
+  // The regex addresses values with the plus or minus sign in front (+10, -20, etc)
+  var fragments = offset.split(/(\+|\-)/).map(function (frag) {
+    return frag.trim();
+  });
+
+  // Detect if the offset string contains a pair of values or a single one
+  // they could be separated by comma or space
+  var divider = fragments.indexOf(find(fragments, function (frag) {
+    return frag.search(/,|\s/) !== -1;
+  }));
+
+  if (fragments[divider] && fragments[divider].indexOf(',') === -1) {
+    console.warn('Offsets separated by white space(s) are deprecated, use a comma (,) instead.');
+  }
+
+  // If divider is found, we divide the list of values and operands to divide
+  // them by ofset X and Y.
+  var splitRegex = /\s*,\s*|\s+/;
+  var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
+
+  // Convert the values with units to absolute pixels to allow our computations
+  ops = ops.map(function (op, index) {
+    // Most of the units rely on the orientation of the popper
+    var measurement = (index === 1 ? !useHeight : useHeight) ? 'height' : 'width';
+    var mergeWithPrevious = false;
+    return op
+    // This aggregates any `+` or `-` sign that aren't considered operators
+    // e.g.: 10 + +5 => [10, +, +5]
+    .reduce(function (a, b) {
+      if (a[a.length - 1] === '' && ['+', '-'].indexOf(b) !== -1) {
+        a[a.length - 1] = b;
+        mergeWithPrevious = true;
+        return a;
+      } else if (mergeWithPrevious) {
+        a[a.length - 1] += b;
+        mergeWithPrevious = false;
+        return a;
+      } else {
+        return a.concat(b);
+      }
+    }, [])
+    // Here we convert the string values into number values (in px)
+    .map(function (str) {
+      return toValue(str, measurement, popperOffsets, referenceOffsets);
+    });
+  });
+
+  // Loop trough the offsets arrays and execute the operations
+  ops.forEach(function (op, index) {
+    op.forEach(function (frag, index2) {
+      if (isNumeric(frag)) {
+        offsets[index] += frag * (op[index2 - 1] === '-' ? -1 : 1);
+      }
+    });
+  });
+  return offsets;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @argument {Number|String} options.offset=0
+ * The offset value as described in the modifier description
+ * @returns {Object} The data object, properly modified
+ */
+function offset(data, _ref) {
+  var offset = _ref.offset;
+  var placement = data.placement,
+      _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var basePlacement = placement.split('-')[0];
+
+  var offsets = void 0;
+  if (isNumeric(+offset)) {
+    offsets = [+offset, 0];
+  } else {
+    offsets = parseOffset(offset, popper, reference, basePlacement);
+  }
+
+  if (basePlacement === 'left') {
+    popper.top += offsets[0];
+    popper.left -= offsets[1];
+  } else if (basePlacement === 'right') {
+    popper.top += offsets[0];
+    popper.left += offsets[1];
+  } else if (basePlacement === 'top') {
+    popper.left += offsets[0];
+    popper.top -= offsets[1];
+  } else if (basePlacement === 'bottom') {
+    popper.left += offsets[0];
+    popper.top += offsets[1];
+  }
+
+  data.popper = popper;
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function preventOverflow(data, options) {
+  var boundariesElement = options.boundariesElement || getOffsetParent(data.instance.popper);
+
+  // If offsetParent is the reference element, we really want to
+  // go one step up and use the next offsetParent as reference to
+  // avoid to make this modifier completely useless and look like broken
+  if (data.instance.reference === boundariesElement) {
+    boundariesElement = getOffsetParent(boundariesElement);
+  }
+
+  // NOTE: DOM access here
+  // resets the popper's position so that the document size can be calculated excluding
+  // the size of the popper element itself
+  var transformProp = getSupportedPropertyName('transform');
+  var popperStyles = data.instance.popper.style; // assignment to help minification
+  var top = popperStyles.top,
+      left = popperStyles.left,
+      transform = popperStyles[transformProp];
+
+  popperStyles.top = '';
+  popperStyles.left = '';
+  popperStyles[transformProp] = '';
+
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, boundariesElement, data.positionFixed);
+
+  // NOTE: DOM access here
+  // restores the original style properties after the offsets have been computed
+  popperStyles.top = top;
+  popperStyles.left = left;
+  popperStyles[transformProp] = transform;
+
+  options.boundaries = boundaries;
+
+  var order = options.priority;
+  var popper = data.offsets.popper;
+
+  var check = {
+    primary: function primary(placement) {
+      var value = popper[placement];
+      if (popper[placement] < boundaries[placement] && !options.escapeWithReference) {
+        value = Math.max(popper[placement], boundaries[placement]);
+      }
+      return defineProperty({}, placement, value);
+    },
+    secondary: function secondary(placement) {
+      var mainSide = placement === 'right' ? 'left' : 'top';
+      var value = popper[mainSide];
+      if (popper[placement] > boundaries[placement] && !options.escapeWithReference) {
+        value = Math.min(popper[mainSide], boundaries[placement] - (placement === 'right' ? popper.width : popper.height));
+      }
+      return defineProperty({}, mainSide, value);
+    }
+  };
+
+  order.forEach(function (placement) {
+    var side = ['left', 'top'].indexOf(placement) !== -1 ? 'primary' : 'secondary';
+    popper = _extends({}, popper, check[side](placement));
+  });
+
+  data.offsets.popper = popper;
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function shift(data) {
+  var placement = data.placement;
+  var basePlacement = placement.split('-')[0];
+  var shiftvariation = placement.split('-')[1];
+
+  // if shift shiftvariation is specified, run the modifier
+  if (shiftvariation) {
+    var _data$offsets = data.offsets,
+        reference = _data$offsets.reference,
+        popper = _data$offsets.popper;
+
+    var isVertical = ['bottom', 'top'].indexOf(basePlacement) !== -1;
+    var side = isVertical ? 'left' : 'top';
+    var measurement = isVertical ? 'width' : 'height';
+
+    var shiftOffsets = {
+      start: defineProperty({}, side, reference[side]),
+      end: defineProperty({}, side, reference[side] + reference[measurement] - popper[measurement])
+    };
+
+    data.offsets.popper = _extends({}, popper, shiftOffsets[shiftvariation]);
+  }
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by update method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function hide(data) {
+  if (!isModifierRequired(data.instance.modifiers, 'hide', 'preventOverflow')) {
+    return data;
+  }
+
+  var refRect = data.offsets.reference;
+  var bound = find(data.instance.modifiers, function (modifier) {
+    return modifier.name === 'preventOverflow';
+  }).boundaries;
+
+  if (refRect.bottom < bound.top || refRect.left > bound.right || refRect.top > bound.bottom || refRect.right < bound.left) {
+    // Avoid unnecessary DOM access if visibility hasn't changed
+    if (data.hide === true) {
+      return data;
+    }
+
+    data.hide = true;
+    data.attributes['x-out-of-boundaries'] = '';
+  } else {
+    // Avoid unnecessary DOM access if visibility hasn't changed
+    if (data.hide === false) {
+      return data;
+    }
+
+    data.hide = false;
+    data.attributes['x-out-of-boundaries'] = false;
+  }
+
+  return data;
+}
+
+/**
+ * @function
+ * @memberof Modifiers
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {Object} The data object, properly modified
+ */
+function inner(data) {
+  var placement = data.placement;
+  var basePlacement = placement.split('-')[0];
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+  var isHoriz = ['left', 'right'].indexOf(basePlacement) !== -1;
+
+  var subtractLength = ['top', 'left'].indexOf(basePlacement) === -1;
+
+  popper[isHoriz ? 'left' : 'top'] = reference[basePlacement] - (subtractLength ? popper[isHoriz ? 'width' : 'height'] : 0);
+
+  data.placement = getOppositePlacement(placement);
+  data.offsets.popper = getClientRect(popper);
+
+  return data;
+}
+
+/**
+ * Modifier function, each modifier can have a function of this type assigned
+ * to its `fn` property.<br />
+ * These functions will be called on each update, this means that you must
+ * make sure they are performant enough to avoid performance bottlenecks.
+ *
+ * @function ModifierFn
+ * @argument {dataObject} data - The data object generated by `update` method
+ * @argument {Object} options - Modifiers configuration and options
+ * @returns {dataObject} The data object, properly modified
+ */
+
+/**
+ * Modifiers are plugins used to alter the behavior of your poppers.<br />
+ * Popper.js uses a set of 9 modifiers to provide all the basic functionalities
+ * needed by the library.
+ *
+ * Usually you don't want to override the `order`, `fn` and `onLoad` props.
+ * All the other properties are configurations that could be tweaked.
+ * @namespace modifiers
+ */
+var modifiers = {
+  /**
+   * Modifier used to shift the popper on the start or end of its reference
+   * element.<br />
+   * It will read the variation of the `placement` property.<br />
+   * It can be one either `-end` or `-start`.
+   * @memberof modifiers
+   * @inner
+   */
+  shift: {
+    /** @prop {number} order=100 - Index used to define the order of execution */
+    order: 100,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: shift
+  },
+
+  /**
+   * The `offset` modifier can shift your popper on both its axis.
+   *
+   * It accepts the following units:
+   * - `px` or unit-less, interpreted as pixels
+   * - `%` or `%r`, percentage relative to the length of the reference element
+   * - `%p`, percentage relative to the length of the popper element
+   * - `vw`, CSS viewport width unit
+   * - `vh`, CSS viewport height unit
+   *
+   * For length is intended the main axis relative to the placement of the popper.<br />
+   * This means that if the placement is `top` or `bottom`, the length will be the
+   * `width`. In case of `left` or `right`, it will be the `height`.
+   *
+   * You can provide a single value (as `Number` or `String`), or a pair of values
+   * as `String` divided by a comma or one (or more) white spaces.<br />
+   * The latter is a deprecated method because it leads to confusion and will be
+   * removed in v2.<br />
+   * Additionally, it accepts additions and subtractions between different units.
+   * Note that multiplications and divisions aren't supported.
+   *
+   * Valid examples are:
+   * ```
+   * 10
+   * '10%'
+   * '10, 10'
+   * '10%, 10'
+   * '10 + 10%'
+   * '10 - 5vh + 3%'
+   * '-10px + 5vh, 5px - 6%'
+   * ```
+   * > **NB**: If you desire to apply offsets to your poppers in a way that may make them overlap
+   * > with their reference element, unfortunately, you will have to disable the `flip` modifier.
+   * > You can read more on this at this [issue](https://github.com/FezVrasta/popper.js/issues/373).
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  offset: {
+    /** @prop {number} order=200 - Index used to define the order of execution */
+    order: 200,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: offset,
+    /** @prop {Number|String} offset=0
+     * The offset value as described in the modifier description
+     */
+    offset: 0
+  },
+
+  /**
+   * Modifier used to prevent the popper from being positioned outside the boundary.
+   *
+   * A scenario exists where the reference itself is not within the boundaries.<br />
+   * We can say it has "escaped the boundaries" — or just "escaped".<br />
+   * In this case we need to decide whether the popper should either:
+   *
+   * - detach from the reference and remain "trapped" in the boundaries, or
+   * - if it should ignore the boundary and "escape with its reference"
+   *
+   * When `escapeWithReference` is set to`true` and reference is completely
+   * outside its boundaries, the popper will overflow (or completely leave)
+   * the boundaries in order to remain attached to the edge of the reference.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  preventOverflow: {
+    /** @prop {number} order=300 - Index used to define the order of execution */
+    order: 300,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: preventOverflow,
+    /**
+     * @prop {Array} [priority=['left','right','top','bottom']]
+     * Popper will try to prevent overflow following these priorities by default,
+     * then, it could overflow on the left and on top of the `boundariesElement`
+     */
+    priority: ['left', 'right', 'top', 'bottom'],
+    /**
+     * @prop {number} padding=5
+     * Amount of pixel used to define a minimum distance between the boundaries
+     * and the popper. This makes sure the popper always has a little padding
+     * between the edges of its container
+     */
+    padding: 5,
+    /**
+     * @prop {String|HTMLElement} boundariesElement='scrollParent'
+     * Boundaries used by the modifier. Can be `scrollParent`, `window`,
+     * `viewport` or any DOM element.
+     */
+    boundariesElement: 'scrollParent'
+  },
+
+  /**
+   * Modifier used to make sure the reference and its popper stay near each other
+   * without leaving any gap between the two. Especially useful when the arrow is
+   * enabled and you want to ensure that it points to its reference element.
+   * It cares only about the first axis. You can still have poppers with margin
+   * between the popper and its reference element.
+   * @memberof modifiers
+   * @inner
+   */
+  keepTogether: {
+    /** @prop {number} order=400 - Index used to define the order of execution */
+    order: 400,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: keepTogether
+  },
+
+  /**
+   * This modifier is used to move the `arrowElement` of the popper to make
+   * sure it is positioned between the reference element and its popper element.
+   * It will read the outer size of the `arrowElement` node to detect how many
+   * pixels of conjunction are needed.
+   *
+   * It has no effect if no `arrowElement` is provided.
+   * @memberof modifiers
+   * @inner
+   */
+  arrow: {
+    /** @prop {number} order=500 - Index used to define the order of execution */
+    order: 500,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: arrow,
+    /** @prop {String|HTMLElement} element='[x-arrow]' - Selector or node used as arrow */
+    element: '[x-arrow]'
+  },
+
+  /**
+   * Modifier used to flip the popper's placement when it starts to overlap its
+   * reference element.
+   *
+   * Requires the `preventOverflow` modifier before it in order to work.
+   *
+   * **NOTE:** this modifier will interrupt the current update cycle and will
+   * restart it if it detects the need to flip the placement.
+   * @memberof modifiers
+   * @inner
+   */
+  flip: {
+    /** @prop {number} order=600 - Index used to define the order of execution */
+    order: 600,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: flip,
+    /**
+     * @prop {String|Array} behavior='flip'
+     * The behavior used to change the popper's placement. It can be one of
+     * `flip`, `clockwise`, `counterclockwise` or an array with a list of valid
+     * placements (with optional variations)
+     */
+    behavior: 'flip',
+    /**
+     * @prop {number} padding=5
+     * The popper will flip if it hits the edges of the `boundariesElement`
+     */
+    padding: 5,
+    /**
+     * @prop {String|HTMLElement} boundariesElement='viewport'
+     * The element which will define the boundaries of the popper position.
+     * The popper will never be placed outside of the defined boundaries
+     * (except if `keepTogether` is enabled)
+     */
+    boundariesElement: 'viewport',
+    /**
+     * @prop {Boolean} flipVariations=false
+     * The popper will switch placement variation between `-start` and `-end` when
+     * the reference element overlaps its boundaries.
+     *
+     * The original placement should have a set variation.
+     */
+    flipVariations: false,
+    /**
+     * @prop {Boolean} flipVariationsByContent=false
+     * The popper will switch placement variation between `-start` and `-end` when
+     * the popper element overlaps its reference boundaries.
+     *
+     * The original placement should have a set variation.
+     */
+    flipVariationsByContent: false
+  },
+
+  /**
+   * Modifier used to make the popper flow toward the inner of the reference element.
+   * By default, when this modifier is disabled, the popper will be placed outside
+   * the reference element.
+   * @memberof modifiers
+   * @inner
+   */
+  inner: {
+    /** @prop {number} order=700 - Index used to define the order of execution */
+    order: 700,
+    /** @prop {Boolean} enabled=false - Whether the modifier is enabled or not */
+    enabled: false,
+    /** @prop {ModifierFn} */
+    fn: inner
+  },
+
+  /**
+   * Modifier used to hide the popper when its reference element is outside of the
+   * popper boundaries. It will set a `x-out-of-boundaries` attribute which can
+   * be used to hide with a CSS selector the popper when its reference is
+   * out of boundaries.
+   *
+   * Requires the `preventOverflow` modifier before it in order to work.
+   * @memberof modifiers
+   * @inner
+   */
+  hide: {
+    /** @prop {number} order=800 - Index used to define the order of execution */
+    order: 800,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: hide
+  },
+
+  /**
+   * Computes the style that will be applied to the popper element to gets
+   * properly positioned.
+   *
+   * Note that this modifier will not touch the DOM, it just prepares the styles
+   * so that `applyStyle` modifier can apply it. This separation is useful
+   * in case you need to replace `applyStyle` with a custom implementation.
+   *
+   * This modifier has `850` as `order` value to maintain backward compatibility
+   * with previous versions of Popper.js. Expect the modifiers ordering method
+   * to change in future major versions of the library.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  computeStyle: {
+    /** @prop {number} order=850 - Index used to define the order of execution */
+    order: 850,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: computeStyle,
+    /**
+     * @prop {Boolean} gpuAcceleration=true
+     * If true, it uses the CSS 3D transformation to position the popper.
+     * Otherwise, it will use the `top` and `left` properties
+     */
+    gpuAcceleration: true,
+    /**
+     * @prop {string} [x='bottom']
+     * Where to anchor the X axis (`bottom` or `top`). AKA X offset origin.
+     * Change this if your popper should grow in a direction different from `bottom`
+     */
+    x: 'bottom',
+    /**
+     * @prop {string} [x='left']
+     * Where to anchor the Y axis (`left` or `right`). AKA Y offset origin.
+     * Change this if your popper should grow in a direction different from `right`
+     */
+    y: 'right'
+  },
+
+  /**
+   * Applies the computed styles to the popper element.
+   *
+   * All the DOM manipulations are limited to this modifier. This is useful in case
+   * you want to integrate Popper.js inside a framework or view library and you
+   * want to delegate all the DOM manipulations to it.
+   *
+   * Note that if you disable this modifier, you must make sure the popper element
+   * has its position set to `absolute` before Popper.js can do its work!
+   *
+   * Just disable this modifier and define your own to achieve the desired effect.
+   *
+   * @memberof modifiers
+   * @inner
+   */
+  applyStyle: {
+    /** @prop {number} order=900 - Index used to define the order of execution */
+    order: 900,
+    /** @prop {Boolean} enabled=true - Whether the modifier is enabled or not */
+    enabled: true,
+    /** @prop {ModifierFn} */
+    fn: applyStyle,
+    /** @prop {Function} */
+    onLoad: applyStyleOnLoad,
+    /**
+     * @deprecated since version 1.10.0, the property moved to `computeStyle` modifier
+     * @prop {Boolean} gpuAcceleration=true
+     * If true, it uses the CSS 3D transformation to position the popper.
+     * Otherwise, it will use the `top` and `left` properties
+     */
+    gpuAcceleration: undefined
+  }
+};
+
+/**
+ * The `dataObject` is an object containing all the information used by Popper.js.
+ * This object is passed to modifiers and to the `onCreate` and `onUpdate` callbacks.
+ * @name dataObject
+ * @property {Object} data.instance The Popper.js instance
+ * @property {String} data.placement Placement applied to popper
+ * @property {String} data.originalPlacement Placement originally defined on init
+ * @property {Boolean} data.flipped True if popper has been flipped by flip modifier
+ * @property {Boolean} data.hide True if the reference element is out of boundaries, useful to know when to hide the popper
+ * @property {HTMLElement} data.arrowElement Node used as arrow by arrow modifier
+ * @property {Object} data.styles Any CSS property defined here will be applied to the popper. It expects the JavaScript nomenclature (eg. `marginBottom`)
+ * @property {Object} data.arrowStyles Any CSS property defined here will be applied to the popper arrow. It expects the JavaScript nomenclature (eg. `marginBottom`)
+ * @property {Object} data.boundaries Offsets of the popper boundaries
+ * @property {Object} data.offsets The measurements of popper, reference and arrow elements
+ * @property {Object} data.offsets.popper `top`, `left`, `width`, `height` values
+ * @property {Object} data.offsets.reference `top`, `left`, `width`, `height` values
+ * @property {Object} data.offsets.arrow] `top` and `left` offsets, only one of them will be different from 0
+ */
+
+/**
+ * Default options provided to Popper.js constructor.<br />
+ * These can be overridden using the `options` argument of Popper.js.<br />
+ * To override an option, simply pass an object with the same
+ * structure of the `options` object, as the 3rd argument. For example:
+ * ```
+ * new Popper(ref, pop, {
+ *   modifiers: {
+ *     preventOverflow: { enabled: false }
+ *   }
+ * })
+ * ```
+ * @type {Object}
+ * @static
+ * @memberof Popper
+ */
+var Defaults = {
+  /**
+   * Popper's placement.
+   * @prop {Popper.placements} placement='bottom'
+   */
+  placement: 'bottom',
+
+  /**
+   * Set this to true if you want popper to position it self in 'fixed' mode
+   * @prop {Boolean} positionFixed=false
+   */
+  positionFixed: false,
+
+  /**
+   * Whether events (resize, scroll) are initially enabled.
+   * @prop {Boolean} eventsEnabled=true
+   */
+  eventsEnabled: true,
+
+  /**
+   * Set to true if you want to automatically remove the popper when
+   * you call the `destroy` method.
+   * @prop {Boolean} removeOnDestroy=false
+   */
+  removeOnDestroy: false,
+
+  /**
+   * Callback called when the popper is created.<br />
+   * By default, it is set to no-op.<br />
+   * Access Popper.js instance with `data.instance`.
+   * @prop {onCreate}
+   */
+  onCreate: function onCreate() {},
+
+  /**
+   * Callback called when the popper is updated. This callback is not called
+   * on the initialization/creation of the popper, but only on subsequent
+   * updates.<br />
+   * By default, it is set to no-op.<br />
+   * Access Popper.js instance with `data.instance`.
+   * @prop {onUpdate}
+   */
+  onUpdate: function onUpdate() {},
+
+  /**
+   * List of modifiers used to modify the offsets before they are applied to the popper.
+   * They provide most of the functionalities of Popper.js.
+   * @prop {modifiers}
+   */
+  modifiers: modifiers
+};
+
+/**
+ * @callback onCreate
+ * @param {dataObject} data
+ */
+
+/**
+ * @callback onUpdate
+ * @param {dataObject} data
+ */
+
+// Utils
+// Methods
+var Popper = function () {
+  /**
+   * Creates a new Popper.js instance.
+   * @class Popper
+   * @param {Element|referenceObject} reference - The reference element used to position the popper
+   * @param {Element} popper - The HTML / XML element used as the popper
+   * @param {Object} options - Your custom options to override the ones defined in [Defaults](#defaults)
+   * @return {Object} instance - The generated Popper.js instance
+   */
+  function Popper(reference, popper) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    classCallCheck(this, Popper);
+
+    this.scheduleUpdate = function () {
+      return requestAnimationFrame(_this.update);
+    };
+
+    // make update() debounced, so that it only runs at most once-per-tick
+    this.update = debounce(this.update.bind(this));
+
+    // with {} we create a new object with the options inside it
+    this.options = _extends({}, Popper.Defaults, options);
+
+    // init state
+    this.state = {
+      isDestroyed: false,
+      isCreated: false,
+      scrollParents: []
+    };
+
+    // get reference and popper elements (allow jQuery wrappers)
+    this.reference = reference && reference.jquery ? reference[0] : reference;
+    this.popper = popper && popper.jquery ? popper[0] : popper;
+
+    // Deep merge modifiers options
+    this.options.modifiers = {};
+    Object.keys(_extends({}, Popper.Defaults.modifiers, options.modifiers)).forEach(function (name) {
+      _this.options.modifiers[name] = _extends({}, Popper.Defaults.modifiers[name] || {}, options.modifiers ? options.modifiers[name] : {});
+    });
+
+    // Refactoring modifiers' list (Object => Array)
+    this.modifiers = Object.keys(this.options.modifiers).map(function (name) {
+      return _extends({
+        name: name
+      }, _this.options.modifiers[name]);
+    })
+    // sort the modifiers by order
+    .sort(function (a, b) {
+      return a.order - b.order;
+    });
+
+    // modifiers have the ability to execute arbitrary code when Popper.js get inited
+    // such code is executed in the same order of its modifier
+    // they could add new properties to their options configuration
+    // BE AWARE: don't add options to `options.modifiers.name` but to `modifierOptions`!
+    this.modifiers.forEach(function (modifierOptions) {
+      if (modifierOptions.enabled && isFunction(modifierOptions.onLoad)) {
+        modifierOptions.onLoad(_this.reference, _this.popper, _this.options, modifierOptions, _this.state);
+      }
+    });
+
+    // fire the first update to position the popper in the right place
+    this.update();
+
+    var eventsEnabled = this.options.eventsEnabled;
+    if (eventsEnabled) {
+      // setup event listeners, they will take care of update the position in specific situations
+      this.enableEventListeners();
+    }
+
+    this.state.eventsEnabled = eventsEnabled;
+  }
+
+  // We can't use class properties because they don't get listed in the
+  // class prototype and break stuff like Sinon stubs
+
+
+  createClass(Popper, [{
+    key: 'update',
+    value: function update$$1() {
+      return update.call(this);
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy$$1() {
+      return destroy.call(this);
+    }
+  }, {
+    key: 'enableEventListeners',
+    value: function enableEventListeners$$1() {
+      return enableEventListeners.call(this);
+    }
+  }, {
+    key: 'disableEventListeners',
+    value: function disableEventListeners$$1() {
+      return disableEventListeners.call(this);
+    }
+
+    /**
+     * Schedules an update. It will run on the next UI update available.
+     * @method scheduleUpdate
+     * @memberof Popper
+     */
+
+
+    /**
+     * Collection of utilities useful when writing custom modifiers.
+     * Starting from version 1.7, this method is available only if you
+     * include `popper-utils.js` before `popper.js`.
+     *
+     * **DEPRECATION**: This way to access PopperUtils is deprecated
+     * and will be removed in v2! Use the PopperUtils module directly instead.
+     * Due to the high instability of the methods contained in Utils, we can't
+     * guarantee them to follow semver. Use them at your own risk!
+     * @static
+     * @private
+     * @type {Object}
+     * @deprecated since version 1.8
+     * @member Utils
+     * @memberof Popper
+     */
+
+  }]);
+  return Popper;
+}();
+
+/**
+ * The `referenceObject` is an object that provides an interface compatible with Popper.js
+ * and lets you use it as replacement of a real DOM node.<br />
+ * You can use this method to position a popper relatively to a set of coordinates
+ * in case you don't have a DOM node to use as reference.
+ *
+ * ```
+ * new Popper(referenceObject, popperNode);
+ * ```
+ *
+ * NB: This feature isn't supported in Internet Explorer 10.
+ * @name referenceObject
+ * @property {Function} data.getBoundingClientRect
+ * A function that returns a set of coordinates compatible with the native `getBoundingClientRect` method.
+ * @property {number} data.clientWidth
+ * An ES6 getter that will return the width of the virtual reference element.
+ * @property {number} data.clientHeight
+ * An ES6 getter that will return the height of the virtual reference element.
+ */
+
+
+Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
+Popper.placements = placements;
+Popper.Defaults = Defaults;
+
+/* harmony default export */ __webpack_exports__["default"] = (Popper);
+//# sourceMappingURL=popper.js.map
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -21297,6 +24318,6818 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/v-tooltip/dist/v-tooltip.esm.js":
+/*!******************************************************!*\
+  !*** ./node_modules/v-tooltip/dist/v-tooltip.esm.js ***!
+  \******************************************************/
+/*! exports provided: default, VClosePopover, VPopover, VTooltip, createTooltip, destroyTooltip, install */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VClosePopover", function() { return VClosePopover; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VPopover", function() { return VPopover; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VTooltip", function() { return VTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTooltip", function() { return createTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyTooltip", function() { return destroyTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/typeof.js");
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var popper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/isEqual */ "./node_modules/v-tooltip/node_modules/lodash/isEqual.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vue_resize__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-resize */ "./node_modules/vue-resize/dist/vue-resize.esm.js");
+/* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/merge */ "./node_modules/v-tooltip/node_modules/lodash/merge.js");
+/* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_merge__WEBPACK_IMPORTED_MODULE_7__);
+
+
+
+
+
+
+
+
+
+var SVGAnimatedString = function SVGAnimatedString() {};
+
+if (typeof window !== 'undefined') {
+  SVGAnimatedString = window.SVGAnimatedString;
+}
+
+function convertToArray(value) {
+  if (typeof value === 'string') {
+    value = value.split(' ');
+  }
+
+  return value;
+}
+/**
+ * Add classes to an element.
+ * This method checks to ensure that the classes don't already exist before adding them.
+ * It uses el.className rather than classList in order to be IE friendly.
+ * @param {object} el - The element to add the classes to.
+ * @param {classes} string - List of space separated classes to be added to the element.
+ */
+
+function addClasses(el, classes) {
+  var newClasses = convertToArray(classes);
+  var classList;
+
+  if (el.className instanceof SVGAnimatedString) {
+    classList = convertToArray(el.className.baseVal);
+  } else {
+    classList = convertToArray(el.className);
+  }
+
+  newClasses.forEach(function (newClass) {
+    if (classList.indexOf(newClass) === -1) {
+      classList.push(newClass);
+    }
+  });
+
+  if (el instanceof SVGElement) {
+    el.setAttribute('class', classList.join(' '));
+  } else {
+    el.className = classList.join(' ');
+  }
+}
+/**
+ * Remove classes from an element.
+ * It uses el.className rather than classList in order to be IE friendly.
+ * @export
+ * @param {any} el The element to remove the classes from.
+ * @param {any} classes List of space separated classes to be removed from the element.
+ */
+
+function removeClasses(el, classes) {
+  var newClasses = convertToArray(classes);
+  var classList;
+
+  if (el.className instanceof SVGAnimatedString) {
+    classList = convertToArray(el.className.baseVal);
+  } else {
+    classList = convertToArray(el.className);
+  }
+
+  newClasses.forEach(function (newClass) {
+    var index = classList.indexOf(newClass);
+
+    if (index !== -1) {
+      classList.splice(index, 1);
+    }
+  });
+
+  if (el instanceof SVGElement) {
+    el.setAttribute('class', classList.join(' '));
+  } else {
+    el.className = classList.join(' ');
+  }
+}
+var supportsPassive = false;
+
+if (typeof window !== 'undefined') {
+  supportsPassive = false;
+
+  try {
+    var opts = Object.defineProperty({}, 'passive', {
+      get: function get() {
+        supportsPassive = true;
+      }
+    });
+    window.addEventListener('test', null, opts);
+  } catch (e) {}
+}
+
+function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+var DEFAULT_OPTIONS = {
+  container: false,
+  delay: 0,
+  html: false,
+  placement: 'top',
+  title: '',
+  template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  trigger: 'hover focus',
+  offset: 0
+};
+var openTooltips = [];
+
+var Tooltip = /*#__PURE__*/function () {
+  /**
+   * Create a new Tooltip.js instance
+   * @class Tooltip
+   * @param {HTMLElement} reference - The DOM node used as reference of the tooltip (it can be a jQuery element).
+   * @param {Object} options
+   * @param {String} options.placement=bottom
+   *      Placement of the popper accepted values: `top(-start, -end), right(-start, -end), bottom(-start, -end),
+   *      left(-start, -end)`
+   * @param {HTMLElement|String|false} options.container=false - Append the tooltip to a specific element.
+   * @param {Number|Object} options.delay=0
+   *      Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type.
+   *      If a number is supplied, delay is applied to both hide/show.
+   *      Object structure is: `{ show: 500, hide: 100 }`
+   * @param {Boolean} options.html=false - Insert HTML into the tooltip. If false, the content will inserted with `innerText`.
+   * @param {String|PlacementFunction} options.placement='top' - One of the allowed placements, or a function returning one of them.
+   * @param {String} [options.template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>']
+   *      Base HTML to used when creating the tooltip.
+   *      The tooltip's `title` will be injected into the `.tooltip-inner` or `.tooltip__inner`.
+   *      `.tooltip-arrow` or `.tooltip__arrow` will become the tooltip's arrow.
+   *      The outermost wrapper element should have the `.tooltip` class.
+   * @param {String|HTMLElement|TitleFunction} options.title='' - Default title value if `title` attribute isn't present.
+   * @param {String} [options.trigger='hover focus']
+   *      How tooltip is triggered - click, hover, focus, manual.
+   *      You may pass multiple triggers; separate them with a space. `manual` cannot be combined with any other trigger.
+   * @param {HTMLElement} options.boundariesElement
+   *      The element used as boundaries for the tooltip. For more information refer to Popper.js'
+   *      [boundariesElement docs](https://popper.js.org/popper-documentation.html)
+   * @param {Number|String} options.offset=0 - Offset of the tooltip relative to its reference. For more information refer to Popper.js'
+   *      [offset docs](https://popper.js.org/popper-documentation.html)
+   * @param {Object} options.popperOptions={} - Popper options, will be passed directly to popper instance. For more information refer to Popper.js'
+   *      [options docs](https://popper.js.org/popper-documentation.html)
+   * @param {string} [options.ariaId] Id used for accessibility
+   * @return {Object} instance - The generated tooltip instance
+   */
+  function Tooltip(_reference, _options) {
+    var _this = this;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, Tooltip);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(this, "_events", []);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(this, "_setTooltipNodeEvent", function (evt, reference, delay, options) {
+      var relatedreference = evt.relatedreference || evt.toElement || evt.relatedTarget;
+
+      var callback = function callback(evt2) {
+        var relatedreference2 = evt2.relatedreference || evt2.toElement || evt2.relatedTarget; // Remove event listener after call
+
+        _this._tooltipNode.removeEventListener(evt.type, callback); // If the new reference is not the reference element
+
+
+        if (!reference.contains(relatedreference2)) {
+          // Schedule to hide tooltip
+          _this._scheduleHide(reference, options.delay, options, evt2);
+        }
+      };
+
+      if (_this._tooltipNode.contains(relatedreference)) {
+        // listen to mouseleave on the tooltip element to be able to hide the tooltip
+        _this._tooltipNode.addEventListener(evt.type, callback);
+
+        return true;
+      }
+
+      return false;
+    });
+
+    // apply user options over default ones
+    _options = _objectSpread$2(_objectSpread$2({}, DEFAULT_OPTIONS), _options);
+    _reference.jquery && (_reference = _reference[0]);
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this); // cache reference and options
+
+    this.reference = _reference;
+    this.options = _options; // set initial state
+
+    this._isOpen = false;
+
+    this._init();
+  } //
+  // Public methods
+  //
+
+  /**
+   * Reveals an element's tooltip. This is considered a "manual" triggering of the tooltip.
+   * Tooltips with zero-length titles are never displayed.
+   * @method Tooltip#show
+   * @memberof Tooltip
+   */
+
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Tooltip, [{
+    key: "show",
+    value: function show() {
+      this._show(this.reference, this.options);
+    }
+    /**
+     * Hides an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+     * @method Tooltip#hide
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      this._hide();
+    }
+    /**
+     * Hides and destroys an element’s tooltip.
+     * @method Tooltip#dispose
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "dispose",
+    value: function dispose() {
+      this._dispose();
+    }
+    /**
+     * Toggles an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+     * @method Tooltip#toggle
+     * @memberof Tooltip
+     */
+
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      if (this._isOpen) {
+        return this.hide();
+      } else {
+        return this.show();
+      }
+    }
+  }, {
+    key: "setClasses",
+    value: function setClasses(classes) {
+      this._classes = classes;
+    }
+  }, {
+    key: "setContent",
+    value: function setContent(content) {
+      this.options.title = content;
+
+      if (this._tooltipNode) {
+        this._setContent(content, this.options);
+      }
+    }
+  }, {
+    key: "setOptions",
+    value: function setOptions(options) {
+      var classesUpdated = false;
+      var classes = options && options.classes || directive.options.defaultClass;
+
+      if (!lodash_isEqual__WEBPACK_IMPORTED_MODULE_5___default()(this._classes, classes)) {
+        this.setClasses(classes);
+        classesUpdated = true;
+      }
+
+      options = getOptions(options);
+      var needPopperUpdate = false;
+      var needRestart = false;
+
+      if (this.options.offset !== options.offset || this.options.placement !== options.placement) {
+        needPopperUpdate = true;
+      }
+
+      if (this.options.template !== options.template || this.options.trigger !== options.trigger || this.options.container !== options.container || classesUpdated) {
+        needRestart = true;
+      }
+
+      for (var key in options) {
+        this.options[key] = options[key];
+      }
+
+      if (this._tooltipNode) {
+        if (needRestart) {
+          var isOpen = this._isOpen;
+          this.dispose();
+
+          this._init();
+
+          if (isOpen) {
+            this.show();
+          }
+        } else if (needPopperUpdate) {
+          this.popperInstance.update();
+        }
+      }
+    } //
+    // Private methods
+    //
+
+  }, {
+    key: "_init",
+    value: function _init() {
+      // get events list
+      var events = typeof this.options.trigger === 'string' ? this.options.trigger.split(' ') : [];
+      this._isDisposed = false;
+      this._enableDocumentTouch = events.indexOf('manual') === -1;
+      events = events.filter(function (trigger) {
+        return ['click', 'hover', 'focus'].indexOf(trigger) !== -1;
+      }); // set event listeners
+
+      this._setEventListeners(this.reference, events, this.options); // title attribute
+
+
+      this.$_originalTitle = this.reference.getAttribute('title');
+      this.reference.removeAttribute('title');
+      this.reference.setAttribute('data-original-title', this.$_originalTitle);
+    }
+    /**
+     * Creates a new tooltip node
+     * @memberof Tooltip
+     * @private
+     * @param {HTMLElement} reference
+     * @param {String} template
+     * @param {String|HTMLElement|TitleFunction} title
+     * @param {Boolean} allowHtml
+     * @return {HTMLelement} tooltipNode
+     */
+
+  }, {
+    key: "_create",
+    value: function _create(reference, template) {
+      var _this2 = this;
+
+      // create tooltip element
+      var tooltipGenerator = window.document.createElement('div');
+      tooltipGenerator.innerHTML = template.trim();
+      var tooltipNode = tooltipGenerator.childNodes[0]; // add unique ID to our tooltip (needed for accessibility reasons)
+
+      tooltipNode.id = this.options.ariaId || "tooltip_".concat(Math.random().toString(36).substr(2, 10)); // Initially hide the tooltip
+      // The attribute will be switched in a next frame so
+      // CSS transitions can play
+
+      tooltipNode.setAttribute('aria-hidden', 'true');
+
+      if (this.options.autoHide && this.options.trigger.indexOf('hover') !== -1) {
+        tooltipNode.addEventListener('mouseenter', function (evt) {
+          return _this2._scheduleHide(reference, _this2.options.delay, _this2.options, evt);
+        });
+        tooltipNode.addEventListener('click', function (evt) {
+          return _this2._scheduleHide(reference, _this2.options.delay, _this2.options, evt);
+        });
+      } // return the generated tooltip node
+
+
+      return tooltipNode;
+    }
+  }, {
+    key: "_setContent",
+    value: function _setContent(content, options) {
+      var _this3 = this;
+
+      this.asyncContent = false;
+
+      this._applyContent(content, options).then(function () {
+        if (!_this3.popperInstance) return;
+
+        _this3.popperInstance.update();
+      });
+    }
+  }, {
+    key: "_applyContent",
+    value: function _applyContent(title, options) {
+      var _this4 = this;
+
+      return new Promise(function (resolve, reject) {
+        var allowHtml = options.html;
+        var rootNode = _this4._tooltipNode;
+        if (!rootNode) return;
+        var titleNode = rootNode.querySelector(_this4.options.innerSelector);
+
+        if (title.nodeType === 1) {
+          // if title is a node, append it only if allowHtml is true
+          if (allowHtml) {
+            while (titleNode.firstChild) {
+              titleNode.removeChild(titleNode.firstChild);
+            }
+
+            titleNode.appendChild(title);
+          }
+        } else if (typeof title === 'function') {
+          // if title is a function, call it and set innerText or innerHtml depending by `allowHtml` value
+          var result = title();
+
+          if (result && typeof result.then === 'function') {
+            _this4.asyncContent = true;
+            options.loadingClass && addClasses(rootNode, options.loadingClass);
+
+            if (options.loadingContent) {
+              _this4._applyContent(options.loadingContent, options);
+            }
+
+            result.then(function (asyncResult) {
+              options.loadingClass && removeClasses(rootNode, options.loadingClass);
+              return _this4._applyContent(asyncResult, options);
+            }).then(resolve).catch(reject);
+          } else {
+            _this4._applyContent(result, options).then(resolve).catch(reject);
+          }
+
+          return;
+        } else {
+          // if it's just a simple text, set innerText or innerHtml depending by `allowHtml` value
+          allowHtml ? titleNode.innerHTML = title : titleNode.innerText = title;
+        }
+
+        resolve();
+      });
+    }
+  }, {
+    key: "_show",
+    value: function _show(reference, options) {
+      if (options && typeof options.container === 'string') {
+        var container = document.querySelector(options.container);
+        if (!container) return;
+      }
+
+      clearTimeout(this._disposeTimer);
+      options = Object.assign({}, options);
+      delete options.offset;
+      var updateClasses = true;
+
+      if (this._tooltipNode) {
+        addClasses(this._tooltipNode, this._classes);
+        updateClasses = false;
+      }
+
+      var result = this._ensureShown(reference, options);
+
+      if (updateClasses && this._tooltipNode) {
+        addClasses(this._tooltipNode, this._classes);
+      }
+
+      addClasses(reference, ['v-tooltip-open']);
+      return result;
+    }
+  }, {
+    key: "_ensureShown",
+    value: function _ensureShown(reference, options) {
+      var _this5 = this;
+
+      // don't show if it's already visible
+      if (this._isOpen) {
+        return this;
+      }
+
+      this._isOpen = true;
+      openTooltips.push(this); // if the tooltipNode already exists, just show it
+
+      if (this._tooltipNode) {
+        this._tooltipNode.style.display = '';
+
+        this._tooltipNode.setAttribute('aria-hidden', 'false');
+
+        this.popperInstance.enableEventListeners();
+        this.popperInstance.update();
+
+        if (this.asyncContent) {
+          this._setContent(options.title, options);
+        }
+
+        return this;
+      } // get title
+
+
+      var title = reference.getAttribute('title') || options.title; // don't show tooltip if no title is defined
+
+      if (!title) {
+        return this;
+      } // create tooltip node
+
+
+      var tooltipNode = this._create(reference, options.template);
+
+      this._tooltipNode = tooltipNode; // Add `aria-describedby` to our reference element for accessibility reasons
+
+      reference.setAttribute('aria-describedby', tooltipNode.id); // append tooltip to container
+
+      var container = this._findContainer(options.container, reference);
+
+      this._append(tooltipNode, container);
+
+      var popperOptions = _objectSpread$2(_objectSpread$2({}, options.popperOptions), {}, {
+        placement: options.placement
+      });
+
+      popperOptions.modifiers = _objectSpread$2(_objectSpread$2({}, popperOptions.modifiers), {}, {
+        arrow: {
+          element: this.options.arrowSelector
+        }
+      });
+
+      if (options.boundariesElement) {
+        popperOptions.modifiers.preventOverflow = {
+          boundariesElement: options.boundariesElement
+        };
+      }
+
+      this.popperInstance = new popper_js__WEBPACK_IMPORTED_MODULE_4__["default"](reference, tooltipNode, popperOptions);
+
+      this._setContent(title, options); // Fix position
+
+
+      requestAnimationFrame(function () {
+        if (!_this5._isDisposed && _this5.popperInstance) {
+          _this5.popperInstance.update(); // Show the tooltip
+
+
+          requestAnimationFrame(function () {
+            if (!_this5._isDisposed) {
+              _this5._isOpen && tooltipNode.setAttribute('aria-hidden', 'false');
+            } else {
+              _this5.dispose();
+            }
+          });
+        } else {
+          _this5.dispose();
+        }
+      });
+      return this;
+    }
+  }, {
+    key: "_noLongerOpen",
+    value: function _noLongerOpen() {
+      var index = openTooltips.indexOf(this);
+
+      if (index !== -1) {
+        openTooltips.splice(index, 1);
+      }
+    }
+  }, {
+    key: "_hide",
+    value: function _hide()
+    /* reference, options */
+    {
+      var _this6 = this;
+
+      // don't hide if it's already hidden
+      if (!this._isOpen) {
+        return this;
+      }
+
+      this._isOpen = false;
+
+      this._noLongerOpen(); // hide tooltipNode
+
+
+      this._tooltipNode.style.display = 'none';
+
+      this._tooltipNode.setAttribute('aria-hidden', 'true');
+
+      if (this.popperInstance) {
+        this.popperInstance.disableEventListeners();
+      }
+
+      clearTimeout(this._disposeTimer);
+      var disposeTime = directive.options.disposeTimeout;
+
+      if (disposeTime !== null) {
+        this._disposeTimer = setTimeout(function () {
+          if (_this6._tooltipNode) {
+            _this6._tooltipNode.removeEventListener('mouseenter', _this6.hide);
+
+            _this6._tooltipNode.removeEventListener('click', _this6.hide); // Don't remove popper instance, just the HTML element
+
+
+            _this6._removeTooltipNode();
+          }
+        }, disposeTime);
+      }
+
+      removeClasses(this.reference, ['v-tooltip-open']);
+      return this;
+    }
+  }, {
+    key: "_removeTooltipNode",
+    value: function _removeTooltipNode() {
+      if (!this._tooltipNode) return;
+      var parentNode = this._tooltipNode.parentNode;
+
+      if (parentNode) {
+        parentNode.removeChild(this._tooltipNode);
+        this.reference.removeAttribute('aria-describedby');
+      }
+
+      this._tooltipNode = null;
+    }
+  }, {
+    key: "_dispose",
+    value: function _dispose() {
+      var _this7 = this;
+
+      this._isDisposed = true;
+      this.reference.removeAttribute('data-original-title');
+
+      if (this.$_originalTitle) {
+        this.reference.setAttribute('title', this.$_originalTitle);
+      } // remove event listeners first to prevent any unexpected behaviour
+
+
+      this._events.forEach(function (_ref) {
+        var func = _ref.func,
+            event = _ref.event;
+
+        _this7.reference.removeEventListener(event, func);
+      });
+
+      this._events = [];
+
+      if (this._tooltipNode) {
+        this._hide();
+
+        this._tooltipNode.removeEventListener('mouseenter', this.hide);
+
+        this._tooltipNode.removeEventListener('click', this.hide); // destroy instance
+
+
+        this.popperInstance.destroy(); // destroy tooltipNode if removeOnDestroy is not set, as popperInstance.destroy() already removes the element
+
+        if (!this.popperInstance.options.removeOnDestroy) {
+          this._removeTooltipNode();
+        }
+      } else {
+        this._noLongerOpen();
+      }
+
+      return this;
+    }
+  }, {
+    key: "_findContainer",
+    value: function _findContainer(container, reference) {
+      // if container is a query, get the relative element
+      if (typeof container === 'string') {
+        container = window.document.querySelector(container);
+      } else if (container === false) {
+        // if container is `false`, set it to reference parent
+        container = reference.parentNode;
+      }
+
+      return container;
+    }
+    /**
+     * Append tooltip to container
+     * @memberof Tooltip
+     * @private
+     * @param {HTMLElement} tooltip
+     * @param {HTMLElement|String|false} container
+     */
+
+  }, {
+    key: "_append",
+    value: function _append(tooltipNode, container) {
+      container.appendChild(tooltipNode);
+    }
+  }, {
+    key: "_setEventListeners",
+    value: function _setEventListeners(reference, events, options) {
+      var _this8 = this;
+
+      var directEvents = [];
+      var oppositeEvents = [];
+      events.forEach(function (event) {
+        switch (event) {
+          case 'hover':
+            directEvents.push('mouseenter');
+            oppositeEvents.push('mouseleave');
+            if (_this8.options.hideOnTargetClick) oppositeEvents.push('click');
+            break;
+
+          case 'focus':
+            directEvents.push('focus');
+            oppositeEvents.push('blur');
+            if (_this8.options.hideOnTargetClick) oppositeEvents.push('click');
+            break;
+
+          case 'click':
+            directEvents.push('click');
+            oppositeEvents.push('click');
+            break;
+        }
+      }); // schedule show tooltip
+
+      directEvents.forEach(function (event) {
+        var func = function func(evt) {
+          if (_this8._isOpen === true) {
+            return;
+          }
+
+          evt.usedByTooltip = true;
+
+          _this8._scheduleShow(reference, options.delay, options, evt);
+        };
+
+        _this8._events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      }); // schedule hide tooltip
+
+      oppositeEvents.forEach(function (event) {
+        var func = function func(evt) {
+          if (evt.usedByTooltip === true) {
+            return;
+          }
+
+          _this8._scheduleHide(reference, options.delay, options, evt);
+        };
+
+        _this8._events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      });
+    }
+  }, {
+    key: "_onDocumentTouch",
+    value: function _onDocumentTouch(event) {
+      if (this._enableDocumentTouch) {
+        this._scheduleHide(this.reference, this.options.delay, this.options, event);
+      }
+    }
+  }, {
+    key: "_scheduleShow",
+    value: function _scheduleShow(reference, delay, options
+    /*, evt */
+    ) {
+      var _this9 = this;
+
+      // defaults to 0
+      var computedDelay = delay && delay.show || delay || 0;
+      clearTimeout(this._scheduleTimer);
+      this._scheduleTimer = window.setTimeout(function () {
+        return _this9._show(reference, options);
+      }, computedDelay);
+    }
+  }, {
+    key: "_scheduleHide",
+    value: function _scheduleHide(reference, delay, options, evt) {
+      var _this10 = this;
+
+      // defaults to 0
+      var computedDelay = delay && delay.hide || delay || 0;
+      clearTimeout(this._scheduleTimer);
+      this._scheduleTimer = window.setTimeout(function () {
+        if (_this10._isOpen === false) {
+          return;
+        }
+
+        if (!_this10._tooltipNode.ownerDocument.body.contains(_this10._tooltipNode)) {
+          return;
+        } // if we are hiding because of a mouseleave, we must check that the new
+        // reference isn't the tooltip, because in this case we don't want to hide it
+
+
+        if (evt.type === 'mouseleave') {
+          var isSet = _this10._setTooltipNodeEvent(evt, reference, delay, options); // if we set the new event, don't hide the tooltip yet
+          // the new event will take care to hide it if necessary
+
+
+          if (isSet) {
+            return;
+          }
+        }
+
+        _this10._hide(reference, options);
+      }, computedDelay);
+    }
+  }]);
+
+  return Tooltip;
+}(); // Hide tooltips on touch devices
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('touchstart', function (event) {
+    for (var i = 0; i < openTooltips.length; i++) {
+      openTooltips[i]._onDocumentTouch(event);
+    }
+  }, supportsPassive ? {
+    passive: true,
+    capture: true
+  } : true);
+}
+/**
+ * Placement function, its context is the Tooltip instance.
+ * @memberof Tooltip
+ * @callback PlacementFunction
+ * @param {HTMLElement} tooltip - tooltip DOM node.
+ * @param {HTMLElement} reference - reference DOM node.
+ * @return {String} placement - One of the allowed placement options.
+ */
+
+/**
+ * Title function, its context is the Tooltip instance.
+ * @memberof Tooltip
+ * @callback TitleFunction
+ * @return {String} placement - The desired title.
+ */
+
+function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+var state = {
+  enabled: true
+};
+var positions = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'];
+var defaultOptions = {
+  // Default tooltip placement relative to target element
+  defaultPlacement: 'top',
+  // Default CSS classes applied to the tooltip element
+  defaultClass: 'vue-tooltip-theme',
+  // Default CSS classes applied to the target element of the tooltip
+  defaultTargetClass: 'has-tooltip',
+  // Is the content HTML by default?
+  defaultHtml: true,
+  // Default HTML template of the tooltip element
+  // It must include `tooltip-arrow` & `tooltip-inner` CSS classes (can be configured, see below)
+  // Change if the classes conflict with other libraries (for example bootstrap)
+  defaultTemplate: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  // Selector used to get the arrow element in the tooltip template
+  defaultArrowSelector: '.tooltip-arrow, .tooltip__arrow',
+  // Selector used to get the inner content element in the tooltip template
+  defaultInnerSelector: '.tooltip-inner, .tooltip__inner',
+  // Delay (ms)
+  defaultDelay: 0,
+  // Default events that trigger the tooltip
+  defaultTrigger: 'hover focus',
+  // Default position offset (px)
+  defaultOffset: 0,
+  // Default container where the tooltip will be appended
+  defaultContainer: 'body',
+  defaultBoundariesElement: undefined,
+  defaultPopperOptions: {},
+  // Class added when content is loading
+  defaultLoadingClass: 'tooltip-loading',
+  // Displayed when tooltip content is loading
+  defaultLoadingContent: '...',
+  // Hide on mouseover tooltip
+  autoHide: true,
+  // Close tooltip on click on tooltip target?
+  defaultHideOnTargetClick: true,
+  // Auto destroy tooltip DOM nodes (ms)
+  disposeTimeout: 5000,
+  // Options for popover
+  popover: {
+    defaultPlacement: 'bottom',
+    // Use the `popoverClass` prop for theming
+    defaultClass: 'vue-popover-theme',
+    // Base class (change if conflicts with other libraries)
+    defaultBaseClass: 'tooltip popover',
+    // Wrapper class (contains arrow and inner)
+    defaultWrapperClass: 'wrapper',
+    // Inner content class
+    defaultInnerClass: 'tooltip-inner popover-inner',
+    // Arrow class
+    defaultArrowClass: 'tooltip-arrow popover-arrow',
+    // Class added when popover is open
+    defaultOpenClass: 'open',
+    defaultDelay: 0,
+    defaultTrigger: 'click',
+    defaultOffset: 0,
+    defaultContainer: 'body',
+    defaultBoundariesElement: undefined,
+    defaultPopperOptions: {},
+    // Hides if clicked outside of popover
+    defaultAutoHide: true,
+    // Update popper on content resize
+    defaultHandleResize: true
+  }
+};
+function getOptions(options) {
+  var result = {
+    placement: typeof options.placement !== 'undefined' ? options.placement : directive.options.defaultPlacement,
+    delay: typeof options.delay !== 'undefined' ? options.delay : directive.options.defaultDelay,
+    html: typeof options.html !== 'undefined' ? options.html : directive.options.defaultHtml,
+    template: typeof options.template !== 'undefined' ? options.template : directive.options.defaultTemplate,
+    arrowSelector: typeof options.arrowSelector !== 'undefined' ? options.arrowSelector : directive.options.defaultArrowSelector,
+    innerSelector: typeof options.innerSelector !== 'undefined' ? options.innerSelector : directive.options.defaultInnerSelector,
+    trigger: typeof options.trigger !== 'undefined' ? options.trigger : directive.options.defaultTrigger,
+    offset: typeof options.offset !== 'undefined' ? options.offset : directive.options.defaultOffset,
+    container: typeof options.container !== 'undefined' ? options.container : directive.options.defaultContainer,
+    boundariesElement: typeof options.boundariesElement !== 'undefined' ? options.boundariesElement : directive.options.defaultBoundariesElement,
+    autoHide: typeof options.autoHide !== 'undefined' ? options.autoHide : directive.options.autoHide,
+    hideOnTargetClick: typeof options.hideOnTargetClick !== 'undefined' ? options.hideOnTargetClick : directive.options.defaultHideOnTargetClick,
+    loadingClass: typeof options.loadingClass !== 'undefined' ? options.loadingClass : directive.options.defaultLoadingClass,
+    loadingContent: typeof options.loadingContent !== 'undefined' ? options.loadingContent : directive.options.defaultLoadingContent,
+    popperOptions: _objectSpread$1({}, typeof options.popperOptions !== 'undefined' ? options.popperOptions : directive.options.defaultPopperOptions)
+  };
+
+  if (result.offset) {
+    var typeofOffset = _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(result.offset);
+
+    var offset = result.offset; // One value -> switch
+
+    if (typeofOffset === 'number' || typeofOffset === 'string' && offset.indexOf(',') === -1) {
+      offset = "0, ".concat(offset);
+    }
+
+    if (!result.popperOptions.modifiers) {
+      result.popperOptions.modifiers = {};
+    }
+
+    result.popperOptions.modifiers.offset = {
+      offset: offset
+    };
+  }
+
+  if (result.trigger && result.trigger.indexOf('click') !== -1) {
+    result.hideOnTargetClick = false;
+  }
+
+  return result;
+}
+function getPlacement(value, modifiers) {
+  var placement = value.placement;
+
+  for (var i = 0; i < positions.length; i++) {
+    var pos = positions[i];
+
+    if (modifiers[pos]) {
+      placement = pos;
+    }
+  }
+
+  return placement;
+}
+function getContent(value) {
+  var type = _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(value);
+
+  if (type === 'string') {
+    return value;
+  } else if (value && type === 'object') {
+    return value.content;
+  } else {
+    return false;
+  }
+}
+function createTooltip(el, value) {
+  var modifiers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var content = getContent(value);
+  var classes = typeof value.classes !== 'undefined' ? value.classes : directive.options.defaultClass;
+
+  var opts = _objectSpread$1({
+    title: content
+  }, getOptions(_objectSpread$1(_objectSpread$1({}, _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(value) === 'object' ? value : {}), {}, {
+    placement: getPlacement(value, modifiers)
+  })));
+
+  var tooltip = el._tooltip = new Tooltip(el, opts);
+  tooltip.setClasses(classes);
+  tooltip._vueEl = el; // Class on target
+
+  var targetClasses = typeof value.targetClasses !== 'undefined' ? value.targetClasses : directive.options.defaultTargetClass;
+  el._tooltipTargetClasses = targetClasses;
+  addClasses(el, targetClasses);
+  return tooltip;
+}
+function destroyTooltip(el) {
+  if (el._tooltip) {
+    el._tooltip.dispose();
+
+    delete el._tooltip;
+    delete el._tooltipOldShow;
+  }
+
+  if (el._tooltipTargetClasses) {
+    removeClasses(el, el._tooltipTargetClasses);
+    delete el._tooltipTargetClasses;
+  }
+}
+function bind(el, _ref) {
+  var value = _ref.value;
+      _ref.oldValue;
+      var modifiers = _ref.modifiers;
+  var content = getContent(value);
+
+  if (!content || !state.enabled) {
+    destroyTooltip(el);
+  } else {
+    var tooltip;
+
+    if (el._tooltip) {
+      tooltip = el._tooltip; // Content
+
+      tooltip.setContent(content); // Options
+
+      tooltip.setOptions(_objectSpread$1(_objectSpread$1({}, value), {}, {
+        placement: getPlacement(value, modifiers)
+      }));
+    } else {
+      tooltip = createTooltip(el, value, modifiers);
+    } // Manual show
+
+
+    if (typeof value.show !== 'undefined' && value.show !== el._tooltipOldShow) {
+      el._tooltipOldShow = value.show;
+      value.show ? tooltip.show() : tooltip.hide();
+    }
+  }
+}
+var directive = {
+  options: defaultOptions,
+  bind: bind,
+  update: bind,
+  unbind: function unbind(el) {
+    destroyTooltip(el);
+  }
+};
+
+function addListeners(el) {
+  el.addEventListener('click', onClick);
+  el.addEventListener('touchstart', onTouchStart, supportsPassive ? {
+    passive: true
+  } : false);
+}
+
+function removeListeners(el) {
+  el.removeEventListener('click', onClick);
+  el.removeEventListener('touchstart', onTouchStart);
+  el.removeEventListener('touchend', onTouchEnd);
+  el.removeEventListener('touchcancel', onTouchCancel);
+}
+
+function onClick(event) {
+  var el = event.currentTarget;
+  event.closePopover = !el.$_vclosepopover_touch;
+  event.closeAllPopover = el.$_closePopoverModifiers && !!el.$_closePopoverModifiers.all;
+}
+
+function onTouchStart(event) {
+  if (event.changedTouches.length === 1) {
+    var el = event.currentTarget;
+    el.$_vclosepopover_touch = true;
+    var touch = event.changedTouches[0];
+    el.$_vclosepopover_touchPoint = touch;
+    el.addEventListener('touchend', onTouchEnd);
+    el.addEventListener('touchcancel', onTouchCancel);
+  }
+}
+
+function onTouchEnd(event) {
+  var el = event.currentTarget;
+  el.$_vclosepopover_touch = false;
+
+  if (event.changedTouches.length === 1) {
+    var touch = event.changedTouches[0];
+    var firstTouch = el.$_vclosepopover_touchPoint;
+    event.closePopover = Math.abs(touch.screenY - firstTouch.screenY) < 20 && Math.abs(touch.screenX - firstTouch.screenX) < 20;
+    event.closeAllPopover = el.$_closePopoverModifiers && !!el.$_closePopoverModifiers.all;
+  }
+}
+
+function onTouchCancel(event) {
+  var el = event.currentTarget;
+  el.$_vclosepopover_touch = false;
+}
+
+var vclosepopover = {
+  bind: function bind(el, _ref) {
+    var value = _ref.value,
+        modifiers = _ref.modifiers;
+    el.$_closePopoverModifiers = modifiers;
+
+    if (typeof value === 'undefined' || value) {
+      addListeners(el);
+    }
+  },
+  update: function update(el, _ref2) {
+    var value = _ref2.value,
+        oldValue = _ref2.oldValue,
+        modifiers = _ref2.modifiers;
+    el.$_closePopoverModifiers = modifiers;
+
+    if (value !== oldValue) {
+      if (typeof value === 'undefined' || value) {
+        addListeners(el);
+      } else {
+        removeListeners(el);
+      }
+    }
+  },
+  unbind: function unbind(el) {
+    removeListeners(el);
+  }
+};
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function getDefault(key) {
+  var value = directive.options.popover[key];
+
+  if (typeof value === 'undefined') {
+    return directive.options[key];
+  }
+
+  return value;
+}
+
+var isIOS = false;
+
+if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+  isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+var openPopovers = [];
+
+var Element = function Element() {};
+
+if (typeof window !== 'undefined') {
+  Element = window.Element;
+}
+
+var script = {
+  name: 'VPopover',
+  components: {
+    ResizeObserver: vue_resize__WEBPACK_IMPORTED_MODULE_6__["ResizeObserver"]
+  },
+  props: {
+    open: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    placement: {
+      type: String,
+      default: function _default() {
+        return getDefault('defaultPlacement');
+      }
+    },
+    delay: {
+      type: [String, Number, Object],
+      default: function _default() {
+        return getDefault('defaultDelay');
+      }
+    },
+    offset: {
+      type: [String, Number],
+      default: function _default() {
+        return getDefault('defaultOffset');
+      }
+    },
+    trigger: {
+      type: String,
+      default: function _default() {
+        return getDefault('defaultTrigger');
+      }
+    },
+    container: {
+      type: [String, Object, Element, Boolean],
+      default: function _default() {
+        return getDefault('defaultContainer');
+      }
+    },
+    boundariesElement: {
+      type: [String, Element],
+      default: function _default() {
+        return getDefault('defaultBoundariesElement');
+      }
+    },
+    popperOptions: {
+      type: Object,
+      default: function _default() {
+        return getDefault('defaultPopperOptions');
+      }
+    },
+    popoverClass: {
+      type: [String, Array],
+      default: function _default() {
+        return getDefault('defaultClass');
+      }
+    },
+    popoverBaseClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultBaseClass;
+      }
+    },
+    popoverInnerClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultInnerClass;
+      }
+    },
+    popoverWrapperClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultWrapperClass;
+      }
+    },
+    popoverArrowClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultArrowClass;
+      }
+    },
+    autoHide: {
+      type: Boolean,
+      default: function _default() {
+        return directive.options.popover.defaultAutoHide;
+      }
+    },
+    handleResize: {
+      type: Boolean,
+      default: function _default() {
+        return directive.options.popover.defaultHandleResize;
+      }
+    },
+    openGroup: {
+      type: String,
+      default: null
+    },
+    openClass: {
+      type: [String, Array],
+      default: function _default() {
+        return directive.options.popover.defaultOpenClass;
+      }
+    },
+    ariaId: {
+      default: null
+    }
+  },
+  data: function data() {
+    return {
+      isOpen: false,
+      id: Math.random().toString(36).substr(2, 10)
+    };
+  },
+  computed: {
+    cssClass: function cssClass() {
+      return _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()({}, this.openClass, this.isOpen);
+    },
+    popoverId: function popoverId() {
+      return "popover_".concat(this.ariaId != null ? this.ariaId : this.id);
+    }
+  },
+  watch: {
+    open: function open(val) {
+      if (val) {
+        this.show();
+      } else {
+        this.hide();
+      }
+    },
+    disabled: function disabled(val, oldVal) {
+      if (val !== oldVal) {
+        if (val) {
+          this.hide();
+        } else if (this.open) {
+          this.show();
+        }
+      }
+    },
+    container: function container(val) {
+      if (this.isOpen && this.popperInstance) {
+        var popoverNode = this.$refs.popover;
+        var reference = this.$refs.trigger;
+        var container = this.$_findContainer(this.container, reference);
+
+        if (!container) {
+          console.warn('No container for popover', this);
+          return;
+        }
+
+        container.appendChild(popoverNode);
+        this.popperInstance.scheduleUpdate();
+      }
+    },
+    trigger: function trigger(val) {
+      this.$_removeEventListeners();
+      this.$_addEventListeners();
+    },
+    placement: function placement(val) {
+      var _this = this;
+
+      this.$_updatePopper(function () {
+        _this.popperInstance.options.placement = val;
+      });
+    },
+    offset: '$_restartPopper',
+    boundariesElement: '$_restartPopper',
+    popperOptions: {
+      handler: '$_restartPopper',
+      deep: true
+    }
+  },
+  created: function created() {
+    this.$_isDisposed = false;
+    this.$_mounted = false;
+    this.$_events = [];
+    this.$_preventOpen = false;
+  },
+  mounted: function mounted() {
+    var popoverNode = this.$refs.popover;
+    popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+    this.$_init();
+
+    if (this.open) {
+      this.show();
+    }
+  },
+  deactivated: function deactivated() {
+    this.hide();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.dispose();
+  },
+  methods: {
+    show: function show() {
+      var _this2 = this;
+
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          event = _ref2.event;
+          _ref2.skipDelay;
+          var _ref2$force = _ref2.force,
+          force = _ref2$force === void 0 ? false : _ref2$force;
+
+      if (force || !this.disabled) {
+        this.$_scheduleShow(event);
+        this.$emit('show');
+      }
+
+      this.$emit('update:open', true);
+      this.$_beingShowed = true;
+      requestAnimationFrame(function () {
+        _this2.$_beingShowed = false;
+      });
+    },
+    hide: function hide() {
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          event = _ref3.event;
+          _ref3.skipDelay;
+
+      this.$_scheduleHide(event);
+      this.$emit('hide');
+      this.$emit('update:open', false);
+    },
+    dispose: function dispose() {
+      this.$_isDisposed = true;
+      this.$_removeEventListeners();
+      this.hide({
+        skipDelay: true
+      });
+
+      if (this.popperInstance) {
+        this.popperInstance.destroy(); // destroy tooltipNode if removeOnDestroy is not set, as popperInstance.destroy() already removes the element
+
+        if (!this.popperInstance.options.removeOnDestroy) {
+          var popoverNode = this.$refs.popover;
+          popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+        }
+      }
+
+      this.$_mounted = false;
+      this.popperInstance = null;
+      this.isOpen = false;
+      this.$emit('dispose');
+    },
+    $_init: function $_init() {
+      if (this.trigger.indexOf('manual') === -1) {
+        this.$_addEventListeners();
+      }
+    },
+    $_show: function $_show() {
+      var _this3 = this;
+
+      var reference = this.$refs.trigger;
+      var popoverNode = this.$refs.popover;
+      clearTimeout(this.$_disposeTimer); // Already open
+
+      if (this.isOpen) {
+        return;
+      } // Popper is already initialized
+
+
+      if (this.popperInstance) {
+        this.isOpen = true;
+        this.popperInstance.enableEventListeners();
+        this.popperInstance.scheduleUpdate();
+      }
+
+      if (!this.$_mounted) {
+        var container = this.$_findContainer(this.container, reference);
+
+        if (!container) {
+          console.warn('No container for popover', this);
+          return;
+        }
+
+        container.appendChild(popoverNode);
+        this.$_mounted = true;
+        this.isOpen = false;
+
+        if (this.popperInstance) {
+          requestAnimationFrame(function () {
+            if (!_this3.hidden) {
+              _this3.isOpen = true;
+            }
+          });
+        }
+      }
+
+      if (!this.popperInstance) {
+        var popperOptions = _objectSpread(_objectSpread({}, this.popperOptions), {}, {
+          placement: this.placement
+        });
+
+        popperOptions.modifiers = _objectSpread(_objectSpread({}, popperOptions.modifiers), {}, {
+          arrow: _objectSpread(_objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.arrow), {}, {
+            element: this.$refs.arrow
+          })
+        });
+
+        if (this.offset) {
+          var offset = this.$_getOffset();
+          popperOptions.modifiers.offset = _objectSpread(_objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.offset), {}, {
+            offset: offset
+          });
+        }
+
+        if (this.boundariesElement) {
+          popperOptions.modifiers.preventOverflow = _objectSpread(_objectSpread({}, popperOptions.modifiers && popperOptions.modifiers.preventOverflow), {}, {
+            boundariesElement: this.boundariesElement
+          });
+        }
+
+        this.popperInstance = new popper_js__WEBPACK_IMPORTED_MODULE_4__["default"](reference, popoverNode, popperOptions); // Fix position
+
+        requestAnimationFrame(function () {
+          if (_this3.hidden) {
+            _this3.hidden = false;
+
+            _this3.$_hide();
+
+            return;
+          }
+
+          if (!_this3.$_isDisposed && _this3.popperInstance) {
+            _this3.popperInstance.scheduleUpdate(); // Show the tooltip
+
+
+            requestAnimationFrame(function () {
+              if (_this3.hidden) {
+                _this3.hidden = false;
+
+                _this3.$_hide();
+
+                return;
+              }
+
+              if (!_this3.$_isDisposed) {
+                _this3.isOpen = true;
+              } else {
+                _this3.dispose();
+              }
+            });
+          } else {
+            _this3.dispose();
+          }
+        });
+      }
+
+      var openGroup = this.openGroup;
+
+      if (openGroup) {
+        var popover;
+
+        for (var i = 0; i < openPopovers.length; i++) {
+          popover = openPopovers[i];
+
+          if (popover.openGroup !== openGroup) {
+            popover.hide();
+            popover.$emit('close-group');
+          }
+        }
+      }
+
+      openPopovers.push(this);
+      this.$emit('apply-show');
+    },
+    $_hide: function $_hide() {
+      var _this4 = this;
+
+      // Already hidden
+      if (!this.isOpen) {
+        return;
+      }
+
+      var index = openPopovers.indexOf(this);
+
+      if (index !== -1) {
+        openPopovers.splice(index, 1);
+      }
+
+      this.isOpen = false;
+
+      if (this.popperInstance) {
+        this.popperInstance.disableEventListeners();
+      }
+
+      clearTimeout(this.$_disposeTimer);
+      var disposeTime = directive.options.popover.disposeTimeout || directive.options.disposeTimeout;
+
+      if (disposeTime !== null) {
+        this.$_disposeTimer = setTimeout(function () {
+          var popoverNode = _this4.$refs.popover;
+
+          if (popoverNode) {
+            // Don't remove popper instance, just the HTML element
+            popoverNode.parentNode && popoverNode.parentNode.removeChild(popoverNode);
+            _this4.$_mounted = false;
+          }
+        }, disposeTime);
+      }
+
+      this.$emit('apply-hide');
+    },
+    $_findContainer: function $_findContainer(container, reference) {
+      // if container is a query, get the relative element
+      if (typeof container === 'string') {
+        container = window.document.querySelector(container);
+      } else if (container === false) {
+        // if container is `false`, set it to reference parent
+        container = reference.parentNode;
+      }
+
+      return container;
+    },
+    $_getOffset: function $_getOffset() {
+      var typeofOffset = _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(this.offset);
+
+      var offset = this.offset; // One value -> switch
+
+      if (typeofOffset === 'number' || typeofOffset === 'string' && offset.indexOf(',') === -1) {
+        offset = "0, ".concat(offset);
+      }
+
+      return offset;
+    },
+    $_addEventListeners: function $_addEventListeners() {
+      var _this5 = this;
+
+      var reference = this.$refs.trigger;
+      var directEvents = [];
+      var oppositeEvents = [];
+      var events = typeof this.trigger === 'string' ? this.trigger.split(' ').filter(function (trigger) {
+        return ['click', 'hover', 'focus'].indexOf(trigger) !== -1;
+      }) : [];
+      events.forEach(function (event) {
+        switch (event) {
+          case 'hover':
+            directEvents.push('mouseenter');
+            oppositeEvents.push('mouseleave');
+            break;
+
+          case 'focus':
+            directEvents.push('focus');
+            oppositeEvents.push('blur');
+            break;
+
+          case 'click':
+            directEvents.push('click');
+            oppositeEvents.push('click');
+            break;
+        }
+      }); // schedule show tooltip
+
+      directEvents.forEach(function (event) {
+        var func = function func(event) {
+          if (_this5.isOpen) {
+            return;
+          }
+
+          event.usedByTooltip = true;
+          !_this5.$_preventOpen && _this5.show({
+            event: event
+          });
+          _this5.hidden = false;
+        };
+
+        _this5.$_events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      }); // schedule hide tooltip
+
+      oppositeEvents.forEach(function (event) {
+        var func = function func(event) {
+          if (event.usedByTooltip) {
+            return;
+          }
+
+          _this5.hide({
+            event: event
+          });
+
+          _this5.hidden = true;
+        };
+
+        _this5.$_events.push({
+          event: event,
+          func: func
+        });
+
+        reference.addEventListener(event, func);
+      });
+    },
+    $_scheduleShow: function $_scheduleShow() {
+      var skipDelay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      clearTimeout(this.$_scheduleTimer);
+
+      if (skipDelay) {
+        this.$_show();
+      } else {
+        // defaults to 0
+        var computedDelay = parseInt(this.delay && this.delay.show || this.delay || 0);
+        this.$_scheduleTimer = setTimeout(this.$_show.bind(this), computedDelay);
+      }
+    },
+    $_scheduleHide: function $_scheduleHide() {
+      var _this6 = this;
+
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var skipDelay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      clearTimeout(this.$_scheduleTimer);
+
+      if (skipDelay) {
+        this.$_hide();
+      } else {
+        // defaults to 0
+        var computedDelay = parseInt(this.delay && this.delay.hide || this.delay || 0);
+        this.$_scheduleTimer = setTimeout(function () {
+          if (!_this6.isOpen) {
+            return;
+          } // if we are hiding because of a mouseleave, we must check that the new
+          // reference isn't the tooltip, because in this case we don't want to hide it
+
+
+          if (event && event.type === 'mouseleave') {
+            var isSet = _this6.$_setTooltipNodeEvent(event); // if we set the new event, don't hide the tooltip yet
+            // the new event will take care to hide it if necessary
+
+
+            if (isSet) {
+              return;
+            }
+          }
+
+          _this6.$_hide();
+        }, computedDelay);
+      }
+    },
+    $_setTooltipNodeEvent: function $_setTooltipNodeEvent(event) {
+      var _this7 = this;
+
+      var reference = this.$refs.trigger;
+      var popoverNode = this.$refs.popover;
+      var relatedreference = event.relatedreference || event.toElement || event.relatedTarget;
+
+      var callback = function callback(event2) {
+        var relatedreference2 = event2.relatedreference || event2.toElement || event2.relatedTarget; // Remove event listener after call
+
+        popoverNode.removeEventListener(event.type, callback); // If the new reference is not the reference element
+
+        if (!reference.contains(relatedreference2)) {
+          // Schedule to hide tooltip
+          _this7.hide({
+            event: event2
+          });
+        }
+      };
+
+      if (popoverNode.contains(relatedreference)) {
+        // listen to mouseleave on the tooltip element to be able to hide the tooltip
+        popoverNode.addEventListener(event.type, callback);
+        return true;
+      }
+
+      return false;
+    },
+    $_removeEventListeners: function $_removeEventListeners() {
+      var reference = this.$refs.trigger;
+      this.$_events.forEach(function (_ref4) {
+        var func = _ref4.func,
+            event = _ref4.event;
+        reference.removeEventListener(event, func);
+      });
+      this.$_events = [];
+    },
+    $_updatePopper: function $_updatePopper(cb) {
+      if (this.popperInstance) {
+        cb();
+        if (this.isOpen) this.popperInstance.scheduleUpdate();
+      }
+    },
+    $_restartPopper: function $_restartPopper() {
+      if (this.popperInstance) {
+        var isOpen = this.isOpen;
+        this.dispose();
+        this.$_isDisposed = false;
+        this.$_init();
+
+        if (isOpen) {
+          this.show({
+            skipDelay: true,
+            force: true
+          });
+        }
+      }
+    },
+    $_handleGlobalClose: function $_handleGlobalClose(event) {
+      var _this8 = this;
+
+      var touch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (this.$_beingShowed) return;
+      this.hide({
+        event: event
+      });
+
+      if (event.closePopover) {
+        this.$emit('close-directive');
+      } else {
+        this.$emit('auto-hide');
+      }
+
+      if (touch) {
+        this.$_preventOpen = true;
+        setTimeout(function () {
+          _this8.$_preventOpen = false;
+        }, 300);
+      }
+    },
+    $_handleResize: function $_handleResize() {
+      if (this.isOpen && this.popperInstance) {
+        this.popperInstance.scheduleUpdate();
+        this.$emit('resize');
+      }
+    }
+  }
+};
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  if (isIOS) {
+    document.addEventListener('touchend', handleGlobalTouchend, supportsPassive ? {
+      passive: true,
+      capture: true
+    } : true);
+  } else {
+    window.addEventListener('click', handleGlobalClick, true);
+  }
+}
+
+function handleGlobalClick(event) {
+  handleGlobalClose(event);
+}
+
+function handleGlobalTouchend(event) {
+  handleGlobalClose(event, true);
+}
+
+function handleGlobalClose(event) {
+  var touch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var _loop = function _loop(i) {
+    var popover = openPopovers[i];
+
+    if (popover.$refs.popover) {
+      var contains = popover.$refs.popover.contains(event.target);
+      requestAnimationFrame(function () {
+        if (event.closeAllPopover || event.closePopover && contains || popover.autoHide && !contains) {
+          popover.$_handleGlobalClose(event, touch);
+        }
+      });
+    }
+  };
+
+  // Delay so that close directive has time to set values
+  for (var i = 0; i < openPopovers.length; i++) {
+    _loop(i);
+  }
+}
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}
+
+/* script */
+var __vue_script__ = script;
+/* template */
+
+var __vue_render__ = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c("div", {
+    staticClass: "v-popover",
+    class: _vm.cssClass
+  }, [_c("div", {
+    ref: "trigger",
+    staticClass: "trigger",
+    staticStyle: {
+      display: "inline-block"
+    },
+    attrs: {
+      "aria-describedby": _vm.isOpen ? _vm.popoverId : undefined,
+      tabindex: _vm.trigger.indexOf("focus") !== -1 ? 0 : undefined
+    }
+  }, [_vm._t("default")], 2), _vm._v(" "), _c("div", {
+    ref: "popover",
+    class: [_vm.popoverBaseClass, _vm.popoverClass, _vm.cssClass],
+    style: {
+      visibility: _vm.isOpen ? "visible" : "hidden"
+    },
+    attrs: {
+      id: _vm.popoverId,
+      "aria-hidden": _vm.isOpen ? "false" : "true",
+      tabindex: _vm.autoHide ? 0 : undefined
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])) {
+          return null;
+        }
+
+        _vm.autoHide && _vm.hide();
+      }
+    }
+  }, [_c("div", {
+    class: _vm.popoverWrapperClass
+  }, [_c("div", {
+    ref: "inner",
+    class: _vm.popoverInnerClass,
+    staticStyle: {
+      position: "relative"
+    }
+  }, [_c("div", [_vm._t("popover", null, {
+    isOpen: _vm.isOpen
+  })], 2), _vm._v(" "), _vm.handleResize ? _c("ResizeObserver", {
+    on: {
+      notify: _vm.$_handleResize
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c("div", {
+    ref: "arrow",
+    class: _vm.popoverArrowClass
+  })])])]);
+};
+
+var __vue_staticRenderFns__ = [];
+__vue_render__._withStripped = true;
+/* style */
+
+var __vue_inject_styles__ = undefined;
+/* scoped */
+
+var __vue_scope_id__ = undefined;
+/* module identifier */
+
+var __vue_module_identifier__ = undefined;
+/* functional template */
+
+var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = ".resize-observer[data-v-8859cc6c]{position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;border:none;background-color:transparent;pointer-events:none;display:block;overflow:hidden;opacity:0}.resize-observer[data-v-8859cc6c] object{display:block;position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden;pointer-events:none;z-index:-1}";
+styleInject(css_248z);
+
+function install(Vue) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  if (install.installed) return;
+  install.installed = true;
+  var finalOptions = {};
+  lodash_merge__WEBPACK_IMPORTED_MODULE_7___default()(finalOptions, defaultOptions, options);
+  plugin.options = finalOptions;
+  directive.options = finalOptions;
+  Vue.directive('tooltip', directive);
+  Vue.directive('close-popover', vclosepopover);
+  Vue.component('VPopover', __vue_component__);
+}
+var VTooltip = directive;
+var VClosePopover = vclosepopover;
+var VPopover = __vue_component__;
+var plugin = {
+  install: install,
+
+  get enabled() {
+    return state.enabled;
+  },
+
+  set enabled(value) {
+    state.enabled = value;
+  }
+
+}; // Auto-install
+
+var GlobalVue = null;
+
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/classCallCheck.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+module.exports = _classCallCheck;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/createClass.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/createClass.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/typeof.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/@babel/runtime/helpers/typeof.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+
+    module.exports["default"] = module.exports, module.exports.__esModule = true;
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
+    module.exports["default"] = module.exports, module.exports.__esModule = true;
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_DataView.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_DataView.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js"),
+    root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/* Built-in method references that are verified to be native. */
+var DataView = getNative(root, 'DataView');
+
+module.exports = DataView;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Hash.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Hash.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var hashClear = __webpack_require__(/*! ./_hashClear */ "./node_modules/v-tooltip/node_modules/lodash/_hashClear.js"),
+    hashDelete = __webpack_require__(/*! ./_hashDelete */ "./node_modules/v-tooltip/node_modules/lodash/_hashDelete.js"),
+    hashGet = __webpack_require__(/*! ./_hashGet */ "./node_modules/v-tooltip/node_modules/lodash/_hashGet.js"),
+    hashHas = __webpack_require__(/*! ./_hashHas */ "./node_modules/v-tooltip/node_modules/lodash/_hashHas.js"),
+    hashSet = __webpack_require__(/*! ./_hashSet */ "./node_modules/v-tooltip/node_modules/lodash/_hashSet.js");
+
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `Hash`.
+Hash.prototype.clear = hashClear;
+Hash.prototype['delete'] = hashDelete;
+Hash.prototype.get = hashGet;
+Hash.prototype.has = hashHas;
+Hash.prototype.set = hashSet;
+
+module.exports = Hash;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_ListCache.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_ListCache.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var listCacheClear = __webpack_require__(/*! ./_listCacheClear */ "./node_modules/v-tooltip/node_modules/lodash/_listCacheClear.js"),
+    listCacheDelete = __webpack_require__(/*! ./_listCacheDelete */ "./node_modules/v-tooltip/node_modules/lodash/_listCacheDelete.js"),
+    listCacheGet = __webpack_require__(/*! ./_listCacheGet */ "./node_modules/v-tooltip/node_modules/lodash/_listCacheGet.js"),
+    listCacheHas = __webpack_require__(/*! ./_listCacheHas */ "./node_modules/v-tooltip/node_modules/lodash/_listCacheHas.js"),
+    listCacheSet = __webpack_require__(/*! ./_listCacheSet */ "./node_modules/v-tooltip/node_modules/lodash/_listCacheSet.js");
+
+/**
+ * Creates an list cache object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function ListCache(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `ListCache`.
+ListCache.prototype.clear = listCacheClear;
+ListCache.prototype['delete'] = listCacheDelete;
+ListCache.prototype.get = listCacheGet;
+ListCache.prototype.has = listCacheHas;
+ListCache.prototype.set = listCacheSet;
+
+module.exports = ListCache;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Map.js":
+/*!************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Map.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js"),
+    root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/* Built-in method references that are verified to be native. */
+var Map = getNative(root, 'Map');
+
+module.exports = Map;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_MapCache.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_MapCache.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var mapCacheClear = __webpack_require__(/*! ./_mapCacheClear */ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheClear.js"),
+    mapCacheDelete = __webpack_require__(/*! ./_mapCacheDelete */ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheDelete.js"),
+    mapCacheGet = __webpack_require__(/*! ./_mapCacheGet */ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheGet.js"),
+    mapCacheHas = __webpack_require__(/*! ./_mapCacheHas */ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheHas.js"),
+    mapCacheSet = __webpack_require__(/*! ./_mapCacheSet */ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheSet.js");
+
+/**
+ * Creates a map cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function MapCache(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `MapCache`.
+MapCache.prototype.clear = mapCacheClear;
+MapCache.prototype['delete'] = mapCacheDelete;
+MapCache.prototype.get = mapCacheGet;
+MapCache.prototype.has = mapCacheHas;
+MapCache.prototype.set = mapCacheSet;
+
+module.exports = MapCache;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Promise.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Promise.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js"),
+    root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/* Built-in method references that are verified to be native. */
+var Promise = getNative(root, 'Promise');
+
+module.exports = Promise;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Set.js":
+/*!************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Set.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js"),
+    root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/* Built-in method references that are verified to be native. */
+var Set = getNative(root, 'Set');
+
+module.exports = Set;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_SetCache.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_SetCache.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var MapCache = __webpack_require__(/*! ./_MapCache */ "./node_modules/v-tooltip/node_modules/lodash/_MapCache.js"),
+    setCacheAdd = __webpack_require__(/*! ./_setCacheAdd */ "./node_modules/v-tooltip/node_modules/lodash/_setCacheAdd.js"),
+    setCacheHas = __webpack_require__(/*! ./_setCacheHas */ "./node_modules/v-tooltip/node_modules/lodash/_setCacheHas.js");
+
+/**
+ *
+ * Creates an array cache object to store unique values.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [values] The values to cache.
+ */
+function SetCache(values) {
+  var index = -1,
+      length = values == null ? 0 : values.length;
+
+  this.__data__ = new MapCache;
+  while (++index < length) {
+    this.add(values[index]);
+  }
+}
+
+// Add methods to `SetCache`.
+SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+SetCache.prototype.has = setCacheHas;
+
+module.exports = SetCache;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Stack.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Stack.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ListCache = __webpack_require__(/*! ./_ListCache */ "./node_modules/v-tooltip/node_modules/lodash/_ListCache.js"),
+    stackClear = __webpack_require__(/*! ./_stackClear */ "./node_modules/v-tooltip/node_modules/lodash/_stackClear.js"),
+    stackDelete = __webpack_require__(/*! ./_stackDelete */ "./node_modules/v-tooltip/node_modules/lodash/_stackDelete.js"),
+    stackGet = __webpack_require__(/*! ./_stackGet */ "./node_modules/v-tooltip/node_modules/lodash/_stackGet.js"),
+    stackHas = __webpack_require__(/*! ./_stackHas */ "./node_modules/v-tooltip/node_modules/lodash/_stackHas.js"),
+    stackSet = __webpack_require__(/*! ./_stackSet */ "./node_modules/v-tooltip/node_modules/lodash/_stackSet.js");
+
+/**
+ * Creates a stack cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Stack(entries) {
+  var data = this.__data__ = new ListCache(entries);
+  this.size = data.size;
+}
+
+// Add methods to `Stack`.
+Stack.prototype.clear = stackClear;
+Stack.prototype['delete'] = stackDelete;
+Stack.prototype.get = stackGet;
+Stack.prototype.has = stackHas;
+Stack.prototype.set = stackSet;
+
+module.exports = Stack;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Symbol.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Symbol.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+module.exports = Symbol;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_Uint8Array.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_Uint8Array.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/** Built-in value references. */
+var Uint8Array = root.Uint8Array;
+
+module.exports = Uint8Array;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_WeakMap.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_WeakMap.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js"),
+    root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/* Built-in method references that are verified to be native. */
+var WeakMap = getNative(root, 'WeakMap');
+
+module.exports = WeakMap;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_apply.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_apply.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+module.exports = apply;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_arrayFilter.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_arrayFilter.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * A specialized version of `_.filter` for arrays without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} predicate The function invoked per iteration.
+ * @returns {Array} Returns the new filtered array.
+ */
+function arrayFilter(array, predicate) {
+  var index = -1,
+      length = array == null ? 0 : array.length,
+      resIndex = 0,
+      result = [];
+
+  while (++index < length) {
+    var value = array[index];
+    if (predicate(value, index, array)) {
+      result[resIndex++] = value;
+    }
+  }
+  return result;
+}
+
+module.exports = arrayFilter;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_arrayLikeKeys.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_arrayLikeKeys.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseTimes = __webpack_require__(/*! ./_baseTimes */ "./node_modules/v-tooltip/node_modules/lodash/_baseTimes.js"),
+    isArguments = __webpack_require__(/*! ./isArguments */ "./node_modules/v-tooltip/node_modules/lodash/isArguments.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "./node_modules/v-tooltip/node_modules/lodash/isArray.js"),
+    isBuffer = __webpack_require__(/*! ./isBuffer */ "./node_modules/v-tooltip/node_modules/lodash/isBuffer.js"),
+    isIndex = __webpack_require__(/*! ./_isIndex */ "./node_modules/v-tooltip/node_modules/lodash/_isIndex.js"),
+    isTypedArray = __webpack_require__(/*! ./isTypedArray */ "./node_modules/v-tooltip/node_modules/lodash/isTypedArray.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  var isArr = isArray(value),
+      isArg = !isArr && isArguments(value),
+      isBuff = !isArr && !isArg && isBuffer(value),
+      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+      skipIndexes = isArr || isArg || isBuff || isType,
+      result = skipIndexes ? baseTimes(value.length, String) : [],
+      length = result.length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (
+           // Safari 9 has enumerable `arguments.length` in strict mode.
+           key == 'length' ||
+           // Node.js 0.10 has enumerable non-index properties on buffers.
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           // PhantomJS 2 has enumerable non-index properties on typed arrays.
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           // Skip index properties.
+           isIndex(key, length)
+        ))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = arrayLikeKeys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_arrayPush.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_arrayPush.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Appends the elements of `values` to `array`.
+ *
+ * @private
+ * @param {Array} array The array to modify.
+ * @param {Array} values The values to append.
+ * @returns {Array} Returns `array`.
+ */
+function arrayPush(array, values) {
+  var index = -1,
+      length = values.length,
+      offset = array.length;
+
+  while (++index < length) {
+    array[offset + index] = values[index];
+  }
+  return array;
+}
+
+module.exports = arrayPush;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_arraySome.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_arraySome.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * A specialized version of `_.some` for arrays without support for iteratee
+ * shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} predicate The function invoked per iteration.
+ * @returns {boolean} Returns `true` if any element passes the predicate check,
+ *  else `false`.
+ */
+function arraySome(array, predicate) {
+  var index = -1,
+      length = array == null ? 0 : array.length;
+
+  while (++index < length) {
+    if (predicate(array[index], index, array)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+module.exports = arraySome;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_assignMergeValue.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_assignMergeValue.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ "./node_modules/v-tooltip/node_modules/lodash/_baseAssignValue.js"),
+    eq = __webpack_require__(/*! ./eq */ "./node_modules/v-tooltip/node_modules/lodash/eq.js");
+
+/**
+ * This function is like `assignValue` except that it doesn't assign
+ * `undefined` values.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignMergeValue(object, key, value) {
+  if ((value !== undefined && !eq(object[key], value)) ||
+      (value === undefined && !(key in object))) {
+    baseAssignValue(object, key, value);
+  }
+}
+
+module.exports = assignMergeValue;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_assignValue.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_assignValue.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ "./node_modules/v-tooltip/node_modules/lodash/_baseAssignValue.js"),
+    eq = __webpack_require__(/*! ./eq */ "./node_modules/v-tooltip/node_modules/lodash/eq.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    baseAssignValue(object, key, value);
+  }
+}
+
+module.exports = assignValue;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var eq = __webpack_require__(/*! ./eq */ "./node_modules/v-tooltip/node_modules/lodash/eq.js");
+
+/**
+ * Gets the index at which the `key` is found in `array` of key-value pairs.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {*} key The key to search for.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ */
+function assocIndexOf(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+
+module.exports = assocIndexOf;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseAssignValue.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseAssignValue.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var defineProperty = __webpack_require__(/*! ./_defineProperty */ "./node_modules/v-tooltip/node_modules/lodash/_defineProperty.js");
+
+/**
+ * The base implementation of `assignValue` and `assignMergeValue` without
+ * value checks.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function baseAssignValue(object, key, value) {
+  if (key == '__proto__' && defineProperty) {
+    defineProperty(object, key, {
+      'configurable': true,
+      'enumerable': true,
+      'value': value,
+      'writable': true
+    });
+  } else {
+    object[key] = value;
+  }
+}
+
+module.exports = baseAssignValue;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseCreate.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseCreate.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js");
+
+/** Built-in value references. */
+var objectCreate = Object.create;
+
+/**
+ * The base implementation of `_.create` without support for assigning
+ * properties to the created object.
+ *
+ * @private
+ * @param {Object} proto The object to inherit from.
+ * @returns {Object} Returns the new object.
+ */
+var baseCreate = (function() {
+  function object() {}
+  return function(proto) {
+    if (!isObject(proto)) {
+      return {};
+    }
+    if (objectCreate) {
+      return objectCreate(proto);
+    }
+    object.prototype = proto;
+    var result = new object;
+    object.prototype = undefined;
+    return result;
+  };
+}());
+
+module.exports = baseCreate;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseFor.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseFor.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var createBaseFor = __webpack_require__(/*! ./_createBaseFor */ "./node_modules/v-tooltip/node_modules/lodash/_createBaseFor.js");
+
+/**
+ * The base implementation of `baseForOwn` which iterates over `object`
+ * properties returned by `keysFunc` and invokes `iteratee` for each property.
+ * Iteratee functions may exit iteration early by explicitly returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = createBaseFor();
+
+module.exports = baseFor;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseGetAllKeys.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseGetAllKeys.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayPush = __webpack_require__(/*! ./_arrayPush */ "./node_modules/v-tooltip/node_modules/lodash/_arrayPush.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "./node_modules/v-tooltip/node_modules/lodash/isArray.js");
+
+/**
+ * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+ * `keysFunc` and `symbolsFunc` to get the enumerable property names and
+ * symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @param {Function} symbolsFunc The function to get the symbols of `object`.
+ * @returns {Array} Returns the array of property names and symbols.
+ */
+function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+  var result = keysFunc(object);
+  return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+}
+
+module.exports = baseGetAllKeys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Symbol = __webpack_require__(/*! ./_Symbol */ "./node_modules/v-tooltip/node_modules/lodash/_Symbol.js"),
+    getRawTag = __webpack_require__(/*! ./_getRawTag */ "./node_modules/v-tooltip/node_modules/lodash/_getRawTag.js"),
+    objectToString = __webpack_require__(/*! ./_objectToString */ "./node_modules/v-tooltip/node_modules/lodash/_objectToString.js");
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? getRawTag(value)
+    : objectToString(value);
+}
+
+module.exports = baseGetTag;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseIsArguments.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseIsArguments.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+
+/**
+ * The base implementation of `_.isArguments`.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ */
+function baseIsArguments(value) {
+  return isObjectLike(value) && baseGetTag(value) == argsTag;
+}
+
+module.exports = baseIsArguments;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseIsEqual.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseIsEqual.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsEqualDeep = __webpack_require__(/*! ./_baseIsEqualDeep */ "./node_modules/v-tooltip/node_modules/lodash/_baseIsEqualDeep.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/**
+ * The base implementation of `_.isEqual` which supports partial comparisons
+ * and tracks traversed objects.
+ *
+ * @private
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @param {boolean} bitmask The bitmask flags.
+ *  1 - Unordered comparison
+ *  2 - Partial comparison
+ * @param {Function} [customizer] The function to customize comparisons.
+ * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ */
+function baseIsEqual(value, other, bitmask, customizer, stack) {
+  if (value === other) {
+    return true;
+  }
+  if (value == null || other == null || (!isObjectLike(value) && !isObjectLike(other))) {
+    return value !== value && other !== other;
+  }
+  return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
+}
+
+module.exports = baseIsEqual;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseIsEqualDeep.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseIsEqualDeep.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Stack = __webpack_require__(/*! ./_Stack */ "./node_modules/v-tooltip/node_modules/lodash/_Stack.js"),
+    equalArrays = __webpack_require__(/*! ./_equalArrays */ "./node_modules/v-tooltip/node_modules/lodash/_equalArrays.js"),
+    equalByTag = __webpack_require__(/*! ./_equalByTag */ "./node_modules/v-tooltip/node_modules/lodash/_equalByTag.js"),
+    equalObjects = __webpack_require__(/*! ./_equalObjects */ "./node_modules/v-tooltip/node_modules/lodash/_equalObjects.js"),
+    getTag = __webpack_require__(/*! ./_getTag */ "./node_modules/v-tooltip/node_modules/lodash/_getTag.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "./node_modules/v-tooltip/node_modules/lodash/isArray.js"),
+    isBuffer = __webpack_require__(/*! ./isBuffer */ "./node_modules/v-tooltip/node_modules/lodash/isBuffer.js"),
+    isTypedArray = __webpack_require__(/*! ./isTypedArray */ "./node_modules/v-tooltip/node_modules/lodash/isTypedArray.js");
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    arrayTag = '[object Array]',
+    objectTag = '[object Object]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * A specialized version of `baseIsEqual` for arrays and objects which performs
+ * deep comparisons and tracks traversed objects enabling objects with circular
+ * references to be compared.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
+  var objIsArr = isArray(object),
+      othIsArr = isArray(other),
+      objTag = objIsArr ? arrayTag : getTag(object),
+      othTag = othIsArr ? arrayTag : getTag(other);
+
+  objTag = objTag == argsTag ? objectTag : objTag;
+  othTag = othTag == argsTag ? objectTag : othTag;
+
+  var objIsObj = objTag == objectTag,
+      othIsObj = othTag == objectTag,
+      isSameTag = objTag == othTag;
+
+  if (isSameTag && isBuffer(object)) {
+    if (!isBuffer(other)) {
+      return false;
+    }
+    objIsArr = true;
+    objIsObj = false;
+  }
+  if (isSameTag && !objIsObj) {
+    stack || (stack = new Stack);
+    return (objIsArr || isTypedArray(object))
+      ? equalArrays(object, other, bitmask, customizer, equalFunc, stack)
+      : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+  }
+  if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
+    var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+        othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+    if (objIsWrapped || othIsWrapped) {
+      var objUnwrapped = objIsWrapped ? object.value() : object,
+          othUnwrapped = othIsWrapped ? other.value() : other;
+
+      stack || (stack = new Stack);
+      return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+    }
+  }
+  if (!isSameTag) {
+    return false;
+  }
+  stack || (stack = new Stack);
+  return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+}
+
+module.exports = baseIsEqualDeep;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseIsNative.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseIsNative.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isFunction = __webpack_require__(/*! ./isFunction */ "./node_modules/v-tooltip/node_modules/lodash/isFunction.js"),
+    isMasked = __webpack_require__(/*! ./_isMasked */ "./node_modules/v-tooltip/node_modules/lodash/_isMasked.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js"),
+    toSource = __webpack_require__(/*! ./_toSource */ "./node_modules/v-tooltip/node_modules/lodash/_toSource.js");
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative(value) {
+  if (!isObject(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+
+module.exports = baseIsNative;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseIsTypedArray.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseIsTypedArray.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js"),
+    isLength = __webpack_require__(/*! ./isLength */ "./node_modules/v-tooltip/node_modules/lodash/isLength.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    arrayTag = '[object Array]',
+    boolTag = '[object Boolean]',
+    dateTag = '[object Date]',
+    errorTag = '[object Error]',
+    funcTag = '[object Function]',
+    mapTag = '[object Map]',
+    numberTag = '[object Number]',
+    objectTag = '[object Object]',
+    regexpTag = '[object RegExp]',
+    setTag = '[object Set]',
+    stringTag = '[object String]',
+    weakMapTag = '[object WeakMap]';
+
+var arrayBufferTag = '[object ArrayBuffer]',
+    dataViewTag = '[object DataView]',
+    float32Tag = '[object Float32Array]',
+    float64Tag = '[object Float64Array]',
+    int8Tag = '[object Int8Array]',
+    int16Tag = '[object Int16Array]',
+    int32Tag = '[object Int32Array]',
+    uint8Tag = '[object Uint8Array]',
+    uint8ClampedTag = '[object Uint8ClampedArray]',
+    uint16Tag = '[object Uint16Array]',
+    uint32Tag = '[object Uint32Array]';
+
+/** Used to identify `toStringTag` values of typed arrays. */
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+typedArrayTags[setTag] = typedArrayTags[stringTag] =
+typedArrayTags[weakMapTag] = false;
+
+/**
+ * The base implementation of `_.isTypedArray` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ */
+function baseIsTypedArray(value) {
+  return isObjectLike(value) &&
+    isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+}
+
+module.exports = baseIsTypedArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseKeys.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseKeys.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isPrototype = __webpack_require__(/*! ./_isPrototype */ "./node_modules/v-tooltip/node_modules/lodash/_isPrototype.js"),
+    nativeKeys = __webpack_require__(/*! ./_nativeKeys */ "./node_modules/v-tooltip/node_modules/lodash/_nativeKeys.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = baseKeys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseKeysIn.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseKeysIn.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js"),
+    isPrototype = __webpack_require__(/*! ./_isPrototype */ "./node_modules/v-tooltip/node_modules/lodash/_isPrototype.js"),
+    nativeKeysIn = __webpack_require__(/*! ./_nativeKeysIn */ "./node_modules/v-tooltip/node_modules/lodash/_nativeKeysIn.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeysIn(object) {
+  if (!isObject(object)) {
+    return nativeKeysIn(object);
+  }
+  var isProto = isPrototype(object),
+      result = [];
+
+  for (var key in object) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = baseKeysIn;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseMerge.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseMerge.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Stack = __webpack_require__(/*! ./_Stack */ "./node_modules/v-tooltip/node_modules/lodash/_Stack.js"),
+    assignMergeValue = __webpack_require__(/*! ./_assignMergeValue */ "./node_modules/v-tooltip/node_modules/lodash/_assignMergeValue.js"),
+    baseFor = __webpack_require__(/*! ./_baseFor */ "./node_modules/v-tooltip/node_modules/lodash/_baseFor.js"),
+    baseMergeDeep = __webpack_require__(/*! ./_baseMergeDeep */ "./node_modules/v-tooltip/node_modules/lodash/_baseMergeDeep.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js"),
+    keysIn = __webpack_require__(/*! ./keysIn */ "./node_modules/v-tooltip/node_modules/lodash/keysIn.js"),
+    safeGet = __webpack_require__(/*! ./_safeGet */ "./node_modules/v-tooltip/node_modules/lodash/_safeGet.js");
+
+/**
+ * The base implementation of `_.merge` without support for multiple sources.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} [customizer] The function to customize merged values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMerge(object, source, srcIndex, customizer, stack) {
+  if (object === source) {
+    return;
+  }
+  baseFor(source, function(srcValue, key) {
+    stack || (stack = new Stack);
+    if (isObject(srcValue)) {
+      baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+    }
+    else {
+      var newValue = customizer
+        ? customizer(safeGet(object, key), srcValue, (key + ''), object, source, stack)
+        : undefined;
+
+      if (newValue === undefined) {
+        newValue = srcValue;
+      }
+      assignMergeValue(object, key, newValue);
+    }
+  }, keysIn);
+}
+
+module.exports = baseMerge;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseMergeDeep.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseMergeDeep.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assignMergeValue = __webpack_require__(/*! ./_assignMergeValue */ "./node_modules/v-tooltip/node_modules/lodash/_assignMergeValue.js"),
+    cloneBuffer = __webpack_require__(/*! ./_cloneBuffer */ "./node_modules/v-tooltip/node_modules/lodash/_cloneBuffer.js"),
+    cloneTypedArray = __webpack_require__(/*! ./_cloneTypedArray */ "./node_modules/v-tooltip/node_modules/lodash/_cloneTypedArray.js"),
+    copyArray = __webpack_require__(/*! ./_copyArray */ "./node_modules/v-tooltip/node_modules/lodash/_copyArray.js"),
+    initCloneObject = __webpack_require__(/*! ./_initCloneObject */ "./node_modules/v-tooltip/node_modules/lodash/_initCloneObject.js"),
+    isArguments = __webpack_require__(/*! ./isArguments */ "./node_modules/v-tooltip/node_modules/lodash/isArguments.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "./node_modules/v-tooltip/node_modules/lodash/isArray.js"),
+    isArrayLikeObject = __webpack_require__(/*! ./isArrayLikeObject */ "./node_modules/v-tooltip/node_modules/lodash/isArrayLikeObject.js"),
+    isBuffer = __webpack_require__(/*! ./isBuffer */ "./node_modules/v-tooltip/node_modules/lodash/isBuffer.js"),
+    isFunction = __webpack_require__(/*! ./isFunction */ "./node_modules/v-tooltip/node_modules/lodash/isFunction.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js"),
+    isPlainObject = __webpack_require__(/*! ./isPlainObject */ "./node_modules/v-tooltip/node_modules/lodash/isPlainObject.js"),
+    isTypedArray = __webpack_require__(/*! ./isTypedArray */ "./node_modules/v-tooltip/node_modules/lodash/isTypedArray.js"),
+    safeGet = __webpack_require__(/*! ./_safeGet */ "./node_modules/v-tooltip/node_modules/lodash/_safeGet.js"),
+    toPlainObject = __webpack_require__(/*! ./toPlainObject */ "./node_modules/v-tooltip/node_modules/lodash/toPlainObject.js");
+
+/**
+ * A specialized version of `baseMerge` for arrays and objects which performs
+ * deep merges and tracks traversed objects enabling objects with circular
+ * references to be merged.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {string} key The key of the value to merge.
+ * @param {number} srcIndex The index of `source`.
+ * @param {Function} mergeFunc The function to merge values.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @param {Object} [stack] Tracks traversed source values and their merged
+ *  counterparts.
+ */
+function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+  var objValue = safeGet(object, key),
+      srcValue = safeGet(source, key),
+      stacked = stack.get(srcValue);
+
+  if (stacked) {
+    assignMergeValue(object, key, stacked);
+    return;
+  }
+  var newValue = customizer
+    ? customizer(objValue, srcValue, (key + ''), object, source, stack)
+    : undefined;
+
+  var isCommon = newValue === undefined;
+
+  if (isCommon) {
+    var isArr = isArray(srcValue),
+        isBuff = !isArr && isBuffer(srcValue),
+        isTyped = !isArr && !isBuff && isTypedArray(srcValue);
+
+    newValue = srcValue;
+    if (isArr || isBuff || isTyped) {
+      if (isArray(objValue)) {
+        newValue = objValue;
+      }
+      else if (isArrayLikeObject(objValue)) {
+        newValue = copyArray(objValue);
+      }
+      else if (isBuff) {
+        isCommon = false;
+        newValue = cloneBuffer(srcValue, true);
+      }
+      else if (isTyped) {
+        isCommon = false;
+        newValue = cloneTypedArray(srcValue, true);
+      }
+      else {
+        newValue = [];
+      }
+    }
+    else if (isPlainObject(srcValue) || isArguments(srcValue)) {
+      newValue = objValue;
+      if (isArguments(objValue)) {
+        newValue = toPlainObject(objValue);
+      }
+      else if (!isObject(objValue) || isFunction(objValue)) {
+        newValue = initCloneObject(srcValue);
+      }
+    }
+    else {
+      isCommon = false;
+    }
+  }
+  if (isCommon) {
+    // Recursively merge objects and arrays (susceptible to call stack limits).
+    stack.set(srcValue, newValue);
+    mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+    stack['delete'](srcValue);
+  }
+  assignMergeValue(object, key, newValue);
+}
+
+module.exports = baseMergeDeep;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseRest.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseRest.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var identity = __webpack_require__(/*! ./identity */ "./node_modules/v-tooltip/node_modules/lodash/identity.js"),
+    overRest = __webpack_require__(/*! ./_overRest */ "./node_modules/v-tooltip/node_modules/lodash/_overRest.js"),
+    setToString = __webpack_require__(/*! ./_setToString */ "./node_modules/v-tooltip/node_modules/lodash/_setToString.js");
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  return setToString(overRest(func, start, identity), func + '');
+}
+
+module.exports = baseRest;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseSetToString.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseSetToString.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var constant = __webpack_require__(/*! ./constant */ "./node_modules/v-tooltip/node_modules/lodash/constant.js"),
+    defineProperty = __webpack_require__(/*! ./_defineProperty */ "./node_modules/v-tooltip/node_modules/lodash/_defineProperty.js"),
+    identity = __webpack_require__(/*! ./identity */ "./node_modules/v-tooltip/node_modules/lodash/identity.js");
+
+/**
+ * The base implementation of `setToString` without support for hot loop shorting.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var baseSetToString = !defineProperty ? identity : function(func, string) {
+  return defineProperty(func, 'toString', {
+    'configurable': true,
+    'enumerable': false,
+    'value': constant(string),
+    'writable': true
+  });
+};
+
+module.exports = baseSetToString;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseTimes.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseTimes.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+module.exports = baseTimes;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_baseUnary.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_baseUnary.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.unary` without support for storing metadata.
+ *
+ * @private
+ * @param {Function} func The function to cap arguments for.
+ * @returns {Function} Returns the new capped function.
+ */
+function baseUnary(func) {
+  return function(value) {
+    return func(value);
+  };
+}
+
+module.exports = baseUnary;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_cacheHas.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_cacheHas.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if a `cache` value for `key` exists.
+ *
+ * @private
+ * @param {Object} cache The cache to query.
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function cacheHas(cache, key) {
+  return cache.has(key);
+}
+
+module.exports = cacheHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_cloneArrayBuffer.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_cloneArrayBuffer.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Uint8Array = __webpack_require__(/*! ./_Uint8Array */ "./node_modules/v-tooltip/node_modules/lodash/_Uint8Array.js");
+
+/**
+ * Creates a clone of `arrayBuffer`.
+ *
+ * @private
+ * @param {ArrayBuffer} arrayBuffer The array buffer to clone.
+ * @returns {ArrayBuffer} Returns the cloned array buffer.
+ */
+function cloneArrayBuffer(arrayBuffer) {
+  var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+  new Uint8Array(result).set(new Uint8Array(arrayBuffer));
+  return result;
+}
+
+module.exports = cloneArrayBuffer;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_cloneBuffer.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_cloneBuffer.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/** Detect free variable `exports`. */
+var freeExports =  true && exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Built-in value references. */
+var Buffer = moduleExports ? root.Buffer : undefined,
+    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
+
+/**
+ * Creates a clone of  `buffer`.
+ *
+ * @private
+ * @param {Buffer} buffer The buffer to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Buffer} Returns the cloned buffer.
+ */
+function cloneBuffer(buffer, isDeep) {
+  if (isDeep) {
+    return buffer.slice();
+  }
+  var length = buffer.length,
+      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+
+  buffer.copy(result);
+  return result;
+}
+
+module.exports = cloneBuffer;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_cloneTypedArray.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_cloneTypedArray.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var cloneArrayBuffer = __webpack_require__(/*! ./_cloneArrayBuffer */ "./node_modules/v-tooltip/node_modules/lodash/_cloneArrayBuffer.js");
+
+/**
+ * Creates a clone of `typedArray`.
+ *
+ * @private
+ * @param {Object} typedArray The typed array to clone.
+ * @param {boolean} [isDeep] Specify a deep clone.
+ * @returns {Object} Returns the cloned typed array.
+ */
+function cloneTypedArray(typedArray, isDeep) {
+  var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+  return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+}
+
+module.exports = cloneTypedArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_copyArray.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_copyArray.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Copies the values of `source` to `array`.
+ *
+ * @private
+ * @param {Array} source The array to copy values from.
+ * @param {Array} [array=[]] The array to copy values to.
+ * @returns {Array} Returns `array`.
+ */
+function copyArray(source, array) {
+  var index = -1,
+      length = source.length;
+
+  array || (array = Array(length));
+  while (++index < length) {
+    array[index] = source[index];
+  }
+  return array;
+}
+
+module.exports = copyArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_copyObject.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_copyObject.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assignValue = __webpack_require__(/*! ./_assignValue */ "./node_modules/v-tooltip/node_modules/lodash/_assignValue.js"),
+    baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ "./node_modules/v-tooltip/node_modules/lodash/_baseAssignValue.js");
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  var isNew = !object;
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    if (newValue === undefined) {
+      newValue = source[key];
+    }
+    if (isNew) {
+      baseAssignValue(object, key, newValue);
+    } else {
+      assignValue(object, key, newValue);
+    }
+  }
+  return object;
+}
+
+module.exports = copyObject;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_coreJsData.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_coreJsData.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js");
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData = root['__core-js_shared__'];
+
+module.exports = coreJsData;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_createAssigner.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_createAssigner.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseRest = __webpack_require__(/*! ./_baseRest */ "./node_modules/v-tooltip/node_modules/lodash/_baseRest.js"),
+    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ "./node_modules/v-tooltip/node_modules/lodash/_isIterateeCall.js");
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+module.exports = createAssigner;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_createBaseFor.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_createBaseFor.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var index = -1,
+        iterable = Object(object),
+        props = keysFunc(object),
+        length = props.length;
+
+    while (length--) {
+      var key = props[fromRight ? length : ++index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+module.exports = createBaseFor;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_defineProperty.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_defineProperty.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js");
+
+var defineProperty = (function() {
+  try {
+    var func = getNative(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
+
+module.exports = defineProperty;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_equalArrays.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_equalArrays.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SetCache = __webpack_require__(/*! ./_SetCache */ "./node_modules/v-tooltip/node_modules/lodash/_SetCache.js"),
+    arraySome = __webpack_require__(/*! ./_arraySome */ "./node_modules/v-tooltip/node_modules/lodash/_arraySome.js"),
+    cacheHas = __webpack_require__(/*! ./_cacheHas */ "./node_modules/v-tooltip/node_modules/lodash/_cacheHas.js");
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1,
+    COMPARE_UNORDERED_FLAG = 2;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for arrays with support for
+ * partial deep comparisons.
+ *
+ * @private
+ * @param {Array} array The array to compare.
+ * @param {Array} other The other array to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `array` and `other` objects.
+ * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+ */
+function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
+  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
+      arrLength = array.length,
+      othLength = other.length;
+
+  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+    return false;
+  }
+  // Check that cyclic values are equal.
+  var arrStacked = stack.get(array);
+  var othStacked = stack.get(other);
+  if (arrStacked && othStacked) {
+    return arrStacked == other && othStacked == array;
+  }
+  var index = -1,
+      result = true,
+      seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new SetCache : undefined;
+
+  stack.set(array, other);
+  stack.set(other, array);
+
+  // Ignore non-index properties.
+  while (++index < arrLength) {
+    var arrValue = array[index],
+        othValue = other[index];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, arrValue, index, other, array, stack)
+        : customizer(arrValue, othValue, index, array, other, stack);
+    }
+    if (compared !== undefined) {
+      if (compared) {
+        continue;
+      }
+      result = false;
+      break;
+    }
+    // Recursively compare arrays (susceptible to call stack limits).
+    if (seen) {
+      if (!arraySome(other, function(othValue, othIndex) {
+            if (!cacheHas(seen, othIndex) &&
+                (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+              return seen.push(othIndex);
+            }
+          })) {
+        result = false;
+        break;
+      }
+    } else if (!(
+          arrValue === othValue ||
+            equalFunc(arrValue, othValue, bitmask, customizer, stack)
+        )) {
+      result = false;
+      break;
+    }
+  }
+  stack['delete'](array);
+  stack['delete'](other);
+  return result;
+}
+
+module.exports = equalArrays;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_equalByTag.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_equalByTag.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Symbol = __webpack_require__(/*! ./_Symbol */ "./node_modules/v-tooltip/node_modules/lodash/_Symbol.js"),
+    Uint8Array = __webpack_require__(/*! ./_Uint8Array */ "./node_modules/v-tooltip/node_modules/lodash/_Uint8Array.js"),
+    eq = __webpack_require__(/*! ./eq */ "./node_modules/v-tooltip/node_modules/lodash/eq.js"),
+    equalArrays = __webpack_require__(/*! ./_equalArrays */ "./node_modules/v-tooltip/node_modules/lodash/_equalArrays.js"),
+    mapToArray = __webpack_require__(/*! ./_mapToArray */ "./node_modules/v-tooltip/node_modules/lodash/_mapToArray.js"),
+    setToArray = __webpack_require__(/*! ./_setToArray */ "./node_modules/v-tooltip/node_modules/lodash/_setToArray.js");
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1,
+    COMPARE_UNORDERED_FLAG = 2;
+
+/** `Object#toString` result references. */
+var boolTag = '[object Boolean]',
+    dateTag = '[object Date]',
+    errorTag = '[object Error]',
+    mapTag = '[object Map]',
+    numberTag = '[object Number]',
+    regexpTag = '[object RegExp]',
+    setTag = '[object Set]',
+    stringTag = '[object String]',
+    symbolTag = '[object Symbol]';
+
+var arrayBufferTag = '[object ArrayBuffer]',
+    dataViewTag = '[object DataView]';
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for comparing objects of
+ * the same `toStringTag`.
+ *
+ * **Note:** This function only supports comparing values with tags of
+ * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {string} tag The `toStringTag` of the objects to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
+  switch (tag) {
+    case dataViewTag:
+      if ((object.byteLength != other.byteLength) ||
+          (object.byteOffset != other.byteOffset)) {
+        return false;
+      }
+      object = object.buffer;
+      other = other.buffer;
+
+    case arrayBufferTag:
+      if ((object.byteLength != other.byteLength) ||
+          !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+        return false;
+      }
+      return true;
+
+    case boolTag:
+    case dateTag:
+    case numberTag:
+      // Coerce booleans to `1` or `0` and dates to milliseconds.
+      // Invalid dates are coerced to `NaN`.
+      return eq(+object, +other);
+
+    case errorTag:
+      return object.name == other.name && object.message == other.message;
+
+    case regexpTag:
+    case stringTag:
+      // Coerce regexes to strings and treat strings, primitives and objects,
+      // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+      // for more details.
+      return object == (other + '');
+
+    case mapTag:
+      var convert = mapToArray;
+
+    case setTag:
+      var isPartial = bitmask & COMPARE_PARTIAL_FLAG;
+      convert || (convert = setToArray);
+
+      if (object.size != other.size && !isPartial) {
+        return false;
+      }
+      // Assume cyclic values are equal.
+      var stacked = stack.get(object);
+      if (stacked) {
+        return stacked == other;
+      }
+      bitmask |= COMPARE_UNORDERED_FLAG;
+
+      // Recursively compare objects (susceptible to call stack limits).
+      stack.set(object, other);
+      var result = equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
+      stack['delete'](object);
+      return result;
+
+    case symbolTag:
+      if (symbolValueOf) {
+        return symbolValueOf.call(object) == symbolValueOf.call(other);
+      }
+  }
+  return false;
+}
+
+module.exports = equalByTag;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_equalObjects.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_equalObjects.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getAllKeys = __webpack_require__(/*! ./_getAllKeys */ "./node_modules/v-tooltip/node_modules/lodash/_getAllKeys.js");
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for objects with support for
+ * partial deep comparisons.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
+  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
+      objProps = getAllKeys(object),
+      objLength = objProps.length,
+      othProps = getAllKeys(other),
+      othLength = othProps.length;
+
+  if (objLength != othLength && !isPartial) {
+    return false;
+  }
+  var index = objLength;
+  while (index--) {
+    var key = objProps[index];
+    if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
+      return false;
+    }
+  }
+  // Check that cyclic values are equal.
+  var objStacked = stack.get(object);
+  var othStacked = stack.get(other);
+  if (objStacked && othStacked) {
+    return objStacked == other && othStacked == object;
+  }
+  var result = true;
+  stack.set(object, other);
+  stack.set(other, object);
+
+  var skipCtor = isPartial;
+  while (++index < objLength) {
+    key = objProps[index];
+    var objValue = object[key],
+        othValue = other[key];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, objValue, key, other, object, stack)
+        : customizer(objValue, othValue, key, object, other, stack);
+    }
+    // Recursively compare objects (susceptible to call stack limits).
+    if (!(compared === undefined
+          ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))
+          : compared
+        )) {
+      result = false;
+      break;
+    }
+    skipCtor || (skipCtor = key == 'constructor');
+  }
+  if (result && !skipCtor) {
+    var objCtor = object.constructor,
+        othCtor = other.constructor;
+
+    // Non `Object` object instances with different constructors are not equal.
+    if (objCtor != othCtor &&
+        ('constructor' in object && 'constructor' in other) &&
+        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+      result = false;
+    }
+  }
+  stack['delete'](object);
+  stack['delete'](other);
+  return result;
+}
+
+module.exports = equalObjects;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_freeGlobal.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_freeGlobal.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+module.exports = freeGlobal;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getAllKeys.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getAllKeys.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetAllKeys = __webpack_require__(/*! ./_baseGetAllKeys */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetAllKeys.js"),
+    getSymbols = __webpack_require__(/*! ./_getSymbols */ "./node_modules/v-tooltip/node_modules/lodash/_getSymbols.js"),
+    keys = __webpack_require__(/*! ./keys */ "./node_modules/v-tooltip/node_modules/lodash/keys.js");
+
+/**
+ * Creates an array of own enumerable property names and symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names and symbols.
+ */
+function getAllKeys(object) {
+  return baseGetAllKeys(object, keys, getSymbols);
+}
+
+module.exports = getAllKeys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getMapData.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getMapData.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isKeyable = __webpack_require__(/*! ./_isKeyable */ "./node_modules/v-tooltip/node_modules/lodash/_isKeyable.js");
+
+/**
+ * Gets the data for `map`.
+ *
+ * @private
+ * @param {Object} map The map to query.
+ * @param {string} key The reference key.
+ * @returns {*} Returns the map data.
+ */
+function getMapData(map, key) {
+  var data = map.__data__;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+
+module.exports = getMapData;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getNative.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsNative = __webpack_require__(/*! ./_baseIsNative */ "./node_modules/v-tooltip/node_modules/lodash/_baseIsNative.js"),
+    getValue = __webpack_require__(/*! ./_getValue */ "./node_modules/v-tooltip/node_modules/lodash/_getValue.js");
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+module.exports = getNative;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getPrototype.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getPrototype.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var overArg = __webpack_require__(/*! ./_overArg */ "./node_modules/v-tooltip/node_modules/lodash/_overArg.js");
+
+/** Built-in value references. */
+var getPrototype = overArg(Object.getPrototypeOf, Object);
+
+module.exports = getPrototype;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getRawTag.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getRawTag.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Symbol = __webpack_require__(/*! ./_Symbol */ "./node_modules/v-tooltip/node_modules/lodash/_Symbol.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag),
+      tag = value[symToStringTag];
+
+  try {
+    value[symToStringTag] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag] = tag;
+    } else {
+      delete value[symToStringTag];
+    }
+  }
+  return result;
+}
+
+module.exports = getRawTag;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getSymbols.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getSymbols.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayFilter = __webpack_require__(/*! ./_arrayFilter */ "./node_modules/v-tooltip/node_modules/lodash/_arrayFilter.js"),
+    stubArray = __webpack_require__(/*! ./stubArray */ "./node_modules/v-tooltip/node_modules/lodash/stubArray.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeGetSymbols = Object.getOwnPropertySymbols;
+
+/**
+ * Creates an array of the own enumerable symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of symbols.
+ */
+var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
+  if (object == null) {
+    return [];
+  }
+  object = Object(object);
+  return arrayFilter(nativeGetSymbols(object), function(symbol) {
+    return propertyIsEnumerable.call(object, symbol);
+  });
+};
+
+module.exports = getSymbols;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getTag.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getTag.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var DataView = __webpack_require__(/*! ./_DataView */ "./node_modules/v-tooltip/node_modules/lodash/_DataView.js"),
+    Map = __webpack_require__(/*! ./_Map */ "./node_modules/v-tooltip/node_modules/lodash/_Map.js"),
+    Promise = __webpack_require__(/*! ./_Promise */ "./node_modules/v-tooltip/node_modules/lodash/_Promise.js"),
+    Set = __webpack_require__(/*! ./_Set */ "./node_modules/v-tooltip/node_modules/lodash/_Set.js"),
+    WeakMap = __webpack_require__(/*! ./_WeakMap */ "./node_modules/v-tooltip/node_modules/lodash/_WeakMap.js"),
+    baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js"),
+    toSource = __webpack_require__(/*! ./_toSource */ "./node_modules/v-tooltip/node_modules/lodash/_toSource.js");
+
+/** `Object#toString` result references. */
+var mapTag = '[object Map]',
+    objectTag = '[object Object]',
+    promiseTag = '[object Promise]',
+    setTag = '[object Set]',
+    weakMapTag = '[object WeakMap]';
+
+var dataViewTag = '[object DataView]';
+
+/** Used to detect maps, sets, and weakmaps. */
+var dataViewCtorString = toSource(DataView),
+    mapCtorString = toSource(Map),
+    promiseCtorString = toSource(Promise),
+    setCtorString = toSource(Set),
+    weakMapCtorString = toSource(WeakMap);
+
+/**
+ * Gets the `toStringTag` of `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+var getTag = baseGetTag;
+
+// Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
+if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+    (Map && getTag(new Map) != mapTag) ||
+    (Promise && getTag(Promise.resolve()) != promiseTag) ||
+    (Set && getTag(new Set) != setTag) ||
+    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
+  getTag = function(value) {
+    var result = baseGetTag(value),
+        Ctor = result == objectTag ? value.constructor : undefined,
+        ctorString = Ctor ? toSource(Ctor) : '';
+
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag;
+        case mapCtorString: return mapTag;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag;
+        case weakMapCtorString: return weakMapTag;
+      }
+    }
+    return result;
+  };
+}
+
+module.exports = getTag;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_getValue.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_getValue.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+module.exports = getValue;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_hashClear.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_hashClear.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ "./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js");
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear() {
+  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+  this.size = 0;
+}
+
+module.exports = hashClear;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_hashDelete.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_hashDelete.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Removes `key` and its value from the hash.
+ *
+ * @private
+ * @name delete
+ * @memberOf Hash
+ * @param {Object} hash The hash to modify.
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function hashDelete(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
+}
+
+module.exports = hashDelete;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_hashGet.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_hashGet.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ "./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js");
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet(key) {
+  var data = this.__data__;
+  if (nativeCreate) {
+    var result = data[key];
+    return result === HASH_UNDEFINED ? undefined : result;
+  }
+  return hasOwnProperty.call(data, key) ? data[key] : undefined;
+}
+
+module.exports = hashGet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_hashHas.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_hashHas.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ "./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas(key) {
+  var data = this.__data__;
+  return nativeCreate ? (data[key] !== undefined) : hasOwnProperty.call(data, key);
+}
+
+module.exports = hashHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_hashSet.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_hashSet.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ "./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js");
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+  return this;
+}
+
+module.exports = hashSet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_initCloneObject.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_initCloneObject.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseCreate = __webpack_require__(/*! ./_baseCreate */ "./node_modules/v-tooltip/node_modules/lodash/_baseCreate.js"),
+    getPrototype = __webpack_require__(/*! ./_getPrototype */ "./node_modules/v-tooltip/node_modules/lodash/_getPrototype.js"),
+    isPrototype = __webpack_require__(/*! ./_isPrototype */ "./node_modules/v-tooltip/node_modules/lodash/_isPrototype.js");
+
+/**
+ * Initializes an object clone.
+ *
+ * @private
+ * @param {Object} object The object to clone.
+ * @returns {Object} Returns the initialized clone.
+ */
+function initCloneObject(object) {
+  return (typeof object.constructor == 'function' && !isPrototype(object))
+    ? baseCreate(getPrototype(object))
+    : {};
+}
+
+module.exports = initCloneObject;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_isIndex.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_isIndex.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  var type = typeof value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+
+  return !!length &&
+    (type == 'number' ||
+      (type != 'symbol' && reIsUint.test(value))) &&
+        (value > -1 && value % 1 == 0 && value < length);
+}
+
+module.exports = isIndex;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_isIterateeCall.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_isIterateeCall.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var eq = __webpack_require__(/*! ./eq */ "./node_modules/v-tooltip/node_modules/lodash/eq.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js"),
+    isIndex = __webpack_require__(/*! ./_isIndex */ "./node_modules/v-tooltip/node_modules/lodash/_isIndex.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js");
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+module.exports = isIterateeCall;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_isKeyable.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_isKeyable.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is suitable for use as unique object key.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+ */
+function isKeyable(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+
+module.exports = isKeyable;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_isMasked.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_isMasked.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var coreJsData = __webpack_require__(/*! ./_coreJsData */ "./node_modules/v-tooltip/node_modules/lodash/_coreJsData.js");
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+module.exports = isMasked;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_isPrototype.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_isPrototype.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+module.exports = isPrototype;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_listCacheClear.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_listCacheClear.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Removes all key-value entries from the list cache.
+ *
+ * @private
+ * @name clear
+ * @memberOf ListCache
+ */
+function listCacheClear() {
+  this.__data__ = [];
+  this.size = 0;
+}
+
+module.exports = listCacheClear;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_listCacheDelete.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_listCacheDelete.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ "./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js");
+
+/** Used for built-in method references. */
+var arrayProto = Array.prototype;
+
+/** Built-in value references. */
+var splice = arrayProto.splice;
+
+/**
+ * Removes `key` and its value from the list cache.
+ *
+ * @private
+ * @name delete
+ * @memberOf ListCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function listCacheDelete(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  --this.size;
+  return true;
+}
+
+module.exports = listCacheDelete;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_listCacheGet.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_listCacheGet.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ "./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js");
+
+/**
+ * Gets the list cache value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf ListCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function listCacheGet(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  return index < 0 ? undefined : data[index][1];
+}
+
+module.exports = listCacheGet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_listCacheHas.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_listCacheHas.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ "./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js");
+
+/**
+ * Checks if a list cache value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf ListCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function listCacheHas(key) {
+  return assocIndexOf(this.__data__, key) > -1;
+}
+
+module.exports = listCacheHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_listCacheSet.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_listCacheSet.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ "./node_modules/v-tooltip/node_modules/lodash/_assocIndexOf.js");
+
+/**
+ * Sets the list cache `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf ListCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the list cache instance.
+ */
+function listCacheSet(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    ++this.size;
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+
+module.exports = listCacheSet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheClear.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapCacheClear.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Hash = __webpack_require__(/*! ./_Hash */ "./node_modules/v-tooltip/node_modules/lodash/_Hash.js"),
+    ListCache = __webpack_require__(/*! ./_ListCache */ "./node_modules/v-tooltip/node_modules/lodash/_ListCache.js"),
+    Map = __webpack_require__(/*! ./_Map */ "./node_modules/v-tooltip/node_modules/lodash/_Map.js");
+
+/**
+ * Removes all key-value entries from the map.
+ *
+ * @private
+ * @name clear
+ * @memberOf MapCache
+ */
+function mapCacheClear() {
+  this.size = 0;
+  this.__data__ = {
+    'hash': new Hash,
+    'map': new (Map || ListCache),
+    'string': new Hash
+  };
+}
+
+module.exports = mapCacheClear;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheDelete.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapCacheDelete.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getMapData = __webpack_require__(/*! ./_getMapData */ "./node_modules/v-tooltip/node_modules/lodash/_getMapData.js");
+
+/**
+ * Removes `key` and its value from the map.
+ *
+ * @private
+ * @name delete
+ * @memberOf MapCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function mapCacheDelete(key) {
+  var result = getMapData(this, key)['delete'](key);
+  this.size -= result ? 1 : 0;
+  return result;
+}
+
+module.exports = mapCacheDelete;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheGet.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapCacheGet.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getMapData = __webpack_require__(/*! ./_getMapData */ "./node_modules/v-tooltip/node_modules/lodash/_getMapData.js");
+
+/**
+ * Gets the map value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf MapCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function mapCacheGet(key) {
+  return getMapData(this, key).get(key);
+}
+
+module.exports = mapCacheGet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheHas.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapCacheHas.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getMapData = __webpack_require__(/*! ./_getMapData */ "./node_modules/v-tooltip/node_modules/lodash/_getMapData.js");
+
+/**
+ * Checks if a map value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf MapCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function mapCacheHas(key) {
+  return getMapData(this, key).has(key);
+}
+
+module.exports = mapCacheHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapCacheSet.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapCacheSet.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getMapData = __webpack_require__(/*! ./_getMapData */ "./node_modules/v-tooltip/node_modules/lodash/_getMapData.js");
+
+/**
+ * Sets the map `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf MapCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the map cache instance.
+ */
+function mapCacheSet(key, value) {
+  var data = getMapData(this, key),
+      size = data.size;
+
+  data.set(key, value);
+  this.size += data.size == size ? 0 : 1;
+  return this;
+}
+
+module.exports = mapCacheSet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_mapToArray.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_mapToArray.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Converts `map` to its key-value pairs.
+ *
+ * @private
+ * @param {Object} map The map to convert.
+ * @returns {Array} Returns the key-value pairs.
+ */
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
+
+  map.forEach(function(value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
+
+module.exports = mapToArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_nativeCreate.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getNative = __webpack_require__(/*! ./_getNative */ "./node_modules/v-tooltip/node_modules/lodash/_getNative.js");
+
+/* Built-in method references that are verified to be native. */
+var nativeCreate = getNative(Object, 'create');
+
+module.exports = nativeCreate;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_nativeKeys.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_nativeKeys.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var overArg = __webpack_require__(/*! ./_overArg */ "./node_modules/v-tooltip/node_modules/lodash/_overArg.js");
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object);
+
+module.exports = nativeKeys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_nativeKeysIn.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_nativeKeysIn.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * This function is like
+ * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * except that it includes inherited enumerable properties.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function nativeKeysIn(object) {
+  var result = [];
+  if (object != null) {
+    for (var key in Object(object)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = nativeKeysIn;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_nodeUtil.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_nodeUtil.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ "./node_modules/v-tooltip/node_modules/lodash/_freeGlobal.js");
+
+/** Detect free variable `exports`. */
+var freeExports =  true && exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Detect free variable `process` from Node.js. */
+var freeProcess = moduleExports && freeGlobal.process;
+
+/** Used to access faster Node.js helpers. */
+var nodeUtil = (function() {
+  try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
+    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+  } catch (e) {}
+}());
+
+module.exports = nodeUtil;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_objectToString.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_objectToString.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString.call(value);
+}
+
+module.exports = objectToString;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_overArg.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_overArg.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+module.exports = overArg;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_overRest.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_overRest.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var apply = __webpack_require__(/*! ./_apply */ "./node_modules/v-tooltip/node_modules/lodash/_apply.js");
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max;
+
+/**
+ * A specialized version of `baseRest` which transforms the rest array.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @param {Function} transform The rest array transform.
+ * @returns {Function} Returns the new function.
+ */
+function overRest(func, start, transform) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = transform(array);
+    return apply(func, this, otherArgs);
+  };
+}
+
+module.exports = overRest;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_root.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_root.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ "./node_modules/v-tooltip/node_modules/lodash/_freeGlobal.js");
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+module.exports = root;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_safeGet.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_safeGet.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Gets the value at `key`, unless `key` is "__proto__" or "constructor".
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function safeGet(object, key) {
+  if (key === 'constructor' && typeof object[key] === 'function') {
+    return;
+  }
+
+  if (key == '__proto__') {
+    return;
+  }
+
+  return object[key];
+}
+
+module.exports = safeGet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_setCacheAdd.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_setCacheAdd.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+/**
+ * Adds `value` to the array cache.
+ *
+ * @private
+ * @name add
+ * @memberOf SetCache
+ * @alias push
+ * @param {*} value The value to cache.
+ * @returns {Object} Returns the cache instance.
+ */
+function setCacheAdd(value) {
+  this.__data__.set(value, HASH_UNDEFINED);
+  return this;
+}
+
+module.exports = setCacheAdd;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_setCacheHas.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_setCacheHas.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is in the array cache.
+ *
+ * @private
+ * @name has
+ * @memberOf SetCache
+ * @param {*} value The value to search for.
+ * @returns {number} Returns `true` if `value` is found, else `false`.
+ */
+function setCacheHas(value) {
+  return this.__data__.has(value);
+}
+
+module.exports = setCacheHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_setToArray.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_setToArray.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Converts `set` to an array of its values.
+ *
+ * @private
+ * @param {Object} set The set to convert.
+ * @returns {Array} Returns the values.
+ */
+function setToArray(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function(value) {
+    result[++index] = value;
+  });
+  return result;
+}
+
+module.exports = setToArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_setToString.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_setToString.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseSetToString = __webpack_require__(/*! ./_baseSetToString */ "./node_modules/v-tooltip/node_modules/lodash/_baseSetToString.js"),
+    shortOut = __webpack_require__(/*! ./_shortOut */ "./node_modules/v-tooltip/node_modules/lodash/_shortOut.js");
+
+/**
+ * Sets the `toString` method of `func` to return `string`.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var setToString = shortOut(baseSetToString);
+
+module.exports = setToString;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_shortOut.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_shortOut.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used to detect hot functions by number of calls within a span of milliseconds. */
+var HOT_COUNT = 800,
+    HOT_SPAN = 16;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeNow = Date.now;
+
+/**
+ * Creates a function that'll short out and invoke `identity` instead
+ * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+ * milliseconds.
+ *
+ * @private
+ * @param {Function} func The function to restrict.
+ * @returns {Function} Returns the new shortable function.
+ */
+function shortOut(func) {
+  var count = 0,
+      lastCalled = 0;
+
+  return function() {
+    var stamp = nativeNow(),
+        remaining = HOT_SPAN - (stamp - lastCalled);
+
+    lastCalled = stamp;
+    if (remaining > 0) {
+      if (++count >= HOT_COUNT) {
+        return arguments[0];
+      }
+    } else {
+      count = 0;
+    }
+    return func.apply(undefined, arguments);
+  };
+}
+
+module.exports = shortOut;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_stackClear.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_stackClear.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ListCache = __webpack_require__(/*! ./_ListCache */ "./node_modules/v-tooltip/node_modules/lodash/_ListCache.js");
+
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear() {
+  this.__data__ = new ListCache;
+  this.size = 0;
+}
+
+module.exports = stackClear;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_stackDelete.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_stackDelete.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Removes `key` and its value from the stack.
+ *
+ * @private
+ * @name delete
+ * @memberOf Stack
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function stackDelete(key) {
+  var data = this.__data__,
+      result = data['delete'](key);
+
+  this.size = data.size;
+  return result;
+}
+
+module.exports = stackDelete;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_stackGet.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_stackGet.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Gets the stack value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Stack
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function stackGet(key) {
+  return this.__data__.get(key);
+}
+
+module.exports = stackGet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_stackHas.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_stackHas.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if a stack value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Stack
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function stackHas(key) {
+  return this.__data__.has(key);
+}
+
+module.exports = stackHas;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_stackSet.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_stackSet.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ListCache = __webpack_require__(/*! ./_ListCache */ "./node_modules/v-tooltip/node_modules/lodash/_ListCache.js"),
+    Map = __webpack_require__(/*! ./_Map */ "./node_modules/v-tooltip/node_modules/lodash/_Map.js"),
+    MapCache = __webpack_require__(/*! ./_MapCache */ "./node_modules/v-tooltip/node_modules/lodash/_MapCache.js");
+
+/** Used as the size to enable large array optimizations. */
+var LARGE_ARRAY_SIZE = 200;
+
+/**
+ * Sets the stack `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Stack
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the stack cache instance.
+ */
+function stackSet(key, value) {
+  var data = this.__data__;
+  if (data instanceof ListCache) {
+    var pairs = data.__data__;
+    if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+      pairs.push([key, value]);
+      this.size = ++data.size;
+      return this;
+    }
+    data = this.__data__ = new MapCache(pairs);
+  }
+  data.set(key, value);
+  this.size = data.size;
+  return this;
+}
+
+module.exports = stackSet;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/_toSource.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/_toSource.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to convert.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+module.exports = toSource;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/constant.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/constant.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Util
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new constant function.
+ * @example
+ *
+ * var objects = _.times(2, _.constant({ 'a': 1 }));
+ *
+ * console.log(objects);
+ * // => [{ 'a': 1 }, { 'a': 1 }]
+ *
+ * console.log(objects[0] === objects[1]);
+ * // => true
+ */
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+
+module.exports = constant;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/eq.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/eq.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+module.exports = eq;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/identity.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/identity.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * This method returns the first argument it receives.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ *
+ * console.log(_.identity(object) === object);
+ * // => true
+ */
+function identity(value) {
+  return value;
+}
+
+module.exports = identity;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isArguments.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isArguments.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsArguments = __webpack_require__(/*! ./_baseIsArguments */ "./node_modules/v-tooltip/node_modules/lodash/_baseIsArguments.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+var isArguments = baseIsArguments(function() { return arguments; }()) ? baseIsArguments : function(value) {
+  return isObjectLike(value) && hasOwnProperty.call(value, 'callee') &&
+    !propertyIsEnumerable.call(value, 'callee');
+};
+
+module.exports = isArguments;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isArray.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isArray.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+module.exports = isArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isFunction = __webpack_require__(/*! ./isFunction */ "./node_modules/v-tooltip/node_modules/lodash/isFunction.js"),
+    isLength = __webpack_require__(/*! ./isLength */ "./node_modules/v-tooltip/node_modules/lodash/isLength.js");
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+module.exports = isArrayLike;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isArrayLikeObject.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isArrayLikeObject.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isArrayLike = __webpack_require__(/*! ./isArrayLike */ "./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+module.exports = isArrayLikeObject;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isBuffer.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isBuffer.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(/*! ./_root */ "./node_modules/v-tooltip/node_modules/lodash/_root.js"),
+    stubFalse = __webpack_require__(/*! ./stubFalse */ "./node_modules/v-tooltip/node_modules/lodash/stubFalse.js");
+
+/** Detect free variable `exports`. */
+var freeExports =  true && exports && !exports.nodeType && exports;
+
+/** Detect free variable `module`. */
+var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+/** Detect the popular CommonJS extension `module.exports`. */
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+/** Built-in value references. */
+var Buffer = moduleExports ? root.Buffer : undefined;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+
+/**
+ * Checks if `value` is a buffer.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.3.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+ * @example
+ *
+ * _.isBuffer(new Buffer(2));
+ * // => true
+ *
+ * _.isBuffer(new Uint8Array(2));
+ * // => false
+ */
+var isBuffer = nativeIsBuffer || stubFalse;
+
+module.exports = isBuffer;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isEqual.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isEqual.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsEqual = __webpack_require__(/*! ./_baseIsEqual */ "./node_modules/v-tooltip/node_modules/lodash/_baseIsEqual.js");
+
+/**
+ * Performs a deep comparison between two values to determine if they are
+ * equivalent.
+ *
+ * **Note:** This method supports comparing arrays, array buffers, booleans,
+ * date objects, error objects, maps, numbers, `Object` objects, regexes,
+ * sets, strings, symbols, and typed arrays. `Object` objects are compared
+ * by their own, not inherited, enumerable properties. Functions and DOM
+ * nodes are compared by strict equality, i.e. `===`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.isEqual(object, other);
+ * // => true
+ *
+ * object === other;
+ * // => false
+ */
+function isEqual(value, other) {
+  return baseIsEqual(value, other);
+}
+
+module.exports = isEqual;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isFunction.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isFunction.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/v-tooltip/node_modules/lodash/isObject.js");
+
+/** `Object#toString` result references. */
+var asyncTag = '[object AsyncFunction]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    proxyTag = '[object Proxy]';
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  if (!isObject(value)) {
+    return false;
+  }
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+
+module.exports = isFunction;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isLength.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isLength.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+module.exports = isLength;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isObject.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isObject.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
+
+module.exports = isObject;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+module.exports = isObjectLike;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isPlainObject.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isPlainObject.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "./node_modules/v-tooltip/node_modules/lodash/_baseGetTag.js"),
+    getPrototype = __webpack_require__(/*! ./_getPrototype */ "./node_modules/v-tooltip/node_modules/lodash/_getPrototype.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "./node_modules/v-tooltip/node_modules/lodash/isObjectLike.js");
+
+/** `Object#toString` result references. */
+var objectTag = '[object Object]';
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString.call(Object);
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+    return false;
+  }
+  var proto = getPrototype(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString.call(Ctor) == objectCtorString;
+}
+
+module.exports = isPlainObject;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/isTypedArray.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/isTypedArray.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsTypedArray = __webpack_require__(/*! ./_baseIsTypedArray */ "./node_modules/v-tooltip/node_modules/lodash/_baseIsTypedArray.js"),
+    baseUnary = __webpack_require__(/*! ./_baseUnary */ "./node_modules/v-tooltip/node_modules/lodash/_baseUnary.js"),
+    nodeUtil = __webpack_require__(/*! ./_nodeUtil */ "./node_modules/v-tooltip/node_modules/lodash/_nodeUtil.js");
+
+/* Node.js helper references. */
+var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+
+/**
+ * Checks if `value` is classified as a typed array.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ * @example
+ *
+ * _.isTypedArray(new Uint8Array);
+ * // => true
+ *
+ * _.isTypedArray([]);
+ * // => false
+ */
+var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+
+module.exports = isTypedArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/keys.js":
+/*!************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/keys.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeKeys = __webpack_require__(/*! ./_arrayLikeKeys */ "./node_modules/v-tooltip/node_modules/lodash/_arrayLikeKeys.js"),
+    baseKeys = __webpack_require__(/*! ./_baseKeys */ "./node_modules/v-tooltip/node_modules/lodash/_baseKeys.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js");
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+module.exports = keys;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/keysIn.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/keysIn.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeKeys = __webpack_require__(/*! ./_arrayLikeKeys */ "./node_modules/v-tooltip/node_modules/lodash/_arrayLikeKeys.js"),
+    baseKeysIn = __webpack_require__(/*! ./_baseKeysIn */ "./node_modules/v-tooltip/node_modules/lodash/_baseKeysIn.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "./node_modules/v-tooltip/node_modules/lodash/isArrayLike.js");
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+}
+
+module.exports = keysIn;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/merge.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/merge.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseMerge = __webpack_require__(/*! ./_baseMerge */ "./node_modules/v-tooltip/node_modules/lodash/_baseMerge.js"),
+    createAssigner = __webpack_require__(/*! ./_createAssigner */ "./node_modules/v-tooltip/node_modules/lodash/_createAssigner.js");
+
+/**
+ * This method is like `_.assign` except that it recursively merges own and
+ * inherited enumerable string keyed properties of source objects into the
+ * destination object. Source properties that resolve to `undefined` are
+ * skipped if a destination value exists. Array and plain object properties
+ * are merged recursively. Other objects and value types are overridden by
+ * assignment. Source objects are applied from left to right. Subsequent
+ * sources overwrite property assignments of previous sources.
+ *
+ * **Note:** This method mutates `object`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.5.0
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * var object = {
+ *   'a': [{ 'b': 2 }, { 'd': 4 }]
+ * };
+ *
+ * var other = {
+ *   'a': [{ 'c': 3 }, { 'e': 5 }]
+ * };
+ *
+ * _.merge(object, other);
+ * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
+ */
+var merge = createAssigner(function(object, source, srcIndex) {
+  baseMerge(object, source, srcIndex);
+});
+
+module.exports = merge;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/stubArray.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/stubArray.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * This method returns a new empty array.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {Array} Returns the new empty array.
+ * @example
+ *
+ * var arrays = _.times(2, _.stubArray);
+ *
+ * console.log(arrays);
+ * // => [[], []]
+ *
+ * console.log(arrays[0] === arrays[1]);
+ * // => false
+ */
+function stubArray() {
+  return [];
+}
+
+module.exports = stubArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/stubFalse.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/stubFalse.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * This method returns `false`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {boolean} Returns `false`.
+ * @example
+ *
+ * _.times(2, _.stubFalse);
+ * // => [false, false]
+ */
+function stubFalse() {
+  return false;
+}
+
+module.exports = stubFalse;
+
+
+/***/ }),
+
+/***/ "./node_modules/v-tooltip/node_modules/lodash/toPlainObject.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/v-tooltip/node_modules/lodash/toPlainObject.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var copyObject = __webpack_require__(/*! ./_copyObject */ "./node_modules/v-tooltip/node_modules/lodash/_copyObject.js"),
+    keysIn = __webpack_require__(/*! ./keysIn */ "./node_modules/v-tooltip/node_modules/lodash/keysIn.js");
+
+/**
+ * Converts `value` to a plain object flattening inherited enumerable string
+ * keyed properties of `value` to own properties of the plain object.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {Object} Returns the converted plain object.
+ * @example
+ *
+ * function Foo() {
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.assign({ 'a': 1 }, new Foo);
+ * // => { 'a': 1, 'b': 2 }
+ *
+ * _.assign({ 'a': 1 }, _.toPlainObject(new Foo));
+ * // => { 'a': 1, 'b': 2, 'c': 3 }
+ */
+function toPlainObject(value) {
+  return copyObject(value, keysIn(value));
+}
+
+module.exports = toPlainObject;
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-async-computed/dist/vue-async-computed.esm.js":
 /*!************************************************************************!*\
   !*** ./node_modules/vue-async-computed/dist/vue-async-computed.esm.js ***!
@@ -23704,7 +33537,87 @@ var render = function() {
                 _c("img", {
                   staticClass: "avatar-upload__img",
                   attrs: { src: _vm.avatarSrc }
-                })
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass:
+                      "avatar-upload__container avatar-upload__uploaded-overflow",
+                    attrs: { for: "avatar-loader" }
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "51",
+                          height: "66",
+                          viewBox: "0 0 51 66",
+                          fill: "none",
+                          xmlns: "http://www.w3.org/2000/svg"
+                        }
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M44.3201 17.8333C43.7455 17.8333 43.1944 18.0616 42.788 18.4679C42.3817 18.8743 42.1534 19.4254 42.1534 20V35.1667C42.1534 35.7413 41.9252 36.2924 41.5188 36.6987C41.1125 37.1051 40.5614 37.3333 39.9868 37.3333H9.65344C9.0788 37.3333 8.5277 37.1051 8.12137 36.6987C7.71504 36.2924 7.48677 35.7413 7.48677 35.1667V17.8333C7.48677 17.2587 7.71504 16.7076 8.12137 16.3013C8.5277 15.8949 9.0788 15.6667 9.65344 15.6667H13.9868C14.4592 15.6913 14.9268 15.5607 15.318 15.2946C15.7093 15.0286 16.0027 14.6418 16.1534 14.1933L17.3234 10.64C17.4688 10.2097 17.7457 9.83587 18.1151 9.57149C18.4844 9.30711 18.9275 9.16549 19.3818 9.16667H31.3201C31.8947 9.16667 32.4458 8.93839 32.8522 8.53206C33.2585 8.12574 33.4868 7.57464 33.4868 7C33.4868 6.42536 33.2585 5.87426 32.8522 5.46794C32.4458 5.06161 31.8947 4.83333 31.3201 4.83333H19.2734C17.9118 4.83588 16.5853 5.26598 15.4813 6.06293C14.3772 6.85988 13.5513 7.98343 13.1201 9.275L12.4268 11.4417H9.65344C7.92953 11.4417 6.27623 12.1265 5.05724 13.3455C3.83826 14.5645 3.15344 16.2178 3.15344 17.9417V35.275C3.15344 36.9989 3.83826 38.6522 5.05724 39.8712C6.27623 41.0902 7.92953 41.775 9.65344 41.775H39.9868C41.7107 41.775 43.364 41.0902 44.583 39.8712C45.8019 38.6522 46.4868 36.9989 46.4868 35.275V20.1083C46.5015 19.8148 46.4563 19.5214 46.354 19.2459C46.2517 18.9704 46.0945 18.7186 45.8918 18.5057C45.6891 18.2929 45.4453 18.1236 45.1751 18.008C44.9049 17.8924 44.614 17.833 44.3201 17.8333ZM24.8201 15.6667C23.106 15.6667 21.4304 16.175 20.0052 17.1273C18.5799 18.0796 17.4691 19.4331 16.8131 21.0167C16.1572 22.6004 15.9856 24.3429 16.32 26.0241C16.6544 27.7053 17.4798 29.2495 18.6918 30.4616C19.9039 31.6736 21.4482 32.4991 23.1293 32.8335C24.8105 33.1679 26.5531 32.9963 28.1367 32.3403C29.7203 31.6843 31.0739 30.5735 32.0262 29.1483C32.9785 27.723 33.4868 26.0474 33.4868 24.3333C33.4868 22.0348 32.5737 19.8304 30.9484 18.2051C29.323 16.5798 27.1186 15.6667 24.8201 15.6667ZM24.8201 28.6667C23.9631 28.6667 23.1252 28.4125 22.4126 27.9364C21.7 27.4602 21.1446 26.7834 20.8166 25.9916C20.4886 25.1998 20.4028 24.3285 20.57 23.4879C20.7372 22.6474 21.1499 21.8752 21.756 21.2692C22.362 20.6632 23.1341 20.2505 23.9747 20.0833C24.8153 19.9161 25.6866 20.0019 26.4784 20.3299C27.2702 20.6578 27.947 21.2133 28.4231 21.9259C28.8993 22.6385 29.1534 23.4763 29.1534 24.3333C29.1534 25.4826 28.6969 26.5848 27.8842 27.3975C27.0716 28.2101 25.9694 28.6667 24.8201 28.6667ZM48.6534 4.83333H46.4868V2.66667C46.4868 2.09203 46.2585 1.54093 45.8522 1.1346C45.4458 0.728273 44.8947 0.5 44.3201 0.5C43.7455 0.5 43.1944 0.728273 42.788 1.1346C42.3817 1.54093 42.1534 2.09203 42.1534 2.66667V4.83333H39.9868C39.4121 4.83333 38.861 5.06161 38.4547 5.46794C38.0484 5.87426 37.8201 6.42536 37.8201 7C37.8201 7.57464 38.0484 8.12574 38.4547 8.53206C38.861 8.93839 39.4121 9.16667 39.9868 9.16667H42.1534V11.3333C42.1534 11.908 42.3817 12.4591 42.788 12.8654C43.1944 13.2717 43.7455 13.5 44.3201 13.5C44.8947 13.5 45.4458 13.2717 45.8522 12.8654C46.2585 12.4591 46.4868 11.908 46.4868 11.3333V9.16667H48.6534C49.2281 9.16667 49.7792 8.93839 50.1855 8.53206C50.5918 8.12574 50.8201 7.57464 50.8201 7C50.8201 6.42536 50.5918 5.87426 50.1855 5.46794C49.7792 5.06161 49.2281 4.83333 48.6534 4.83333Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M2.80682 63.0837L3.5625 60.762H7.23651L7.99219 63.0837H10.299L6.78906 52.9019H4.01491L0.5 63.0837H2.80682ZM4.10938 59.0816L5.36222 55.2286H5.44176L6.6946 59.0816H4.10938Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M11.4007 63.0837H15.1593C17.0683 63.0837 18.1323 62.3032 18.1323 61.0006C18.1323 59.9964 17.3368 59.2009 15.9647 59.1015C17.0584 58.9126 17.7097 58.3358 17.7097 57.5106C17.7097 56.1881 16.5414 55.4474 14.6571 55.4474H11.4007V63.0837ZM13.3745 61.4978V59.8323H15.1593C15.7459 59.8323 16.1039 60.1654 16.1039 60.7073C16.1039 61.1995 15.7459 61.4978 15.1593 61.4978H13.3745ZM13.3745 58.5894V57.0681H14.6571C15.3134 57.0681 15.7161 57.3515 15.7161 57.8188C15.7161 58.301 15.3333 58.5894 14.7019 58.5894H13.3745Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M21.5607 63.2279C22.6892 63.2279 23.4201 62.7357 23.7929 62.0248H23.8526V63.0837H25.8611V57.9332C25.8611 56.1135 24.3199 55.3479 22.6196 55.3479C20.7901 55.3479 19.587 56.2229 19.2936 57.615L21.2525 57.7741C21.3966 57.267 21.849 56.8941 22.6097 56.8941C23.3306 56.8941 23.7432 57.257 23.7432 57.8834V57.9133C23.7432 58.4055 23.2212 58.4701 21.8938 58.5993C20.3824 58.7386 19.0252 59.2457 19.0252 60.9509C19.0252 62.4623 20.104 63.2279 21.5607 63.2279ZM22.1672 61.7663C21.5159 61.7663 21.0486 61.463 21.0486 60.8813C21.0486 60.2847 21.5408 59.9914 22.2865 59.887C22.7489 59.8224 23.5046 59.713 23.7581 59.5439V60.3543C23.7581 61.1547 23.0969 61.7663 22.1672 61.7663Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M26.667 57.1128H29.1081V63.0837H31.1266V57.1128H33.5875V55.4474H26.667V57.1128Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M36.6915 63.2279C37.8201 63.2279 38.5509 62.7357 38.9238 62.0248H38.9834V63.0837H40.9919V57.9332C40.9919 56.1135 39.4508 55.3479 37.7505 55.3479C35.9209 55.3479 34.7178 56.2229 34.4245 57.615L36.3833 57.7741C36.5275 57.267 36.9799 56.8941 37.7405 56.8941C38.4614 56.8941 38.8741 57.257 38.8741 57.8834V57.9133C38.8741 58.4055 38.352 58.4701 37.0246 58.5993C35.5133 58.7386 34.156 59.2457 34.156 60.9509C34.156 62.4623 35.2348 63.2279 36.6915 63.2279ZM37.2981 61.7663C36.6468 61.7663 36.1794 61.463 36.1794 60.8813C36.1794 60.2847 36.6716 59.9914 37.4174 59.887C37.8797 59.8224 38.6354 59.713 38.889 59.5439V60.3543C38.889 61.1547 38.2277 61.7663 37.2981 61.7663Z",
+                            fill: "#B4B4B4"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M42.5511 65.9474H44.669V61.8607H44.7336C45.0269 62.4971 45.6682 63.208 46.9012 63.208C48.6413 63.208 49.9985 61.8309 49.9985 59.2755C49.9985 56.6505 48.5816 55.3479 46.9062 55.3479C45.6285 55.3479 45.017 56.1086 44.7336 56.73H44.6391V55.4474H42.5511V65.9474ZM44.6242 59.2655C44.6242 57.9033 45.2009 57.0333 46.23 57.0333C47.279 57.0333 47.8359 57.9431 47.8359 59.2655C47.8359 60.5979 47.2691 61.5226 46.23 61.5226C45.2109 61.5226 44.6242 60.6278 44.6242 59.2655Z",
+                            fill: "#B4B4B4"
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                )
               ]
             )
       ])
@@ -23719,10 +33632,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c& ***!
-  \**********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0& ***!
+  \***************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -23738,37 +33651,36 @@ var render = function() {
     "modal",
     {
       attrs: {
-        name: "delete",
+        name: "confirm",
         classes: ["modal", "delete-confirmation"],
         width: 300,
         scrollable: true,
-        height: "auto",
-        shiftY: 0.5
+        height: "auto"
       },
       on: { closed: _vm.close }
     },
     [
-      _c("h2", [_vm._v("Удалить “" + _vm._s(_vm.item.name) + "”?")]),
+      _c("h2", [_vm._v(_vm._s(_vm.headline))]),
       _vm._v(" "),
-      _c("p", [_vm._v("После удаления работы вы не сможете её восстановить.")]),
+      _c("p", [_vm._v(_vm._s(_vm.text))]),
       _vm._v(" "),
       _c("div", { staticClass: "delete-confirmation__buttons" }, [
         _c(
           "button",
           {
             staticClass: "delete-confirmation__button pointer",
-            on: { click: _vm.close }
+            on: { click: _vm.clickReset }
           },
-          [_vm._v("\n      Отмена\n    ")]
+          [_vm._v("\n      " + _vm._s(_vm.resetButtonText) + "\n    ")]
         ),
         _vm._v(" "),
         _c(
           "button",
           {
             staticClass: "delete-confirmation__button pointer",
-            on: { click: _vm.deleteItem }
+            on: { click: _vm.clickConfirm }
           },
-          [_vm._v("\n      Удалить\n    ")]
+          [_vm._v("\n      " + _vm._s(_vm.confirmButtonText) + "\n    ")]
         )
       ])
     ]
@@ -25806,16 +35718,379 @@ var render = function() {
               "div",
               {
                 key: "loaded",
-                staticClass: "banner-upload__container banner-upload__uploaded"
+                staticClass:
+                  "banner-upload__container banner-upload__uploaded pointer"
               },
               [
                 _c("img", {
                   staticClass: "banner-upload__img",
                   attrs: { src: _vm.bannerSrc }
-                })
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "banner-upload__uploaded-overflow pointer",
+                    attrs: { for: "banner-loader" }
+                  },
+                  [
+                    _vm.$store.getters.windowWidth < 680
+                      ? _c(
+                          "svg",
+                          {
+                            staticClass: "banner-upload__logo",
+                            attrs: {
+                              width: "202",
+                              height: "32",
+                              viewBox: "0 0 202 32",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M31.1988 13.5988C30.7745 13.5988 30.3675 13.7674 30.0675 14.0675C29.7674 14.3675 29.5988 14.7745 29.5988 15.1988V26.3988C29.5988 26.8232 29.4303 27.2301 29.1302 27.5302C28.8301 27.8303 28.4232 27.9988 27.9988 27.9988H5.59883C5.17448 27.9988 4.76752 27.8303 4.46746 27.5302C4.1674 27.2301 3.99883 26.8232 3.99883 26.3988V13.5988C3.99883 13.1745 4.1674 12.7675 4.46746 12.4675C4.76752 12.1674 5.17448 11.9988 5.59883 11.9988H8.79883C9.14773 12.017 9.49301 11.9205 9.78192 11.7241C10.0708 11.5276 10.2875 11.242 10.3988 10.9108L11.2628 8.28683C11.3702 7.96903 11.5747 7.69301 11.8474 7.49778C12.1202 7.30254 12.4474 7.19796 12.7828 7.19883H21.5988C22.0232 7.19883 22.4301 7.03026 22.7302 6.7302C23.0303 6.43014 23.1988 6.02317 23.1988 5.59883C23.1988 5.17448 23.0303 4.76752 22.7302 4.46746C22.4301 4.1674 22.0232 3.99883 21.5988 3.99883H12.7028C11.6973 4.00071 10.7178 4.31832 9.90246 4.90684C9.08715 5.49535 8.47724 6.32505 8.15883 7.27883L7.64683 8.87883H5.59883C4.32579 8.87883 3.10489 9.38454 2.20472 10.2847C1.30454 11.1849 0.798828 12.4058 0.798828 13.6788V26.4788C0.798828 27.7519 1.30454 28.9728 2.20472 29.8729C3.10489 30.7731 4.32579 31.2788 5.59883 31.2788H27.9988C29.2719 31.2788 30.4928 30.7731 31.3929 29.8729C32.2931 28.9728 32.7988 27.7519 32.7988 26.4788V15.2788C32.8097 15.0621 32.7763 14.8454 32.7008 14.6419C32.6253 14.4385 32.5091 14.2525 32.3595 14.0954C32.2098 13.9382 32.0297 13.8132 31.8302 13.7278C31.6307 13.6424 31.4159 13.5986 31.1988 13.5988ZM16.7988 11.9988C15.533 11.9988 14.2957 12.3742 13.2432 13.0774C12.1907 13.7807 11.3704 14.7802 10.886 15.9497C10.4016 17.1191 10.2749 18.4059 10.5218 19.6474C10.7687 20.8889 11.3783 22.0293 12.2733 22.9243C13.1684 23.8194 14.3088 24.4289 15.5503 24.6759C16.7917 24.9228 18.0786 24.7961 19.248 24.3117C20.4175 23.8273 21.417 23.007 22.1202 21.9545C22.8235 20.902 23.1988 19.6646 23.1988 18.3988C23.1988 16.7014 22.5245 15.0736 21.3243 13.8733C20.1241 12.6731 18.4962 11.9988 16.7988 11.9988ZM16.7988 21.5988C16.1659 21.5988 15.5472 21.4112 15.021 21.0595C14.4948 20.7079 14.0846 20.2081 13.8424 19.6234C13.6002 19.0387 13.5368 18.3953 13.6603 17.7745C13.7838 17.1538 14.0886 16.5836 14.5361 16.1361C14.9836 15.6886 15.5538 15.3838 16.1745 15.2603C16.7953 15.1368 17.4387 15.2002 18.0234 15.4424C18.6081 15.6846 19.1079 16.0948 19.4595 16.621C19.8112 17.1472 19.9988 17.7659 19.9988 18.3988C19.9988 19.2475 19.6617 20.0615 19.0616 20.6616C18.4615 21.2617 17.6475 21.5988 16.7988 21.5988ZM34.3988 3.99883H32.7988V2.39883C32.7988 1.97448 32.6303 1.56752 32.3302 1.26746C32.0301 0.967399 31.6232 0.798828 31.1988 0.798828C30.7745 0.798828 30.3675 0.967399 30.0675 1.26746C29.7674 1.56752 29.5988 1.97448 29.5988 2.39883V3.99883H27.9988C27.5745 3.99883 27.1675 4.1674 26.8675 4.46746C26.5674 4.76752 26.3988 5.17448 26.3988 5.59883C26.3988 6.02317 26.5674 6.43014 26.8675 6.7302C27.1675 7.03026 27.5745 7.19883 27.9988 7.19883H29.5988V8.79883C29.5988 9.22318 29.7674 9.63014 30.0675 9.9302C30.3675 10.2303 30.7745 10.3988 31.1988 10.3988C31.6232 10.3988 32.0301 10.2303 32.3302 9.9302C32.6303 9.63014 32.7988 9.22318 32.7988 8.79883V7.19883H34.3988C34.8232 7.19883 35.2301 7.03026 35.5302 6.7302C35.8303 6.43014 35.9988 6.02317 35.9988 5.59883C35.9988 5.17448 35.8303 4.76752 35.5302 4.46746C35.2301 4.1674 34.8232 3.99883 34.3988 3.99883Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M56.1313 24.1748C58.8688 24.1748 60.8625 22.6061 60.8563 20.4436C60.8625 18.8436 59.8625 17.6936 58.0688 17.4373V17.3373C59.4563 17.0373 60.3875 16.0061 60.3813 14.5686C60.3875 12.6186 58.725 11.0248 56.1688 11.0248C53.6813 11.0248 51.7563 12.5061 51.7062 14.6498H53.9375C53.975 13.5748 54.975 12.9061 56.1562 12.9061C57.35 12.9061 58.1437 13.6311 58.1375 14.7061C58.1437 15.8248 57.2188 16.5686 55.8937 16.5686H54.7625V18.3561H55.8937C57.5125 18.3561 58.475 19.1686 58.4688 20.3248C58.475 21.4561 57.4938 22.2311 56.125 22.2311C54.8375 22.2311 53.8438 21.5623 53.7875 20.5186H51.4375C51.5 22.6811 53.4313 24.1748 56.1313 24.1748Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M65.4723 24.1936C66.9785 24.1936 67.8785 23.4873 68.291 22.6811H68.366V23.9998H70.541V17.5748C70.541 15.0373 68.4723 14.2748 66.641 14.2748C64.6223 14.2748 63.0723 15.1748 62.5723 16.9248L64.6848 17.2248C64.9098 16.5686 65.5473 16.0061 66.6535 16.0061C67.7035 16.0061 68.2785 16.5436 68.2785 17.4873V17.5248C68.2785 18.1748 67.5973 18.2061 65.9035 18.3873C64.041 18.5873 62.2598 19.1436 62.2598 21.3061C62.2598 23.1936 63.641 24.1936 65.4723 24.1936ZM66.0598 22.5311C65.116 22.5311 64.441 22.0998 64.441 21.2686C64.441 20.3998 65.1973 20.0373 66.2098 19.8936C66.8035 19.8123 67.991 19.6623 68.2848 19.4248V20.5561C68.2848 21.6248 67.4223 22.5311 66.0598 22.5311Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M78.8492 14.3998H72.4992V23.9998H74.7117V16.2561H78.8492V14.3998Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M80.3465 27.5998H82.609V22.4873H82.7027C83.059 23.1873 83.8027 24.1686 85.4527 24.1686C87.7152 24.1686 89.409 22.3748 89.409 19.2123C89.409 16.0123 87.6652 14.2748 85.4465 14.2748C83.7527 14.2748 83.0465 15.2936 82.7027 15.9873H82.5715V14.3998H80.3465V27.5998ZM82.5652 19.1998C82.5652 17.3373 83.3652 16.1311 84.8215 16.1311C86.3277 16.1311 87.1027 17.4123 87.1027 19.1998C87.1027 20.9998 86.3152 22.3123 84.8215 22.3123C83.3777 22.3123 82.5652 21.0623 82.5652 19.1998Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M92.1094 27.5998C93.8719 27.5998 94.8906 26.6936 95.4344 25.1623L99.2906 14.4123L96.8719 14.3998L94.6531 21.6498H94.5531L92.3406 14.3998H89.9406L93.4219 24.1998L93.2281 24.7186C92.8094 25.8123 92.1469 25.8873 91.1594 25.5998L90.6344 27.3623C90.9406 27.4873 91.4906 27.5998 92.1094 27.5998Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M100.013 21.3686C100.069 23.1498 101.7 24.1873 103.919 24.1873C106.194 24.1873 107.838 23.1061 107.838 21.3373C107.838 20.0436 106.957 19.1561 105.819 19.0873V18.9873C106.919 18.6936 107.619 18.0061 107.619 16.9686C107.619 15.3498 106.219 14.2748 103.969 14.2748C101.869 14.2748 100.288 15.3623 100.257 17.0373H102.488C102.513 16.3936 103.175 15.9436 104.075 15.9436C104.975 15.9436 105.519 16.4248 105.519 17.1373C105.519 17.7936 105.019 18.2811 104.082 18.2811H102.613V19.8873H104.082C105.025 19.8873 105.644 20.4186 105.644 21.1936C105.644 22.0686 104.875 22.4936 103.907 22.4936C102.95 22.4936 102.3 22.0811 102.257 21.3686H100.013Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M111.484 20.9373V14.3998H109.302V23.9998H111.634L115.465 17.4561V23.9998H117.652V14.3998H115.327L111.484 20.9373Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M118.584 16.2561H121.69V23.9998H123.878V16.2561H126.984V14.3998H118.584V16.2561Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M130.65 17.5248V14.3998H128.469V23.9998H132.831C135.275 23.9998 136.681 22.6498 136.687 20.7623C136.681 18.8248 135.275 17.5248 132.831 17.5248H130.65ZM130.65 19.3811H132.831C133.812 19.3811 134.519 19.9623 134.519 20.7936C134.519 21.5873 133.812 22.1436 132.831 22.1436H130.65V19.3811Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M150.052 10.8498C149.59 11.1998 148.859 11.1936 147.865 11.1936C147.584 11.1936 147.29 11.1936 146.971 11.1998C143.665 11.2436 141.965 13.4436 141.965 17.9561V18.8186C141.965 22.3311 143.74 24.1873 146.534 24.1873C149.327 24.1873 151.09 22.3248 151.09 19.3623C151.09 16.4873 149.415 14.8311 147.034 14.8311C145.571 14.8311 144.465 15.4623 143.865 16.6373H143.759C143.984 14.2436 144.884 13.1623 147.034 13.1123C148.94 13.0686 150.009 13.0373 150.84 12.3123L150.052 10.8498ZM146.546 22.3748C145.127 22.3748 144.259 21.2373 144.259 19.4248C144.277 17.6373 145.134 16.6123 146.534 16.6123C147.934 16.6123 148.796 17.6373 148.796 19.4248C148.796 21.2436 147.94 22.3748 146.546 22.3748Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M155.461 24.1936C156.967 24.1936 157.867 23.4873 158.279 22.6811H158.354V23.9998H160.529V17.5748C160.529 15.0373 158.461 14.2748 156.629 14.2748C154.611 14.2748 153.061 15.1748 152.561 16.9248L154.673 17.2248C154.898 16.5686 155.536 16.0061 156.642 16.0061C157.692 16.0061 158.267 16.5436 158.267 17.4873V17.5248C158.267 18.1748 157.586 18.2061 155.892 18.3873C154.029 18.5873 152.248 19.1436 152.248 21.3061C152.248 23.1936 153.629 24.1936 155.461 24.1936ZM156.048 22.5311C155.104 22.5311 154.429 22.0998 154.429 21.2686C154.429 20.3998 155.186 20.0373 156.198 19.8936C156.792 19.8123 157.979 19.6623 158.273 19.4248V20.5561C158.273 21.6248 157.411 22.5311 156.048 22.5311Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M164.669 14.3998H162.487V23.9998H164.669V20.1186H168.387V23.9998H170.562V14.3998H168.387V18.2623H164.669V14.3998Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M174.716 14.3998H172.535V23.9998H174.716V20.1186H178.435V23.9998H180.61V14.3998H178.435V18.2623H174.716V14.3998Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M186.832 24.1873C189.069 24.1873 190.607 23.0936 191.007 21.4248L188.894 21.1873C188.588 21.9998 187.838 22.4248 186.863 22.4248C185.401 22.4248 184.432 21.4623 184.413 19.8186H191.101V19.1248C191.101 15.7561 189.076 14.2748 186.713 14.2748C183.963 14.2748 182.169 16.2936 182.169 19.2561C182.169 22.2686 183.938 24.1873 186.832 24.1873ZM184.419 18.2936C184.488 17.0686 185.394 16.0373 186.744 16.0373C188.044 16.0373 188.919 16.9873 188.932 18.2936H184.419Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M192.698 27.5998H194.96V22.4873H195.054C195.411 23.1873 196.154 24.1686 197.804 24.1686C200.067 24.1686 201.76 22.3748 201.76 19.2123C201.76 16.0123 200.017 14.2748 197.798 14.2748C196.104 14.2748 195.398 15.2936 195.054 15.9873H194.923V14.3998H192.698V27.5998ZM194.917 19.1998C194.917 17.3373 195.717 16.1311 197.173 16.1311C198.679 16.1311 199.454 17.4123 199.454 19.1998C199.454 20.9998 198.667 22.3123 197.173 22.3123C195.729 22.3123 194.917 21.0623 194.917 19.1998Z",
+                                fill: "#B4B4B4"
+                              }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "svg",
+                          {
+                            staticClass: "banner-upload__logo",
+                            attrs: {
+                              width: "253",
+                              height: "40",
+                              viewBox: "0 0 253 40",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M38.9981 16.998C38.4676 16.998 37.9589 17.2088 37.5838 17.5838C37.2088 17.9589 36.9981 18.4676 36.9981 18.998V32.998C36.9981 33.5285 36.7873 34.0372 36.4123 34.4123C36.0372 34.7873 35.5285 34.998 34.9981 34.998H6.99805C6.46761 34.998 5.95891 34.7873 5.58383 34.4123C5.20876 34.0372 4.99805 33.5285 4.99805 32.998V16.998C4.99805 16.4676 5.20876 15.9589 5.58383 15.5838C5.95891 15.2088 6.46761 14.998 6.99805 14.998H10.998C11.4342 15.0208 11.8658 14.9002 12.2269 14.6546C12.5881 14.409 12.8589 14.052 12.998 13.638L14.078 10.358C14.2122 9.9608 14.4678 9.61578 14.8088 9.37173C15.1497 9.12768 15.5588 8.99696 15.978 8.99805H26.9981C27.5285 8.99805 28.0372 8.78733 28.4123 8.41226C28.7873 8.03719 28.9981 7.52848 28.9981 6.99805C28.9981 6.46761 28.7873 5.95891 28.4123 5.58383C28.0372 5.20876 27.5285 4.99805 26.9981 4.99805H15.878C14.6211 5.0004 13.3967 5.39741 12.3776 6.13306C11.3584 6.8687 10.5961 7.90583 10.198 9.09805L9.55805 11.098H6.99805C5.40675 11.098 3.88062 11.7302 2.75541 12.8554C1.63019 13.9806 0.998047 15.5067 0.998047 17.098V33.098C0.998047 34.6893 1.63019 36.2155 2.75541 37.3407C3.88062 38.4659 5.40675 39.098 6.99805 39.098H34.9981C36.5894 39.098 38.1155 38.4659 39.2407 37.3407C40.3659 36.2155 40.9981 34.6893 40.9981 33.098V19.098C41.0116 18.8271 40.9699 18.5562 40.8755 18.3019C40.7811 18.0476 40.6359 17.8152 40.4488 17.6187C40.2617 17.4223 40.0367 17.266 39.7872 17.1593C39.5378 17.0526 39.2693 16.9977 38.9981 16.998ZM20.998 14.998C19.4158 14.998 17.8691 15.4672 16.5535 16.3463C15.2379 17.2253 14.2125 18.4748 13.607 19.9366C13.0015 21.3984 12.8431 23.0069 13.1518 24.5588C13.4604 26.1106 14.2224 27.5361 15.3412 28.6549C16.46 29.7737 17.8855 30.5356 19.4373 30.8443C20.9892 31.153 22.5977 30.9946 24.0595 30.3891C25.5213 29.7836 26.7708 28.7582 27.6498 27.4426C28.5289 26.127 28.9981 24.5803 28.9981 22.998C28.9981 20.8763 28.1552 18.8415 26.6549 17.3412C25.1546 15.8409 23.1198 14.998 20.998 14.998ZM20.998 26.998C20.2069 26.998 19.4336 26.7635 18.7758 26.3239C18.118 25.8844 17.6053 25.2597 17.3025 24.5288C16.9998 23.7979 16.9206 22.9936 17.0749 22.2177C17.2292 21.4418 17.6102 20.729 18.1696 20.1696C18.729 19.6102 19.4418 19.2292 20.2177 19.0749C20.9936 18.9206 21.7979 18.9998 22.5288 19.3025C23.2597 19.6053 23.8844 20.118 24.3239 20.7758C24.7635 21.4336 24.9981 22.2069 24.9981 22.998C24.9981 24.0589 24.5766 25.0763 23.8265 25.8265C23.0763 26.5766 22.0589 26.998 20.998 26.998ZM42.9981 4.99805H40.9981V2.99805C40.9981 2.46761 40.7873 1.95891 40.4123 1.58383C40.0372 1.20876 39.5285 0.998047 38.9981 0.998047C38.4676 0.998047 37.9589 1.20876 37.5838 1.58383C37.2088 1.95891 36.9981 2.46761 36.9981 2.99805V4.99805H34.9981C34.4676 4.99805 33.9589 5.20876 33.5838 5.58383C33.2088 5.95891 32.9981 6.46761 32.9981 6.99805C32.9981 7.52848 33.2088 8.03719 33.5838 8.41226C33.9589 8.78733 34.4676 8.99805 34.9981 8.99805H36.9981V10.998C36.9981 11.5285 37.2088 12.0372 37.5838 12.4123C37.9589 12.7873 38.4676 12.998 38.9981 12.998C39.5285 12.998 40.0372 12.7873 40.4123 12.4123C40.7873 12.0372 40.9981 11.5285 40.9981 10.998V8.99805H42.9981C43.5285 8.99805 44.0372 8.78733 44.4123 8.41226C44.7873 8.03719 44.9981 7.52848 44.9981 6.99805C44.9981 6.46761 44.7873 5.95891 44.4123 5.58383C44.0372 5.20876 43.5285 4.99805 42.9981 4.99805Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M70.1636 30.218C73.5854 30.218 76.0776 28.2571 76.0698 25.554C76.0776 23.554 74.8276 22.1165 72.5854 21.7962V21.6712C74.3198 21.2962 75.4839 20.0071 75.4761 18.2102C75.4839 15.7727 73.4058 13.7805 70.2104 13.7805C67.1011 13.7805 64.6948 15.6321 64.6323 18.3118H67.4214C67.4683 16.968 68.7183 16.1321 70.1948 16.1321C71.687 16.1321 72.6792 17.0383 72.6714 18.3821C72.6792 19.7805 71.5229 20.7102 69.8667 20.7102H68.4526V22.9446H69.8667C71.8901 22.9446 73.0933 23.9602 73.0854 25.4055C73.0933 26.8196 71.8667 27.7883 70.1558 27.7883C68.5464 27.7883 67.3042 26.9524 67.2339 25.6477H64.2964C64.3745 28.3508 66.7886 30.218 70.1636 30.218Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M81.8398 30.2415C83.7227 30.2415 84.8477 29.3587 85.3633 28.3508H85.457V29.9993H88.1758V21.968C88.1758 18.7962 85.5898 17.843 83.3008 17.843C80.7773 17.843 78.8398 18.968 78.2148 21.1555L80.8555 21.5305C81.1367 20.7102 81.9336 20.0071 83.3164 20.0071C84.6289 20.0071 85.3477 20.679 85.3477 21.8587V21.9055C85.3477 22.718 84.4961 22.7571 82.3789 22.9837C80.0508 23.2337 77.8242 23.929 77.8242 26.6321C77.8242 28.9915 79.5508 30.2415 81.8398 30.2415ZM82.5742 28.1633C81.3945 28.1633 80.5508 27.6243 80.5508 26.5852C80.5508 25.4993 81.4961 25.0462 82.7617 24.8665C83.5039 24.7649 84.9883 24.5774 85.3555 24.2805V25.6946C85.3555 27.0305 84.2773 28.1633 82.5742 28.1633Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M98.561 17.9993H90.6235V29.9993H93.3892V20.3196H98.561V17.9993Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M100.433 34.4993H103.261V28.1087H103.378C103.823 28.9837 104.753 30.2102 106.815 30.2102C109.644 30.2102 111.761 27.968 111.761 24.0149C111.761 20.0149 109.581 17.843 106.808 17.843C104.69 17.843 103.808 19.1165 103.378 19.9837H103.214V17.9993H100.433V34.4993ZM103.206 23.9993C103.206 21.6712 104.206 20.1633 106.026 20.1633C107.909 20.1633 108.878 21.7649 108.878 23.9993C108.878 26.2493 107.894 27.8899 106.026 27.8899C104.222 27.8899 103.206 26.3274 103.206 23.9993Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M115.136 34.4993C117.339 34.4993 118.613 33.3665 119.292 31.4524L124.113 18.0149L121.089 17.9993L118.316 27.0618H118.191L115.425 17.9993H112.425L116.777 30.2493L116.535 30.8977C116.011 32.2649 115.183 32.3587 113.949 31.9993L113.292 34.2024C113.675 34.3587 114.363 34.4993 115.136 34.4993Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M125.016 26.7102C125.086 28.9368 127.125 30.2337 129.898 30.2337C132.742 30.2337 134.797 28.8821 134.797 26.6712C134.797 25.054 133.695 23.9446 132.273 23.8587V23.7337C133.648 23.3665 134.523 22.5071 134.523 21.2102C134.523 19.1868 132.773 17.843 129.961 17.843C127.336 17.843 125.359 19.2024 125.32 21.2962H128.109C128.141 20.4915 128.969 19.929 130.094 19.929C131.219 19.929 131.898 20.5305 131.898 21.4212C131.898 22.2415 131.273 22.8508 130.102 22.8508H128.266V24.8587H130.102C131.281 24.8587 132.055 25.5227 132.055 26.4915C132.055 27.5852 131.094 28.1165 129.883 28.1165C128.687 28.1165 127.875 27.6008 127.82 26.7102H125.016Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M139.354 26.1712V17.9993H136.627V29.9993H139.541L144.331 21.8196V29.9993H147.065V17.9993H144.159L139.354 26.1712Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M148.229 20.3196H152.112V29.9993H154.847V20.3196H158.729V17.9993H148.229V20.3196Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M163.312 21.9055V17.9993H160.585V29.9993H166.039C169.093 29.9993 170.851 28.3118 170.859 25.9524C170.851 23.5305 169.093 21.9055 166.039 21.9055H163.312ZM163.312 24.2258H166.039C167.265 24.2258 168.148 24.9524 168.148 25.9915C168.148 26.9837 167.265 27.679 166.039 27.679H163.312V24.2258Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M187.565 13.5618C186.987 13.9993 186.073 13.9915 184.831 13.9915C184.479 13.9915 184.112 13.9915 183.713 13.9993C179.581 14.054 177.456 16.804 177.456 22.4446V23.5227C177.456 27.9133 179.674 30.2337 183.166 30.2337C186.659 30.2337 188.862 27.9055 188.862 24.2024C188.862 20.6087 186.768 18.5383 183.791 18.5383C181.963 18.5383 180.581 19.3274 179.831 20.7962H179.698C179.979 17.804 181.104 16.4524 183.791 16.3899C186.174 16.3352 187.51 16.2962 188.549 15.3899L187.565 13.5618ZM183.182 27.968C181.409 27.968 180.323 26.5462 180.323 24.2805C180.346 22.0462 181.416 20.7649 183.166 20.7649C184.916 20.7649 185.995 22.0462 185.995 24.2805C185.995 26.554 184.924 27.968 183.182 27.968Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M194.325 30.2415C196.208 30.2415 197.333 29.3587 197.849 28.3508H197.942V29.9993H200.661V21.968C200.661 18.7962 198.075 17.843 195.786 17.843C193.263 17.843 191.325 18.968 190.7 21.1555L193.341 21.5305C193.622 20.7102 194.419 20.0071 195.802 20.0071C197.114 20.0071 197.833 20.679 197.833 21.8587V21.9055C197.833 22.718 196.981 22.7571 194.864 22.9837C192.536 23.2337 190.31 23.929 190.31 26.6321C190.31 28.9915 192.036 30.2415 194.325 30.2415ZM195.06 28.1633C193.88 28.1633 193.036 27.6243 193.036 26.5852C193.036 25.4993 193.981 25.0462 195.247 24.8665C195.989 24.7649 197.474 24.5774 197.841 24.2805V25.6946C197.841 27.0305 196.763 28.1633 195.06 28.1633Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M205.835 17.9993H203.109V29.9993H205.835V25.1477H210.484V29.9993H213.203V17.9993H210.484V22.8274H205.835V17.9993Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M218.394 17.9993H215.668V29.9993H218.394V25.1477H223.043V29.9993H225.762V17.9993H223.043V22.8274H218.394V17.9993Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M233.539 30.2337C236.336 30.2337 238.258 28.8665 238.758 26.7805L236.118 26.4837C235.735 27.4993 234.797 28.0305 233.579 28.0305C231.75 28.0305 230.539 26.8274 230.516 24.7727H238.875V23.9055C238.875 19.6946 236.344 17.843 233.391 17.843C229.954 17.843 227.711 20.3665 227.711 24.0696C227.711 27.8352 229.922 30.2337 233.539 30.2337ZM230.524 22.8665C230.61 21.3352 231.743 20.0462 233.43 20.0462C235.055 20.0462 236.149 21.2337 236.164 22.8665H230.524Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M240.872 34.4993H243.7V28.1087H243.817C244.263 28.9837 245.192 30.2102 247.255 30.2102C250.083 30.2102 252.2 27.968 252.2 24.0149C252.2 20.0149 250.02 17.843 247.247 17.843C245.13 17.843 244.247 19.1165 243.817 19.9837H243.653V17.9993H240.872V34.4993ZM243.645 23.9993C243.645 21.6712 244.645 20.1633 246.466 20.1633C248.349 20.1633 249.317 21.7649 249.317 23.9993C249.317 26.2493 248.333 27.8899 246.466 27.8899C244.661 27.8899 243.645 26.3274 243.645 23.9993Z",
+                                fill: "#B4B4B4"
+                              }
+                            })
+                          ]
+                        )
+                  ]
+                )
               ]
             )
       ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "settings-form-modal" },
+    [
+      _c(
+        "modal",
+        {
+          attrs: {
+            name: "settingsForm",
+            classes: ["modal", "sign-in-form"],
+            height: "auto",
+            scrollable: true,
+            "min-width": 320,
+            adaptive: true,
+            "max-width": 480
+          }
+        },
+        [
+          _c("img", {
+            staticClass: "sign-form__close",
+            attrs: { src: "/assets/images/i-close.svg", alt: "" }
+          }),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSubmit($event)
+                }
+              }
+            },
+            [
+              _vm.formType == "nickname"
+                ? _c("div", [_vm._v("\n        fgdgdfgdg\n      ")])
+                : _vm._e()
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -26455,9 +36730,15 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _vm.deletingProcess
-              ? _c("delete-confirmation", {
-                  attrs: { item: _vm.item },
-                  on: { close: _vm.deleteItemHide }
+              ? _c("confirmation", {
+                  attrs: {
+                    headline: "Удалить “" + _vm.item.name + "”?",
+                    text:
+                      "После удаления работы вы не сможете её восстановить.",
+                    resetButtonText: "Отмена",
+                    confirmButtonText: "Удалить"
+                  },
+                  on: { reset: _vm.deleteItemHide, apply: _vm.deleteItem }
                 })
               : _vm._e(),
             _vm._v(" "),
@@ -26985,138 +37266,436 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "profile-settings" }, [
-    _c("div", { staticClass: "profile-settings-container" }, [
-      _c(
-        "div",
-        { staticClass: "profile-settings__uploaders" },
-        [_c("settings-banner-upload"), _vm._v(" "), _c("avatar-upload")],
-        1
-      ),
+  return _c(
+    "div",
+    { staticClass: "profile-settings" },
+    [
+      _c("settings-form-modal", { ref: "formModal" }),
       _vm._v(" "),
-      _vm._m(0)
-    ])
-  ])
+      _vm.showConfirm
+        ? _c("confirmation", {
+            attrs: {
+              headline: _vm.activeConfirm.headline,
+              text: _vm.activeConfirm.text,
+              resetButtonText: _vm.activeConfirm.resetButtonText,
+              confirmButtonText: _vm.activeConfirm.confirmButtonText
+            },
+            on: { reset: _vm.confirmReset, apply: _vm.confirmApply }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "profile-settings-container" }, [
+        _c(
+          "div",
+          { staticClass: "profile-settings__uploaders" },
+          [
+            _c("settings-banner-upload", {
+              attrs: { banner: _vm.user.banner }
+            }),
+            _vm._v(" "),
+            _c("avatar-upload", {
+              attrs: { avatar: _vm.user.avatar },
+              on: { fileUpload: _vm.avatarUpload }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            staticClass: "settings-form",
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.formSubmit($event)
+              }
+            }
+          },
+          [
+            _c("h3", { staticClass: "settings-form__headline" }, [
+              _vm._v("Никнейм")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "settings-form__field settings-form__nickname" },
+              [
+                _c("i", {
+                  staticClass: "settings-form__icon settings-form__icon-profile"
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "settings-form__nickname-span" }, [
+                  _vm._v(_vm._s(_vm.user.login))
+                ]),
+                _vm._v(" "),
+                _c("img", {
+                  directives: [
+                    {
+                      name: "tooltip",
+                      rawName: "v-tooltip.bottom",
+                      value: "Изменить",
+                      expression: "'Изменить'",
+                      modifiers: { bottom: true }
+                    }
+                  ],
+                  staticClass: "settings-form__edit-icon pointer",
+                  attrs: { src: "/assets/images/i-settings-edit.svg" },
+                  on: {
+                    click: function($event) {
+                      return _vm.showConfirmAction("nickname")
+                    }
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "settings-form__group settings-form__social" },
+              [
+                _c("h3", { staticClass: "settings-form__headline" }, [
+                  _vm._v("Ссылки на соцсети")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "settings-form__field settings-form__vk",
+                    class: {
+                      "settings-form__field_error": _vm.$v.social.vkLink.$error,
+                      "settings-form__field_success":
+                        !_vm.$v.social.vkLink.$error &&
+                        _vm.$v.social.vkLink.$model
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "settings-form__icon settings-form__icon-vk"
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.$v.social.vkLink.$model,
+                          expression: "$v.social.vkLink.$model"
+                        },
+                        {
+                          name: "debounce",
+                          rawName: "v-debounce:5000ms.lock",
+                          value: _vm.socialUpdate,
+                          expression: "socialUpdate",
+                          arg: "5000ms",
+                          modifiers: { lock: true }
+                        }
+                      ],
+                      attrs: { type: "text", placeholder: "vkontakte" },
+                      domProps: { value: _vm.$v.social.vkLink.$model },
+                      on: {
+                        focus: function($event) {
+                          _vm.showError = false
+                        },
+                        blur: function($event) {
+                          _vm.showError = true
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.$v.social.vkLink,
+                            "$model",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "settings-form__field settings-form__facebook",
+                    class: {
+                      "settings-form__field_error":
+                        _vm.$v.social.facebookLink.$error,
+                      "settings-form__field_success":
+                        !_vm.$v.social.facebookLink.$error &&
+                        _vm.$v.social.facebookLink.$model
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "settings-form__icon settings-form__icon-fb"
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.$v.social.facebookLink.$model,
+                          expression: "$v.social.facebookLink.$model"
+                        },
+                        {
+                          name: "debounce",
+                          rawName: "v-debounce:5000ms.lock",
+                          value: _vm.socialUpdate,
+                          expression: "socialUpdate",
+                          arg: "5000ms",
+                          modifiers: { lock: true }
+                        }
+                      ],
+                      attrs: { type: "text", placeholder: "facebook" },
+                      domProps: { value: _vm.$v.social.facebookLink.$model },
+                      on: {
+                        focus: function($event) {
+                          _vm.showError = false
+                        },
+                        blur: function($event) {
+                          _vm.showError = true
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.$v.social.facebookLink,
+                            "$model",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "settings-form__field settings-form__twitter",
+                    class: {
+                      "settings-form__field_error":
+                        _vm.$v.social.twitterLink.$error,
+                      "settings-form__field_success":
+                        !_vm.$v.social.twitterLink.$error &&
+                        _vm.$v.social.twitterLink.$model
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "settings-form__icon settings-form__icon-tw"
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.$v.social.twitterLink.$model,
+                          expression: "$v.social.twitterLink.$model"
+                        },
+                        {
+                          name: "debounce",
+                          rawName: "v-debounce:5000ms.lock",
+                          value: _vm.socialUpdate,
+                          expression: "socialUpdate",
+                          arg: "5000ms",
+                          modifiers: { lock: true }
+                        }
+                      ],
+                      attrs: { type: "text", placeholder: "twitter" },
+                      domProps: { value: _vm.$v.social.twitterLink.$model },
+                      on: {
+                        focus: function($event) {
+                          _vm.showError = false
+                        },
+                        blur: function($event) {
+                          _vm.showError = true
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.$v.social.twitterLink,
+                            "$model",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "settings-form__field settings-form__instagram",
+                    class: {
+                      "settings-form__field_error":
+                        _vm.$v.social.instagramLink.$error,
+                      "settings-form__field_success":
+                        !_vm.$v.social.instagramLink.$error &&
+                        _vm.$v.social.instagramLink.$model
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "settings-form__icon settings-form__icon-inst"
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.$v.social.instagramLink.$model,
+                          expression: "$v.social.instagramLink.$model"
+                        },
+                        {
+                          name: "debounce",
+                          rawName: "v-debounce:5000ms.lock",
+                          value: _vm.socialUpdate,
+                          expression: "socialUpdate",
+                          arg: "5000ms",
+                          modifiers: { lock: true }
+                        }
+                      ],
+                      attrs: { type: "text", placeholder: "instagram" },
+                      domProps: { value: _vm.$v.social.instagramLink.$model },
+                      on: {
+                        focus: function($event) {
+                          _vm.showError = false
+                        },
+                        blur: function($event) {
+                          _vm.showError = true
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.$v.social.instagramLink,
+                            "$model",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "settings-form__social-error",
+                    class: {
+                      "settings-form__social-error_show":
+                        _vm.showError && _vm.$v.social.$invalid
+                    }
+                  },
+                  [_vm._v("\n          Неверный формат ссылки\n        ")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "settings-form__group settings-form__email" },
+              [
+                _c("h3", { staticClass: "settings-form__headline" }, [
+                  _vm._v("Почта")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "settings-form__field settings-form__mail" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "settings-form__icon settings-form__icon-mail"
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "settings-form__mail-span" }, [
+                      _vm._v(_vm._s(_vm.user.email))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                !_vm.user.email_verified_at
+                  ? _c(
+                      "div",
+                      { staticClass: "settings-form__unconfirmed-email" },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "settings-form__unconfirmed-email-text"
+                          },
+                          [_vm._v("Почта не подтверждена")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "settings-form__unconfirmed-email-button btn"
+                          },
+                          [_vm._v("Подтвердить")]
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "settings-form" }, [
-      _c("h3", { staticClass: "settings-form__headline" }, [_vm._v("Никнейм")]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "settings-form__field settings-form__nickname" },
-        [
-          _c("i", {
-            staticClass: "settings-form__icon settings-form__icon-profile"
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "settings-form__nickname-span" }, [
-            _vm._v("pokimane")
-          ]),
-          _vm._v(" "),
-          _c("img", {
-            staticClass: "settings-form__edit-icon pointer",
-            attrs: { src: "/assets/images/i-settings-edit.svg", alt: "" }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "settings-form__group settings-form__social" }, [
+    return _c(
+      "div",
+      { staticClass: "settings-form__group settings-form__password" },
+      [
         _c("h3", { staticClass: "settings-form__headline" }, [
-          _vm._v("Ссылки на соцсети")
+          _vm._v("Пароль")
         ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "settings-form__field settings-form__vk" }, [
-          _c("i", {
-            staticClass: "settings-form__icon settings-form__icon-vk"
-          }),
-          _vm._v(" "),
-          _c("input", { attrs: { type: "text", placeholder: "vkontakte" } })
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "settings-form__field settings-form__facebook" },
-          [
-            _c("i", {
-              staticClass: "settings-form__icon settings-form__icon-fb"
-            }),
-            _vm._v(" "),
-            _c("input", { attrs: { type: "text", placeholder: "facebook" } })
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "settings-form__field settings-form__twitter" },
-          [
-            _c("i", {
-              staticClass: "settings-form__icon settings-form__icon-tw"
-            }),
-            _vm._v(" "),
-            _c("input", { attrs: { type: "text", placeholder: "twitter" } })
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "settings-form__field settings-form__instagram" },
-          [
-            _c("i", {
-              staticClass: "settings-form__icon settings-form__icon-inst"
-            }),
-            _vm._v(" "),
-            _c("input", { attrs: { type: "text", placeholder: "instagram" } })
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "settings-form__group settings-form__email" }, [
-        _c("h3", { staticClass: "settings-form__headline" }, [_vm._v("Почта")]),
         _vm._v(" "),
         _c("div", { staticClass: "settings-form__field settings-form__mail" }, [
           _c("i", {
-            staticClass: "settings-form__icon settings-form__icon-mail"
+            staticClass: "settings-form__icon settings-form__icon-password"
           }),
           _vm._v(" "),
-          _c("span", { staticClass: "settings-form__mail-span" }, [
-            _vm._v("pokimane.arts.work@gmail.com")
-          ]),
-          _vm._v(" "),
-          _c("img", {
-            staticClass: "settings-form__edit-icon pointer",
-            attrs: { src: "/assets/images/i-settings-edit.svg", alt: "" }
-          })
+          _c("button", { staticClass: "btn" }, [_vm._v("Изменить пароль")])
         ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "settings-form__group settings-form__password" },
-        [
-          _c("h3", { staticClass: "settings-form__headline" }, [
-            _vm._v("Пароль")
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "settings-form__field settings-form__mail" },
-            [
-              _c("i", {
-                staticClass: "settings-form__icon settings-form__icon-password"
-              }),
-              _vm._v(" "),
-              _c("button", { staticClass: "btn" }, [_vm._v("Изменить пароль")])
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "settings-form__group settings-form__auth" }, [
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "settings-form__group settings-form__auth" },
+      [
         _c("h3", { staticClass: "settings-form__headline" }, [
           _vm._v("Двухфакторная аутентификация")
         ]),
@@ -27128,8 +37707,8 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("button", { staticClass: "btn" }, [_vm._v("Включить")])
         ])
-      ])
-    ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -27440,6 +38019,5102 @@ function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-moment/dist/vue-moment.js":
+/*!****************************************************!*\
+  !*** ./node_modules/vue-moment/dist/vue-moment.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {(function (global, factory) {
+	 true ? factory(exports) :
+	undefined;
+}(this, (function (exports) { 'use strict';
+
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
+}
+
+
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var moment = createCommonjsModule(function (module, exports) {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js
+
+(function (global, factory) {
+    (_typeof(exports)) === 'object' && 'object' !== 'undefined' ? module.exports = factory() :  false ? undefined : global.moment = factory();
+})(commonjsGlobal, function () {
+    var hookCallback;
+
+    function hooks() {
+        return hookCallback.apply(null, arguments);
+    }
+
+    // This is done to register the method called with moment()
+    // without creating circular dependencies.
+    function setHookCallback(callback) {
+        hookCallback = callback;
+    }
+
+    function isArray(input) {
+        return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+    }
+
+    function isObject(input) {
+        // IE8 will treat undefined and null as object if it wasn't for
+        // input != null
+        return input != null && Object.prototype.toString.call(input) === '[object Object]';
+    }
+
+    function isObjectEmpty(obj) {
+        if (Object.getOwnPropertyNames) {
+            return Object.getOwnPropertyNames(obj).length === 0;
+        } else {
+            var k;
+            for (k in obj) {
+                if (obj.hasOwnProperty(k)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    function isUndefined(input) {
+        return input === void 0;
+    }
+
+    function isNumber(input) {
+        return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
+    }
+
+    function isDate(input) {
+        return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+    }
+
+    function map(arr, fn) {
+        var res = [],
+            i;
+        for (i = 0; i < arr.length; ++i) {
+            res.push(fn(arr[i], i));
+        }
+        return res;
+    }
+
+    function hasOwnProp(a, b) {
+        return Object.prototype.hasOwnProperty.call(a, b);
+    }
+
+    function extend(a, b) {
+        for (var i in b) {
+            if (hasOwnProp(b, i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (hasOwnProp(b, 'toString')) {
+            a.toString = b.toString;
+        }
+
+        if (hasOwnProp(b, 'valueOf')) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function createUTC(input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, true).utc();
+    }
+
+    function defaultParsingFlags() {
+        // We need to deep clone this object.
+        return {
+            empty: false,
+            unusedTokens: [],
+            unusedInput: [],
+            overflow: -2,
+            charsLeftOver: 0,
+            nullInput: false,
+            invalidMonth: null,
+            invalidFormat: false,
+            userInvalidated: false,
+            iso: false,
+            parsedDateParts: [],
+            meridiem: null,
+            rfc2822: false,
+            weekdayMismatch: false
+        };
+    }
+
+    function getParsingFlags(m) {
+        if (m._pf == null) {
+            m._pf = defaultParsingFlags();
+        }
+        return m._pf;
+    }
+
+    var some;
+    if (Array.prototype.some) {
+        some = Array.prototype.some;
+    } else {
+        some = function some(fun) {
+            var t = Object(this);
+            var len = t.length >>> 0;
+
+            for (var i = 0; i < len; i++) {
+                if (i in t && fun.call(this, t[i], i, t)) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    }
+
+    function isValid(m) {
+        if (m._isValid == null) {
+            var flags = getParsingFlags(m);
+            var parsedParts = some.call(flags.parsedDateParts, function (i) {
+                return i != null;
+            });
+            var isNowValid = !isNaN(m._d.getTime()) && flags.overflow < 0 && !flags.empty && !flags.invalidMonth && !flags.invalidWeekday && !flags.weekdayMismatch && !flags.nullInput && !flags.invalidFormat && !flags.userInvalidated && (!flags.meridiem || flags.meridiem && parsedParts);
+
+            if (m._strict) {
+                isNowValid = isNowValid && flags.charsLeftOver === 0 && flags.unusedTokens.length === 0 && flags.bigHour === undefined;
+            }
+
+            if (Object.isFrozen == null || !Object.isFrozen(m)) {
+                m._isValid = isNowValid;
+            } else {
+                return isNowValid;
+            }
+        }
+        return m._isValid;
+    }
+
+    function createInvalid(flags) {
+        var m = createUTC(NaN);
+        if (flags != null) {
+            extend(getParsingFlags(m), flags);
+        } else {
+            getParsingFlags(m).userInvalidated = true;
+        }
+
+        return m;
+    }
+
+    // Plugins that add properties should also add the key here (null value),
+    // so we can properly clone ourselves.
+    var momentProperties = hooks.momentProperties = [];
+
+    function copyConfig(to, from) {
+        var i, prop, val;
+
+        if (!isUndefined(from._isAMomentObject)) {
+            to._isAMomentObject = from._isAMomentObject;
+        }
+        if (!isUndefined(from._i)) {
+            to._i = from._i;
+        }
+        if (!isUndefined(from._f)) {
+            to._f = from._f;
+        }
+        if (!isUndefined(from._l)) {
+            to._l = from._l;
+        }
+        if (!isUndefined(from._strict)) {
+            to._strict = from._strict;
+        }
+        if (!isUndefined(from._tzm)) {
+            to._tzm = from._tzm;
+        }
+        if (!isUndefined(from._isUTC)) {
+            to._isUTC = from._isUTC;
+        }
+        if (!isUndefined(from._offset)) {
+            to._offset = from._offset;
+        }
+        if (!isUndefined(from._pf)) {
+            to._pf = getParsingFlags(from);
+        }
+        if (!isUndefined(from._locale)) {
+            to._locale = from._locale;
+        }
+
+        if (momentProperties.length > 0) {
+            for (i = 0; i < momentProperties.length; i++) {
+                prop = momentProperties[i];
+                val = from[prop];
+                if (!isUndefined(val)) {
+                    to[prop] = val;
+                }
+            }
+        }
+
+        return to;
+    }
+
+    var updateInProgress = false;
+
+    // Moment prototype object
+    function Moment(config) {
+        copyConfig(this, config);
+        this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+        if (!this.isValid()) {
+            this._d = new Date(NaN);
+        }
+        // Prevent infinite loop in case updateOffset creates new moment
+        // objects.
+        if (updateInProgress === false) {
+            updateInProgress = true;
+            hooks.updateOffset(this);
+            updateInProgress = false;
+        }
+    }
+
+    function isMoment(obj) {
+        return obj instanceof Moment || obj != null && obj._isAMomentObject != null;
+    }
+
+    function absFloor(number) {
+        if (number < 0) {
+            // -0 -> 0
+            return Math.ceil(number) || 0;
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            value = absFloor(coercedNumber);
+        }
+
+        return value;
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if (dontConvert && array1[i] !== array2[i] || !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
+                diffs++;
+            }
+        }
+        return diffs + lengthDiff;
+    }
+
+    function warn(msg) {
+        if (hooks.suppressDeprecationWarnings === false && typeof console !== 'undefined' && console.warn) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
+    function deprecate(msg, fn) {
+        var firstTime = true;
+
+        return extend(function () {
+            if (hooks.deprecationHandler != null) {
+                hooks.deprecationHandler(null, msg);
+            }
+            if (firstTime) {
+                var args = [];
+                var arg;
+                for (var i = 0; i < arguments.length; i++) {
+                    arg = '';
+                    if (_typeof(arguments[i]) === 'object') {
+                        arg += '\n[' + i + '] ';
+                        for (var key in arguments[0]) {
+                            arg += key + ': ' + arguments[0][key] + ', ';
+                        }
+                        arg = arg.slice(0, -2); // Remove trailing comma and space
+                    } else {
+                        arg = arguments[i];
+                    }
+                    args.push(arg);
+                }
+                warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + new Error().stack);
+                firstTime = false;
+            }
+            return fn.apply(this, arguments);
+        }, fn);
+    }
+
+    var deprecations = {};
+
+    function deprecateSimple(name, msg) {
+        if (hooks.deprecationHandler != null) {
+            hooks.deprecationHandler(name, msg);
+        }
+        if (!deprecations[name]) {
+            warn(msg);
+            deprecations[name] = true;
+        }
+    }
+
+    hooks.suppressDeprecationWarnings = false;
+    hooks.deprecationHandler = null;
+
+    function isFunction(input) {
+        return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+    }
+
+    function set(config) {
+        var prop, i;
+        for (i in config) {
+            prop = config[i];
+            if (isFunction(prop)) {
+                this[i] = prop;
+            } else {
+                this['_' + i] = prop;
+            }
+        }
+        this._config = config;
+        // Lenient ordinal parsing accepts just a number in addition to
+        // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+        // TODO: Remove "ordinalParse" fallback in next major release.
+        this._dayOfMonthOrdinalParseLenient = new RegExp((this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) + '|' + /\d{1,2}/.source);
+    }
+
+    function mergeConfigs(parentConfig, childConfig) {
+        var res = extend({}, parentConfig),
+            prop;
+        for (prop in childConfig) {
+            if (hasOwnProp(childConfig, prop)) {
+                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+                    res[prop] = {};
+                    extend(res[prop], parentConfig[prop]);
+                    extend(res[prop], childConfig[prop]);
+                } else if (childConfig[prop] != null) {
+                    res[prop] = childConfig[prop];
+                } else {
+                    delete res[prop];
+                }
+            }
+        }
+        for (prop in parentConfig) {
+            if (hasOwnProp(parentConfig, prop) && !hasOwnProp(childConfig, prop) && isObject(parentConfig[prop])) {
+                // make sure changes to properties don't modify parent config
+                res[prop] = extend({}, res[prop]);
+            }
+        }
+        return res;
+    }
+
+    function Locale(config) {
+        if (config != null) {
+            this.set(config);
+        }
+    }
+
+    var keys;
+
+    if (Object.keys) {
+        keys = Object.keys;
+    } else {
+        keys = function keys(obj) {
+            var i,
+                res = [];
+            for (i in obj) {
+                if (hasOwnProp(obj, i)) {
+                    res.push(i);
+                }
+            }
+            return res;
+        };
+    }
+
+    var defaultCalendar = {
+        sameDay: '[Today at] LT',
+        nextDay: '[Tomorrow at] LT',
+        nextWeek: 'dddd [at] LT',
+        lastDay: '[Yesterday at] LT',
+        lastWeek: '[Last] dddd [at] LT',
+        sameElse: 'L'
+    };
+
+    function calendar(key, mom, now) {
+        var output = this._calendar[key] || this._calendar['sameElse'];
+        return isFunction(output) ? output.call(mom, now) : output;
+    }
+
+    var defaultLongDateFormat = {
+        LTS: 'h:mm:ss A',
+        LT: 'h:mm A',
+        L: 'MM/DD/YYYY',
+        LL: 'MMMM D, YYYY',
+        LLL: 'MMMM D, YYYY h:mm A',
+        LLLL: 'dddd, MMMM D, YYYY h:mm A'
+    };
+
+    function longDateFormat(key) {
+        var format = this._longDateFormat[key],
+            formatUpper = this._longDateFormat[key.toUpperCase()];
+
+        if (format || !formatUpper) {
+            return format;
+        }
+
+        this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+            return val.slice(1);
+        });
+
+        return this._longDateFormat[key];
+    }
+
+    var defaultInvalidDate = 'Invalid date';
+
+    function invalidDate() {
+        return this._invalidDate;
+    }
+
+    var defaultOrdinal = '%d';
+    var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+    function ordinal(number) {
+        return this._ordinal.replace('%d', number);
+    }
+
+    var defaultRelativeTime = {
+        future: 'in %s',
+        past: '%s ago',
+        s: 'a few seconds',
+        ss: '%d seconds',
+        m: 'a minute',
+        mm: '%d minutes',
+        h: 'an hour',
+        hh: '%d hours',
+        d: 'a day',
+        dd: '%d days',
+        M: 'a month',
+        MM: '%d months',
+        y: 'a year',
+        yy: '%d years'
+    };
+
+    function relativeTime(number, withoutSuffix, string, isFuture) {
+        var output = this._relativeTime[string];
+        return isFunction(output) ? output(number, withoutSuffix, string, isFuture) : output.replace(/%d/i, number);
+    }
+
+    function pastFuture(diff, output) {
+        var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+        return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+    }
+
+    var aliases = {};
+
+    function addUnitAlias(unit, shorthand) {
+        var lowerCase = unit.toLowerCase();
+        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+    }
+
+    function normalizeUnits(units) {
+        return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (hasOwnProp(inputObject, prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    var priorities = {};
+
+    function addUnitPriority(unit, priority) {
+        priorities[unit] = priority;
+    }
+
+    function getPrioritizedUnits(unitsObj) {
+        var units = [];
+        for (var u in unitsObj) {
+            units.push({ unit: u, priority: priorities[u] });
+        }
+        units.sort(function (a, b) {
+            return a.priority - b.priority;
+        });
+        return units;
+    }
+
+    function zeroFill(number, targetLength, forceSign) {
+        var absNumber = '' + Math.abs(number),
+            zerosToFill = targetLength - absNumber.length,
+            sign = number >= 0;
+        return (sign ? forceSign ? '+' : '' : '-') + Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+    }
+
+    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+
+    var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+
+    var formatFunctions = {};
+
+    var formatTokenFunctions = {};
+
+    // token:    'M'
+    // padded:   ['MM', 2]
+    // ordinal:  'Mo'
+    // callback: function () { this.month() + 1 }
+    function addFormatToken(token, padded, ordinal, callback) {
+        var func = callback;
+        if (typeof callback === 'string') {
+            func = function func() {
+                return this[callback]();
+            };
+        }
+        if (token) {
+            formatTokenFunctions[token] = func;
+        }
+        if (padded) {
+            formatTokenFunctions[padded[0]] = function () {
+                return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+            };
+        }
+        if (ordinal) {
+            formatTokenFunctions[ordinal] = function () {
+                return this.localeData().ordinal(func.apply(this, arguments), token);
+            };
+        }
+    }
+
+    function removeFormattingTokens(input) {
+        if (input.match(/\[[\s\S]/)) {
+            return input.replace(/^\[|\]$/g, '');
+        }
+        return input.replace(/\\/g, '');
+    }
+
+    function makeFormatFunction(format) {
+        var array = format.match(formattingTokens),
+            i,
+            length;
+
+        for (i = 0, length = array.length; i < length; i++) {
+            if (formatTokenFunctions[array[i]]) {
+                array[i] = formatTokenFunctions[array[i]];
+            } else {
+                array[i] = removeFormattingTokens(array[i]);
+            }
+        }
+
+        return function (mom) {
+            var output = '',
+                i;
+            for (i = 0; i < length; i++) {
+                output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
+            }
+            return output;
+        };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+        if (!m.isValid()) {
+            return m.localeData().invalidDate();
+        }
+
+        format = expandFormat(format, m.localeData());
+        formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
+
+        return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, locale) {
+        var i = 5;
+
+        function replaceLongDateFormatTokens(input) {
+            return locale.longDateFormat(input) || input;
+        }
+
+        localFormattingTokens.lastIndex = 0;
+        while (i >= 0 && localFormattingTokens.test(format)) {
+            format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+            localFormattingTokens.lastIndex = 0;
+            i -= 1;
+        }
+
+        return format;
+    }
+
+    var match1 = /\d/; //       0 - 9
+    var match2 = /\d\d/; //      00 - 99
+    var match3 = /\d{3}/; //     000 - 999
+    var match4 = /\d{4}/; //    0000 - 9999
+    var match6 = /[+-]?\d{6}/; // -999999 - 999999
+    var match1to2 = /\d\d?/; //       0 - 99
+    var match3to4 = /\d\d\d\d?/; //     999 - 9999
+    var match5to6 = /\d\d\d\d\d\d?/; //   99999 - 999999
+    var match1to3 = /\d{1,3}/; //       0 - 999
+    var match1to4 = /\d{1,4}/; //       0 - 9999
+    var match1to6 = /[+-]?\d{1,6}/; // -999999 - 999999
+
+    var matchUnsigned = /\d+/; //       0 - inf
+    var matchSigned = /[+-]?\d+/; //    -inf - inf
+
+    var matchOffset = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+    var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+
+    var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+
+    // any word (or two) characters or numbers including two/three word month in arabic.
+    // includes scottish gaelic two word and hyphenated months
+    var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
+
+    var regexes = {};
+
+    function addRegexToken(token, regex, strictRegex) {
+        regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
+            return isStrict && strictRegex ? strictRegex : regex;
+        };
+    }
+
+    function getParseRegexForToken(token, config) {
+        if (!hasOwnProp(regexes, token)) {
+            return new RegExp(unescapeFormat(token));
+        }
+
+        return regexes[token](config._strict, config._locale);
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function unescapeFormat(s) {
+        return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+            return p1 || p2 || p3 || p4;
+        }));
+    }
+
+    function regexEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    var tokens = {};
+
+    function addParseToken(token, callback) {
+        var i,
+            func = callback;
+        if (typeof token === 'string') {
+            token = [token];
+        }
+        if (isNumber(callback)) {
+            func = function func(input, array) {
+                array[callback] = toInt(input);
+            };
+        }
+        for (i = 0; i < token.length; i++) {
+            tokens[token[i]] = func;
+        }
+    }
+
+    function addWeekParseToken(token, callback) {
+        addParseToken(token, function (input, array, config, token) {
+            config._w = config._w || {};
+            callback(input, config._w, config, token);
+        });
+    }
+
+    function addTimeToArrayFromToken(token, input, config) {
+        if (input != null && hasOwnProp(tokens, token)) {
+            tokens[token](input, config._a, config, token);
+        }
+    }
+
+    var YEAR = 0;
+    var MONTH = 1;
+    var DATE = 2;
+    var HOUR = 3;
+    var MINUTE = 4;
+    var SECOND = 5;
+    var MILLISECOND = 6;
+    var WEEK = 7;
+    var WEEKDAY = 8;
+
+    // FORMATTING
+
+    addFormatToken('Y', 0, 0, function () {
+        var y = this.year();
+        return y <= 9999 ? '' + y : '+' + y;
+    });
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY', 4], 0, 'year');
+    addFormatToken(0, ['YYYYY', 5], 0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // ALIASES
+
+    addUnitAlias('year', 'y');
+
+    // PRIORITIES
+
+    addUnitPriority('year', 1);
+
+    // PARSING
+
+    addRegexToken('Y', matchSigned);
+    addRegexToken('YY', match1to2, match2);
+    addRegexToken('YYYY', match1to4, match4);
+    addRegexToken('YYYYY', match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YYYY', function (input, array) {
+        array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = hooks.parseTwoDigitYear(input);
+    });
+    addParseToken('Y', function (input, array) {
+        array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    function isLeapYear(year) {
+        return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+    }
+
+    // HOOKS
+
+    hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', true);
+
+    function getIsLeapYear() {
+        return isLeapYear(this.year());
+    }
+
+    function makeGetSet(unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                set$1(this, unit, value);
+                hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get(this, unit);
+            }
+        };
+    }
+
+    function get(mom, unit) {
+        return mom.isValid() ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+    }
+
+    function set$1(mom, unit, value) {
+        if (mom.isValid() && !isNaN(value)) {
+            if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
+                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+            } else {
+                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function stringGet(units) {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units]();
+        }
+        return this;
+    }
+
+    function stringSet(units, value) {
+        if ((typeof units === 'undefined' ? 'undefined' : _typeof(units)) === 'object') {
+            units = normalizeObjectUnits(units);
+            var prioritized = getPrioritizedUnits(units);
+            for (var i = 0; i < prioritized.length; i++) {
+                this[prioritized[i].unit](units[prioritized[i].unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (isFunction(this[units])) {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
+
+    function mod(n, x) {
+        return (n % x + x) % x;
+    }
+
+    var indexOf;
+
+    if (Array.prototype.indexOf) {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function indexOf(o) {
+            // I know
+            var i;
+            for (i = 0; i < this.length; ++i) {
+                if (this[i] === o) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
+    function daysInMonth(year, month) {
+        if (isNaN(year) || isNaN(month)) {
+            return NaN;
+        }
+        var modMonth = mod(month, 12);
+        year += (month - modMonth) / 12;
+        return modMonth === 1 ? isLeapYear(year) ? 29 : 28 : 31 - modMonth % 7 % 2;
+    }
+
+    // FORMATTING
+
+    addFormatToken('M', ['MM', 2], 'Mo', function () {
+        return this.month() + 1;
+    });
+
+    addFormatToken('MMM', 0, 0, function (format) {
+        return this.localeData().monthsShort(this, format);
+    });
+
+    addFormatToken('MMMM', 0, 0, function (format) {
+        return this.localeData().months(this, format);
+    });
+
+    // ALIASES
+
+    addUnitAlias('month', 'M');
+
+    // PRIORITY
+
+    addUnitPriority('month', 8);
+
+    // PARSING
+
+    addRegexToken('M', match1to2);
+    addRegexToken('MM', match1to2, match2);
+    addRegexToken('MMM', function (isStrict, locale) {
+        return locale.monthsShortRegex(isStrict);
+    });
+    addRegexToken('MMMM', function (isStrict, locale) {
+        return locale.monthsRegex(isStrict);
+    });
+
+    addParseToken(['M', 'MM'], function (input, array) {
+        array[MONTH] = toInt(input) - 1;
+    });
+
+    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+        var month = config._locale.monthsParse(input, token, config._strict);
+        // if we didn't find a month name, mark the date as invalid.
+        if (month != null) {
+            array[MONTH] = month;
+        } else {
+            getParsingFlags(config).invalidMonth = input;
+        }
+    });
+
+    // LOCALES
+
+    var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
+    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+    function localeMonths(m, format) {
+        if (!m) {
+            return isArray(this._months) ? this._months : this._months['standalone'];
+        }
+        return isArray(this._months) ? this._months[m.month()] : this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
+    }
+
+    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+    function localeMonthsShort(m, format) {
+        if (!m) {
+            return isArray(this._monthsShort) ? this._monthsShort : this._monthsShort['standalone'];
+        }
+        return isArray(this._monthsShort) ? this._monthsShort[m.month()] : this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
+    }
+
+    function handleStrictParse(monthName, format, strict) {
+        var i,
+            ii,
+            mom,
+            llc = monthName.toLocaleLowerCase();
+        if (!this._monthsParse) {
+            // this is not used
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+            for (i = 0; i < 12; ++i) {
+                mom = createUTC([2000, i]);
+                this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
+                this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
+    function localeMonthsParse(monthName, format, strict) {
+        var i, mom, regex;
+
+        if (this._monthsParseExact) {
+            return handleStrictParse.call(this, monthName, format, strict);
+        }
+
+        if (!this._monthsParse) {
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+        }
+
+        // TODO: add sorting
+        // Sorting makes sure if one month (or abbr) is a prefix of another
+        // see sorting in computeMonthsParse
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, i]);
+            if (strict && !this._longMonthsParse[i]) {
+                this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+                this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+            }
+            if (!strict && !this._monthsParse[i]) {
+                regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (!strict && this._monthsParse[i].test(monthName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function setMonth(mom, value) {
+        var dayOfMonth;
+
+        if (!mom.isValid()) {
+            // No op
+            return mom;
+        }
+
+        if (typeof value === 'string') {
+            if (/^\d+$/.test(value)) {
+                value = toInt(value);
+            } else {
+                value = mom.localeData().monthsParse(value);
+                // TODO: Another silent failure?
+                if (!isNumber(value)) {
+                    return mom;
+                }
+            }
+        }
+
+        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        return mom;
+    }
+
+    function getSetMonth(value) {
+        if (value != null) {
+            setMonth(this, value);
+            hooks.updateOffset(this, true);
+            return this;
+        } else {
+            return get(this, 'Month');
+        }
+    }
+
+    function getDaysInMonth() {
+        return daysInMonth(this.year(), this.month());
+    }
+
+    var defaultMonthsShortRegex = matchWord;
+    function monthsShortRegex(isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsShortStrictRegex;
+            } else {
+                return this._monthsShortRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_monthsShortRegex')) {
+                this._monthsShortRegex = defaultMonthsShortRegex;
+            }
+            return this._monthsShortStrictRegex && isStrict ? this._monthsShortStrictRegex : this._monthsShortRegex;
+        }
+    }
+
+    var defaultMonthsRegex = matchWord;
+    function monthsRegex(isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsStrictRegex;
+            } else {
+                return this._monthsRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                this._monthsRegex = defaultMonthsRegex;
+            }
+            return this._monthsStrictRegex && isStrict ? this._monthsStrictRegex : this._monthsRegex;
+        }
+    }
+
+    function computeMonthsParse() {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var shortPieces = [],
+            longPieces = [],
+            mixedPieces = [],
+            i,
+            mom;
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, i]);
+            shortPieces.push(this.monthsShort(mom, ''));
+            longPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.monthsShort(mom, ''));
+        }
+        // Sorting makes sure if one month (or abbr) is a prefix of another it
+        // will match the longer piece.
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+        for (i = 0; i < 12; i++) {
+            shortPieces[i] = regexEscape(shortPieces[i]);
+            longPieces[i] = regexEscape(longPieces[i]);
+        }
+        for (i = 0; i < 24; i++) {
+            mixedPieces[i] = regexEscape(mixedPieces[i]);
+        }
+
+        this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._monthsShortRegex = this._monthsRegex;
+        this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+        this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+    }
+
+    function createDate(y, m, d, h, M, s, ms) {
+        // can't just apply() to create a date:
+        // https://stackoverflow.com/q/181348
+        var date;
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
+        }
+
+        return date;
+    }
+
+    function createUTCDate(y) {
+        var date;
+        // the Date.UTC function remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
+        }
+
+        return date;
+    }
+
+    // start-of-first-week - start-of-year
+    function firstWeekOffset(year, dow, doy) {
+        var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+        fwd = 7 + dow - doy,
+
+        // first-week day local weekday -- which local weekday is fwd
+        fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+
+        return -fwdlw + fwd - 1;
+    }
+
+    // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+        var localWeekday = (7 + weekday - dow) % 7,
+            weekOffset = firstWeekOffset(year, dow, doy),
+            dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+            resYear,
+            resDayOfYear;
+
+        if (dayOfYear <= 0) {
+            resYear = year - 1;
+            resDayOfYear = daysInYear(resYear) + dayOfYear;
+        } else if (dayOfYear > daysInYear(year)) {
+            resYear = year + 1;
+            resDayOfYear = dayOfYear - daysInYear(year);
+        } else {
+            resYear = year;
+            resDayOfYear = dayOfYear;
+        }
+
+        return {
+            year: resYear,
+            dayOfYear: resDayOfYear
+        };
+    }
+
+    function weekOfYear(mom, dow, doy) {
+        var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+            week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+            resWeek,
+            resYear;
+
+        if (week < 1) {
+            resYear = mom.year() - 1;
+            resWeek = week + weeksInYear(resYear, dow, doy);
+        } else if (week > weeksInYear(mom.year(), dow, doy)) {
+            resWeek = week - weeksInYear(mom.year(), dow, doy);
+            resYear = mom.year() + 1;
+        } else {
+            resYear = mom.year();
+            resWeek = week;
+        }
+
+        return {
+            week: resWeek,
+            year: resYear
+        };
+    }
+
+    function weeksInYear(year, dow, doy) {
+        var weekOffset = firstWeekOffset(year, dow, doy),
+            weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+        return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+    }
+
+    // FORMATTING
+
+    addFormatToken('w', ['ww', 2], 'wo', 'week');
+    addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
+
+    // ALIASES
+
+    addUnitAlias('week', 'w');
+    addUnitAlias('isoWeek', 'W');
+
+    // PRIORITIES
+
+    addUnitPriority('week', 5);
+    addUnitPriority('isoWeek', 5);
+
+    // PARSING
+
+    addRegexToken('w', match1to2);
+    addRegexToken('ww', match1to2, match2);
+    addRegexToken('W', match1to2);
+    addRegexToken('WW', match1to2, match2);
+
+    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+        week[token.substr(0, 1)] = toInt(input);
+    });
+
+    // HELPERS
+
+    // LOCALES
+
+    function localeWeek(mom) {
+        return weekOfYear(mom, this._week.dow, this._week.doy).week;
+    }
+
+    var defaultLocaleWeek = {
+        dow: 0, // Sunday is the first day of the week.
+        doy: 6 // The week that contains Jan 6th is the first week of the year.
+    };
+
+    function localeFirstDayOfWeek() {
+        return this._week.dow;
+    }
+
+    function localeFirstDayOfYear() {
+        return this._week.doy;
+    }
+
+    // MOMENTS
+
+    function getSetWeek(input) {
+        var week = this.localeData().week(this);
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    function getSetISOWeek(input) {
+        var week = weekOfYear(this, 1, 4).week;
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    // FORMATTING
+
+    addFormatToken('d', 0, 'do', 'day');
+
+    addFormatToken('dd', 0, 0, function (format) {
+        return this.localeData().weekdaysMin(this, format);
+    });
+
+    addFormatToken('ddd', 0, 0, function (format) {
+        return this.localeData().weekdaysShort(this, format);
+    });
+
+    addFormatToken('dddd', 0, 0, function (format) {
+        return this.localeData().weekdays(this, format);
+    });
+
+    addFormatToken('e', 0, 0, 'weekday');
+    addFormatToken('E', 0, 0, 'isoWeekday');
+
+    // ALIASES
+
+    addUnitAlias('day', 'd');
+    addUnitAlias('weekday', 'e');
+    addUnitAlias('isoWeekday', 'E');
+
+    // PRIORITY
+    addUnitPriority('day', 11);
+    addUnitPriority('weekday', 11);
+    addUnitPriority('isoWeekday', 11);
+
+    // PARSING
+
+    addRegexToken('d', match1to2);
+    addRegexToken('e', match1to2);
+    addRegexToken('E', match1to2);
+    addRegexToken('dd', function (isStrict, locale) {
+        return locale.weekdaysMinRegex(isStrict);
+    });
+    addRegexToken('ddd', function (isStrict, locale) {
+        return locale.weekdaysShortRegex(isStrict);
+    });
+    addRegexToken('dddd', function (isStrict, locale) {
+        return locale.weekdaysRegex(isStrict);
+    });
+
+    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
+        var weekday = config._locale.weekdaysParse(input, token, config._strict);
+        // if we didn't get a weekday name, mark the date as invalid
+        if (weekday != null) {
+            week.d = weekday;
+        } else {
+            getParsingFlags(config).invalidWeekday = input;
+        }
+    });
+
+    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+        week[token] = toInt(input);
+    });
+
+    // HELPERS
+
+    function parseWeekday(input, locale) {
+        if (typeof input !== 'string') {
+            return input;
+        }
+
+        if (!isNaN(input)) {
+            return parseInt(input, 10);
+        }
+
+        input = locale.weekdaysParse(input);
+        if (typeof input === 'number') {
+            return input;
+        }
+
+        return null;
+    }
+
+    function parseIsoWeekday(input, locale) {
+        if (typeof input === 'string') {
+            return locale.weekdaysParse(input) % 7 || 7;
+        }
+        return isNaN(input) ? null : input;
+    }
+
+    // LOCALES
+    function shiftWeekdays(ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
+
+    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+    function localeWeekdays(m, format) {
+        var weekdays = isArray(this._weekdays) ? this._weekdays : this._weekdays[m && m !== true && this._weekdays.isFormat.test(format) ? 'format' : 'standalone'];
+        return m === true ? shiftWeekdays(weekdays, this._week.dow) : m ? weekdays[m.day()] : weekdays;
+    }
+
+    var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+    function localeWeekdaysShort(m) {
+        return m === true ? shiftWeekdays(this._weekdaysShort, this._week.dow) : m ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+    }
+
+    var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+    function localeWeekdaysMin(m) {
+        return m === true ? shiftWeekdays(this._weekdaysMin, this._week.dow) : m ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+    }
+
+    function handleStrictParse$1(weekdayName, format, strict) {
+        var i,
+            ii,
+            mom,
+            llc = weekdayName.toLocaleLowerCase();
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._minWeekdaysParse = [];
+
+            for (i = 0; i < 7; ++i) {
+                mom = createUTC([2000, 1]).day(i);
+                this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
+                this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
+                this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
+    function localeWeekdaysParse(weekdayName, format, strict) {
+        var i, mom, regex;
+
+        if (this._weekdaysParseExact) {
+            return handleStrictParse$1.call(this, weekdayName, format, strict);
+        }
+
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._minWeekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._fullWeekdaysParse = [];
+        }
+
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+
+            mom = createUTC([2000, 1]).day(i);
+            if (strict && !this._fullWeekdaysParse[i]) {
+                this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
+                this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
+                this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
+            }
+            if (!this._weekdaysParse[i]) {
+                regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+                this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function getSetDayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+        if (input != null) {
+            input = parseWeekday(input, this.localeData());
+            return this.add(input - day, 'd');
+        } else {
+            return day;
+        }
+    }
+
+    function getSetLocaleDayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+        return input == null ? weekday : this.add(input - weekday, 'd');
+    }
+
+    function getSetISODayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+
+        // behaves the same as moment#day except
+        // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+        // as a setter, sunday should belong to the previous week.
+
+        if (input != null) {
+            var weekday = parseIsoWeekday(input, this.localeData());
+            return this.day(this.day() % 7 ? weekday : weekday - 7);
+        } else {
+            return this.day() || 7;
+        }
+    }
+
+    var defaultWeekdaysRegex = matchWord;
+    function weekdaysRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysStrictRegex;
+            } else {
+                return this._weekdaysRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                this._weekdaysRegex = defaultWeekdaysRegex;
+            }
+            return this._weekdaysStrictRegex && isStrict ? this._weekdaysStrictRegex : this._weekdaysRegex;
+        }
+    }
+
+    var defaultWeekdaysShortRegex = matchWord;
+    function weekdaysShortRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysShortStrictRegex;
+            } else {
+                return this._weekdaysShortRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysShortRegex')) {
+                this._weekdaysShortRegex = defaultWeekdaysShortRegex;
+            }
+            return this._weekdaysShortStrictRegex && isStrict ? this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
+        }
+    }
+
+    var defaultWeekdaysMinRegex = matchWord;
+    function weekdaysMinRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysMinStrictRegex;
+            } else {
+                return this._weekdaysMinRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysMinRegex')) {
+                this._weekdaysMinRegex = defaultWeekdaysMinRegex;
+            }
+            return this._weekdaysMinStrictRegex && isStrict ? this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
+        }
+    }
+
+    function computeWeekdaysParse() {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var minPieces = [],
+            shortPieces = [],
+            longPieces = [],
+            mixedPieces = [],
+            i,
+            mom,
+            minp,
+            shortp,
+            longp;
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, 1]).day(i);
+            minp = this.weekdaysMin(mom, '');
+            shortp = this.weekdaysShort(mom, '');
+            longp = this.weekdays(mom, '');
+            minPieces.push(minp);
+            shortPieces.push(shortp);
+            longPieces.push(longp);
+            mixedPieces.push(minp);
+            mixedPieces.push(shortp);
+            mixedPieces.push(longp);
+        }
+        // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+        // will match the longer piece.
+        minPieces.sort(cmpLenRev);
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+        for (i = 0; i < 7; i++) {
+            shortPieces[i] = regexEscape(shortPieces[i]);
+            longPieces[i] = regexEscape(longPieces[i]);
+            mixedPieces[i] = regexEscape(mixedPieces[i]);
+        }
+
+        this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._weekdaysShortRegex = this._weekdaysRegex;
+        this._weekdaysMinRegex = this._weekdaysRegex;
+
+        this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+        this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+        this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
+    }
+
+    // FORMATTING
+
+    function hFormat() {
+        return this.hours() % 12 || 12;
+    }
+
+    function kFormat() {
+        return this.hours() || 24;
+    }
+
+    addFormatToken('H', ['HH', 2], 0, 'hour');
+    addFormatToken('h', ['hh', 2], 0, hFormat);
+    addFormatToken('k', ['kk', 2], 0, kFormat);
+
+    addFormatToken('hmm', 0, 0, function () {
+        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('hmmss', 0, 0, function () {
+        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) + zeroFill(this.seconds(), 2);
+    });
+
+    addFormatToken('Hmm', 0, 0, function () {
+        return '' + this.hours() + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('Hmmss', 0, 0, function () {
+        return '' + this.hours() + zeroFill(this.minutes(), 2) + zeroFill(this.seconds(), 2);
+    });
+
+    function meridiem(token, lowercase) {
+        addFormatToken(token, 0, 0, function () {
+            return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
+        });
+    }
+
+    meridiem('a', true);
+    meridiem('A', false);
+
+    // ALIASES
+
+    addUnitAlias('hour', 'h');
+
+    // PRIORITY
+    addUnitPriority('hour', 13);
+
+    // PARSING
+
+    function matchMeridiem(isStrict, locale) {
+        return locale._meridiemParse;
+    }
+
+    addRegexToken('a', matchMeridiem);
+    addRegexToken('A', matchMeridiem);
+    addRegexToken('H', match1to2);
+    addRegexToken('h', match1to2);
+    addRegexToken('k', match1to2);
+    addRegexToken('HH', match1to2, match2);
+    addRegexToken('hh', match1to2, match2);
+    addRegexToken('kk', match1to2, match2);
+
+    addRegexToken('hmm', match3to4);
+    addRegexToken('hmmss', match5to6);
+    addRegexToken('Hmm', match3to4);
+    addRegexToken('Hmmss', match5to6);
+
+    addParseToken(['H', 'HH'], HOUR);
+    addParseToken(['k', 'kk'], function (input, array, config) {
+        var kInput = toInt(input);
+        array[HOUR] = kInput === 24 ? 0 : kInput;
+    });
+    addParseToken(['a', 'A'], function (input, array, config) {
+        config._isPm = config._locale.isPM(input);
+        config._meridiem = input;
+    });
+    addParseToken(['h', 'hh'], function (input, array, config) {
+        array[HOUR] = toInt(input);
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmmss', function (input, array, config) {
+        var pos1 = input.length - 4;
+        var pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('Hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+    });
+    addParseToken('Hmmss', function (input, array, config) {
+        var pos1 = input.length - 4;
+        var pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+    });
+
+    // LOCALES
+
+    function localeIsPM(input) {
+        // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+        // Using charAt should be more compatible.
+        return (input + '').toLowerCase().charAt(0) === 'p';
+    }
+
+    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+    function localeMeridiem(hours, minutes, isLower) {
+        if (hours > 11) {
+            return isLower ? 'pm' : 'PM';
+        } else {
+            return isLower ? 'am' : 'AM';
+        }
+    }
+
+    // MOMENTS
+
+    // Setting the hour should keep the time, because the user explicitly
+    // specified which hour they want. So trying to maintain the same hour (in
+    // a new timezone) makes sense. Adding/subtracting hours does not follow
+    // this rule.
+    var getSetHour = makeGetSet('Hours', true);
+
+    var baseConfig = {
+        calendar: defaultCalendar,
+        longDateFormat: defaultLongDateFormat,
+        invalidDate: defaultInvalidDate,
+        ordinal: defaultOrdinal,
+        dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+        relativeTime: defaultRelativeTime,
+
+        months: defaultLocaleMonths,
+        monthsShort: defaultLocaleMonthsShort,
+
+        week: defaultLocaleWeek,
+
+        weekdays: defaultLocaleWeekdays,
+        weekdaysMin: defaultLocaleWeekdaysMin,
+        weekdaysShort: defaultLocaleWeekdaysShort,
+
+        meridiemParse: defaultLocaleMeridiemParse
+    };
+
+    // internal storage for locale config files
+    var locales = {};
+    var localeFamilies = {};
+    var globalLocale;
+
+    function normalizeLocale(key) {
+        return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+        var i = 0,
+            j,
+            next,
+            locale,
+            split;
+
+        while (i < names.length) {
+            split = normalizeLocale(names[i]).split('-');
+            j = split.length;
+            next = normalizeLocale(names[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                locale = loadLocale(split.slice(0, j).join('-'));
+                if (locale) {
+                    return locale;
+                }
+                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return globalLocale;
+    }
+
+    function loadLocale(name) {
+        var oldLocale = null;
+        // TODO: Find a better way to register and load all the locales in Node
+        if (!locales[name] && 'object' !== 'undefined' && module && module.exports) {
+            try {
+                oldLocale = globalLocale._abbr;
+                var aliasedRequire = commonjsRequire;
+                aliasedRequire('./locale/' + name);
+                getSetGlobalLocale(oldLocale);
+            } catch (e) {}
+        }
+        return locales[name];
+    }
+
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    function getSetGlobalLocale(key, values) {
+        var data;
+        if (key) {
+            if (isUndefined(values)) {
+                data = getLocale(key);
+            } else {
+                data = defineLocale(key, values);
+            }
+
+            if (data) {
+                // moment.duration._locale = moment._locale = data;
+                globalLocale = data;
+            } else {
+                if (typeof console !== 'undefined' && console.warn) {
+                    //warn user if arguments are passed but the locale could not be set
+                    console.warn('Locale ' + key + ' not found. Did you forget to load it?');
+                }
+            }
+        }
+
+        return globalLocale._abbr;
+    }
+
+    function defineLocale(name, config) {
+        if (config !== null) {
+            var locale,
+                parentConfig = baseConfig;
+            config.abbr = name;
+            if (locales[name] != null) {
+                deprecateSimple('defineLocaleOverride', 'use moment.updateLocale(localeName, config) to change ' + 'an existing locale. moment.defineLocale(localeName, ' + 'config) should only be used for creating a new locale ' + 'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
+                parentConfig = locales[name]._config;
+            } else if (config.parentLocale != null) {
+                if (locales[config.parentLocale] != null) {
+                    parentConfig = locales[config.parentLocale]._config;
+                } else {
+                    locale = loadLocale(config.parentLocale);
+                    if (locale != null) {
+                        parentConfig = locale._config;
+                    } else {
+                        if (!localeFamilies[config.parentLocale]) {
+                            localeFamilies[config.parentLocale] = [];
+                        }
+                        localeFamilies[config.parentLocale].push({
+                            name: name,
+                            config: config
+                        });
+                        return null;
+                    }
+                }
+            }
+            locales[name] = new Locale(mergeConfigs(parentConfig, config));
+
+            if (localeFamilies[name]) {
+                localeFamilies[name].forEach(function (x) {
+                    defineLocale(x.name, x.config);
+                });
+            }
+
+            // backwards compat for now: also set the locale
+            // make sure we set the locale AFTER all child locales have been
+            // created, so we won't end up with the child locale set.
+            getSetGlobalLocale(name);
+
+            return locales[name];
+        } else {
+            // useful for testing
+            delete locales[name];
+            return null;
+        }
+    }
+
+    function updateLocale(name, config) {
+        if (config != null) {
+            var locale,
+                tmpLocale,
+                parentConfig = baseConfig;
+            // MERGE
+            tmpLocale = loadLocale(name);
+            if (tmpLocale != null) {
+                parentConfig = tmpLocale._config;
+            }
+            config = mergeConfigs(parentConfig, config);
+            locale = new Locale(config);
+            locale.parentLocale = locales[name];
+            locales[name] = locale;
+
+            // backwards compat for now: also set the locale
+            getSetGlobalLocale(name);
+        } else {
+            // pass null for config to unupdate, useful for tests
+            if (locales[name] != null) {
+                if (locales[name].parentLocale != null) {
+                    locales[name] = locales[name].parentLocale;
+                } else if (locales[name] != null) {
+                    delete locales[name];
+                }
+            }
+        }
+        return locales[name];
+    }
+
+    // returns locale data
+    function getLocale(key) {
+        var locale;
+
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
+        }
+
+        if (!key) {
+            return globalLocale;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
+    }
+
+    function listLocales() {
+        return keys(locales);
+    }
+
+    function checkOverflow(m) {
+        var overflow;
+        var a = m._a;
+
+        if (a && getParsingFlags(m).overflow === -2) {
+            overflow = a[MONTH] < 0 || a[MONTH] > 11 ? MONTH : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH]) ? DATE : a[HOUR] < 0 || a[HOUR] > 24 || a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0) ? HOUR : a[MINUTE] < 0 || a[MINUTE] > 59 ? MINUTE : a[SECOND] < 0 || a[SECOND] > 59 ? SECOND : a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND : -1;
+
+            if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+                overflow = DATE;
+            }
+            if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+                overflow = WEEK;
+            }
+            if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+                overflow = WEEKDAY;
+            }
+
+            getParsingFlags(m).overflow = overflow;
+        }
+
+        return m;
+    }
+
+    // Pick the first defined of two or three arguments.
+    function defaults(a, b, c) {
+        if (a != null) {
+            return a;
+        }
+        if (b != null) {
+            return b;
+        }
+        return c;
+    }
+
+    function currentDateArray(config) {
+        // hooks is actually the exported moment object
+        var nowValue = new Date(hooks.now());
+        if (config._useUTC) {
+            return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+        }
+        return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function configFromArray(config) {
+        var i,
+            date,
+            input = [],
+            currentDate,
+            expectedWeekday,
+            yearToUse;
+
+        if (config._d) {
+            return;
+        }
+
+        currentDate = currentDateArray(config);
+
+        //compute day of the year from weeks and weekdays
+        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+            dayOfYearFromWeekInfo(config);
+        }
+
+        //if the day of the year is set, figure out what it is
+        if (config._dayOfYear != null) {
+            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+            if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+                getParsingFlags(config)._overflowDayOfYear = true;
+            }
+
+            date = createUTCDate(yearToUse, 0, config._dayOfYear);
+            config._a[MONTH] = date.getUTCMonth();
+            config._a[DATE] = date.getUTCDate();
+        }
+
+        // Default to current date.
+        // * if no year, month, day of month are given, default to today
+        // * if day of month is given, default month and year
+        // * if month is given, default only year
+        // * if year is given, don't default anything
+        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+            config._a[i] = input[i] = currentDate[i];
+        }
+
+        // Zero out whatever was not defaulted, including time
+        for (; i < 7; i++) {
+            config._a[i] = input[i] = config._a[i] == null ? i === 2 ? 1 : 0 : config._a[i];
+        }
+
+        // Check for 24:00:00.000
+        if (config._a[HOUR] === 24 && config._a[MINUTE] === 0 && config._a[SECOND] === 0 && config._a[MILLISECOND] === 0) {
+            config._nextDay = true;
+            config._a[HOUR] = 0;
+        }
+
+        config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+        expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
+
+        // Apply timezone offset from input. The actual utcOffset can be changed
+        // with parseZone.
+        if (config._tzm != null) {
+            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+        }
+
+        if (config._nextDay) {
+            config._a[HOUR] = 24;
+        }
+
+        // check for mismatching day of week
+        if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
+            getParsingFlags(config).weekdayMismatch = true;
+        }
+    }
+
+    function dayOfYearFromWeekInfo(config) {
+        var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+        w = config._w;
+        if (w.GG != null || w.W != null || w.E != null) {
+            dow = 1;
+            doy = 4;
+
+            // TODO: We need to take the current isoWeekYear, but that depends on
+            // how we interpret now (local, utc, fixed offset). So create
+            // a now version of current config (take local/utc/offset flags, and
+            // create now).
+            weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+            week = defaults(w.W, 1);
+            weekday = defaults(w.E, 1);
+            if (weekday < 1 || weekday > 7) {
+                weekdayOverflow = true;
+            }
+        } else {
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
+
+            var curWeek = weekOfYear(createLocal(), dow, doy);
+
+            weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+            // Default to current week.
+            week = defaults(w.w, curWeek.week);
+
+            if (w.d != null) {
+                // weekday -- low day numbers are considered next week
+                weekday = w.d;
+                if (weekday < 0 || weekday > 6) {
+                    weekdayOverflow = true;
+                }
+            } else if (w.e != null) {
+                // local weekday -- counting starts from beginning of week
+                weekday = w.e + dow;
+                if (w.e < 0 || w.e > 6) {
+                    weekdayOverflow = true;
+                }
+            } else {
+                // default to beginning of week
+                weekday = dow;
+            }
+        }
+        if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+            getParsingFlags(config)._overflowWeeks = true;
+        } else if (weekdayOverflow != null) {
+            getParsingFlags(config)._overflowWeekday = true;
+        } else {
+            temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+            config._a[YEAR] = temp.year;
+            config._dayOfYear = temp.dayOfYear;
+        }
+    }
+
+    // iso 8601 regex
+    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+    var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+    var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+
+    var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
+
+    var isoDates = [['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/], ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/], ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/], ['GGGG-[W]WW', /\d{4}-W\d\d/, false], ['YYYY-DDD', /\d{4}-\d{3}/], ['YYYY-MM', /\d{4}-\d\d/, false], ['YYYYYYMMDD', /[+-]\d{10}/], ['YYYYMMDD', /\d{8}/],
+    // YYYYMM is NOT allowed by the standard
+    ['GGGG[W]WWE', /\d{4}W\d{3}/], ['GGGG[W]WW', /\d{4}W\d{2}/, false], ['YYYYDDD', /\d{7}/]];
+
+    // iso time formats and regexes
+    var isoTimes = [['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/], ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/], ['HH:mm:ss', /\d\d:\d\d:\d\d/], ['HH:mm', /\d\d:\d\d/], ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/], ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/], ['HHmmss', /\d\d\d\d\d\d/], ['HHmm', /\d\d\d\d/], ['HH', /\d\d/]];
+
+    var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
+
+    // date from iso format
+    function configFromISO(config) {
+        var i,
+            l,
+            string = config._i,
+            match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+            allowTime,
+            dateFormat,
+            timeFormat,
+            tzFormat;
+
+        if (match) {
+            getParsingFlags(config).iso = true;
+
+            for (i = 0, l = isoDates.length; i < l; i++) {
+                if (isoDates[i][1].exec(match[1])) {
+                    dateFormat = isoDates[i][0];
+                    allowTime = isoDates[i][2] !== false;
+                    break;
+                }
+            }
+            if (dateFormat == null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[3]) {
+                for (i = 0, l = isoTimes.length; i < l; i++) {
+                    if (isoTimes[i][1].exec(match[3])) {
+                        // match[2] should be 'T' or space
+                        timeFormat = (match[2] || ' ') + isoTimes[i][0];
+                        break;
+                    }
+                }
+                if (timeFormat == null) {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            if (!allowTime && timeFormat != null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[4]) {
+                if (tzRegex.exec(match[4])) {
+                    tzFormat = 'Z';
+                } else {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+            configFromStringAndFormat(config);
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+    var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+    function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+        var result = [untruncateYear(yearStr), defaultLocaleMonthsShort.indexOf(monthStr), parseInt(dayStr, 10), parseInt(hourStr, 10), parseInt(minuteStr, 10)];
+
+        if (secondStr) {
+            result.push(parseInt(secondStr, 10));
+        }
+
+        return result;
+    }
+
+    function untruncateYear(yearStr) {
+        var year = parseInt(yearStr, 10);
+        if (year <= 49) {
+            return 2000 + year;
+        } else if (year <= 999) {
+            return 1900 + year;
+        }
+        return year;
+    }
+
+    function preprocessRFC2822(s) {
+        // Remove comments and folding whitespace and replace multiple-spaces with a single space
+        return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    }
+
+    function checkWeekday(weekdayStr, parsedInput, config) {
+        if (weekdayStr) {
+            // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+            var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+                weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+            if (weekdayProvided !== weekdayActual) {
+                getParsingFlags(config).weekdayMismatch = true;
+                config._isValid = false;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    var obsOffsets = {
+        UT: 0,
+        GMT: 0,
+        EDT: -4 * 60,
+        EST: -5 * 60,
+        CDT: -5 * 60,
+        CST: -6 * 60,
+        MDT: -6 * 60,
+        MST: -7 * 60,
+        PDT: -7 * 60,
+        PST: -8 * 60
+    };
+
+    function calculateOffset(obsOffset, militaryOffset, numOffset) {
+        if (obsOffset) {
+            return obsOffsets[obsOffset];
+        } else if (militaryOffset) {
+            // the only allowed military tz is Z
+            return 0;
+        } else {
+            var hm = parseInt(numOffset, 10);
+            var m = hm % 100,
+                h = (hm - m) / 100;
+            return h * 60 + m;
+        }
+    }
+
+    // date and time from ref 2822 format
+    function configFromRFC2822(config) {
+        var match = rfc2822.exec(preprocessRFC2822(config._i));
+        if (match) {
+            var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+            if (!checkWeekday(match[1], parsedArray, config)) {
+                return;
+            }
+
+            config._a = parsedArray;
+            config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+            config._d = createUTCDate.apply(null, config._a);
+            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+            getParsingFlags(config).rfc2822 = true;
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // date from iso format or fallback
+    function configFromString(config) {
+        var matched = aspNetJsonRegex.exec(config._i);
+
+        if (matched !== null) {
+            config._d = new Date(+matched[1]);
+            return;
+        }
+
+        configFromISO(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+        } else {
+            return;
+        }
+
+        configFromRFC2822(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+        } else {
+            return;
+        }
+
+        // Final attempt, use Input Fallback
+        hooks.createFromInputFallback(config);
+    }
+
+    hooks.createFromInputFallback = deprecate('value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' + 'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' + 'discouraged and will be removed in an upcoming major release. Please refer to ' + 'http://momentjs.com/guides/#/warnings/js-date/ for more info.', function (config) {
+        config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+    });
+
+    // constant that refers to the ISO standard
+    hooks.ISO_8601 = function () {};
+
+    // constant that refers to the RFC 2822 form
+    hooks.RFC_2822 = function () {};
+
+    // date from string and format string
+    function configFromStringAndFormat(config) {
+        // TODO: Move this to another part of the creation flow to prevent circular deps
+        if (config._f === hooks.ISO_8601) {
+            configFromISO(config);
+            return;
+        }
+        if (config._f === hooks.RFC_2822) {
+            configFromRFC2822(config);
+            return;
+        }
+        config._a = [];
+        getParsingFlags(config).empty = true;
+
+        // This array is used to make a Date, either with `new Date` or `Date.UTC`
+        var string = '' + config._i,
+            i,
+            parsedInput,
+            tokens,
+            token,
+            skipped,
+            stringLength = string.length,
+            totalParsedInputLength = 0;
+
+        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+        for (i = 0; i < tokens.length; i++) {
+            token = tokens[i];
+            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+            // console.log('token', token, 'parsedInput', parsedInput,
+            //         'regex', getParseRegexForToken(token, config));
+            if (parsedInput) {
+                skipped = string.substr(0, string.indexOf(parsedInput));
+                if (skipped.length > 0) {
+                    getParsingFlags(config).unusedInput.push(skipped);
+                }
+                string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+                totalParsedInputLength += parsedInput.length;
+            }
+            // don't parse if it's not a known token
+            if (formatTokenFunctions[token]) {
+                if (parsedInput) {
+                    getParsingFlags(config).empty = false;
+                } else {
+                    getParsingFlags(config).unusedTokens.push(token);
+                }
+                addTimeToArrayFromToken(token, parsedInput, config);
+            } else if (config._strict && !parsedInput) {
+                getParsingFlags(config).unusedTokens.push(token);
+            }
+        }
+
+        // add remaining unparsed input length to the string
+        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
+        if (string.length > 0) {
+            getParsingFlags(config).unusedInput.push(string);
+        }
+
+        // clear _12h flag if hour is <= 12
+        if (config._a[HOUR] <= 12 && getParsingFlags(config).bigHour === true && config._a[HOUR] > 0) {
+            getParsingFlags(config).bigHour = undefined;
+        }
+
+        getParsingFlags(config).parsedDateParts = config._a.slice(0);
+        getParsingFlags(config).meridiem = config._meridiem;
+        // handle meridiem
+        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+
+        configFromArray(config);
+        checkOverflow(config);
+    }
+
+    function meridiemFixWrap(locale, hour, meridiem) {
+        var isPm;
+
+        if (meridiem == null) {
+            // nothing to do
+            return hour;
+        }
+        if (locale.meridiemHour != null) {
+            return locale.meridiemHour(hour, meridiem);
+        } else if (locale.isPM != null) {
+            // Fallback
+            isPm = locale.isPM(meridiem);
+            if (isPm && hour < 12) {
+                hour += 12;
+            }
+            if (!isPm && hour === 12) {
+                hour = 0;
+            }
+            return hour;
+        } else {
+            // this is not supposed to happen
+            return hour;
+        }
+    }
+
+    // date from string and array of format strings
+    function configFromStringAndArray(config) {
+        var tempConfig, bestMoment, scoreToBeat, i, currentScore;
+
+        if (config._f.length === 0) {
+            getParsingFlags(config).invalidFormat = true;
+            config._d = new Date(NaN);
+            return;
+        }
+
+        for (i = 0; i < config._f.length; i++) {
+            currentScore = 0;
+            tempConfig = copyConfig({}, config);
+            if (config._useUTC != null) {
+                tempConfig._useUTC = config._useUTC;
+            }
+            tempConfig._f = config._f[i];
+            configFromStringAndFormat(tempConfig);
+
+            if (!isValid(tempConfig)) {
+                continue;
+            }
+
+            // if there is any input that was not parsed add a penalty for that format
+            currentScore += getParsingFlags(tempConfig).charsLeftOver;
+
+            //or tokens
+            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+
+            getParsingFlags(tempConfig).score = currentScore;
+
+            if (scoreToBeat == null || currentScore < scoreToBeat) {
+                scoreToBeat = currentScore;
+                bestMoment = tempConfig;
+            }
+        }
+
+        extend(config, bestMoment || tempConfig);
+    }
+
+    function configFromObject(config) {
+        if (config._d) {
+            return;
+        }
+
+        var i = normalizeObjectUnits(config._i);
+        config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+            return obj && parseInt(obj, 10);
+        });
+
+        configFromArray(config);
+    }
+
+    function createFromConfig(config) {
+        var res = new Moment(checkOverflow(prepareConfig(config)));
+        if (res._nextDay) {
+            // Adding is smart enough around DST
+            res.add(1, 'd');
+            res._nextDay = undefined;
+        }
+
+        return res;
+    }
+
+    function prepareConfig(config) {
+        var input = config._i,
+            format = config._f;
+
+        config._locale = config._locale || getLocale(config._l);
+
+        if (input === null || format === undefined && input === '') {
+            return createInvalid({ nullInput: true });
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = config._locale.preparse(input);
+        }
+
+        if (isMoment(input)) {
+            return new Moment(checkOverflow(input));
+        } else if (isDate(input)) {
+            config._d = input;
+        } else if (isArray(format)) {
+            configFromStringAndArray(config);
+        } else if (format) {
+            configFromStringAndFormat(config);
+        } else {
+            configFromInput(config);
+        }
+
+        if (!isValid(config)) {
+            config._d = null;
+        }
+
+        return config;
+    }
+
+    function configFromInput(config) {
+        var input = config._i;
+        if (isUndefined(input)) {
+            config._d = new Date(hooks.now());
+        } else if (isDate(input)) {
+            config._d = new Date(input.valueOf());
+        } else if (typeof input === 'string') {
+            configFromString(config);
+        } else if (isArray(input)) {
+            config._a = map(input.slice(0), function (obj) {
+                return parseInt(obj, 10);
+            });
+            configFromArray(config);
+        } else if (isObject(input)) {
+            configFromObject(config);
+        } else if (isNumber(input)) {
+            // from milliseconds
+            config._d = new Date(input);
+        } else {
+            hooks.createFromInputFallback(config);
+        }
+    }
+
+    function createLocalOrUTC(input, format, locale, strict, isUTC) {
+        var c = {};
+
+        if (locale === true || locale === false) {
+            strict = locale;
+            locale = undefined;
+        }
+
+        if (isObject(input) && isObjectEmpty(input) || isArray(input) && input.length === 0) {
+            input = undefined;
+        }
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c._isAMomentObject = true;
+        c._useUTC = c._isUTC = isUTC;
+        c._l = locale;
+        c._i = input;
+        c._f = format;
+        c._strict = strict;
+
+        return createFromConfig(c);
+    }
+
+    function createLocal(input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, false);
+    }
+
+    var prototypeMin = deprecate('moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
+        var other = createLocal.apply(null, arguments);
+        if (this.isValid() && other.isValid()) {
+            return other < this ? this : other;
+        } else {
+            return createInvalid();
+        }
+    });
+
+    var prototypeMax = deprecate('moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/', function () {
+        var other = createLocal.apply(null, arguments);
+        if (this.isValid() && other.isValid()) {
+            return other > this ? this : other;
+        } else {
+            return createInvalid();
+        }
+    });
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+        var res, i;
+        if (moments.length === 1 && isArray(moments[0])) {
+            moments = moments[0];
+        }
+        if (!moments.length) {
+            return createLocal();
+        }
+        res = moments[0];
+        for (i = 1; i < moments.length; ++i) {
+            if (!moments[i].isValid() || moments[i][fn](res)) {
+                res = moments[i];
+            }
+        }
+        return res;
+    }
+
+    // TODO: Use [].sort instead?
+    function min() {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isBefore', args);
+    }
+
+    function max() {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isAfter', args);
+    }
+
+    var now = function now() {
+        return Date.now ? Date.now() : +new Date();
+    };
+
+    var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
+
+    function isDurationValid(m) {
+        for (var key in m) {
+            if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+                return false;
+            }
+        }
+
+        var unitHasDecimal = false;
+        for (var i = 0; i < ordering.length; ++i) {
+            if (m[ordering[i]]) {
+                if (unitHasDecimal) {
+                    return false; // only allow non-integers for smallest unit
+                }
+                if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+                    unitHasDecimal = true;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    function isValid$1() {
+        return this._isValid;
+    }
+
+    function createInvalid$1() {
+        return createDuration(NaN);
+    }
+
+    function Duration(duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            quarters = normalizedInput.quarter || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        this._isValid = isDurationValid(normalizedInput);
+
+        // representation for dateAddRemove
+        this._milliseconds = +milliseconds + seconds * 1e3 + // 1000
+        minutes * 6e4 + // 1000 * 60
+        hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days + weeks * 7;
+        // It is impossible to translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months + quarters * 3 + years * 12;
+
+        this._data = {};
+
+        this._locale = getLocale();
+
+        this._bubble();
+    }
+
+    function isDuration(obj) {
+        return obj instanceof Duration;
+    }
+
+    function absRound(number) {
+        if (number < 0) {
+            return Math.round(-1 * number) * -1;
+        } else {
+            return Math.round(number);
+        }
+    }
+
+    // FORMATTING
+
+    function offset(token, separator) {
+        addFormatToken(token, 0, 0, function () {
+            var offset = this.utcOffset();
+            var sign = '+';
+            if (offset < 0) {
+                offset = -offset;
+                sign = '-';
+            }
+            return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~offset % 60, 2);
+        });
+    }
+
+    offset('Z', ':');
+    offset('ZZ', '');
+
+    // PARSING
+
+    addRegexToken('Z', matchShortOffset);
+    addRegexToken('ZZ', matchShortOffset);
+    addParseToken(['Z', 'ZZ'], function (input, array, config) {
+        config._useUTC = true;
+        config._tzm = offsetFromString(matchShortOffset, input);
+    });
+
+    // HELPERS
+
+    // timezone chunker
+    // '+10:00' > ['10',  '00']
+    // '-1530'  > ['-15', '30']
+    var chunkOffset = /([\+\-]|\d\d)/gi;
+
+    function offsetFromString(matcher, string) {
+        var matches = (string || '').match(matcher);
+
+        if (matches === null) {
+            return null;
+        }
+
+        var chunk = matches[matches.length - 1] || [];
+        var parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+        var minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return minutes === 0 ? 0 : parts[0] === '+' ? minutes : -minutes;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function cloneWithOffset(input, model) {
+        var res, diff;
+        if (model._isUTC) {
+            res = model.clone();
+            diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
+            // Use low-level api, because this fn is low-level api.
+            res._d.setTime(res._d.valueOf() + diff);
+            hooks.updateOffset(res, false);
+            return res;
+        } else {
+            return createLocal(input).local();
+        }
+    }
+
+    function getDateOffset(m) {
+        // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+        // https://github.com/moment/moment/pull/1871
+        return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+    }
+
+    // HOOKS
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    hooks.updateOffset = function () {};
+
+    // MOMENTS
+
+    // keepLocalTime = true means only change the timezone, without
+    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+    // +0200, so we adjust the time as needed, to be valid.
+    //
+    // Keeping the time actually adds/subtracts (one hour)
+    // from the actual represented time. That is why we call updateOffset
+    // a second time. In case it wants us to change the offset again
+    // _changeInProgress == true case, then we have to adjust, because
+    // there is no such time in the given timezone.
+    function getSetOffset(input, keepLocalTime, keepMinutes) {
+        var offset = this._offset || 0,
+            localAdjust;
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        if (input != null) {
+            if (typeof input === 'string') {
+                input = offsetFromString(matchShortOffset, input);
+                if (input === null) {
+                    return this;
+                }
+            } else if (Math.abs(input) < 16 && !keepMinutes) {
+                input = input * 60;
+            }
+            if (!this._isUTC && keepLocalTime) {
+                localAdjust = getDateOffset(this);
+            }
+            this._offset = input;
+            this._isUTC = true;
+            if (localAdjust != null) {
+                this.add(localAdjust, 'm');
+            }
+            if (offset !== input) {
+                if (!keepLocalTime || this._changeInProgress) {
+                    addSubtract(this, createDuration(input - offset, 'm'), 1, false);
+                } else if (!this._changeInProgress) {
+                    this._changeInProgress = true;
+                    hooks.updateOffset(this, true);
+                    this._changeInProgress = null;
+                }
+            }
+            return this;
+        } else {
+            return this._isUTC ? offset : getDateOffset(this);
+        }
+    }
+
+    function getSetZone(input, keepLocalTime) {
+        if (input != null) {
+            if (typeof input !== 'string') {
+                input = -input;
+            }
+
+            this.utcOffset(input, keepLocalTime);
+
+            return this;
+        } else {
+            return -this.utcOffset();
+        }
+    }
+
+    function setOffsetToUTC(keepLocalTime) {
+        return this.utcOffset(0, keepLocalTime);
+    }
+
+    function setOffsetToLocal(keepLocalTime) {
+        if (this._isUTC) {
+            this.utcOffset(0, keepLocalTime);
+            this._isUTC = false;
+
+            if (keepLocalTime) {
+                this.subtract(getDateOffset(this), 'm');
+            }
+        }
+        return this;
+    }
+
+    function setOffsetToParsedOffset() {
+        if (this._tzm != null) {
+            this.utcOffset(this._tzm, false, true);
+        } else if (typeof this._i === 'string') {
+            var tZone = offsetFromString(matchOffset, this._i);
+            if (tZone != null) {
+                this.utcOffset(tZone);
+            } else {
+                this.utcOffset(0, true);
+            }
+        }
+        return this;
+    }
+
+    function hasAlignedHourOffset(input) {
+        if (!this.isValid()) {
+            return false;
+        }
+        input = input ? createLocal(input).utcOffset() : 0;
+
+        return (this.utcOffset() - input) % 60 === 0;
+    }
+
+    function isDaylightSavingTime() {
+        return this.utcOffset() > this.clone().month(0).utcOffset() || this.utcOffset() > this.clone().month(5).utcOffset();
+    }
+
+    function isDaylightSavingTimeShifted() {
+        if (!isUndefined(this._isDSTShifted)) {
+            return this._isDSTShifted;
+        }
+
+        var c = {};
+
+        copyConfig(c, this);
+        c = prepareConfig(c);
+
+        if (c._a) {
+            var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+            this._isDSTShifted = this.isValid() && compareArrays(c._a, other.toArray()) > 0;
+        } else {
+            this._isDSTShifted = false;
+        }
+
+        return this._isDSTShifted;
+    }
+
+    function isLocal() {
+        return this.isValid() ? !this._isUTC : false;
+    }
+
+    function isUtcOffset() {
+        return this.isValid() ? this._isUTC : false;
+    }
+
+    function isUtc() {
+        return this.isValid() ? this._isUTC && this._offset === 0 : false;
+    }
+
+    // ASP.NET json date format regex
+    var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+
+    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+    // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+    // and further modified to allow for strings containing both week and day
+    var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
+
+    function createDuration(input, key) {
+        var duration = input,
+
+        // matching against regexp is expensive, do it on demand
+        match = null,
+            sign,
+            ret,
+            diffRes;
+
+        if (isDuration(input)) {
+            duration = {
+                ms: input._milliseconds,
+                d: input._days,
+                M: input._months
+            };
+        } else if (isNumber(input)) {
+            duration = {};
+            if (key) {
+                duration[key] = input;
+            } else {
+                duration.milliseconds = input;
+            }
+        } else if (!!(match = aspNetRegex.exec(input))) {
+            sign = match[1] === '-' ? -1 : 1;
+            duration = {
+                y: 0,
+                d: toInt(match[DATE]) * sign,
+                h: toInt(match[HOUR]) * sign,
+                m: toInt(match[MINUTE]) * sign,
+                s: toInt(match[SECOND]) * sign,
+                ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
+            };
+        } else if (!!(match = isoRegex.exec(input))) {
+            sign = match[1] === '-' ? -1 : 1;
+            duration = {
+                y: parseIso(match[2], sign),
+                M: parseIso(match[3], sign),
+                w: parseIso(match[4], sign),
+                d: parseIso(match[5], sign),
+                h: parseIso(match[6], sign),
+                m: parseIso(match[7], sign),
+                s: parseIso(match[8], sign)
+            };
+        } else if (duration == null) {
+            // checks for null or undefined
+            duration = {};
+        } else if ((typeof duration === 'undefined' ? 'undefined' : _typeof(duration)) === 'object' && ('from' in duration || 'to' in duration)) {
+            diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to));
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
+        }
+
+        ret = new Duration(duration);
+
+        if (isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
+        }
+
+        return ret;
+    }
+
+    createDuration.fn = Duration.prototype;
+    createDuration.invalid = createInvalid$1;
+
+    function parseIso(inp, sign) {
+        // We'd normally use ~~inp for this, but unfortunately it also
+        // converts floats to ints.
+        // inp may be undefined, so careful calling replace on it.
+        var res = inp && parseFloat(inp.replace(',', '.'));
+        // apply sign while we're at it
+        return (isNaN(res) ? 0 : res) * sign;
+    }
+
+    function positiveMomentsDifference(base, other) {
+        var res = {};
+
+        res.months = other.month() - base.month() + (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +base.clone().add(res.months, 'M');
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        if (!(base.isValid() && other.isValid())) {
+            return { milliseconds: 0, months: 0 };
+        }
+
+        other = cloneWithOffset(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(name, 'moment().' + name + '(period, number) is deprecated. Please use moment().' + name + '(number, period). ' + 'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.');
+                tmp = val;val = period;period = tmp;
+            }
+
+            val = typeof val === 'string' ? +val : val;
+            dur = createDuration(val, period);
+            addSubtract(this, dur, direction);
+            return this;
+        };
+    }
+
+    function addSubtract(mom, duration, isAdding, updateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = absRound(duration._days),
+            months = absRound(duration._months);
+
+        if (!mom.isValid()) {
+            // No op
+            return;
+        }
+
+        updateOffset = updateOffset == null ? true : updateOffset;
+
+        if (months) {
+            setMonth(mom, get(mom, 'Month') + months * isAdding);
+        }
+        if (days) {
+            set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
+        }
+        if (milliseconds) {
+            mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+        }
+        if (updateOffset) {
+            hooks.updateOffset(mom, days || months);
+        }
+    }
+
+    var add = createAdder(1, 'add');
+    var subtract = createAdder(-1, 'subtract');
+
+    function getCalendarFormat(myMoment, now) {
+        var diff = myMoment.diff(now, 'days', true);
+        return diff < -6 ? 'sameElse' : diff < -1 ? 'lastWeek' : diff < 0 ? 'lastDay' : diff < 1 ? 'sameDay' : diff < 2 ? 'nextDay' : diff < 7 ? 'nextWeek' : 'sameElse';
+    }
+
+    function calendar$1(time, formats) {
+        // We want to compare the start of today, vs this.
+        // Getting start-of-today depends on whether we're local/utc/offset or not.
+        var now = time || createLocal(),
+            sod = cloneWithOffset(now, this).startOf('day'),
+            format = hooks.calendarFormat(this, sod) || 'sameElse';
+
+        var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
+
+        return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
+    }
+
+    function clone() {
+        return new Moment(this);
+    }
+
+    function isAfter(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() > localInput.valueOf();
+        } else {
+            return localInput.valueOf() < this.clone().startOf(units).valueOf();
+        }
+    }
+
+    function isBefore(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() < localInput.valueOf();
+        } else {
+            return this.clone().endOf(units).valueOf() < localInput.valueOf();
+        }
+    }
+
+    function isBetween(from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
+        inclusivity = inclusivity || '()';
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) && (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
+    }
+
+    function isSame(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input),
+            inputMs;
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() === localInput.valueOf();
+        } else {
+            inputMs = localInput.valueOf();
+            return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
+        }
+    }
+
+    function isSameOrAfter(input, units) {
+        return this.isSame(input, units) || this.isAfter(input, units);
+    }
+
+    function isSameOrBefore(input, units) {
+        return this.isSame(input, units) || this.isBefore(input, units);
+    }
+
+    function diff(input, units, asFloat) {
+        var that, zoneDelta, output;
+
+        if (!this.isValid()) {
+            return NaN;
+        }
+
+        that = cloneWithOffset(input, this);
+
+        if (!that.isValid()) {
+            return NaN;
+        }
+
+        zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+
+        units = normalizeUnits(units);
+
+        switch (units) {
+            case 'year':
+                output = monthDiff(this, that) / 12;break;
+            case 'month':
+                output = monthDiff(this, that);break;
+            case 'quarter':
+                output = monthDiff(this, that) / 3;break;
+            case 'second':
+                output = (this - that) / 1e3;break; // 1000
+            case 'minute':
+                output = (this - that) / 6e4;break; // 1000 * 60
+            case 'hour':
+                output = (this - that) / 36e5;break; // 1000 * 60 * 60
+            case 'day':
+                output = (this - that - zoneDelta) / 864e5;break; // 1000 * 60 * 60 * 24, negate dst
+            case 'week':
+                output = (this - that - zoneDelta) / 6048e5;break; // 1000 * 60 * 60 * 24 * 7, negate dst
+            default:
+                output = this - that;
+        }
+
+        return asFloat ? output : absFloor(output);
+    }
+
+    function monthDiff(a, b) {
+        // difference in months
+        var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
+
+        // b is in (anchor - 1 month, anchor + 1 month)
+        anchor = a.clone().add(wholeMonthDiff, 'months'),
+            anchor2,
+            adjust;
+
+        if (b - anchor < 0) {
+            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor - anchor2);
+        } else {
+            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor2 - anchor);
+        }
+
+        //check for negative zero, return zero if negative zero
+        return -(wholeMonthDiff + adjust) || 0;
+    }
+
+    hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+    hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
+
+    function toString() {
+        return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+    }
+
+    function toISOString(keepOffset) {
+        if (!this.isValid()) {
+            return null;
+        }
+        var utc = keepOffset !== true;
+        var m = utc ? this.clone().utc() : this;
+        if (m.year() < 0 || m.year() > 9999) {
+            return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
+        }
+        if (isFunction(Date.prototype.toISOString)) {
+            // native implementation is ~50x faster, use it when we can
+            if (utc) {
+                return this.toDate().toISOString();
+            } else {
+                return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
+            }
+        }
+        return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
+    }
+
+    /**
+     * Return a human readable representation of a moment that can
+     * also be evaluated to get a new moment which is the same
+     *
+     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
+     */
+    function inspect() {
+        if (!this.isValid()) {
+            return 'moment.invalid(/* ' + this._i + ' */)';
+        }
+        var func = 'moment';
+        var zone = '';
+        if (!this.isLocal()) {
+            func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
+            zone = 'Z';
+        }
+        var prefix = '[' + func + '("]';
+        var year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
+        var datetime = '-MM-DD[T]HH:mm:ss.SSS';
+        var suffix = zone + '[")]';
+
+        return this.format(prefix + year + datetime + suffix);
+    }
+
+    function format(inputString) {
+        if (!inputString) {
+            inputString = this.isUtc() ? hooks.defaultFormatUtc : hooks.defaultFormat;
+        }
+        var output = formatMoment(this, inputString);
+        return this.localeData().postformat(output);
+    }
+
+    function from(time, withoutSuffix) {
+        if (this.isValid() && (isMoment(time) && time.isValid() || createLocal(time).isValid())) {
+            return createDuration({ to: this, from: time }).locale(this.locale()).humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function fromNow(withoutSuffix) {
+        return this.from(createLocal(), withoutSuffix);
+    }
+
+    function to(time, withoutSuffix) {
+        if (this.isValid() && (isMoment(time) && time.isValid() || createLocal(time).isValid())) {
+            return createDuration({ from: this, to: time }).locale(this.locale()).humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function toNow(withoutSuffix) {
+        return this.to(createLocal(), withoutSuffix);
+    }
+
+    // If passed a locale key, it will set the locale for this
+    // instance.  Otherwise, it will return the locale configuration
+    // variables for this instance.
+    function locale(key) {
+        var newLocaleData;
+
+        if (key === undefined) {
+            return this._locale._abbr;
+        } else {
+            newLocaleData = getLocale(key);
+            if (newLocaleData != null) {
+                this._locale = newLocaleData;
+            }
+            return this;
+        }
+    }
+
+    var lang = deprecate('moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.', function (key) {
+        if (key === undefined) {
+            return this.localeData();
+        } else {
+            return this.locale(key);
+        }
+    });
+
+    function localeData() {
+        return this._locale;
+    }
+
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
+    function startOf(units) {
+        var time;
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year(), 0, 1);
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
+        }
+
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
+    }
+
+    function endOf(units) {
+        var time;
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
+        }
+
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
+    }
+
+    function valueOf() {
+        return this._d.valueOf() - (this._offset || 0) * 60000;
+    }
+
+    function unix() {
+        return Math.floor(this.valueOf() / 1000);
+    }
+
+    function toDate() {
+        return new Date(this.valueOf());
+    }
+
+    function toArray() {
+        var m = this;
+        return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
+    }
+
+    function toObject() {
+        var m = this;
+        return {
+            years: m.year(),
+            months: m.month(),
+            date: m.date(),
+            hours: m.hours(),
+            minutes: m.minutes(),
+            seconds: m.seconds(),
+            milliseconds: m.milliseconds()
+        };
+    }
+
+    function toJSON() {
+        // new Date(NaN).toJSON() === null
+        return this.isValid() ? this.toISOString() : null;
+    }
+
+    function isValid$2() {
+        return isValid(this);
+    }
+
+    function parsingFlags() {
+        return extend({}, getParsingFlags(this));
+    }
+
+    function invalidAt() {
+        return getParsingFlags(this).overflow;
+    }
+
+    function creationData() {
+        return {
+            input: this._i,
+            format: this._f,
+            locale: this._locale,
+            isUTC: this._isUTC,
+            strict: this._strict
+        };
+    }
+
+    // FORMATTING
+
+    addFormatToken(0, ['gg', 2], 0, function () {
+        return this.weekYear() % 100;
+    });
+
+    addFormatToken(0, ['GG', 2], 0, function () {
+        return this.isoWeekYear() % 100;
+    });
+
+    function addWeekYearFormatToken(token, getter) {
+        addFormatToken(0, [token, token.length], 0, getter);
+    }
+
+    addWeekYearFormatToken('gggg', 'weekYear');
+    addWeekYearFormatToken('ggggg', 'weekYear');
+    addWeekYearFormatToken('GGGG', 'isoWeekYear');
+    addWeekYearFormatToken('GGGGG', 'isoWeekYear');
+
+    // ALIASES
+
+    addUnitAlias('weekYear', 'gg');
+    addUnitAlias('isoWeekYear', 'GG');
+
+    // PRIORITY
+
+    addUnitPriority('weekYear', 1);
+    addUnitPriority('isoWeekYear', 1);
+
+    // PARSING
+
+    addRegexToken('G', matchSigned);
+    addRegexToken('g', matchSigned);
+    addRegexToken('GG', match1to2, match2);
+    addRegexToken('gg', match1to2, match2);
+    addRegexToken('GGGG', match1to4, match4);
+    addRegexToken('gggg', match1to4, match4);
+    addRegexToken('GGGGG', match1to6, match6);
+    addRegexToken('ggggg', match1to6, match6);
+
+    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+        week[token.substr(0, 2)] = toInt(input);
+    });
+
+    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+        week[token] = hooks.parseTwoDigitYear(input);
+    });
+
+    // MOMENTS
+
+    function getSetWeekYear(input) {
+        return getSetWeekYearHelper.call(this, input, this.week(), this.weekday(), this.localeData()._week.dow, this.localeData()._week.doy);
+    }
+
+    function getSetISOWeekYear(input) {
+        return getSetWeekYearHelper.call(this, input, this.isoWeek(), this.isoWeekday(), 1, 4);
+    }
+
+    function getISOWeeksInYear() {
+        return weeksInYear(this.year(), 1, 4);
+    }
+
+    function getWeeksInYear() {
+        var weekInfo = this.localeData()._week;
+        return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+        var weeksTarget;
+        if (input == null) {
+            return weekOfYear(this, dow, doy).year;
+        } else {
+            weeksTarget = weeksInYear(input, dow, doy);
+            if (week > weeksTarget) {
+                week = weeksTarget;
+            }
+            return setWeekAll.call(this, input, week, weekday, dow, doy);
+        }
+    }
+
+    function setWeekAll(weekYear, week, weekday, dow, doy) {
+        var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+            date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+
+        this.year(date.getUTCFullYear());
+        this.month(date.getUTCMonth());
+        this.date(date.getUTCDate());
+        return this;
+    }
+
+    // FORMATTING
+
+    addFormatToken('Q', 0, 'Qo', 'quarter');
+
+    // ALIASES
+
+    addUnitAlias('quarter', 'Q');
+
+    // PRIORITY
+
+    addUnitPriority('quarter', 7);
+
+    // PARSING
+
+    addRegexToken('Q', match1);
+    addParseToken('Q', function (input, array) {
+        array[MONTH] = (toInt(input) - 1) * 3;
+    });
+
+    // MOMENTS
+
+    function getSetQuarter(input) {
+        return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+    }
+
+    // FORMATTING
+
+    addFormatToken('D', ['DD', 2], 'Do', 'date');
+
+    // ALIASES
+
+    addUnitAlias('date', 'D');
+
+    // PRIORITY
+    addUnitPriority('date', 9);
+
+    // PARSING
+
+    addRegexToken('D', match1to2);
+    addRegexToken('DD', match1to2, match2);
+    addRegexToken('Do', function (isStrict, locale) {
+        // TODO: Remove "ordinalParse" fallback in next major release.
+        return isStrict ? locale._dayOfMonthOrdinalParse || locale._ordinalParse : locale._dayOfMonthOrdinalParseLenient;
+    });
+
+    addParseToken(['D', 'DD'], DATE);
+    addParseToken('Do', function (input, array) {
+        array[DATE] = toInt(input.match(match1to2)[0]);
+    });
+
+    // MOMENTS
+
+    var getSetDayOfMonth = makeGetSet('Date', true);
+
+    // FORMATTING
+
+    addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
+
+    // ALIASES
+
+    addUnitAlias('dayOfYear', 'DDD');
+
+    // PRIORITY
+    addUnitPriority('dayOfYear', 4);
+
+    // PARSING
+
+    addRegexToken('DDD', match1to3);
+    addRegexToken('DDDD', match3);
+    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+        config._dayOfYear = toInt(input);
+    });
+
+    // HELPERS
+
+    // MOMENTS
+
+    function getSetDayOfYear(input) {
+        var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
+        return input == null ? dayOfYear : this.add(input - dayOfYear, 'd');
+    }
+
+    // FORMATTING
+
+    addFormatToken('m', ['mm', 2], 0, 'minute');
+
+    // ALIASES
+
+    addUnitAlias('minute', 'm');
+
+    // PRIORITY
+
+    addUnitPriority('minute', 14);
+
+    // PARSING
+
+    addRegexToken('m', match1to2);
+    addRegexToken('mm', match1to2, match2);
+    addParseToken(['m', 'mm'], MINUTE);
+
+    // MOMENTS
+
+    var getSetMinute = makeGetSet('Minutes', false);
+
+    // FORMATTING
+
+    addFormatToken('s', ['ss', 2], 0, 'second');
+
+    // ALIASES
+
+    addUnitAlias('second', 's');
+
+    // PRIORITY
+
+    addUnitPriority('second', 15);
+
+    // PARSING
+
+    addRegexToken('s', match1to2);
+    addRegexToken('ss', match1to2, match2);
+    addParseToken(['s', 'ss'], SECOND);
+
+    // MOMENTS
+
+    var getSetSecond = makeGetSet('Seconds', false);
+
+    // FORMATTING
+
+    addFormatToken('S', 0, 0, function () {
+        return ~~(this.millisecond() / 100);
+    });
+
+    addFormatToken(0, ['SS', 2], 0, function () {
+        return ~~(this.millisecond() / 10);
+    });
+
+    addFormatToken(0, ['SSS', 3], 0, 'millisecond');
+    addFormatToken(0, ['SSSS', 4], 0, function () {
+        return this.millisecond() * 10;
+    });
+    addFormatToken(0, ['SSSSS', 5], 0, function () {
+        return this.millisecond() * 100;
+    });
+    addFormatToken(0, ['SSSSSS', 6], 0, function () {
+        return this.millisecond() * 1000;
+    });
+    addFormatToken(0, ['SSSSSSS', 7], 0, function () {
+        return this.millisecond() * 10000;
+    });
+    addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
+        return this.millisecond() * 100000;
+    });
+    addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
+        return this.millisecond() * 1000000;
+    });
+
+    // ALIASES
+
+    addUnitAlias('millisecond', 'ms');
+
+    // PRIORITY
+
+    addUnitPriority('millisecond', 16);
+
+    // PARSING
+
+    addRegexToken('S', match1to3, match1);
+    addRegexToken('SS', match1to3, match2);
+    addRegexToken('SSS', match1to3, match3);
+
+    var token;
+    for (token = 'SSSS'; token.length <= 9; token += 'S') {
+        addRegexToken(token, matchUnsigned);
+    }
+
+    function parseMs(input, array) {
+        array[MILLISECOND] = toInt(('0.' + input) * 1000);
+    }
+
+    for (token = 'S'; token.length <= 9; token += 'S') {
+        addParseToken(token, parseMs);
+    }
+    // MOMENTS
+
+    var getSetMillisecond = makeGetSet('Milliseconds', false);
+
+    // FORMATTING
+
+    addFormatToken('z', 0, 0, 'zoneAbbr');
+    addFormatToken('zz', 0, 0, 'zoneName');
+
+    // MOMENTS
+
+    function getZoneAbbr() {
+        return this._isUTC ? 'UTC' : '';
+    }
+
+    function getZoneName() {
+        return this._isUTC ? 'Coordinated Universal Time' : '';
+    }
+
+    var proto = Moment.prototype;
+
+    proto.add = add;
+    proto.calendar = calendar$1;
+    proto.clone = clone;
+    proto.diff = diff;
+    proto.endOf = endOf;
+    proto.format = format;
+    proto.from = from;
+    proto.fromNow = fromNow;
+    proto.to = to;
+    proto.toNow = toNow;
+    proto.get = stringGet;
+    proto.invalidAt = invalidAt;
+    proto.isAfter = isAfter;
+    proto.isBefore = isBefore;
+    proto.isBetween = isBetween;
+    proto.isSame = isSame;
+    proto.isSameOrAfter = isSameOrAfter;
+    proto.isSameOrBefore = isSameOrBefore;
+    proto.isValid = isValid$2;
+    proto.lang = lang;
+    proto.locale = locale;
+    proto.localeData = localeData;
+    proto.max = prototypeMax;
+    proto.min = prototypeMin;
+    proto.parsingFlags = parsingFlags;
+    proto.set = stringSet;
+    proto.startOf = startOf;
+    proto.subtract = subtract;
+    proto.toArray = toArray;
+    proto.toObject = toObject;
+    proto.toDate = toDate;
+    proto.toISOString = toISOString;
+    proto.inspect = inspect;
+    proto.toJSON = toJSON;
+    proto.toString = toString;
+    proto.unix = unix;
+    proto.valueOf = valueOf;
+    proto.creationData = creationData;
+    proto.year = getSetYear;
+    proto.isLeapYear = getIsLeapYear;
+    proto.weekYear = getSetWeekYear;
+    proto.isoWeekYear = getSetISOWeekYear;
+    proto.quarter = proto.quarters = getSetQuarter;
+    proto.month = getSetMonth;
+    proto.daysInMonth = getDaysInMonth;
+    proto.week = proto.weeks = getSetWeek;
+    proto.isoWeek = proto.isoWeeks = getSetISOWeek;
+    proto.weeksInYear = getWeeksInYear;
+    proto.isoWeeksInYear = getISOWeeksInYear;
+    proto.date = getSetDayOfMonth;
+    proto.day = proto.days = getSetDayOfWeek;
+    proto.weekday = getSetLocaleDayOfWeek;
+    proto.isoWeekday = getSetISODayOfWeek;
+    proto.dayOfYear = getSetDayOfYear;
+    proto.hour = proto.hours = getSetHour;
+    proto.minute = proto.minutes = getSetMinute;
+    proto.second = proto.seconds = getSetSecond;
+    proto.millisecond = proto.milliseconds = getSetMillisecond;
+    proto.utcOffset = getSetOffset;
+    proto.utc = setOffsetToUTC;
+    proto.local = setOffsetToLocal;
+    proto.parseZone = setOffsetToParsedOffset;
+    proto.hasAlignedHourOffset = hasAlignedHourOffset;
+    proto.isDST = isDaylightSavingTime;
+    proto.isLocal = isLocal;
+    proto.isUtcOffset = isUtcOffset;
+    proto.isUtc = isUtc;
+    proto.isUTC = isUtc;
+    proto.zoneAbbr = getZoneAbbr;
+    proto.zoneName = getZoneName;
+    proto.dates = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
+    proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
+    proto.years = deprecate('years accessor is deprecated. Use year instead', getSetYear);
+    proto.zone = deprecate('moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/', getSetZone);
+    proto.isDSTShifted = deprecate('isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information', isDaylightSavingTimeShifted);
+
+    function createUnix(input) {
+        return createLocal(input * 1000);
+    }
+
+    function createInZone() {
+        return createLocal.apply(null, arguments).parseZone();
+    }
+
+    function preParsePostFormat(string) {
+        return string;
+    }
+
+    var proto$1 = Locale.prototype;
+
+    proto$1.calendar = calendar;
+    proto$1.longDateFormat = longDateFormat;
+    proto$1.invalidDate = invalidDate;
+    proto$1.ordinal = ordinal;
+    proto$1.preparse = preParsePostFormat;
+    proto$1.postformat = preParsePostFormat;
+    proto$1.relativeTime = relativeTime;
+    proto$1.pastFuture = pastFuture;
+    proto$1.set = set;
+
+    proto$1.months = localeMonths;
+    proto$1.monthsShort = localeMonthsShort;
+    proto$1.monthsParse = localeMonthsParse;
+    proto$1.monthsRegex = monthsRegex;
+    proto$1.monthsShortRegex = monthsShortRegex;
+    proto$1.week = localeWeek;
+    proto$1.firstDayOfYear = localeFirstDayOfYear;
+    proto$1.firstDayOfWeek = localeFirstDayOfWeek;
+
+    proto$1.weekdays = localeWeekdays;
+    proto$1.weekdaysMin = localeWeekdaysMin;
+    proto$1.weekdaysShort = localeWeekdaysShort;
+    proto$1.weekdaysParse = localeWeekdaysParse;
+
+    proto$1.weekdaysRegex = weekdaysRegex;
+    proto$1.weekdaysShortRegex = weekdaysShortRegex;
+    proto$1.weekdaysMinRegex = weekdaysMinRegex;
+
+    proto$1.isPM = localeIsPM;
+    proto$1.meridiem = localeMeridiem;
+
+    function get$1(format, index, field, setter) {
+        var locale = getLocale();
+        var utc = createUTC().set(setter, index);
+        return locale[field](utc, format);
+    }
+
+    function listMonthsImpl(format, index, field) {
+        if (isNumber(format)) {
+            index = format;
+            format = undefined;
+        }
+
+        format = format || '';
+
+        if (index != null) {
+            return get$1(format, index, field, 'month');
+        }
+
+        var i;
+        var out = [];
+        for (i = 0; i < 12; i++) {
+            out[i] = get$1(format, i, field, 'month');
+        }
+        return out;
+    }
+
+    // ()
+    // (5)
+    // (fmt, 5)
+    // (fmt)
+    // (true)
+    // (true, 5)
+    // (true, fmt, 5)
+    // (true, fmt)
+    function listWeekdaysImpl(localeSorted, format, index, field) {
+        if (typeof localeSorted === 'boolean') {
+            if (isNumber(format)) {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        } else {
+            format = localeSorted;
+            index = format;
+            localeSorted = false;
+
+            if (isNumber(format)) {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        }
+
+        var locale = getLocale(),
+            shift = localeSorted ? locale._week.dow : 0;
+
+        if (index != null) {
+            return get$1(format, (index + shift) % 7, field, 'day');
+        }
+
+        var i;
+        var out = [];
+        for (i = 0; i < 7; i++) {
+            out[i] = get$1(format, (i + shift) % 7, field, 'day');
+        }
+        return out;
+    }
+
+    function listMonths(format, index) {
+        return listMonthsImpl(format, index, 'months');
+    }
+
+    function listMonthsShort(format, index) {
+        return listMonthsImpl(format, index, 'monthsShort');
+    }
+
+    function listWeekdays(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
+    }
+
+    function listWeekdaysShort(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
+    }
+
+    function listWeekdaysMin(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
+    }
+
+    getSetGlobalLocale('en', {
+        dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+        ordinal: function ordinal(number) {
+            var b = number % 10,
+                output = toInt(number % 100 / 10) === 1 ? 'th' : b === 1 ? 'st' : b === 2 ? 'nd' : b === 3 ? 'rd' : 'th';
+            return number + output;
+        }
+    });
+
+    // Side effect imports
+
+    hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
+    hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
+
+    var mathAbs = Math.abs;
+
+    function abs() {
+        var data = this._data;
+
+        this._milliseconds = mathAbs(this._milliseconds);
+        this._days = mathAbs(this._days);
+        this._months = mathAbs(this._months);
+
+        data.milliseconds = mathAbs(data.milliseconds);
+        data.seconds = mathAbs(data.seconds);
+        data.minutes = mathAbs(data.minutes);
+        data.hours = mathAbs(data.hours);
+        data.months = mathAbs(data.months);
+        data.years = mathAbs(data.years);
+
+        return this;
+    }
+
+    function addSubtract$1(duration, input, value, direction) {
+        var other = createDuration(input, value);
+
+        duration._milliseconds += direction * other._milliseconds;
+        duration._days += direction * other._days;
+        duration._months += direction * other._months;
+
+        return duration._bubble();
+    }
+
+    // supports only 2.0-style add(1, 's') or add(duration)
+    function add$1(input, value) {
+        return addSubtract$1(this, input, value, 1);
+    }
+
+    // supports only 2.0-style subtract(1, 's') or subtract(duration)
+    function subtract$1(input, value) {
+        return addSubtract$1(this, input, value, -1);
+    }
+
+    function absCeil(number) {
+        if (number < 0) {
+            return Math.floor(number);
+        } else {
+            return Math.ceil(number);
+        }
+    }
+
+    function bubble() {
+        var milliseconds = this._milliseconds;
+        var days = this._days;
+        var months = this._months;
+        var data = this._data;
+        var seconds, minutes, hours, years, monthsFromDays;
+
+        // if we have a mix of positive and negative values, bubble down first
+        // check: https://github.com/moment/moment/issues/2166
+        if (!(milliseconds >= 0 && days >= 0 && months >= 0 || milliseconds <= 0 && days <= 0 && months <= 0)) {
+            milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+            days = 0;
+            months = 0;
+        }
+
+        // The following code bubbles up values, see the tests for
+        // examples of what that means.
+        data.milliseconds = milliseconds % 1000;
+
+        seconds = absFloor(milliseconds / 1000);
+        data.seconds = seconds % 60;
+
+        minutes = absFloor(seconds / 60);
+        data.minutes = minutes % 60;
+
+        hours = absFloor(minutes / 60);
+        data.hours = hours % 24;
+
+        days += absFloor(hours / 24);
+
+        // convert days to months
+        monthsFromDays = absFloor(daysToMonths(days));
+        months += monthsFromDays;
+        days -= absCeil(monthsToDays(monthsFromDays));
+
+        // 12 months -> 1 year
+        years = absFloor(months / 12);
+        months %= 12;
+
+        data.days = days;
+        data.months = months;
+        data.years = years;
+
+        return this;
+    }
+
+    function daysToMonths(days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        // 400 years have 12 months === 4800
+        return days * 4800 / 146097;
+    }
+
+    function monthsToDays(months) {
+        // the reverse of daysToMonths
+        return months * 146097 / 4800;
+    }
+
+    function as(units) {
+        if (!this.isValid()) {
+            return NaN;
+        }
+        var days;
+        var months;
+        var milliseconds = this._milliseconds;
+
+        units = normalizeUnits(units);
+
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
+            months = this._months + daysToMonths(days);
+            switch (units) {
+                case 'month':
+                    return months;
+                case 'quarter':
+                    return months / 3;
+                case 'year':
+                    return months / 12;
+            }
+        } else {
+            // handle milliseconds separately because of floating point math errors (issue #1867)
+            days = this._days + Math.round(monthsToDays(this._months));
+            switch (units) {
+                case 'week':
+                    return days / 7 + milliseconds / 6048e5;
+                case 'day':
+                    return days + milliseconds / 864e5;
+                case 'hour':
+                    return days * 24 + milliseconds / 36e5;
+                case 'minute':
+                    return days * 1440 + milliseconds / 6e4;
+                case 'second':
+                    return days * 86400 + milliseconds / 1000;
+                // Math.floor prevents floating point math errors here
+                case 'millisecond':
+                    return Math.floor(days * 864e5) + milliseconds;
+                default:
+                    throw new Error('Unknown unit ' + units);
+            }
+        }
+    }
+
+    // TODO: Use this.as('ms')?
+    function valueOf$1() {
+        if (!this.isValid()) {
+            return NaN;
+        }
+        return this._milliseconds + this._days * 864e5 + this._months % 12 * 2592e6 + toInt(this._months / 12) * 31536e6;
+    }
+
+    function makeAs(alias) {
+        return function () {
+            return this.as(alias);
+        };
+    }
+
+    var asMilliseconds = makeAs('ms');
+    var asSeconds = makeAs('s');
+    var asMinutes = makeAs('m');
+    var asHours = makeAs('h');
+    var asDays = makeAs('d');
+    var asWeeks = makeAs('w');
+    var asMonths = makeAs('M');
+    var asQuarters = makeAs('Q');
+    var asYears = makeAs('y');
+
+    function clone$1() {
+        return createDuration(this);
+    }
+
+    function get$2(units) {
+        units = normalizeUnits(units);
+        return this.isValid() ? this[units + 's']() : NaN;
+    }
+
+    function makeGetter(name) {
+        return function () {
+            return this.isValid() ? this._data[name] : NaN;
+        };
+    }
+
+    var milliseconds = makeGetter('milliseconds');
+    var seconds = makeGetter('seconds');
+    var minutes = makeGetter('minutes');
+    var hours = makeGetter('hours');
+    var days = makeGetter('days');
+    var months = makeGetter('months');
+    var years = makeGetter('years');
+
+    function weeks() {
+        return absFloor(this.days() / 7);
+    }
+
+    var round = Math.round;
+    var thresholds = {
+        ss: 44, // a few seconds to seconds
+        s: 45, // seconds to minute
+        m: 45, // minutes to hour
+        h: 22, // hours to day
+        d: 26, // days to month
+        M: 11 // months to year
+    };
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function relativeTime$1(posNegDuration, withoutSuffix, locale) {
+        var duration = createDuration(posNegDuration).abs();
+        var seconds = round(duration.as('s'));
+        var minutes = round(duration.as('m'));
+        var hours = round(duration.as('h'));
+        var days = round(duration.as('d'));
+        var months = round(duration.as('M'));
+        var years = round(duration.as('y'));
+
+        var a = seconds <= thresholds.ss && ['s', seconds] || seconds < thresholds.s && ['ss', seconds] || minutes <= 1 && ['m'] || minutes < thresholds.m && ['mm', minutes] || hours <= 1 && ['h'] || hours < thresholds.h && ['hh', hours] || days <= 1 && ['d'] || days < thresholds.d && ['dd', days] || months <= 1 && ['M'] || months < thresholds.M && ['MM', months] || years <= 1 && ['y'] || ['yy', years];
+
+        a[2] = withoutSuffix;
+        a[3] = +posNegDuration > 0;
+        a[4] = locale;
+        return substituteTimeAgo.apply(null, a);
+    }
+
+    // This function allows you to set the rounding function for relative time strings
+    function getSetRelativeTimeRounding(roundingFunction) {
+        if (roundingFunction === undefined) {
+            return round;
+        }
+        if (typeof roundingFunction === 'function') {
+            round = roundingFunction;
+            return true;
+        }
+        return false;
+    }
+
+    // This function allows you to set a threshold for relative time strings
+    function getSetRelativeTimeThreshold(threshold, limit) {
+        if (thresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return thresholds[threshold];
+        }
+        thresholds[threshold] = limit;
+        if (threshold === 's') {
+            thresholds.ss = limit - 1;
+        }
+        return true;
+    }
+
+    function humanize(withSuffix) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+
+        var locale = this.localeData();
+        var output = relativeTime$1(this, !withSuffix, locale);
+
+        if (withSuffix) {
+            output = locale.pastFuture(+this, output);
+        }
+
+        return locale.postformat(output);
+    }
+
+    var abs$1 = Math.abs;
+
+    function sign(x) {
+        return (x > 0) - (x < 0) || +x;
+    }
+
+    function toISOString$1() {
+        // for ISO strings we do not use the normal bubbling rules:
+        //  * milliseconds bubble up until they become hours
+        //  * days do not bubble at all
+        //  * months bubble up until they become years
+        // This is because there is no context-free conversion between hours and days
+        // (think of clock changes)
+        // and also not between days and months (28-31 days per month)
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+
+        var seconds = abs$1(this._milliseconds) / 1000;
+        var days = abs$1(this._days);
+        var months = abs$1(this._months);
+        var minutes, hours, years;
+
+        // 3600 seconds -> 60 minutes -> 1 hour
+        minutes = absFloor(seconds / 60);
+        hours = absFloor(minutes / 60);
+        seconds %= 60;
+        minutes %= 60;
+
+        // 12 months -> 1 year
+        years = absFloor(months / 12);
+        months %= 12;
+
+        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+        var Y = years;
+        var M = months;
+        var D = days;
+        var h = hours;
+        var m = minutes;
+        var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
+        var total = this.asSeconds();
+
+        if (!total) {
+            // this is the same as C#'s (Noda) and python (isodate)...
+            // but not other JS (goog.date)
+            return 'P0D';
+        }
+
+        var totalSign = total < 0 ? '-' : '';
+        var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+        var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+        var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+        return totalSign + 'P' + (Y ? ymSign + Y + 'Y' : '') + (M ? ymSign + M + 'M' : '') + (D ? daysSign + D + 'D' : '') + (h || m || s ? 'T' : '') + (h ? hmsSign + h + 'H' : '') + (m ? hmsSign + m + 'M' : '') + (s ? hmsSign + s + 'S' : '');
+    }
+
+    var proto$2 = Duration.prototype;
+
+    proto$2.isValid = isValid$1;
+    proto$2.abs = abs;
+    proto$2.add = add$1;
+    proto$2.subtract = subtract$1;
+    proto$2.as = as;
+    proto$2.asMilliseconds = asMilliseconds;
+    proto$2.asSeconds = asSeconds;
+    proto$2.asMinutes = asMinutes;
+    proto$2.asHours = asHours;
+    proto$2.asDays = asDays;
+    proto$2.asWeeks = asWeeks;
+    proto$2.asMonths = asMonths;
+    proto$2.asQuarters = asQuarters;
+    proto$2.asYears = asYears;
+    proto$2.valueOf = valueOf$1;
+    proto$2._bubble = bubble;
+    proto$2.clone = clone$1;
+    proto$2.get = get$2;
+    proto$2.milliseconds = milliseconds;
+    proto$2.seconds = seconds;
+    proto$2.minutes = minutes;
+    proto$2.hours = hours;
+    proto$2.days = days;
+    proto$2.weeks = weeks;
+    proto$2.months = months;
+    proto$2.years = years;
+    proto$2.humanize = humanize;
+    proto$2.toISOString = toISOString$1;
+    proto$2.toString = toISOString$1;
+    proto$2.toJSON = toISOString$1;
+    proto$2.locale = locale;
+    proto$2.localeData = localeData;
+
+    proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
+    proto$2.lang = lang;
+
+    // Side effect imports
+
+    // FORMATTING
+
+    addFormatToken('X', 0, 0, 'unix');
+    addFormatToken('x', 0, 0, 'valueOf');
+
+    // PARSING
+
+    addRegexToken('x', matchSigned);
+    addRegexToken('X', matchTimestamp);
+    addParseToken('X', function (input, array, config) {
+        config._d = new Date(parseFloat(input, 10) * 1000);
+    });
+    addParseToken('x', function (input, array, config) {
+        config._d = new Date(toInt(input));
+    });
+
+    // Side effect imports
+
+
+    hooks.version = '2.24.0';
+
+    setHookCallback(createLocal);
+
+    hooks.fn = proto;
+    hooks.min = min;
+    hooks.max = max;
+    hooks.now = now;
+    hooks.utc = createUTC;
+    hooks.unix = createUnix;
+    hooks.months = listMonths;
+    hooks.isDate = isDate;
+    hooks.locale = getSetGlobalLocale;
+    hooks.invalid = createInvalid;
+    hooks.duration = createDuration;
+    hooks.isMoment = isMoment;
+    hooks.weekdays = listWeekdays;
+    hooks.parseZone = createInZone;
+    hooks.localeData = getLocale;
+    hooks.isDuration = isDuration;
+    hooks.monthsShort = listMonthsShort;
+    hooks.weekdaysMin = listWeekdaysMin;
+    hooks.defineLocale = defineLocale;
+    hooks.updateLocale = updateLocale;
+    hooks.locales = listLocales;
+    hooks.weekdaysShort = listWeekdaysShort;
+    hooks.normalizeUnits = normalizeUnits;
+    hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+    hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
+    hooks.calendarFormat = getCalendarFormat;
+    hooks.prototype = proto;
+
+    // currently HTML5 input type only supports 24-hour formats
+    hooks.HTML5_FMT = {
+        DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm', // <input type="datetime-local" />
+        DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss', // <input type="datetime-local" step="1" />
+        DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS', // <input type="datetime-local" step="0.001" />
+        DATE: 'YYYY-MM-DD', // <input type="date" />
+        TIME: 'HH:mm', // <input type="time" />
+        TIME_SECONDS: 'HH:mm:ss', // <input type="time" step="1" />
+        TIME_MS: 'HH:mm:ss.SSS', // <input type="time" step="0.001" />
+        WEEK: 'GGGG-[W]WW', // <input type="week" />
+        MONTH: 'YYYY-MM' // <input type="month" />
+    };
+
+    return hooks;
+});
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+function _toConsumableArray(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }return arr2;
+  } else {
+    return Array.from(arr);
+  }
+}
+
+var vueMoment = {
+  install: function install(Vue, options) {
+    var moment$$1 = options && options.moment ? options.moment : moment;
+
+    Object.defineProperties(Vue.prototype, {
+      $moment: {
+        get: function get() {
+          return moment$$1;
+        }
+      }
+    });
+
+    Vue.moment = moment$$1;
+
+    Vue.filter('moment', function () {
+      var arguments$1 = arguments;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments$1[_key];
+      }
+
+      args = Array.prototype.slice.call(args);
+      var input = args.shift();
+      var date = void 0;
+
+      if (Array.isArray(input) && typeof input[0] === 'string') {
+        // If input is array, assume we're being passed a format pattern to parse against.
+        // Format pattern will accept an array of potential formats to parse against.
+        // Date string should be at [0], format pattern(s) should be at [1]
+        date = moment$$1(input[0], input[1], true);
+      } else if (typeof input === 'number') {
+        if (input.toString().length < 12) {
+          // If input is an integer with fewer than 12 digits, assume Unix seconds...
+          date = moment$$1.unix(input);
+        } else {
+          // ..otherwise, assume milliseconds.
+          date = moment$$1(input);
+        }
+      } else {
+        // Otherwise, throw the input at moment and see what happens...
+        date = moment$$1(input);
+      }
+
+      if (!input || !date.isValid()) {
+        // Log a warning if moment couldn't reconcile the input. Better than throwing an error?
+        console.warn('Could not build a valid `moment` object from input.');
+        return input;
+      }
+
+      function parse() {
+        var arguments$1 = arguments;
+
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments$1[_key2];
+        }
+
+        args = Array.prototype.slice.call(args);
+        var method = args.shift();
+
+        switch (method) {
+          case 'add':
+            {
+              /*
+              * Mutates the original moment by adding time.
+              * http://momentjs.com/docs/#/manipulating/add/
+              */
+
+              var addends = args.shift().split(',').map(Function.prototype.call, String.prototype.trim);
+              var obj = {};
+
+              for (var n = 0; n < addends.length; n++) {
+                var addend = addends[n].split(' ');
+                obj[addend[1]] = addend[0];
+              }
+              date.add(obj);
+              break;
+            }
+
+          case 'subtract':
+            {
+              /*
+              * Mutates the original moment by subtracting time.
+              * http://momentjs.com/docs/#/manipulating/subtract/
+              */
+
+              var subtrahends = args.shift().split(',').map(Function.prototype.call, String.prototype.trim);
+              var _obj = {};
+
+              for (var _n = 0; _n < subtrahends.length; _n++) {
+                var subtrahend = subtrahends[_n].split(' ');
+                _obj[subtrahend[1]] = subtrahend[0];
+              }
+              date.subtract(_obj);
+              break;
+            }
+
+          case 'from':
+            {
+              /*
+              * Display a moment in relative time, either from now or from a specified date.
+              * http://momentjs.com/docs/#/displaying/fromnow/
+              */
+
+              var from = 'now';
+              var removeSuffix = false;
+
+              if (args[0] === 'now') { args.shift(); }
+              // If valid, assume it is a date we want the output computed against.
+              if (moment$$1(args[0]).isValid()) { from = moment$$1(args.shift()); }
+
+              if (args[0] === true) {
+                args.shift();
+                removeSuffix = true;
+              }
+
+              if (from !== 'now') {
+                date = date.from(from, removeSuffix);
+              } else {
+                date = date.fromNow(removeSuffix);
+              }
+              break;
+            }
+
+          case 'diff':
+            {
+              /*
+              * Mutates the original moment by doing a difference with another date.
+              * http://momentjs.com/docs/#/displaying/difference/
+              */
+
+              var referenceTime = moment$$1();
+              var units = '';
+              var float = false;
+
+              if (moment$$1(args[0]).isValid()) {
+                // If valid, assume it is a date we want the output computed against.
+                referenceTime = moment$$1(args.shift());
+              } else if (args[0] === null || args[0] === 'now') {
+                // If null or 'now', remove argument and proceed with default referenceTime.
+                args.shift();
+              }
+
+              if (args[0]) { units = args.shift(); }
+
+              if (args[0] === true) { float = args.shift(); }
+
+              date = date.diff(referenceTime, units, float);
+              break;
+            }
+
+          case 'calendar':
+            {
+              /*
+              * Formats a date with different strings depending on how close
+              * to a certain date (today by default) the date is.
+              * http://momentjs.com/docs/#/displaying/calendar-time/
+              */
+
+              var _referenceTime = moment$$1();
+              var formats = {};
+
+              if (moment$$1(args[0]).isValid()) {
+                // If valid, assume it is a date we want the output computed against.
+                _referenceTime = moment$$1(args.shift());
+              } else if (args[0] === null || args[0] === 'now') {
+                // If null or 'now', remove argument and proceed with default referenceTime.
+                args.shift();
+              }
+
+              if (_typeof(args[0]) === 'object') { formats = args.shift(); }
+
+              date = date.calendar(_referenceTime, formats);
+              break;
+            }
+
+          case 'utc':
+            {
+              /*
+              * Mutates the original moment by converting to UTC
+              * https://momentjs.com/docs/#/manipulating/utc/
+              */
+              date.utc();
+              break;
+            }
+
+          case 'timezone':
+            {
+              /*
+              * Mutates the original moment by converting to a new timezone.
+              * https://momentjs.com/timezone/docs/#/using-timezones/converting-to-zone/
+              */
+              date.tz(args.shift());
+              break;
+            }
+
+          default:
+            {
+              /*
+              * Formats a date by taking a string of tokens and replacing
+              * them with their corresponding values.
+              * http://momentjs.com/docs/#/displaying/format/
+              */
+
+              var format = method;
+              date = date.format(format);
+            }
+        }
+
+        if (args.length) { parse.apply(parse, args); }
+      }
+
+      parse.apply(parse, args);
+
+      return date;
+    });
+
+    Vue.filter('duration', function () {
+      var arguments$1 = arguments;
+
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments$1[_key3];
+      }
+
+      /*
+      * Basic pass-through filter for leveraging moment.js's ability
+      * to manipulate and display durations.
+      * https://momentjs.com/docs/#/durations/
+      */
+      args = Array.prototype.slice.call(args);
+      var input = args.shift();
+      var method = args.shift();
+
+      function createDuration(time) {
+        if (!Array.isArray(time)) { time = [time]; }
+        var result = moment$$1.duration.apply(moment$$1, _toConsumableArray(time));
+        if (!result.isValid()) { console.warn('Could not build a valid `duration` object from input.'); }
+        return result;
+      }
+      var duration = createDuration(input);
+
+      if (method === 'add' || method === 'subtract') {
+        // Generates a duration object and either adds or subtracts it
+        // from our original duration.
+        var durationChange = createDuration(args);
+        duration[method](durationChange);
+      } else if (duration && duration[method]) {
+        var _duration;
+
+        // This gives a full proxy to moment.duration functions.
+        duration = (_duration = duration)[method].apply(_duration, _toConsumableArray(args));
+      }
+
+      return duration;
+    });
+  }
+};
+
+var vueMoment_1 = vueMoment.install;
+
+exports['default'] = vueMoment;
+exports.install = vueMoment_1;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/vue-resize/dist/vue-resize.esm.js":
+/*!********************************************************!*\
+  !*** ./node_modules/vue-resize/dist/vue-resize.esm.js ***!
+  \********************************************************/
+/*! exports provided: default, ResizeObserver, install */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResizeObserver", function() { return __vue_component__; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+function getInternetExplorerVersion() {
+  var ua = window.navigator.userAgent;
+  var msie = ua.indexOf('MSIE ');
+
+  if (msie > 0) {
+    // IE 10 or older => return version number
+    return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+  }
+
+  var trident = ua.indexOf('Trident/');
+
+  if (trident > 0) {
+    // IE 11 => return version number
+    var rv = ua.indexOf('rv:');
+    return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+  }
+
+  var edge = ua.indexOf('Edge/');
+
+  if (edge > 0) {
+    // Edge (IE 12+) => return version number
+    return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+  } // other browser
+
+
+  return -1;
+}
+
+//
+var isIE;
+
+function initCompat() {
+  if (!initCompat.init) {
+    initCompat.init = true;
+    isIE = getInternetExplorerVersion() !== -1;
+  }
+}
+
+var script = {
+  name: 'ResizeObserver',
+  props: {
+    emitOnMount: {
+      type: Boolean,
+      default: false
+    },
+    ignoreWidth: {
+      type: Boolean,
+      default: false
+    },
+    ignoreHeight: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    initCompat();
+    this.$nextTick(function () {
+      _this._w = _this.$el.offsetWidth;
+      _this._h = _this.$el.offsetHeight;
+
+      if (_this.emitOnMount) {
+        _this.emitSize();
+      }
+    });
+    var object = document.createElement('object');
+    this._resizeObject = object;
+    object.setAttribute('aria-hidden', 'true');
+    object.setAttribute('tabindex', -1);
+    object.onload = this.addResizeHandlers;
+    object.type = 'text/html';
+
+    if (isIE) {
+      this.$el.appendChild(object);
+    }
+
+    object.data = 'about:blank';
+
+    if (!isIE) {
+      this.$el.appendChild(object);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.removeResizeHandlers();
+  },
+  methods: {
+    compareAndNotify: function compareAndNotify() {
+      if (!this.ignoreWidth && this._w !== this.$el.offsetWidth || !this.ignoreHeight && this._h !== this.$el.offsetHeight) {
+        this._w = this.$el.offsetWidth;
+        this._h = this.$el.offsetHeight;
+        this.emitSize();
+      }
+    },
+    emitSize: function emitSize() {
+      this.$emit('notify', {
+        width: this._w,
+        height: this._h
+      });
+    },
+    addResizeHandlers: function addResizeHandlers() {
+      this._resizeObject.contentDocument.defaultView.addEventListener('resize', this.compareAndNotify);
+
+      this.compareAndNotify();
+    },
+    removeResizeHandlers: function removeResizeHandlers() {
+      if (this._resizeObject && this._resizeObject.onload) {
+        if (!isIE && this._resizeObject.contentDocument) {
+          this._resizeObject.contentDocument.defaultView.removeEventListener('resize', this.compareAndNotify);
+        }
+
+        this.$el.removeChild(this._resizeObject);
+        this._resizeObject.onload = null;
+        this._resizeObject = null;
+      }
+    }
+  }
+};
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
+/* server only */
+, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+  if (typeof shadowMode !== 'boolean') {
+    createInjectorSSR = createInjector;
+    createInjector = shadowMode;
+    shadowMode = false;
+  } // Vue.extend constructor export interop.
+
+
+  var options = typeof script === 'function' ? script.options : script; // render functions
+
+  if (template && template.render) {
+    options.render = template.render;
+    options.staticRenderFns = template.staticRenderFns;
+    options._compiled = true; // functional template
+
+    if (isFunctionalTemplate) {
+      options.functional = true;
+    }
+  } // scopedId
+
+
+  if (scopeId) {
+    options._scopeId = scopeId;
+  }
+
+  var hook;
+
+  if (moduleIdentifier) {
+    // server build
+    hook = function hook(context) {
+      // 2.3 injection
+      context = context || // cached call
+      this.$vnode && this.$vnode.ssrContext || // stateful
+      this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext; // functional
+      // 2.2 with runInNewContext: true
+
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__;
+      } // inject component styles
+
+
+      if (style) {
+        style.call(this, createInjectorSSR(context));
+      } // register component module identifier for async chunk inference
+
+
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier);
+      }
+    }; // used by ssr in case component is cached and beforeCreate
+    // never gets called
+
+
+    options._ssrRegister = hook;
+  } else if (style) {
+    hook = shadowMode ? function (context) {
+      style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+    } : function (context) {
+      style.call(this, createInjector(context));
+    };
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // register for functional component in vue file
+      var originalRender = options.render;
+
+      options.render = function renderWithStyleInjection(h, context) {
+        hook.call(context);
+        return originalRender(h, context);
+      };
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate;
+      options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+    }
+  }
+
+  return script;
+}
+
+/* script */
+var __vue_script__ = script;
+/* template */
+
+var __vue_render__ = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c("div", {
+    staticClass: "resize-observer",
+    attrs: {
+      tabindex: "-1"
+    }
+  });
+};
+
+var __vue_staticRenderFns__ = [];
+__vue_render__._withStripped = true;
+/* style */
+
+var __vue_inject_styles__ = undefined;
+/* scoped */
+
+var __vue_scope_id__ = "data-v-8859cc6c";
+/* module identifier */
+
+var __vue_module_identifier__ = undefined;
+/* functional template */
+
+var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+
+function install(Vue) {
+  // eslint-disable-next-line vue/component-definition-name-casing
+  Vue.component('resize-observer', __vue_component__);
+  Vue.component('ResizeObserver', __vue_component__);
+}
+
+var plugin = {
+  // eslint-disable-next-line no-undef
+  version: "1.0.1",
+  install: install
+};
+
+var GlobalVue = null;
+
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+//# sourceMappingURL=vue-resize.esm.js.map
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -45741,6 +61416,39 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./node_modules/webpack/buildin/module.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -45767,17 +61475,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var vue_lazyload__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-lazyload */ "./node_modules/vue-lazyload/vue-lazyload.esm.js");
 /* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js");
-/* harmony import */ var _properties___WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./properties/ */ "./resources/js/properties/index.js");
-/* harmony import */ var _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./filters/capitalize.filter */ "./resources/js/filters/capitalize.filter.js");
-/* harmony import */ var _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/Header/AppHeader.vue */ "./resources/js/components/Header/AppHeader.vue");
-/* harmony import */ var _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Footer/AppFooter.vue */ "./resources/js/components/Footer/AppFooter.vue");
-/* harmony import */ var _components_Notification_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/Notification.vue */ "./resources/js/components/Notification.vue");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment.js");
+/* harmony import */ var vue_moment__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue_moment__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var v_tooltip__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! v-tooltip */ "./node_modules/v-tooltip/dist/v-tooltip.esm.js");
+/* harmony import */ var _properties___WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./properties/ */ "./resources/js/properties/index.js");
+/* harmony import */ var _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./filters/capitalize.filter */ "./resources/js/filters/capitalize.filter.js");
+/* harmony import */ var _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/Header/AppHeader.vue */ "./resources/js/components/Header/AppHeader.vue");
+/* harmony import */ var _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/Footer/AppFooter.vue */ "./resources/js/components/Footer/AppFooter.vue");
+/* harmony import */ var _components_Notification_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/Notification.vue */ "./resources/js/components/Notification.vue");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_18__);
 
 
 
  //plugins
+
+
 
 
 
@@ -45798,17 +61511,17 @@ __webpack_require__.r(__webpack_exports__);
  //class prototype inicialization
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = axios__WEBPACK_IMPORTED_MODULE_3___default.a;
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isEmpty = _properties___WEBPACK_IMPORTED_MODULE_11__["empty"];
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isExist = _properties___WEBPACK_IMPORTED_MODULE_11__["exist"];
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isEmpty = _properties___WEBPACK_IMPORTED_MODULE_13__["empty"];
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$isExist = _properties___WEBPACK_IMPORTED_MODULE_13__["exist"];
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$createPopper = _popperjs_core__WEBPACK_IMPORTED_MODULE_10__["createPopper"];
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); //filters
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_12__["capitalize"]); //plugins registration
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', _filters_capitalize_filter__WEBPACK_IMPORTED_MODULE_14__["capitalize"]); //plugins registration
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_async_computed__WEBPACK_IMPORTED_MODULE_4__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_5___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_debounce__WEBPACK_IMPORTED_MODULE_6___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_16___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_18___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_click_outside__WEBPACK_IMPORTED_MODULE_7___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_cookies__WEBPACK_IMPORTED_MODULE_8___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_lazyload__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -45817,12 +61530,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_lazyload__WEBPACK_IMPORTED_MO
   loading: '/assets/images/loader_70.gif',
   attempt: 1
 });
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_moment__WEBPACK_IMPORTED_MODULE_11___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_tooltip__WEBPACK_IMPORTED_MODULE_12__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
-    AppHeader: _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
-    AppFooter: _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
-    Notification: _components_Notification_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+    AppHeader: _components_Header_AppHeader_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
+    AppFooter: _components_Footer_AppFooter_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+    Notification: _components_Notification_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
   },
   router: _router___WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store___WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -45957,17 +61672,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Delete-confirmation.vue":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/Delete-confirmation.vue ***!
-  \*********************************************************/
+/***/ "./resources/js/components/Confirmation.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Confirmation.vue ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Delete-confirmation.vue?vue&type=template&id=7a95f37c& */ "./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&");
-/* harmony import */ var _Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Delete-confirmation.vue?vue&type=script&lang=js& */ "./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Confirmation.vue?vue&type=template&id=3e5244c0& */ "./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0&");
+/* harmony import */ var _Confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Confirmation.vue?vue&type=script&lang=js& */ "./resources/js/components/Confirmation.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -45977,9 +61692,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -45989,38 +61704,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Delete-confirmation.vue"
+component.options.__file = "resources/js/components/Confirmation.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************/
+/***/ "./resources/js/components/Confirmation.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Confirmation.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete-confirmation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Confirmation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Confirmation.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Confirmation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c& ***!
-  \****************************************************************************************/
+/***/ "./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0& ***!
+  \*********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete-confirmation.vue?vue&type=template&id=7a95f37c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete-confirmation.vue?vue&type=template&id=7a95f37c&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Confirmation.vue?vue&type=template&id=3e5244c0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Confirmation.vue?vue&type=template&id=3e5244c0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_confirmation_vue_vue_type_template_id_7a95f37c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Confirmation_vue_vue_type_template_id_3e5244c0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -46918,6 +62633,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsBannerUpload_vue_vue_type_template_id_65ed760a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsBannerUpload_vue_vue_type_template_id_65ed760a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/SettingsFormModal.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/SettingsFormModal.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SettingsFormModal.vue?vue&type=template&id=ab3744ea& */ "./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea&");
+/* harmony import */ var _SettingsFormModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SettingsFormModal.vue?vue&type=script&lang=js& */ "./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SettingsFormModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/SettingsFormModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsFormModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./SettingsFormModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SettingsFormModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsFormModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./SettingsFormModal.vue?vue&type=template&id=ab3744ea& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SettingsFormModal.vue?vue&type=template&id=ab3744ea&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsFormModal_vue_vue_type_template_id_ab3744ea___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -409,7 +409,59 @@ img[lazy=loading] {
   top: 27px;
   right: 27px;
 }
+/* tooltip */
+.tooltip {
+  display: block !important;
+	z-index: 10000;
+}
+.tooltip .tooltip-inner {
+	padding: 10px 13px;
+	background: #121212;
+	border-radius: 4px;
+	font-size: 13px;
+	line-height: 16px;
+	color: #B4B4B4;;
+	text-align: center;	
+}
+.tooltip.align-left .tooltip-inner {
+	text-align: left;
+}
+.tooltip .tooltip-arrow {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  margin: 5px;
+	/* border: 1px solid #EEEEEE; */
+	border-top: none;
+	border-left: none;
+	background: #121212;
+	z-index: 1;
+	transform: rotate(45deg);
 
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+.tooltip[x-placement^="bottom"] {
+  margin-top: 15px;
+}
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  top: -5px;
+}
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
 /* notification */
 .notification {
   z-index: 999;
@@ -1916,11 +1968,31 @@ img {
 .banner-upload__logo path {
   transition: fill .35s;
 }
+.banner-upload__container {
+  position: relative;
+}
+.banner-upload__uploaded:hover .banner-upload__uploaded-overflow {
+  opacity: 1;
+}
+.banner-upload__uploaded-overflow {
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+  transition: all .2s;
+}
 .banner-upload__non-uploaded:hover .banner-upload__logo path {
   fill: #DA71FF;
 }
 .banner-upload__img {
   width: 100%;
+  height: 100%;
 }
 /* avatar upload */
 .avatar-upload {
@@ -1938,14 +2010,26 @@ img {
   top: -64px;
   left: 48px;
   overflow: hidden;
+  cursor: pointer;
+}
+.avatar-upload__uploaded:hover .avatar-upload__uploaded-overflow {
+  opacity: 1;
+}
+.avatar-upload__uploaded-overflow {
+  overflow: hidden;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+  transition: all .35s;
 }
 .avatar-upload__logo path {
-  transition: fill .35s;
+  transition: fill .2s;
 }
 .avatar-upload__container:hover .avatar-upload__logo path {
   fill: #DA71FF;
 }
-.banner-upload__img {
+.avatar-upload__img {
   width: 100%;
   height: 100%;
 }
@@ -1966,6 +2050,58 @@ img {
   background-repeat: no-repeat;
   background-position: left center;
   position: relative;
+}
+.settings-form__field input {
+  background-color: #0D0D0D;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.014em;
+  width: 100%;
+  color: #FFFFFF;
+  background-position: 1000px center;
+  transition: all .25s;
+  position: relative;
+  padding-right: 35px;
+}
+/* .settings-form__field:not(input:focus)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 56px;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(180deg, #0D0D0D 3.09%, #0D0D0D 81.02%, rgba(13, 13, 13, 0) 118.75%);
+  transform: rotate(90deg);
+  z-index: 1;
+} */
+.settings-form__field input::placeholder {
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.014em;
+  color: #696969;
+}
+.settings-form__field input:focus {
+  background-color: #2A2A2A;
+}
+.settings-form__field_error input:not(:focus) {
+  background: url(../assets/images/i-error.svg) no-repeat 95% center;
+}
+.settings-form__field_success input:not(:focus) {
+  background: url(../assets/images/i-success.svg) no-repeat 95% center;
+}
+.settings-form__social-error {
+  display: none;
+  margin-left: 48px;
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: -0.011em;
+  color: #EC3838;
+}
+.settings-form__social-error_show {
+  display: block;
 }
 .settings-form__field:not(:last-child) {
   margin-bottom: 16px;
@@ -2050,4 +2186,15 @@ img {
 .settings-form__auth .settings-form__headline,
 .settings-form__password .settings-form__headline {
   margin-bottom: 24px;
+}
+.settings-form__unconfirmed-email {
+  padding: 12px 0 0 48px;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: -0.011em;
+  color: #EC3838;
+}
+.settings-form__unconfirmed-email-button {
+  display: block;
+  margin-top: 24px;
 }

@@ -13,10 +13,14 @@
         @close="buyClose"
       />
 
-      <delete-confirmation
+      <confirmation
         v-if="deletingProcess"
-        :item="item"
-        @close="deleteItemHide"
+        :headline="`Удалить “${item.name}”?`"
+        :text="'После удаления работы вы не сможете её восстановить.'"
+        :resetButtonText="'Отмена'"
+        :confirmButtonText="'Удалить'"
+        @reset="deleteItemHide"
+        @apply="deleteItem"
       />
 
       <div class="item__block">
@@ -162,14 +166,14 @@ import Swiper from 'swiper'
 import Tag from '../components/Tag.vue'
 
 import PurchaseConfirmation from '../components/PurchaseConfirmation.vue'
-import DeleteConfirmation from '../components/Delete-confirmation.vue'
+import Confirmation from '../components/Confirmation.vue'
 
 export default {
   components: {
     Tag,
 
     PurchaseConfirmation,
-    DeleteConfirmation
+    Confirmation
   },
   data() {
     return {
@@ -361,7 +365,31 @@ export default {
 
     },
     deleteItemHide() {
+      this.$modal.hide('confirm')
       this.deletingProcess = false
+    },
+    deleteItem() {
+
+      const itemId = this.item.id
+      const userId = this.$store.getters.user.id
+
+      const url_string = window.location.origin + '/api/items/delete-item'
+      let url = new URL(url_string)
+      url.searchParams.set('item_id', itemId)
+      url.searchParams.set('request_from', userId)
+      
+      this.$http.delete(url.href)
+        .then(response => {
+
+          const data = response.data
+
+          if (data.notification) {
+            this.$router.push('/profile')
+            this.$root.showNotification(data.notification)
+          }
+
+        })
+
     }
   }
 }

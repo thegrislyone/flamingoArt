@@ -25,7 +25,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'views',
         'likes',
         'is_admin',
-        'banned'
+        'banned',
+
+        'vkontakte',
+        'facebook',
+        'twitter',
+        'instagram',
+
+        'email_changed_at',
+        'password_changed_at',
+        'login_changed_at'
     ];
 
     /**
