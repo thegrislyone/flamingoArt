@@ -56,7 +56,6 @@
             margin: 0 auto;
             margin-bottom: 124px;
             cursor: pointer;
-            text-decoration: none;
         }
         .line {
             background-color: #2A2A2A;
@@ -89,15 +88,15 @@
             </svg>
                 
             <div class="text">
-                Подтвердите свой почтовый ящик на сайте <a href="{{ route('index') }}">flamingo-art.ru</a>
+                Нажмите кнопку ниже, чтобы изменить пароль на сайте <a href="{{ route('index') }}">flamingo-art.ru</a>
             </div>
 
-            <a class="btn-link" href="{{ route('password-change-redirect', ['user' => $user,'token' => $token]) }}"><button class="btn">Подтвердить</button></a>
+            <a class="btn-link" href="{{ route('password-change-redirect', ['user' => $user,'token' => $token]) }}"><button class="btn">Изменить пароль</button></a>
 
             <div class="line"></div>
 
             <div class="link-text">
-                Или перейдите по следующей ссылке: <a href="{{ route('confirm-email', ['user' => $user,'token' => $token]) }}">{{ route('confirm-email', ['user' => $user,'token' => $token]) }}</a>
+                Или перейдите по следующей ссылке: <a href="{{ route('password-change-redirect', ['user' => $user,'token' => $token]) }}">{{ route('confirm-email', ['user' => $user,'token' => $token]) }}</a>
             </div>
 
         </div>

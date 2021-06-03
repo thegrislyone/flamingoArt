@@ -9,12 +9,14 @@
       :min-width="320"
       :adaptive="true"
       :max-width="480"
+      @closed="close"
     >
 
       <img 
         class="sign-form__close"
         src="/assets/images/i-close.svg" 
         alt=""
+        @click="close"
       >
 
       <form @submit.prevent="apply">
@@ -31,6 +33,36 @@
             @clearErrors="setValidationError('')"
             @validateInput="dataCheck"
             v-model="$v.login.$model"
+          />
+
+          <div class="sign-form__validation-error">
+            {{ validationError }}
+          </div>
+
+          <button 
+            class="btn center settings-form-modal__btn"
+            type="button"
+            @click="apply"
+          >
+            Подтвердить
+          </button>
+
+        </div>
+
+        <div v-else-if="formType == 'password'">
+
+          <h2 class="settings-form-modal__headline">Изменить пароль</h2>
+          
+          <form-group
+            v-for="(field, index) in passwordForm"
+            :key="index"
+            :ref="field.name"
+            :formData="field"
+            :v="$v[field.name]"
+            @error="setValidationError"
+            @clearErrors="setValidationError('')"
+            @validateInput="dataCheck"
+            v-model="$v[field.name].$model"
           />
 
           <div class="sign-form__validation-error">
@@ -69,7 +101,10 @@ export default {
       formType: '',
 
       login: '',
+
       password: '',
+      repeatPassword: '',
+
       email: '',
 
       loginForm: {
@@ -82,6 +117,28 @@ export default {
         maxLength: 32,
         value: this.$store.getters.user.login
       },
+
+      passwordForm: [
+        {
+          name: 'password',
+          requireServerValidation: true,
+          class: 'sign-form__field',
+          type: 'password',
+          placeholder: 'Пароль',
+          minLength: 6,
+          maxLength: 32,
+        },
+        {
+          name: 'repeatPassword',
+          requireServerValidation: true,
+          class: 'sign-form__field',
+          type: 'password',
+          placeholder: 'Подтвердите пароль',
+          minLength: 6,
+          maxLength: 32,
+        }
+      ]
+
     }
   },
   computed: {
@@ -98,6 +155,18 @@ export default {
       maxLength: maxLength(32)
     },
     
+    password: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(32)
+    },
+
+    repeatPassword: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(32),
+      sameAsPassword: sameAs('password')
+    }
 
   },
   created() {
@@ -141,6 +210,24 @@ export default {
 
           })
 
+      } else if (this.formType == 'password') {
+
+        if (this.$v.password.$invalid || this.$v.repeatPassword.$invalid) {
+          return
+        }
+
+        this.$http.post('/api/auth/password/password-change', {
+          password: this.password
+        })
+          .then(response => {
+            const data = response.data
+
+            if (data.notification) {
+              this.$root.showNotification(data.notification)
+            }
+
+          })
+
       }
 
     },
@@ -175,6 +262,15 @@ export default {
           }
 
         })
+    },
+    close() {
+      if (this.formType == 'password') {
+        this.$http.post('/api/auth/password/password-change', {
+          password: null
+        }).then(() => {
+          this.$router.push('/profile-settings')
+        })
+      }
     }
   }
 }

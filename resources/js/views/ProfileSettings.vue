@@ -198,7 +198,7 @@
             <button 
               type="button"
               class="btn"
-              @click=""
+              @click="showConfirmAction('password')"
             >Изменить пароль</button>
 
           </div>
@@ -286,18 +286,10 @@ export default {
           }
         },
         password: {
-          allowen: {
-            headline: '',
-            text: '',
-            resetButtonText: '',
-            confirmButtonText: ''
-          },
-          notAllowen: {
-            headline: '',
-            text: '',
-            resetButtonText: '',
-            confirmButtonText: ''
-          }
+          headline: 'Мы отправили вам письмо',
+          text: `Перейдите по ссылке в письме для того чтобы изменить пароль.`,
+          resetButtonText: 'Отмена',
+          confirmButtonText: 'Ок'
         },
         auth: {
           allowen: {
@@ -344,10 +336,15 @@ export default {
     }
   },
   created() {
+
     this.social['vkLink'] = this.user.vkontakte || ''
     this.social['twitterLink'] = this.user.twitter || ''
     this.social['facebookLink'] = this.user.facebook || ''
     this.social['instagramLink'] = this.user.instagram || ''
+    
+  },
+  mounted() {
+    this.passwordChangeCheck()
   },
   methods: {
     showConfirmAction(type) {
@@ -370,6 +367,9 @@ export default {
           this.activeConfirm = this.confirms.email.notAllowen
         }
 
+      } else if (type == 'password') {
+        this.activeConfirm = this.confirms.password
+        this.passwordChange()
       }
 
       this.showConfirm = true
@@ -386,7 +386,7 @@ export default {
       } else if (type == 'email') {
         updated = this.user.email_changed_at
       } else if (type == 'password') {
-
+        
       }
 
       if (!updated) {
@@ -417,6 +417,11 @@ export default {
         if (this.getIsAllowen('nickname')) {
           this.$refs['formModal'].showModal('nickname')
         }
+      } else if (this.activeConfirmType == 'password') {
+        // this.passwordChange()
+
+        
+
       }
 
     },
@@ -460,6 +465,32 @@ export default {
 
         })
       
+    },
+    passwordChange() {
+
+      this.$http.get('/api/auth/password/password-change-request')
+
+    },
+    passwordChangeCheck() {
+
+      if (this.$route.query['password-update-token'] != undefined) {
+        this.$http.post('/api/auth/password/is-password-change-process', {
+          token: this.$route.query['password-update-token']
+        }).then(response => {
+
+          const data = response.data
+
+          if (data.status) {
+            this.$refs['formModal'].showModal('password')
+          } else {
+            this.$router.push('/profile-settings')
+          }
+
+          
+        })
+        
+      }
+
     }
   }
 }

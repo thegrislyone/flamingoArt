@@ -14,7 +14,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAuthorizate: state => Object.keys(state.user).length,
+    isAuthorizate: state => state.user && Object.keys(state.user).length,
     user: state => state.user,
 
     favorites: state => {

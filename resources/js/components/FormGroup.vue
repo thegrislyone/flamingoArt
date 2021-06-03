@@ -118,7 +118,7 @@ export default {
 
       passwordShow: false,
 
-      value: this.formData.value,
+      value: this.formData.value || '',
 
       isError: false,
       isSuccess: false,
@@ -141,7 +141,7 @@ export default {
     }
   },
   created() {
-    
+    console.log(this.v)
   },
   methods: {
     getError() {
@@ -156,6 +156,8 @@ export default {
         message = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов' 
       } else if (this.v.email != undefined && !this.v.email) {
         message = 'Неправильный формат почты'
+      } else if (this.v.sameAsPassword != undefined && !this.v.sameAsPassword) {
+        message = 'Пароли не совпадают'
       }
 
       return message

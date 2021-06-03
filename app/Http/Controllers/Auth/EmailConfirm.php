@@ -73,7 +73,7 @@ class EmailConfirm extends Controller
             // return redirect()->route('email-confirmed');
         }
 
-        return redirect()->route('index');
+        return redirect('/profile-settings');
         
     }
 }

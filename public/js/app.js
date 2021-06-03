@@ -5525,7 +5525,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       passwordShow: false,
-      value: this.formData.value,
+      value: this.formData.value || '',
       isError: false,
       isSuccess: false,
       isLoading: false
@@ -5548,7 +5548,9 @@ __webpack_require__.r(__webpack_exports__);
       return '';
     }
   },
-  created: function created() {},
+  created: function created() {
+    console.log(this.v);
+  },
   methods: {
     getError: function getError() {
       var message = '';
@@ -5561,6 +5563,8 @@ __webpack_require__.r(__webpack_exports__);
         message = 'Максимальная длина поля ' + this.formData.placeholder.toLowerCase() + ' - ' + this.formData.maxLength + ' символов';
       } else if (this.v.email != undefined && !this.v.email) {
         message = 'Неправильный формат почты';
+      } else if (this.v.sameAsPassword != undefined && !this.v.sameAsPassword) {
+        message = 'Пароли не совпадают';
       }
 
       return message;
@@ -7038,6 +7042,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7050,6 +7086,7 @@ __webpack_require__.r(__webpack_exports__);
       formType: '',
       login: '',
       password: '',
+      repeatPassword: '',
       email: '',
       loginForm: {
         name: 'login',
@@ -7060,7 +7097,24 @@ __webpack_require__.r(__webpack_exports__);
         minLength: 2,
         maxLength: 32,
         value: this.$store.getters.user.login
-      }
+      },
+      passwordForm: [{
+        name: 'password',
+        requireServerValidation: true,
+        "class": 'sign-form__field',
+        type: 'password',
+        placeholder: 'Пароль',
+        minLength: 6,
+        maxLength: 32
+      }, {
+        name: 'repeatPassword',
+        requireServerValidation: true,
+        "class": 'sign-form__field',
+        type: 'password',
+        placeholder: 'Подтвердите пароль',
+        minLength: 6,
+        maxLength: 32
+      }]
     };
   },
   computed: {
@@ -7073,6 +7127,17 @@ __webpack_require__.r(__webpack_exports__);
       required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
       minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(2),
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+    },
+    password: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(6),
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+    },
+    repeatPassword: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(6),
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32),
+      sameAsPassword: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["sameAs"])('password')
     }
   },
   created: function created() {
@@ -7107,6 +7172,20 @@ __webpack_require__.r(__webpack_exports__);
             _this.$store.commit('setUser', data.user);
           }
         });
+      } else if (this.formType == 'password') {
+        if (this.$v.password.$invalid || this.$v.repeatPassword.$invalid) {
+          return;
+        }
+
+        this.$http.post('/api/auth/password/password-change', {
+          password: this.password
+        }).then(function (response) {
+          var data = response.data;
+
+          if (data.notification) {
+            _this.$root.showNotification(data.notification);
+          }
+        });
       }
     },
     dataCheck: function dataCheck(value, name, isClientError) {
@@ -7134,6 +7213,17 @@ __webpack_require__.r(__webpack_exports__);
           _this2.$refs[name].isLoading = false;
         }
       });
+    },
+    close: function close() {
+      var _this3 = this;
+
+      if (this.formType == 'password') {
+        this.$http.post('/api/auth/password/password-change', {
+          password: null
+        }).then(function () {
+          _this3.$router.push('/profile-settings');
+        });
+      }
     }
   }
 });
@@ -9073,18 +9163,10 @@ __webpack_require__.r(__webpack_exports__);
           }
         },
         password: {
-          allowen: {
-            headline: '',
-            text: '',
-            resetButtonText: '',
-            confirmButtonText: ''
-          },
-          notAllowen: {
-            headline: '',
-            text: '',
-            resetButtonText: '',
-            confirmButtonText: ''
-          }
+          headline: 'Мы отправили вам письмо',
+          text: "\u041F\u0435\u0440\u0435\u0439\u0434\u0438\u0442\u0435 \u043F\u043E \u0441\u0441\u044B\u043B\u043A\u0435 \u0432 \u043F\u0438\u0441\u044C\u043C\u0435 \u0434\u043B\u044F \u0442\u043E\u0433\u043E \u0447\u0442\u043E\u0431\u044B \u0438\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u0430\u0440\u043E\u043B\u044C.",
+          resetButtonText: 'Отмена',
+          confirmButtonText: 'Ок'
         },
         auth: {
           allowen: {
@@ -9131,6 +9213,9 @@ __webpack_require__.r(__webpack_exports__);
     this.social['facebookLink'] = this.user.facebook || '';
     this.social['instagramLink'] = this.user.instagram || '';
   },
+  mounted: function mounted() {
+    this.passwordChangeCheck();
+  },
   methods: {
     showConfirmAction: function showConfirmAction(type) {
       this.activeConfirmType = type;
@@ -9147,6 +9232,9 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this.activeConfirm = this.confirms.email.notAllowen;
         }
+      } else if (type == 'password') {
+        this.activeConfirm = this.confirms.password;
+        this.passwordChange();
       }
 
       this.showConfirm = true;
@@ -9182,6 +9270,7 @@ __webpack_require__.r(__webpack_exports__);
         if (this.getIsAllowen('nickname')) {
           this.$refs['formModal'].showModal('nickname');
         }
+      } else if (this.activeConfirmType == 'password') {// this.passwordChange()
       }
     },
     socialUpdate: function socialUpdate() {
@@ -9211,6 +9300,26 @@ __webpack_require__.r(__webpack_exports__);
           _this.$root.showNotification(data.notification);
         }
       });
+    },
+    passwordChange: function passwordChange() {
+      this.$http.get('/api/auth/password/password-change-request');
+    },
+    passwordChangeCheck: function passwordChangeCheck() {
+      var _this2 = this;
+
+      if (this.$route.query['password-update-token'] != undefined) {
+        this.$http.post('/api/auth/password/is-password-change-process', {
+          token: this.$route.query['password-update-token']
+        }).then(function (response) {
+          var data = response.data;
+
+          if (data.status) {
+            _this2.$refs['formModal'].showModal('password');
+          } else {
+            _this2.$router.push('/profile-settings');
+          }
+        });
+      }
     }
   }
 });
@@ -36206,12 +36315,14 @@ var render = function() {
             "min-width": 320,
             adaptive: true,
             "max-width": 480
-          }
+          },
+          on: { closed: _vm.close }
         },
         [
           _c("img", {
             staticClass: "sign-form__close",
-            attrs: { src: "/assets/images/i-close.svg", alt: "" }
+            attrs: { src: "/assets/images/i-close.svg", alt: "" },
+            on: { click: _vm.close }
           }),
           _vm._v(" "),
           _c(
@@ -36277,6 +36388,63 @@ var render = function() {
                       )
                     ],
                     1
+                  )
+                : _vm.formType == "password"
+                ? _c(
+                    "div",
+                    [
+                      _c(
+                        "h2",
+                        { staticClass: "settings-form-modal__headline" },
+                        [_vm._v("Изменить пароль")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.passwordForm, function(field, index) {
+                        return _c("form-group", {
+                          key: index,
+                          ref: field.name,
+                          refInFor: true,
+                          attrs: { formData: field, v: _vm.$v[field.name] },
+                          on: {
+                            error: _vm.setValidationError,
+                            clearErrors: function($event) {
+                              return _vm.setValidationError("")
+                            },
+                            validateInput: _vm.dataCheck
+                          },
+                          model: {
+                            value: _vm.$v[field.name].$model,
+                            callback: function($$v) {
+                              _vm.$set(_vm.$v[field.name], "$model", $$v)
+                            },
+                            expression: "$v[field.name].$model"
+                          }
+                        })
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "sign-form__validation-error" },
+                        [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(_vm.validationError) +
+                              "\n        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn center settings-form-modal__btn",
+                          attrs: { type: "button" },
+                          on: { click: _vm.apply }
+                        },
+                        [_vm._v("\n          Подтвердить\n        ")]
+                      )
+                    ],
+                    2
                   )
                 : _vm._e()
             ]
@@ -37880,7 +38048,11 @@ var render = function() {
                       {
                         staticClass: "btn",
                         attrs: { type: "button" },
-                        on: { click: function($event) {} }
+                        on: {
+                          click: function($event) {
+                            return _vm.showConfirmAction("password")
+                          }
+                        }
                       },
                       [_vm._v("Изменить пароль")]
                     )
@@ -63395,7 +63567,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   },
   getters: {
     isAuthorizate: function isAuthorizate(state) {
-      return Object.keys(state.user).length;
+      return state.user && Object.keys(state.user).length;
     },
     user: function user(state) {
       return state.user;

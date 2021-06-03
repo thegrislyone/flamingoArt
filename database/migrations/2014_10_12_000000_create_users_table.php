@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->text('email_verify_token')->nullable();
             $table->string('password');
+            $table->text('password_update_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->string('vkontakte')->nullable();

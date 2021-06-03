@@ -68,7 +68,12 @@ Route::get('auth/register','App\Http\Controllers\Auth\AuthController@register');
 Route::post('auth/register','App\Http\Controllers\Auth\AuthController@register');
 
 Route::get('auth/email/email-confirm-request','App\Http\Controllers\Auth\EmailConfirm@emailConfirmRequest');
-Route::get('auth/email/email-confirm','App\Http\Controllers\Auth\EmailConfirm@emailConfirm')->name('confirm-email');;
+Route::get('auth/email/email-confirm','App\Http\Controllers\Auth\EmailConfirm@emailConfirm')->name('confirm-email');
+
+Route::get('auth/password/password-change-request','App\Http\Controllers\Auth\PasswordChange@request');
+Route::get('auth/password/password-change-redirect','App\Http\Controllers\Auth\PasswordChange@emailRedirect')->name('password-change-redirect');
+Route::post('auth/password/password-change','App\Http\Controllers\Auth\PasswordChange@change');
+Route::post('auth/password/is-password-change-process','App\Http\Controllers\Auth\PasswordChange@isProcess');
 
 Route::get('auth/get-author','App\Http\Controllers\Auth\AuthController@getAuthor'); // ! AUTHOR
 

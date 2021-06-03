@@ -2097,10 +2097,14 @@ img {
   background-color: #2A2A2A;
 }
 .settings-form__field_error input:not(:focus) {
-  background: url(../assets/images/i-error.svg) no-repeat 95% center;
+  background-image: url(../assets/images/i-error.svg);
+  background-repeat: no-repeat;
+  background-position: 95% center;
 }
 .settings-form__field_success input:not(:focus) {
-  background: url(../assets/images/i-success.svg) no-repeat 95% center;
+  background-image: url(../assets/images/i-success.svg);
+  background-repeat: no-repeat;
+  background-position: 95% center;
 }
 .settings-form__social-error {
   display: none;
