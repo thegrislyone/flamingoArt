@@ -79,7 +79,7 @@
 </head>
 <body>
     
-    <div class="email-confirm" style="font-family: Arial, Helvetica, sans-serif; background-color: #050505; display: flex; align-items: center;">
+    <div class="email-confirm" style="font-family: Arial, Helvetica, sans-serif; background-color: #050505;">
         
         <div class="container" style="background-color: #0C0C0C; max-width: 600px; margin: 0 auto; padding: 48px 32px 64px; align-self: center;">
 
@@ -89,7 +89,7 @@
             </svg>
                 
             <div style="font-weight: 500; font-size: 22px; line-height: 140%; text-align: center; letter-spacing: -0.006em; color: #B4B4B4; margin: 0 auto; margin-bottom: 96px; max-width: 390px;" class="text">
-                Подтвердите свой почтовый ящик на сайте <a href="{{ route('index') }}">flamingo-art.ru</a>
+                Подтвердите свой почтовый ящик на сайте <a href="{{ route('index') }}" style="color: inherit;cursor: pointer;text-decoration: underline;">flamingo-art.ru</a>
             </div>
 
             <a class="btn-link" style="color: inherit;cursor: pointer;" href="{{ route('password-change-redirect', ['user' => $user,'token' => $token]) }}"><button class="btn" style="display: block; outline: none; border: none; background: #DA71FF; border-radius: 54px; padding: 12px 70px; font-weight: 500; font-size: 22px; line-height: 27px; letter-spacing: -0.011em; color: #000000; margin: 0 auto; margin-bottom: 124px; cursor: pointer; text-decoration: none;">Подтвердить</button></a>
