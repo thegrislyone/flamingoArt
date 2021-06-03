@@ -1574,6 +1574,9 @@ img {
   margin: 0 auto;
   width: 100%;
 }
+.profile-card__upload {
+  margin-top: 15px;
+}
 
 .profile-block__my-items {
   width: 100%;

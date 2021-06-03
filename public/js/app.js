@@ -5128,6 +5128,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       file: null,
       loaderContainer: null,
+      loadedImgSrc: '',
       avatarSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
     };
@@ -5179,7 +5180,8 @@ __webpack_require__.r(__webpack_exports__);
         var img = new Image();
         img.addEventListener('load', function () {
           // if (this.width >= 1920 && this.height >= 400) {
-          vm.avatarSrc = reader.result; // vm.$emit('fileUpload', file)
+          // vm.avatarSrc = reader.result
+          vm.loadedImgSrc = reader.result; // vm.$emit('fileUpload', file)
 
           console.log(file);
           vm.$modal.show('avatar-crop');
@@ -8707,6 +8709,17 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ItemsTilesList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ItemsTilesList.vue */ "./resources/js/components/ItemsTilesList.vue");
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -33926,7 +33939,10 @@ var render = function() {
           _c("cropper", {
             ref: "cropper",
             staticClass: "cropper",
-            attrs: { "stencil-component": "circle-stencil", src: _vm.avatarSrc }
+            attrs: {
+              "stencil-component": "circle-stencil",
+              src: _vm.loadedImgSrc
+            }
           }),
           _vm._v(" "),
           _c(
@@ -37800,6 +37816,23 @@ var render = function() {
                             }
                           },
                           [_vm._v("\n            Редактировать\n          ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.isForeign
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn profile-card__edit-button profile-card__upload",
+                            attrs: { disabled: _vm.user.banned },
+                            on: {
+                              click: function($event) {
+                                return _vm.$router.push("/upload-item")
+                              }
+                            }
+                          },
+                          [_vm._v("\n            Выложить работу\n          ")]
                         )
                       : _vm.isAuthorizate
                       ? _c(

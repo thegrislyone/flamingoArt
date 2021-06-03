@@ -62,6 +62,7 @@
           </div>
 
           <div class="profile-card__edit">
+
             <button 
               v-if="!isForeign"
               class="btn profile-card__edit-button"
@@ -70,6 +71,16 @@
             >
               Редактировать
             </button>
+
+            <button 
+              v-if="!isForeign"
+              class="btn profile-card__edit-button profile-card__upload"
+              @click="$router.push('/upload-item')"
+              :disabled="user.banned"
+            >
+              Выложить работу
+            </button>
+            
             <button
               v-else-if="isAuthorizate"
               class="btn profile-card__edit-button"

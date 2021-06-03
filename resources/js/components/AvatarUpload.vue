@@ -11,7 +11,7 @@
     >
       <cropper
         stencil-component="circle-stencil"
-        :src="avatarSrc"
+        :src="loadedImgSrc"
         class="cropper"
         ref="cropper"
       />
@@ -98,6 +98,7 @@ export default {
     return {
       file: null,
       loaderContainer: null,
+      loadedImgSrc: '',
       avatarSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
     }
@@ -166,7 +167,8 @@ export default {
           
           // if (this.width >= 1920 && this.height >= 400) {
 
-            vm.avatarSrc = reader.result
+            // vm.avatarSrc = reader.result
+            vm.loadedImgSrc = reader.result
             // vm.$emit('fileUpload', file)
 
             console.log(file)

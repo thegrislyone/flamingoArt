@@ -74,10 +74,7 @@ class AuthController extends Controller
                     'password' => Hash::make($request['password']),
                     'views' => 0,
                     'likes' => 0,
-                    'is_admin' => 1,
-                    'email_changed_at' => now(),
-                    'password_changed_at' => now(),
-                    'login_changed_at' => now()
+                    'is_admin' => 1
                 ]);
 
             } else {
