@@ -32,6 +32,6 @@ class PasswordChangeEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.password-change');
+        return $this->from('diplomaflamingoart@gmail.com')->view('emails.password-change');
     }
 }

@@ -32,6 +32,6 @@ class EmailConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.email-confirmation');
+        return $this->from('diplomaflamingoart@gmail.com')->view('emails.email-confirmation');
     }
 }
