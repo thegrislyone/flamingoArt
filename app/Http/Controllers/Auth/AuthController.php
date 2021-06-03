@@ -370,8 +370,16 @@ class AuthController extends Controller
             'avatar' => '/' . implode('/', $avatarSrcArray)
         ]);
 
+        $user = Auth::user();
+        $user['avatar'] = '/' . implode('/', $avatarSrcArray);
+
         $status = [
-            'success' => true
+            'success' => true,
+            'user' => $user,
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Аватар успешно загружен'
+            ]
         ];
 
         return response()->json($status, 200);
@@ -399,8 +407,16 @@ class AuthController extends Controller
             'banner' => '/' . implode('/', $bannerSrcArray)
         ]);
 
+        $user = Auth::user();
+        $user['banner'] = '/' . implode('/', $bannerSrcArray);
+
         $status = [
-            'success' => true
+            'success' => true,
+            'user' => $user,
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Баннер успешно загружен'
+            ]
         ];
 
         return response()->json($status, 200);

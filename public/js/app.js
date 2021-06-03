@@ -5026,6 +5026,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-advanced-cropper */ "./node_modules/vue-advanced-cropper/dist/index.es.js");
 //
 //
 //
@@ -5085,12 +5086,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Cropper: vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__["Cropper"],
+    CircleStencil: vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__["CircleStencil"]
+  },
   props: {
     avatar: String
   },
   data: function data() {
     return {
+      file: null,
       loaderContainer: null,
       avatarSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
@@ -5127,6 +5162,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     fileUpload: function fileUpload(droppedFile) {
       var file = droppedFile ? droppedFile : event.target.files[0];
+      this.file = file;
 
       if (!file.type.includes('image')) {
         this.$root.showNotification({
@@ -5142,8 +5178,10 @@ __webpack_require__.r(__webpack_exports__);
         var img = new Image();
         img.addEventListener('load', function () {
           // if (this.width >= 1920 && this.height >= 400) {
-          vm.avatarSrc = reader.result;
-          vm.$emit('fileUpload', file);
+          vm.avatarSrc = reader.result; // vm.$emit('fileUpload', file)
+
+          console.log(file);
+          vm.$modal.show('avatar-crop');
           vm.eventsInit(); // } else {
           //   vm.$root.showNotification({
           //     title: 'Изображение не соответствует минимальным размерам 1920×400',
@@ -5155,6 +5193,20 @@ __webpack_require__.r(__webpack_exports__);
         // data.append("file", file)
       });
       reader.readAsDataURL(file);
+    },
+    crop: function crop() {
+      var _this = this;
+
+      var _this$$refs$cropper$g = this.$refs.cropper.getResult(),
+          canvas = _this$$refs$cropper$g.canvas,
+          image = _this$$refs$cropper$g.image;
+
+      this.avatarSrc = image.src;
+      canvas.toBlob(function (blob) {
+        _this.$emit('fileUpload', blob);
+
+        _this.$modal.hide('avatar-crop');
+      }, this.file.type);
     }
   }
 });
@@ -6779,6 +6831,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-advanced-cropper */ "./node_modules/vue-advanced-cropper/dist/index.es.js");
 //
 //
 //
@@ -6896,12 +6949,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Cropper: vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__["Cropper"]
+  },
   props: {
     banner: String
   },
   data: function data() {
     return {
+      loadedImgSrc: '',
+      file: null,
       loaderContainer: null,
       bannerSrc: '',
       events: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop']
@@ -6938,6 +7032,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     fileUpload: function fileUpload(droppedFile) {
       var file = droppedFile ? droppedFile : event.target.files[0];
+      this.file = file;
 
       if (!file.type.includes('image')) {
         this.$root.showNotification({
@@ -6953,11 +7048,11 @@ __webpack_require__.r(__webpack_exports__);
         var img = new Image();
         img.addEventListener('load', function () {
           if (this.width >= 1920 && this.height >= 400) {
-            console.log("подходит");
-            vm.bannerSrc = reader.result;
-            vm.$emit('fileUpload', file);
+            // vm.bannerSrc = reader.result
+            vm.loadedImgSrc = reader.result; // vm.$emit('fileUpload', file)
+
+            vm.$modal.show('banner-crop');
           } else {
-            console.log("не подходит");
             vm.$root.showNotification({
               title: 'Изображение не соответствует минимальным размерам 1920×400',
               type: 'error'
@@ -6968,6 +7063,19 @@ __webpack_require__.r(__webpack_exports__);
         // data.append("file", file)
       });
       reader.readAsDataURL(file);
+    },
+    crop: function crop() {
+      var _this = this;
+
+      var _this$$refs$cropper$g = this.$refs.cropper.getResult(),
+          canvas = _this$$refs$cropper$g.canvas,
+          image = _this$$refs$cropper$g.image;
+
+      canvas.toBlob(function (blob) {
+        _this.$emit('fileUpload', blob);
+
+        _this.$modal.hide('banner-crop');
+      }, this.file.type);
     }
   }
 });
@@ -9110,6 +9218,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -9281,23 +9391,51 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.post('/api/auth/set-user-socials', this.social);
     },
     avatarUpload: function avatarUpload(file) {
+      var _this = this;
+
       var formData = new FormData();
       formData.append('avatar', file);
-      this.$http.post('/api/auth/set-user-avatar', formData);
+      this.$http.post('/api/auth/set-user-avatar', formData).then(function (response) {
+        var data = response.data;
+
+        if (data.notification) {
+          _this.$root.showNotification(data.notification);
+        }
+
+        if (data.user) {
+          _this.$store.commit('setUser', data.user);
+
+          _this.$refs['avatar-upload'].avatarSrc = data.user.avatar;
+        }
+      });
     },
     bannerUpload: function bannerUpload(file) {
+      var _this2 = this;
+
       var formData = new FormData();
       formData.append('banner', file);
-      this.$http.post('/api/auth/set-user-banner', formData);
+      this.$http.post('/api/auth/set-user-banner', formData).then(function (response) {
+        var data = response.data;
+
+        if (data.notification) {
+          _this2.$root.showNotification(data.notification);
+        }
+
+        if (data.user) {
+          _this2.$store.commit('setUser', data.user);
+
+          _this2.$refs['banner-upload'].bannerSrc = data.user.banner;
+        }
+      });
     },
     emailConfirm: function emailConfirm() {
-      var _this = this;
+      var _this3 = this;
 
       this.$http.get('/api/auth/email/email-confirm-request').then(function (response) {
         var data = response.data;
 
         if (data.notification) {
-          _this.$root.showNotification(data.notification);
+          _this3.$root.showNotification(data.notification);
         }
       });
     },
@@ -9305,7 +9443,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.get('/api/auth/password/password-change-request');
     },
     passwordChangeCheck: function passwordChangeCheck() {
-      var _this2 = this;
+      var _this4 = this;
 
       if (this.$route.query['password-update-token'] != undefined) {
         this.$http.post('/api/auth/password/is-password-change-process', {
@@ -9314,9 +9452,9 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data;
 
           if (data.status) {
-            _this2.$refs['formModal'].showModal('password');
+            _this4.$refs['formModal'].showModal('password');
           } else {
-            _this2.$router.push('/profile-settings');
+            _this4.$router.push('/profile-settings');
           }
         });
       }
@@ -31392,6 +31530,58 @@ module.exports = toPlainObject;
 
 /***/ }),
 
+/***/ "./node_modules/vue-advanced-cropper/dist/index.es.js":
+/*!************************************************************!*\
+  !*** ./node_modules/vue-advanced-cropper/dist/index.es.js ***!
+  \************************************************************/
+/*! exports provided: BoundingBox, CircleStencil, Cropper, DragEvent, DraggableArea, DraggableElement, HandlerWrapper, LineWrapper, MoveEvent, Preview, PreviewResult, RectangleStencil, ResizeEvent, SimpleHandler, SimpleLine, StencilPreview */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoundingBox", function() { return jt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CircleStencil", function() { return Kt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Cropper", function() { return te; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragEvent", function() { return E; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DraggableArea", function() { return It; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DraggableElement", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HandlerWrapper", function() { return H; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineWrapper", function() { return j; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoveEvent", function() { return C; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Preview", function() { return Zt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PreviewResult", function() { return Yt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RectangleStencil", function() { return Gt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResizeEvent", function() { return M; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SimpleHandler", function() { return Ct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SimpleLine", function() { return Tt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StencilPreview", function() { return Vt; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+function e(t,e,i){return e in t?Object.defineProperty(t,e,{value:i,enumerable:!0,configurable:!0,writable:!0}):t[e]=i,t}function i(t,e){var i=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),i.push.apply(i,n)}return i}function n(t){for(var n=1;n<arguments.length;n++){var s=null!=arguments[n]?arguments[n]:{};n%2?i(Object(s),!0).forEach((function(i){e(t,i,s[i])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(s)):i(Object(s)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(s,e))}))}return t}function s(t,e){if(null==t)return{};var i,n,s=function(t,e){if(null==t)return{};var i,n,s={},o=Object.keys(t);for(n=0;n<o.length;n++)i=o[n],e.indexOf(i)>=0||(s[i]=t[i]);return s}(t,e);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(t);for(n=0;n<o.length;n++)i=o[n],e.indexOf(i)>=0||Object.prototype.propertyIsEnumerable.call(t,i)&&(s[i]=t[i])}return s}function o(t){return function(t){if(Array.isArray(t))return r(t)}(t)||function(t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t))return Array.from(t)}(t)||function(t,e){if(!t)return;if("string"==typeof t)return r(t,e);var i=Object.prototype.toString.call(t).slice(8,-1);"Object"===i&&t.constructor&&(i=t.constructor.name);if("Map"===i||"Set"===i)return Array.from(t);if("Arguments"===i||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i))return r(t,e)}(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function r(t,e){(null==e||e>t.length)&&(e=t.length);for(var i=0,n=new Array(e);i<e;i++)n[i]=t[i];return n}var a,h,c=(function(t){
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+!function(){var e={}.hasOwnProperty;function i(){for(var t=[],n=0;n<arguments.length;n++){var s=arguments[n];if(s){var o=typeof s;if("string"===o||"number"===o)t.push(s);else if(Array.isArray(s)&&s.length){var r=i.apply(null,s);r&&t.push(r)}else if("object"===o)for(var a in s)e.call(s,a)&&s[a]&&t.push(a)}}return t.join(" ")}t.exports?(i.default=i,t.exports=i):window.classNames=i}()}(h={path:a,exports:{},require:function(t,e){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==e&&h.path)}},h.exports),h.exports),l=function(t){return function(e,i){if(!e)return t;var n;"string"==typeof e?n=e:i=e;var s=t;return n&&(s+="__"+n),s+(i?Object.keys(i).reduce((function(t,e){var n=i[e];return n&&(t+=" "+("boolean"==typeof n?s+"--"+e:s+"--"+e+"_"+n)),t}),""):"")}};function d(t,e,i){var n,s,o,r,a;function h(){var c=Date.now()-r;c<e&&c>=0?n=setTimeout(h,e-c):(n=null,i||(a=t.apply(o,s),o=s=null))}null==e&&(e=100);var c=function(){o=this,s=arguments,r=Date.now();var c=i&&!n;return n||(n=setTimeout(h,e)),c&&(a=t.apply(o,s),o=s=null),a};return c.clear=function(){n&&(clearTimeout(n),n=null)},c.flush=function(){n&&(a=t.apply(o,s),o=s=null,clearTimeout(n),n=null)},c}d.debounce=d;var u=d,m=function(){return(m=Object.assign||function(t){for(var e,i=1,n=arguments.length;i<n;i++)for(var s in e=arguments[i])Object.prototype.hasOwnProperty.call(e,s)&&(t[s]=e[s]);return t}).apply(this,arguments)};
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */function f(t,e){var i,n;return t&&e?(i=""+t+e[0].toUpperCase()+e.slice(1),n=t+"-"+e):(i=t||e,n=t||e),{name:i,classname:n}}function g(t){return/^blob:/.test(t)}function p(t){return g(t)||function(t){return/^data:/.test(t)}(t)}function v(t){return!!(t&&t.constructor&&t.call&&t.apply)}function b(t){return void 0===t}function w(t){return"object"==typeof t&&null!==t}function y(t,e,i){var n={};return w(t)?(Object.keys(e).forEach((function(s){b(t[s])?n[s]=e[s]:w(e[s])?w(t[s])?n[s]=y(t[s],e[s],i[s]):n[s]=t[s]?e[s]:i[s]:!0===e[s]||!1===e[s]?n[s]=Boolean(t[s]):n[s]=t[s]})),n):t?e:i}function z(t){var e=Number(t);return Number.isNaN(e)?t:e}function R(t){return typeof("number"==t||function(t){return"object"==typeof t&&null!==t}(t)&&"[object Number]"==toString.call(t))&&!A(t)}function A(t){return t!=t}function x(t,e){return Math.sqrt(Math.pow(t.x-e.x,2)+Math.pow(t.y-e.y,2))}var S=function(t,e){void 0===t&&(t={}),void 0===e&&(e={}),this.type="manipulateImage",this.move=t,this.scale=e},M=function(t,e){void 0===e&&(e={}),this.type="resize",this.directions=t,this.params=e},C=function(t){this.type="move",this.directions=t},E=function(){function t(t,e,i,n,s){this.type="drag",this.nativeEvent=t,this.position=i,this.previousPosition=n,this.element=e,this.anchor=s}return t.prototype.shift=function(){var t=this,e=t.element,i=t.anchor,n=t.position,s=e.getBoundingClientRect(),o=s.left,r=s.top;return{left:n.left-o-i.left,top:n.top-r-i.top}},t}();function W(t,e,i,n,s,o,r,a,h,c){"boolean"!=typeof r&&(h=a,a=r,r=!1);const l="function"==typeof i?i.options:i;let d;if(t&&t.render&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns,l._compiled=!0,s&&(l.functional=!0)),n&&(l._scopeId=n),o?(d=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),e&&e.call(this,h(t)),t&&t._registeredComponents&&t._registeredComponents.add(o)},l._ssrRegister=d):e&&(d=r?function(t){e.call(this,c(t,this.$root.$options.shadowRoot))}:function(t){e.call(this,a(t))}),d)if(l.functional){const t=l.render;l.render=function(e,i){return d.call(i),t(e,i)}}else{const t=l.beforeCreate;l.beforeCreate=t?[].concat(t,d):[d]}return i}var T=W({render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("div",{ref:"draggable",class:t.classname,on:{touchstart:t.onTouchStart,mousedown:t.onMouseDown,mouseover:t.onMouseOver,mouseleave:t.onMouseLeave}},[t._t("default")],2)},staticRenderFns:[]},undefined,{name:"DraggableElement",mixins:[{beforeMount:function(){window.addEventListener("mouseup",this.onMouseUp,{passive:!1}),window.addEventListener("mousemove",this.onMouseMove,{passive:!1}),window.addEventListener("touchmove",this.onTouchMove,{passive:!1}),window.addEventListener("touchend",this.onTouchEnd,{passive:!1})},beforeDestroy:function(){window.removeEventListener("mouseup",this.onMouseUp),window.removeEventListener("mousemove",this.onMouseMove),window.removeEventListener("touchmove",this.onTouchMove),window.removeEventListener("touchend",this.onTouchEnd)},mounted:function(){if(!this.$refs.draggable)throw new Error('You should add ref "draggable" to your root element to use draggable mixin');this.touches=[],this.hovered=!1},methods:{onMouseOver:function(){this.hovered||(this.hovered=!0,this.$emit("enter"))},onMouseLeave:function(){this.hovered&&!this.touches.length&&(this.hovered=!1,this.$emit("leave"))},onTouchStart:function(t){t.cancelable&&!this.disabled&&1===t.touches.length&&(this.touches=o(t.touches),this.hovered||(this.$emit("enter"),this.hovered=!0),t.touches.length&&this.initAnchor(this.touches.reduce((function(e,i){return{clientX:e.clientX+i.clientX/t.touches.length,clientY:e.clientY+i.clientY/t.touches.length}}),{clientX:0,clientY:0})),t.preventDefault&&t.preventDefault(),t.stopPropagation())},onTouchEnd:function(){this.processEnd()},onTouchMove:function(t){this.touches.length&&(this.processMove(t,t.touches),t.preventDefault&&t.preventDefault(),t.stopPropagation&&t.stopPropagation())},onMouseDown:function(t){if(!this.disabled&&0===t.button){var e={fake:!0,clientX:t.clientX,clientY:t.clientY};this.touches=[e],this.initAnchor(e),t.stopPropagation()}},onMouseMove:function(t){this.touches.length&&(this.processMove(t,[{fake:!0,clientX:t.clientX,clientY:t.clientY}]),t.preventDefault&&t.preventDefault())},onMouseUp:function(){this.processEnd()},initAnchor:function(t){var e=this.$refs.draggable.getBoundingClientRect(),i=e.left,n=e.right,s=e.bottom,o=e.top;this.anchor={left:t.clientX-i,top:t.clientY-o,bottom:s-t.clientY,right:n-t.clientX}},processMove:function(t,e){var i=o(e);if(this.touches.length){if(1===this.touches.length&&1===i.length){var n=this.$refs.draggable;this.$emit("drag",new E(t,n,{left:i[0].clientX,top:i[0].clientY},{left:this.touches[0].clientX,top:this.touches[0].clientY},this.anchor))}this.touches=i}},processEnd:function(){this.touches.length&&this.$emit("drag-end"),this.hovered&&(this.$emit("leave"),this.hovered=!1),this.touches=[]}}}],props:{classname:{type:String}}},undefined,false,undefined,!1,void 0,void 0,void 0),O=l("vue-handler-wrapper"),H=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{class:t.classes.root},[i("DraggableElement",{class:t.classes.draggable,attrs:{disabled:t.disabled},on:{drag:function(e){return t.$emit("drag",e)},"drag-end":function(e){return t.$emit("drag-end")},leave:function(e){return t.$emit("leave")},enter:function(e){return t.$emit("enter")}}},[t._t("default")],2)],1)},staticRenderFns:[]},undefined,{name:"HandlerWrapper",components:{DraggableElement:T},props:{horizontalPosition:{type:String},verticalPosition:{type:String},disabled:{type:Boolean,default:!1}},computed:{classes:function(){var t;if(this.horizontalPosition||this.verticalPosition){var i,n=f(this.horizontalPosition,this.verticalPosition);t=O((e(i={},n.classname,!0),e(i,"disabled",this.disabled),i))}else t=O({disabled:this.disabled});return{root:t,draggable:O("draggable")}}}},undefined,false,undefined,!1,void 0,void 0,void 0),$=l("vue-line-wrapper"),j=W({render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("DraggableElement",{class:t.classname,attrs:{disabled:t.disabled},on:{drag:function(e){return t.$emit("drag",e)},"drag-end":function(e){return t.$emit("drag-end")},leave:function(e){return t.$emit("leave")},enter:function(e){return t.$emit("enter")}}},[t._t("default")],2)},staticRenderFns:[]},undefined,{name:"LineWrapper",components:{DraggableElement:T},props:{position:{type:String,required:!0},disabled:{type:Boolean,default:!1}},computed:{classname:function(){var t;return $((e(t={},this.position,!0),e(t,"disabled",this.disabled),t))}}},undefined,false,undefined,!1,void 0,void 0,void 0),D=["left","right","top","bottom"],P=["left","right"],L=["top","bottom"],I=["left","top"],B=["fill-area","fit-area","stencil","none"],_={left:0,top:0,width:0,height:0};function F(t,e,i){return!(i=i||["width","height","left","top"]).some((function(i){return t[i]!==e[i]}))}function X(t){return{left:t.left,top:t.top,right:t.left+t.width,bottom:t.top+t.height}}function Y(t,e){return{left:t.left-e.left,top:t.top-e.top}}function k(t){return{left:t.left+t.width/2,top:t.top+t.height/2}}function U(t,e){var i={left:0,top:0,right:0,bottom:0};return D.forEach((function(n){var s=e[n],o=X(t)[n];i[n]=void 0!==s&&void 0!==o?"left"===n||"top"===n?Math.max(0,s-o):Math.max(0,o-s):0})),i}function N(t,e){return{left:t.left-e.left,top:t.top-e.top,width:t.width+e.left+e.right,height:t.height+e.top+e.bottom}}function Z(t){return{left:-t.left,top:-t.top}}function V(t,e){return m(m({},t),{left:t.left+e.left,top:t.top+e.top})}function q(t,e,i,n){if(1!==e){if(i){var s=k(t);return{width:t.width*e,height:t.height*e,left:t.left+t.width*(1-e)/2+(i.left-s.left)*(n||1-e),top:t.top+t.height*(1-e)/2+(i.top-s.top)*(n||1-e)}}return{width:t.width*e,height:t.height*e,left:t.left+t.width*(1-e)/2,top:t.top+t.height*(1-e)/2}}return t}function G(t){return t.width/t.height}function Q(t,e){return Math.min(void 0!==e.right&&void 0!==e.left?(e.right-e.left)/t.width:1/0,void 0!==e.bottom&&void 0!==e.top?(e.bottom-e.top)/t.height:1/0)}function K(t,e){var i={left:0,top:0},n=U(t,e);return n.left&&n.left>0?i.left=n.left:n.right&&n.right>0&&(i.left=-n.right),n.top&&n.top>0?i.top=n.top:n.bottom&&n.bottom>0&&(i.top=-n.bottom),i}function J(t,e){var i;return e.minimum&&t<e.minimum?i=e.minimum:e.maximum&&t>e.maximum&&(i=e.maximum),i}function tt(t,e){var i=G(t),n=G(e);return e.width<1/0&&e.height<1/0?i>n?{width:e.width,height:e.width/i}:{width:e.height*i,height:e.height}:e.width<1/0?{width:e.width,height:e.width/i}:e.height<1/0?{width:e.height*i,height:e.height}:t}function et(t,e){var i=e*Math.PI/180;return{width:Math.abs(t.width*Math.cos(i))+Math.abs(t.height*Math.sin(i)),height:Math.abs(t.width*Math.sin(i))+Math.abs(t.height*Math.cos(i))}}function it(t,e){var i=e*Math.PI/180;return{left:t.left*Math.cos(i)-t.top*Math.sin(i),top:t.left*Math.sin(i)+t.top*Math.cos(i)}}function nt(t,e){var i=U(st(t,e),e);return i.left+i.right+i.top+i.bottom?i.left+i.right>i.top+i.bottom?Math.min((t.width+i.left+i.right)/t.width,Q(t,e)):Math.min((t.height+i.top+i.bottom)/t.height,Q(t,e)):1}function st(t,e,i){void 0===i&&(i=!1);var n=K(t,e);return V(t,i?Z(n):n)}function ot(t){return{width:void 0!==t.right&&void 0!==t.left?t.right-t.left:1/0,height:void 0!==t.bottom&&void 0!==t.top?t.bottom-t.top:1/0}}function rt(t,e){return m(m({},t),{minWidth:Math.min(e.width,t.minWidth),minHeight:Math.min(e.height,t.minHeight),maxWidth:Math.min(e.width,t.maxWidth),maxHeight:Math.min(e.height,t.maxHeight)})}function at(t,e,i){void 0===i&&(i=!0);var n={};return D.forEach((function(s){var o=t[s],r=e[s];void 0!==o&&void 0!==r?n[s]="left"===s||"top"===s?i?Math.max(o,r):Math.min(o,r):i?Math.min(o,r):Math.max(o,r):void 0!==r?n[s]=r:void 0!==o&&(n[s]=o)})),n}function ht(t,e){return at(t,e,!0)}function ct(t){var e=t.size,i=t.aspectRatio,n=t.ignoreMinimum,s=t.sizeRestrictions;return Boolean((e.correctRatio||G(e)>=i.minimum&&G(e)<=i.maximum)&&e.height<=s.maxHeight&&e.width<=s.maxWidth&&e.width&&e.height&&(n||e.height>=s.minHeight&&e.width>=s.minWidth))}function lt(t,e){return Math.pow(t.width-e.width,2)+Math.pow(t.height-e.height,2)}function dt(t){var e=t.width,i=t.height,n=t.sizeRestrictions,s={minimum:t.aspectRatio&&t.aspectRatio.minimum||0,maximum:t.aspectRatio&&t.aspectRatio.maximum||1/0},o={width:Math.max(n.minWidth,Math.min(n.maxWidth,e)),height:Math.max(n.minHeight,Math.min(n.maxHeight,i))};function r(t,o){return void 0===o&&(o=!1),t.reduce((function(t,r){return ct({size:r,aspectRatio:s,sizeRestrictions:n,ignoreMinimum:o})&&(!t||lt(r,{width:e,height:i})<lt(t,{width:e,height:i}))?r:t}),null)}var a=[];s&&[s.minimum,s.maximum].forEach((function(t){t&&a.push({width:o.width,height:o.width/t,correctRatio:!0},{width:o.height*t,height:o.height,correctRatio:!0})})),ct({size:o,aspectRatio:s,sizeRestrictions:n})&&a.push(o);var h=r(a)||r(a,!0);return h&&{width:h.width,height:h.height}}function ut(t){var e=t.event,i=t.coordinates,n=t.positionRestrictions,s=void 0===n?{}:n,o=V(i,e.directions);return V(o,K(o,s))}function mt(t){var e=t.coordinates,i=t.transform,n=t.imageSize,s=t.sizeRestrictions,o=t.positionRestrictions,r=t.aspectRatio,a=t.visibleArea,h=function(t,e){return ut({coordinates:t,positionRestrictions:o,event:new C({left:e.left-t.left,top:e.top-t.top})})},c=m({},e);return(Array.isArray(i)?i:[i]).forEach((function(t){var e={};b((e="function"==typeof t?t({coordinates:c,imageSize:n,visibleArea:a}):t).width)&&b(e.height)||(c=function(t,e){var i=m(m(m({},t),dt({width:e.width,height:e.height,sizeRestrictions:s,aspectRatio:r})),{left:0,top:0});return h(i,{left:t.left,top:t.top})}(c,m(m({},c),e))),b(e.left)&&b(e.top)||(c=h(c,m(m({},c),e)))})),c}function ft(t){t.event;var e,i,n,s=t.getAreaRestrictions,o=t.boundaries,r=t.coordinates,a=t.visibleArea,h=(t.aspectRatio,t.stencilSize),c=t.sizeRestrictions,l=t.positionRestrictions,d=(t.stencilReference,m({},r)),u=m({},a),f=m({},h);e=G(f),i=G(d),void 0===n&&(n=.001),(0===e||0===i?Math.abs(i-e)<n:Math.abs(i/e)<1+n&&Math.abs(i/e)>1-n)||(d=m(m({},d),dt({sizeRestrictions:c,width:d.width,height:d.height,aspectRatio:{minimum:G(f),maximum:G(f)}})));var g=nt(u=q(u,d.width*o.width/(u.width*f.width)),s({visibleArea:u,type:"resize"}));return 1!==g&&(u=q(u,g),d=q(d,g)),u=st(u=V(u,Y(k(d),k(u))),s({visibleArea:u,type:"move"})),{coordinates:d=st(d,ht(X(u),l)),visibleArea:u}}function gt(t){var e=t.event,i=t.getAreaRestrictions,n=t.boundaries,s=t.coordinates,o=t.visibleArea,r=(t.aspectRatio,t.stencilSize,t.sizeRestrictions,t.positionRestrictions),a=(t.stencilReference,m({},s)),h=m({},o);if(s&&o&&"manipulateImage"!==e.type){var c={width:0,height:0};h.width,n.width;G(n)>G(a)?(c.height=.8*n.height,c.width=c.height*G(a)):(c.width=.8*n.width,c.height=c.width*G(a));var l=nt(h=q(h,a.width*n.width/(h.width*c.width)),i({visibleArea:h,type:"resize"}));h=q(h,l),1!==l&&(c.height/=l,c.width/=l),h=st(h=V(h,Y(k(a),k(h))),i({visibleArea:h,type:"move"})),a=st(a,ht(X(h),r))}return{coordinates:a,visibleArea:h}}function pt(t){var e=t.event,i=t.coordinates,n=t.visibleArea,s=t.getAreaRestrictions,o=m({},n),r=m({},i);if("setCoordinates"===e.type){var a=Math.max(0,r.width-o.width),h=Math.max(0,r.height-o.height);a>h?o=q(o,Math.min(r.width/o.width,Q(o,s({visibleArea:o,type:"resize"})))):h>a&&(o=q(o,Math.min(r.height/o.height,Q(o,s({visibleArea:o,type:"resize"}))))),o=st(o=V(o,Z(K(r,X(o)))),s({visibleArea:o,type:"move"}))}return{visibleArea:o,coordinates:r}}function vt(t){var e=t.imageSize,i=t.visibleArea,n=t.aspectRatio,s=t.sizeRestrictions,o=i||e,r=Math.min(n.maximum||1/0,Math.max(n.minimum||0,G(o))),a=o.width<o.height?{width:.8*o.width,height:.8*o.width/r}:{height:.8*o.height,width:.8*o.height*r};return dt(m(m({},a),{aspectRatio:n,sizeRestrictions:s}))}function bt(t){var e,i,n=t.imageSize,s=t.visibleArea,o=t.boundaries,r=t.aspectRatio,a=t.sizeRestrictions,h=t.stencilSize,c=s||n;return G(c)>G(o)?i=(e=h.height*c.height/o.height)*G(h):e=(i=h.width*c.width/o.width)/G(h),dt({width:i,height:e,aspectRatio:r,sizeRestrictions:a})}function wt(t,e){return at(t,X(e))}function yt(t){var e=t.event,i=t.coordinates,n=t.visibleArea,s=t.sizeRestrictions,o=t.getAreaRestrictions,r=t.positionRestrictions,a=t.adjustStencil,h=e.scale,c=e.move,l=m({},n),d=m({},i),u=1,f=1,g=h.factor&&Math.abs(h.factor-1)>.001;l=V(l,{left:c.left||0,top:c.top||0});var p={stencil:{minimum:Math.max(s.minWidth?s.minWidth/d.width:0,s.minHeight?s.minHeight/d.height:0),maximum:Math.min(s.maxWidth?s.maxWidth/d.width:1/0,s.maxHeight?s.maxHeight/d.height:1/0,Q(d,r))},area:{maximum:Q(l,o({visibleArea:l,type:"resize"}))}};h.factor&&g&&(h.factor<1?(f=Math.max(h.factor,p.stencil.minimum))>1&&(f=1):h.factor>1&&(f=Math.min(h.factor,Math.min(p.area.maximum,p.stencil.maximum)))<1&&(f=1)),f&&(l=q(l,f,h.center));var v=i.left-n.left,b=n.width+n.left-(i.width+i.left),w=i.top-n.top,y=n.height+n.top-(i.height+i.top);return l=st(l=V(l,K(l,{left:void 0!==r.left?r.left-v*f:void 0,top:void 0!==r.top?r.top-w*f:void 0,bottom:void 0!==r.bottom?r.bottom+y*f:void 0,right:void 0!==r.right?r.right+b*f:void 0})),o({visibleArea:l,type:"move"})),d.width=d.width*f,d.height=d.height*f,d.left=l.left+v*f,d.top=l.top+w*f,d=st(d,ht(X(l),r)),h.factor&&g&&a&&(h.factor>1?u=Math.min(p.area.maximum,h.factor)/f:h.factor<1&&(u=Math.max(d.height/l.height,d.width/l.width,h.factor/f)),1!==u&&(l=V(l=st(l=q(l,u,h.factor>1?h.center:k(d)),o({visibleArea:l,type:"move"})),Z(K(d,X(l)))))),{coordinates:d,visibleArea:l}}function zt(t){var e=t.aspectRatio,i=t.getAreaRestrictions,n=t.coordinates,s=t.visibleArea,o=t.sizeRestrictions,r=t.positionRestrictions,a=t.imageSize,h=t.previousImageSize,c=t.angle,l=m({},n),d=m({},s),u=it(k(m({left:0,top:0},h)),c);return(l=m(m({},dt({sizeRestrictions:o,aspectRatio:e,width:l.width,height:l.height})),it(k(l),c))).left-=u.left-a.width/2+l.width/2,l.top-=u.top-a.height/2+l.height/2,d=q(d,nt(d,i({visibleArea:d,type:"resize"}))),{coordinates:l=st(l,r),visibleArea:d=st(d=V(d,Y(k(l),k(n))),i({visibleArea:d,type:"move"}))}}function Rt(t){var e=t.flip,i=t.previousFlip,n=t.rotate,s=(t.aspectRatio,t.getAreaRestrictions),o=t.coordinates,r=t.visibleArea,a=t.imageSize,h=m({},o),c=m({},r),l=i.horizontal!==e.horizontal,d=i.vertical!==e.vertical;if(l||d){var u=it({left:a.width/2,top:a.height/2},-n),f=it(k(h),-n),g=it({left:l?u.left-(f.left-u.left):f.left,top:d?u.top-(f.top-u.top):f.top},n);h=V(h,Y(g,k(h))),f=it(k(c),-n),c=st(c=V(c,Y(g=it({left:l?u.left-(f.left-u.left):f.left,top:d?u.top-(f.top-u.top):f.top},n),k(c))),s({visibleArea:c,type:"move"}))}return{coordinates:h,visibleArea:c}}function At(t){var e=t.directions,i=t.coordinates,n=t.positionRestrictions,s=void 0===n?{}:n,o=t.sizeRestrictions,r=t.preserveRatio,a=t.compensate,h=m({},e),c=N(i,h).width,l=N(i,h).height;c<0&&(h.left<0&&h.right<0?(h.left=-(i.width-o.minWidth)/(h.left/h.right),h.right=-(i.width-o.minWidth)/(h.right/h.left)):h.left<0?h.left=-(i.width-o.minWidth):h.right<0&&(h.right=-(i.width-o.minWidth))),l<0&&(h.top<0&&h.bottom<0?(h.top=-(i.height-o.minHeight)/(h.top/h.bottom),h.bottom=-(i.height-o.minHeight)/(h.bottom/h.top)):h.top<0?h.top=-(i.height-o.minHeight):h.bottom<0&&(h.bottom=-(i.height-o.minHeight)));var d=U(N(i,h),s);a&&(d.left&&d.left>0&&0===d.right?(h.right+=d.left,h.left-=d.left):d.right&&d.right>0&&0===d.left&&(h.left+=d.right,h.right-=d.right),d.top&&d.top>0&&0===d.bottom?(h.bottom+=d.top,h.top-=d.top):d.bottom&&d.bottom>0&&0===d.top&&(h.top+=d.bottom,h.bottom-=d.bottom),d=U(N(i,h),s));var u={width:1/0,height:1/0,left:1/0,right:1/0,top:1/0,bottom:1/0};if(D.forEach((function(t){var e=d[t];e&&h[t]&&(u[t]=Math.max(0,1-e/h[t]))})),r){var f=Math.min.apply(Math,D.map((function(t){return u[t]})));f!==1/0&&D.forEach((function(t){h[t]*=f}))}else D.forEach((function(t){u[t]!==1/0&&(h[t]*=u[t])}));if(c=N(i,h).width,l=N(i,h).height,h.right+h.left&&(c>o.maxWidth?u.width=(o.maxWidth-i.width)/(h.right+h.left):c<o.minWidth&&(u.width=(o.minWidth-i.width)/(h.right+h.left))),h.bottom+h.top&&(l>o.maxHeight?u.height=(o.maxHeight-i.height)/(h.bottom+h.top):l<o.minHeight&&(u.height=(o.minHeight-i.height)/(h.bottom+h.top))),r){var g=Math.min(u.width,u.height);g!==1/0&&D.forEach((function(t){h[t]*=g}))}else u.width!==1/0&&P.forEach((function(t){h[t]*=u.width})),u.height!==1/0&&L.forEach((function(t){h[t]*=u.height}));return h}function xt(t,e,i){return 0==e&&0==i?t/2:0==e?0:0==i?t:t*Math.abs(e/(e+i))}var St=l("vue-simple-handler"),Mt=l("vue-simple-handler-wrapper"),Ct=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("HandlerWrapper",{class:t.classes.wrapper,attrs:{"vertical-position":t.verticalPosition,"horizontal-position":t.horizontalPosition,disabled:t.disabled},on:{drag:t.onDrag,"drag-end":t.onDragEnd,enter:t.onEnter,leave:t.onLeave}},[i("div",{class:t.classes.default})])},staticRenderFns:[]},undefined,{name:"SimpleHandler",components:{HandlerWrapper:H},props:{defaultClass:{type:String},hoverClass:{type:String},wrapperClass:{type:String},horizontalPosition:{type:String},verticalPosition:{type:String},disabled:{type:Boolean,default:!1}},data:function(){return{hover:!1}},computed:{classes:function(){var t,i=(e(t={},this.horizontalPosition,Boolean(this.horizontalPosition)),e(t,this.verticalPosition,Boolean(this.verticalPosition)),e(t,"".concat(this.horizontalPosition,"-").concat(this.verticalPosition),Boolean(this.verticalPosition&&this.horizontalPosition)),e(t,"hover",this.hover),t);return{default:c(St(i),this.defaultClass,this.hover&&this.hoverClass),wrapper:c(Mt(i),this.wrapperClass)}}},methods:{onDrag:function(t){this.$emit("drag",t)},onEnter:function(){this.hover=!0},onLeave:function(){this.hover=!1},onDragEnd:function(){this.$emit("drag-end")}}},undefined,false,undefined,!1,void 0,void 0,void 0),Et=l("vue-simple-line"),Wt=l("vue-simple-line-wrapper"),Tt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("LineWrapper",{class:t.classes.wrapper,attrs:{position:t.position,disabled:t.disabled},on:{drag:t.onDrag,"drag-end":t.onDragEnd,enter:t.onEnter,leave:t.onLeave}},[i("div",{class:t.classes.root})])},staticRenderFns:[]},undefined,{name:"SimpleLine",components:{LineWrapper:j},props:{defaultClass:{type:String},hoverClass:{type:String},wrapperClass:{type:String},position:{type:String},disabled:{type:Boolean,default:!1}},data:function(){return{hover:!1}},computed:{classes:function(){return{root:c(Et(e({},this.position,!0)),this.defaultClass,this.hover&&this.hoverClass),wrapper:c(Wt(e({},this.position,!0)),this.wrapperClass)}}},methods:{onDrag:function(t){this.$emit("drag",t)},onEnter:function(){this.hover=!0},onLeave:function(){this.hover=!1},onDragEnd:function(){this.$emit("drag-end")}}},undefined,false,undefined,!1,void 0,void 0,void 0),Ot=l("vue-bounding-box"),Ht=["east","west",null],$t=["south","north",null],jt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{ref:"box",class:t.classes.root,style:t.style},[t._t("default"),t._v(" "),i("div",t._l(t.lineNodes,(function(e){return i(e.component,{key:e.name,tag:"component",attrs:{"default-class":e.class,"hover-class":e.hoverClass,"wrapper-class":e.wrapperClass,position:e.name,disabled:e.disabled},on:{drag:function(i){return t.onHandlerDrag(i,e.horizontalDirection,e.verticalDirection)},"drag-end":function(e){return t.onEnd()}}})})),1),t._v(" "),t._l(t.handlerNodes,(function(e){return i("div",{key:e.name,class:e.wrapperClass,style:e.wrapperStyle},[i(e.component,{tag:"component",attrs:{"default-class":e.class,"hover-class":e.hoverClass,"wrapper-class":e.wrapperClass,"horizontal-position":e.horizontalDirection,"vertical-position":e.verticalDirection,disabled:e.disabled},on:{drag:function(i){return t.onHandlerDrag(i,e.horizontalDirection,e.verticalDirection)},"drag-end":function(e){return t.onEnd()}}})],1)}))],2)},staticRenderFns:[]},undefined,{name:"BoundingBox",props:{width:{type:Number},height:{type:Number},transitions:{type:Object},handlers:{type:Object,default:function(){return{eastNorth:!0,north:!0,westNorth:!0,west:!0,westSouth:!0,south:!0,eastSouth:!0,east:!0}}},handlersComponent:{type:[Object,String],default:function(){return Ct}},handlersClasses:{type:Object,default:function(){return{}}},handlersWrappersClasses:{type:Object,default:function(){return{}}},lines:{type:Object,default:function(){return{west:!0,north:!0,east:!0,south:!0}}},linesComponent:{type:[Object,String],default:function(){return Tt}},linesClasses:{type:Object,default:function(){return{}}},linesWrappersClasses:{type:Object,default:function(){return{}}},resizable:{type:Boolean,default:!0}},data:function(){var t=[];return Ht.forEach((function(e){$t.forEach((function(i){if(e!==i){var n=f(e,i),s=n.name,o=n.classname;t.push({name:s,classname:o,verticalDirection:i,horizontalDirection:e})}}))})),{points:t}},computed:{style:function(){var t={};return this.width&&this.height&&(t.width="".concat(this.width,"px"),t.height="".concat(this.height,"px"),this.transitions&&this.transitions.enabled&&(t.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction))),t},classes:function(){var t=this.handlersClasses,e=this.handlersWrappersClasses,i=this.linesClasses,n=this.linesWrappersClasses;return{root:Ot(),handlers:t,handlersWrappers:e,lines:i,linesWrappers:n}},lineNodes:function(){var t=this,e=[];return this.points.forEach((function(i){i.horizontalDirection&&i.verticalDirection||!t.lines[i.name]||e.push({name:i.name,component:t.linesComponent,class:c(t.classes.lines.default,t.classes.lines[i.name],!t.resizable&&t.classes.lines.disabled),wrapperClass:c(t.classes.linesWrappers.default,t.classes.linesWrappers[i.name],!t.resizable&&t.classes.linesWrappers.disabled),hoverClass:t.classes.lines.hover,verticalDirection:i.verticalDirection,horizontalDirection:i.horizontalDirection,disabled:!t.resizable})})),e},handlerNodes:function(){var t=this,i=[],n=this.width,s=this.height;return this.points.forEach((function(o){if(t.handlers[o.name]){var r={name:o.name,component:t.handlersComponent,class:c(t.classes.handlers.default,t.classes.handlers[o.name]),wrapperClass:c(t.classes.handlersWrappers.default,t.classes.handlersWrappers[o.name]),hoverClass:t.classes.handlers.hover,verticalDirection:o.verticalDirection,horizontalDirection:o.horizontalDirection,disabled:!t.resizable};if(n&&s){var a=o.horizontalDirection,h=o.verticalDirection,l="east"===a?n:"west"===a?0:n/2,d="south"===h?s:"north"===h?0:s/2;r.wrapperClass=Ot("handler"),r.wrapperStyle={transform:"translate(".concat(l,"px, ").concat(d,"px)")},t.transitions&&t.transitions.enabled&&(r.wrapperStyle.transition="".concat(t.transitions.time,"ms ").concat(t.transitions.timingFunction))}else r.wrapperClass=Ot("handler",e({},o.classname,!0));i.push(r)}})),i}},beforeMount:function(){window.addEventListener("mouseup",this.onMouseUp,{passive:!1}),window.addEventListener("mousemove",this.onMouseMove,{passive:!1}),window.addEventListener("touchmove",this.onTouchMove,{passive:!1}),window.addEventListener("touchend",this.onTouchEnd,{passive:!1})},beforeDestroy:function(){window.removeEventListener("mouseup",this.onMouseUp),window.removeEventListener("mousemove",this.onMouseMove),window.removeEventListener("touchmove",this.onTouchMove),window.removeEventListener("touchend",this.onTouchEnd)},mounted:function(){this.touches=[]},methods:{onEnd:function(){this.$emit("resize-end")},onHandlerDrag:function(t,e,i){var n,s=t.shift(),o=s.left,r=s.top,a={left:0,right:0,top:0,bottom:0};"west"===e?a.left-=o:"east"===e&&(a.right+=o),"north"===i?a.top-=r:"south"===i&&(a.bottom+=r),!i&&e?n="width":i&&!e&&(n="height"),this.resizable&&this.$emit("resize",new M(a,{allowedDirections:{left:"west"===e||!e,right:"east"===e||!e,bottom:"south"===i||!i,top:"north"===i||!i},preserveAspectRatio:t.nativeEvent&&t.nativeEvent.shiftKey,respectDirection:n}))}}},undefined,false,undefined,!1,void 0,void 0,void 0),Dt=function(t,e){void 0===t&&(t={}),void 0===e&&(e={}),this.type="manipulateImage",this.move=t,this.scale=e},Pt=function(t){this.type="move",this.directions=t},Lt=l("vue-draggable-area"),It=W({render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("div",{ref:"container",on:{touchstart:t.onTouchStart,mousedown:t.onMouseDown}},[t._t("default")],2)},staticRenderFns:[]},undefined,{name:"DraggableArea",props:{movable:{type:Boolean,default:!0},activationDistance:{type:Number,default:20}},computed:{classnames:function(){return{default:Lt()}}},beforeMount:function(){window.addEventListener("mouseup",this.onMouseUp,{passive:!1}),window.addEventListener("mousemove",this.onMouseMove,{passive:!1}),window.addEventListener("touchmove",this.onTouchMove,{passive:!1}),window.addEventListener("touchend",this.onTouchEnd,{passive:!1})},beforeDestroy:function(){window.removeEventListener("mouseup",this.onMouseUp),window.removeEventListener("mousemove",this.onMouseMove),window.removeEventListener("touchmove",this.onTouchMove),window.removeEventListener("touchend",this.onTouchEnd)},mounted:function(){this.touches=[],this.touchStarted=!1},methods:{onTouchStart:function(t){if(t.cancelable){var e=this.movable&&1===t.touches.length;e&&(this.touches=o(t.touches)),(this.touchStarted||e)&&(t.preventDefault(),t.stopPropagation())}},onTouchEnd:function(){this.touchStarted=!1,this.processEnd()},onTouchMove:function(t){this.touches.length>=1&&(this.touchStarted?(this.processMove(t,t.touches),t.preventDefault(),t.stopPropagation()):x({x:this.touches[0].clientX,y:this.touches[0].clientY},{x:t.touches[0].clientX,y:t.touches[0].clientY})>this.activationDistance&&(this.initAnchor({clientX:t.touches[0].clientX,clientY:t.touches[0].clientY}),this.touchStarted=!0))},onMouseDown:function(t){if(this.movable&&0===t.button){var e={fake:!0,clientX:t.clientX,clientY:t.clientY};this.touches=[e],this.initAnchor(e),t.stopPropagation()}},onMouseMove:function(t){this.touches.length&&(this.processMove(t,[{fake:!0,clientX:t.clientX,clientY:t.clientY}]),t.preventDefault&&t.cancelable&&t.preventDefault(),t.stopPropagation())},onMouseUp:function(){this.processEnd()},initAnchor:function(t){var e=this.$refs.container.getBoundingClientRect(),i=e.left,n=e.top;this.anchor={x:t.clientX-i,y:t.clientY-n}},processMove:function(t,e){var i=o(e);if(this.touches.length){var n=this.$refs.container.getBoundingClientRect(),s=n.left,r=n.top;1===this.touches.length&&1===i.length&&this.$emit("move",new Pt({left:i[0].clientX-(s+this.anchor.x),top:i[0].clientY-(r+this.anchor.y)}))}},processEnd:function(){this.touches.length&&this.$emit("move-end"),this.touches=[]}}},undefined,false,undefined,!1,void 0,void 0,void 0);function Bt(t){return new Promise((function(e,i){try{if(t)if(/^data:/i.test(t))e(function(t){t=t.replace(/^data:([^;]+);base64,/gim,"");for(var e=atob(t),i=e.length,n=new ArrayBuffer(i),s=new Uint8Array(n),o=0;o<i;o++)s[o]=e.charCodeAt(o);return n}(t));else if(/^blob:/i.test(t)){var n=new FileReader;n.onload=function(t){e(t.target.result)},o=t,r=function(t){n.readAsArrayBuffer(t)},(a=new XMLHttpRequest).open("GET",o,!0),a.responseType="blob",a.onload=function(){200!=this.status&&0!==this.status||r(this.response)},a.send()}else{var s=new XMLHttpRequest;s.onreadystatechange=function(){4===s.readyState&&(200===s.status||0===s.status?e(s.response):i("Warning: could not load an image to parse its orientation"),s=null)},s.onprogress=function(){"image/jpeg"!==s.getResponseHeader("content-type")&&s.abort()},s.withCredentials=!1,s.open("GET",t,!0),s.responseType="arraybuffer",s.send(null)}else i("Error: the image is empty")}catch(t){i(t)}var o,r,a}))}function _t(t){var e=t.rotate,i=t.flip,n=t.scaleX,s=t.scaleY,o="";return o+=" rotate("+e+"deg) ",o+=" scaleX("+n*(i.horizontal?-1:1)+") ",o+=" scaleY("+s*(i.vertical?-1:1)+") "}function Ft(t){try{var e,i=new DataView(t),n=void 0,s=void 0,o=void 0,r=void 0;if(255===i.getUint8(0)&&216===i.getUint8(1))for(var a=i.byteLength,h=2;h+1<a;){if(255===i.getUint8(h)&&225===i.getUint8(h+1)){o=h;break}h++}if(o&&(n=o+10,"Exif"===function(t,e,i){var n,s="";for(n=e,i+=e;n<i;n++)s+=String.fromCharCode(t.getUint8(n));return s}(i,o+4,4))){var c=i.getUint16(n);if(((s=18761===c)||19789===c)&&42===i.getUint16(n+2,s)){var l=i.getUint32(n+4,s);l>=8&&(r=n+l)}}if(r)for(var d=i.getUint16(r,s),u=0;u<d;u++){h=r+12*u+2;if(274===i.getUint16(h,s)){h+=8,e=i.getUint16(h,s),i.setUint16(h,1,s);break}}return e}catch(t){return null}}var Xt=l("vue-preview-result"),Yt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{class:t.classes.root},[i("div",{ref:"wrapper",class:t.classes.wrapper,style:t.wrapperStyle},[i("img",{ref:"image",class:t.classes.image,style:t.imageStyle,attrs:{src:t.image.src}})])])},staticRenderFns:[]},undefined,{name:"PreviewResult",props:{image:{type:Object},transitions:{type:Object},stencilCoordinates:{type:Object,default:function(){return{width:0,height:0,left:0,top:0}}},imageClass:{type:String}},computed:{classes:function(){return{root:Xt(),wrapper:Xt("wrapper"),imageWrapper:Xt("image-wrapper"),image:c(Xt("image"),this.imageClass)}},wrapperStyle:function(){var t={width:"".concat(this.stencilCoordinates.width,"px"),height:"".concat(this.stencilCoordinates.height,"px"),left:"calc(50% - ".concat(this.stencilCoordinates.width/2,"px)"),top:"calc(50% - ".concat(this.stencilCoordinates.height/2,"px)")};return this.transitions&&this.transitions.enabled&&(t.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),t},imageStyle:function(){var t=this.image.transforms,e=et({width:this.image.width,height:this.image.height},t.rotate),i={width:"".concat(this.image.width,"px"),height:"".concat(this.image.height,"px"),left:"0px",top:"0px"},n={left:(this.image.width-e.width)*t.scaleX/2,top:(this.image.height-e.height)*t.scaleY/2},s={left:(1-t.scaleX)*this.image.width/2,top:(1-t.scaleY)*this.image.height/2};return i.transform="translate(\n\t\t\t\t".concat(-this.stencilCoordinates.left-t.translateX-n.left-s.left,"px,").concat(-this.stencilCoordinates.top-t.translateY-n.top-s.top,"px) ")+_t(t),this.transitions&&this.transitions.enabled&&(i.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),i}}},undefined,false,undefined,!1,void 0,void 0,void 0);function kt(t,e){var i=e.getBoundingClientRect(),n=i.left,s=i.top,o={left:0,top:0},r=0;return t.forEach((function(e){o.left+=(e.clientX-n)/t.length,o.top+=(e.clientY-s)/t.length})),t.forEach((function(t){r+=x({x:o.left,y:o.top},{x:t.clientX-n,y:t.clientY-s})})),{centerMass:o,spread:r,count:t.length}}var Ut=W({render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("div",{ref:"container",on:{touchstart:t.onTouchStart,mousedown:t.onMouseDown,wheel:t.onWheel}},[t._t("default")],2)},staticRenderFns:[]},undefined,{name:"CropperWrapper",props:{touchMove:{type:Boolean,required:!0},mouseMove:{type:Boolean,required:!0},touchResize:{type:Boolean,required:!0},wheelResize:{type:[Boolean,Object],required:!0}},beforeMount:function(){window.addEventListener("mouseup",this.onMouseUp,{passive:!1}),window.addEventListener("mousemove",this.onMouseMove,{passive:!1}),window.addEventListener("touchmove",this.onTouchMove,{passive:!1}),window.addEventListener("touchend",this.onTouchEnd,{passive:!1})},beforeDestroy:function(){window.removeEventListener("mouseup",this.onMouseUp),window.removeEventListener("mousemove",this.onMouseMove),window.removeEventListener("touchmove",this.onTouchMove),window.removeEventListener("touchend",this.onTouchEnd)},mounted:function(){this.touches=[]},methods:{onTouchStart:function(t){if(t.cancelable&&(this.touchMove||this.touchResize&&t.touches.length>1)){var e=this.$refs.container,i=e.getBoundingClientRect(),n=i.left,s=i.top,r=i.bottom,a=i.right;this.touches=o(t.touches).filter((function(t){return t.clientX>n&&t.clientX<a&&t.clientY>s&&t.clientY<r})),this.oldGeometricProperties=kt(this.touches,e),t.preventDefault&&t.preventDefault(),t.stopPropagation()}},onTouchEnd:function(t){0===t.touches.length&&this.processEnd()},onTouchMove:function(t){var e=this;if(this.touches.length){var i=o(t.touches).filter((function(t){return!t.identifier||e.touches.find((function(e){return e.identifier===t.identifier}))}));this.processMove(t,i),t.preventDefault&&t.preventDefault(),t.stopPropagation&&t.stopPropagation()}},onMouseDown:function(t){if(this.mouseMove&&"buttons"in t&&1===t.buttons){var e={fake:!0,clientX:t.clientX,clientY:t.clientY};this.touches=[e],t.stopPropagation()}},onMouseMove:function(t){this.touches.length&&(this.processMove(t,[{fake:!0,clientX:t.clientX,clientY:t.clientY}]),t.preventDefault&&t.cancelable&&t.preventDefault())},onMouseUp:function(){this.touches=[]},processMove:function(t,e){if(this.touches.length){if(1===this.touches.length&&1===e.length)this.$emit("move",new Dt({left:this.touches[0].clientX-e[0].clientX,top:this.touches[0].clientY-e[0].clientY}));else if(this.touches.length>1&&this.touchResize){var i=kt(e,this.$refs.container),n=this.oldGeometricProperties;n.count===i.count&&n.count>1&&this.$emit("resize",new Dt({left:n.centerMass.left-i.centerMass.left,top:n.centerMass.top-i.centerMass.top},{factor:n.spread/i.spread,center:i.centerMass})),this.oldGeometricProperties=i}this.touches=e}},processEnd:function(){this.touches=[]},onWheel:function(t){if(this.wheelResize){var e=this.$refs.container.getBoundingClientRect(),i=e.left,n=e.top,s=1+this.wheelResize.ratio*(r=t.deltaY||t.detail||t.wheelDelta,0===(a=+r)||A(a)?a:a>0?1:-1),o={left:t.clientX-i,top:t.clientY-n};this.$emit("resize",new Dt({},{factor:s,center:o})),t.preventDefault(),t.stopPropagation()}var r,a}}},undefined,false,undefined,!1,void 0,void 0,void 0),Nt=l("vue-preview"),Zt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{ref:"root",class:t.classes.root,style:t.style},[i("div",{ref:"wrapper",class:t.classes.wrapper,style:t.wrapperStyle},[i("img",{directives:[{name:"show",rawName:"v-show",value:t.image&&t.image.src,expression:"image && image.src"}],ref:"image",class:t.classes.image,style:t.imageStyle,attrs:{src:t.image&&t.image.src}})])])},staticRenderFns:[]},undefined,{props:{coordinates:{type:Object},transitions:{type:Object},image:{type:Object,default:function(){return{}}},imageClass:{type:String},width:{type:Number},height:{type:Number},fill:{type:Boolean}},data:function(){return{calculatedImageSize:{width:0,height:0},calculatedSize:{width:0,height:0}}},computed:{classes:function(){return{root:Nt({fill:this.fill}),wrapper:Nt("wrapper"),imageWrapper:Nt("image-wrapper"),image:c(Nt("image"),this.imageClass)}},style:function(){if(this.fill)return{};var t={};return this.width&&(t.width="".concat(this.size.width,"px")),this.height&&(t.height="".concat(this.size.height,"px")),this.transitions&&this.transitions.enabled&&(t.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),t},wrapperStyle:function(){var t={width:"".concat(this.size.width,"px"),height:"".concat(this.size.height,"px"),left:"calc(50% - ".concat(this.size.width/2,"px)"),top:"calc(50% - ".concat(this.size.height/2,"px)")};return this.transitions&&this.transitions.enabled&&(t.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),t},imageStyle:function(){if(this.coordinates&&this.image){var t=this.coordinates.width/this.size.width,e=n(n({rotate:0,flip:{horizontal:!1,vertical:!1}},this.image.transforms),{},{scaleX:1/t,scaleY:1/t}),i=this.imageSize.width,s=this.imageSize.height,o=et({width:i,height:s},e.rotate),r={width:"".concat(i,"px"),height:"".concat(s,"px"),left:"0px",top:"0px"},a={rotate:{left:(i-o.width)*e.scaleX/2,top:(s-o.height)*e.scaleY/2},scale:{left:(1-e.scaleX)*i/2,top:(1-e.scaleY)*s/2}};return r.transform="translate(\n\t\t\t\t".concat(-this.coordinates.left/t-a.rotate.left-a.scale.left,"px,").concat(-this.coordinates.top/t-a.rotate.top-a.scale.top,"px) ")+_t(e),this.transitions&&this.transitions.enabled&&(r.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),r}return{}},size:function(){return{width:this.width||this.calculatedSize.width,height:this.height||this.calculatedSize.height}},imageSize:function(){return{width:this.image.width||this.calculatedImageSize.width,height:this.image.height||this.calculatedImageSize.height}}},watch:{image:function(t){(t.width||t.height)&&this.onChangeImage()}},mounted:function(){var t=this;this.onChangeImage(),this.$refs.image.addEventListener("load",(function(){t.refreshImage()})),window.addEventListener("resize",this.refresh),window.addEventListener("orientationchange",this.refresh)},destroyed:function(){window.removeEventListener("resize",this.refresh),window.removeEventListener("orientationchange",this.refresh)},methods:{refreshImage:function(){var t=this.$refs.image;this.calculatedImageSize.height=t.naturalHeight,this.calculatedImageSize.width=t.naturalWidth},refresh:function(){var t=this.$refs.root;this.width||(this.calculatedSize.width=t.clientWidth),this.height||(this.calculatedSize.height=t.clientHeight)},onChangeImage:function(){var t=this.$refs.image;t&&t.complete&&this.refreshImage(),this.refresh()}}},undefined,false,undefined,!1,void 0,void 0,void 0),Vt=W({render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("preview",t._b({attrs:{fill:!0}},"preview",t.$attrs,!1))},staticRenderFns:[]},undefined,{components:{Preview:Zt},inheritAttrs:!1},undefined,false,undefined,!1,void 0,void 0,void 0),qt=l("vue-rectangle-stencil"),Gt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{class:t.classes.stencil,style:t.style},[i("bounding-box",{class:t.classes.boundingBox,attrs:{width:t.stencilCoordinates.width,height:t.stencilCoordinates.height,transitions:t.transitions,handlers:t.handlers,"handlers-component":t.handlersComponent,"handlers-classes":t.handlersClasses,"handlers-wrappers-classes":t.handlersWrappersClasses,lines:t.lines,"lines-component":t.linesComponent,"lines-classes":t.linesClasses,"lines-wrappers-classes":t.linesWrappersClasses,resizable:t.resizable},on:{resize:t.onResize,"resize-end":t.onResizeEnd}},[i("draggable-area",{attrs:{movable:t.movable},on:{move:t.onMove,"move-end":t.onMoveEnd}},[i("stencil-preview",{class:t.classes.preview,attrs:{image:t.image,coordinates:t.coordinates,width:t.stencilCoordinates.width,height:t.stencilCoordinates.height,transitions:t.transitions}})],1)],1)],1)},staticRenderFns:[]},undefined,{name:"RectangleStencil",components:{StencilPreview:Vt,BoundingBox:jt,DraggableArea:It},props:{image:{type:Object},coordinates:{type:Object},stencilCoordinates:{type:Object},handlers:{type:Object},handlersComponent:{type:[Object,String],default:function(){return Ct}},lines:{type:Object},linesComponent:{type:[Object,String],default:function(){return Tt}},aspectRatio:{type:[Number,String]},minAspectRatio:{type:[Number,String]},maxAspectRatio:{type:[Number,String]},movable:{type:Boolean,default:!0},resizable:{type:Boolean,default:!0},transitions:{type:Object},movingClass:{type:String},resizingClass:{type:String},previewClass:{type:String},boundingBoxClass:{type:String},linesClasses:{type:Object,default:function(){return{}}},linesWrappersClasses:{type:Object,default:function(){return{}}},handlersClasses:{type:Object,default:function(){return{}}},handlersWrappersClasses:{type:Object,default:function(){return{}}}},data:function(){return{moving:!1,resizing:!1}},computed:{classes:function(){return{stencil:c(qt({movable:this.movable,moving:this.moving,resizing:this.resizing}),this.moving&&this.movingClass,this.resizing&&this.resizingClass),preview:c(qt("preview"),this.previewClass),boundingBox:c(qt("bounding-box"),this.boundingBoxClass)}},style:function(){var t=this.stencilCoordinates,e=t.height,i=t.width,n=t.left,s=t.top,o={width:"".concat(i,"px"),height:"".concat(e,"px"),transform:"translate(".concat(n,"px, ").concat(s,"px)")};return this.transitions&&this.transitions.enabled&&(o.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),o}},methods:{onMove:function(t){this.$emit("move",t),this.moving=!0},onMoveEnd:function(){this.$emit("move-end"),this.moving=!1},onResize:function(t){this.$emit("resize",t),this.resizing=!0},onResizeEnd:function(){this.$emit("resize-end"),this.resizing=!1},aspectRatios:function(){return{minimum:this.aspectRatio||this.minAspectRatio,maximum:this.aspectRatio||this.maxAspectRatio}}}},undefined,false,undefined,!1,void 0,void 0,void 0),Qt=l("vue-circle-stencil"),Kt=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{class:t.classes.stencil,style:t.style},[i("bounding-box",{class:t.classes.boundingBox,attrs:{width:t.stencilCoordinates.width,height:t.stencilCoordinates.height,transitions:t.transitions,handlers:t.handlers,"handlers-component":t.handlersComponent,"handlers-classes":t.handlersClasses,"handlers-wrappers-classes":t.handlersWrappersClasses,lines:t.lines,"lines-component":t.linesComponent,"lines-classes":t.linesClasses,"lines-wrappers-classes":t.linesWrappersClasses,resizable:t.resizable},on:{resize:t.onResize,"resize-end":t.onResizeEnd}},[i("draggable-area",{attrs:{movable:t.movable},on:{move:t.onMove,"move-end":t.onMoveEnd}},[i("stencil-preview",{class:t.classes.preview,attrs:{image:t.image,coordinates:t.coordinates,width:t.stencilCoordinates.width,height:t.stencilCoordinates.height,transitions:t.transitions}})],1)],1)],1)},staticRenderFns:[]},undefined,{components:{StencilPreview:Vt,BoundingBox:jt,DraggableArea:It},props:{image:{type:Object},coordinates:{type:Object},stencilCoordinates:{type:Object},handlers:{type:Object,default:function(){return{eastNorth:!0,westNorth:!0,westSouth:!0,eastSouth:!0}}},handlersComponent:{type:[Object,String],default:function(){return Ct}},handlersClasses:{type:Object,default:function(){return{}}},handlersWrappersClasses:{type:Object,default:function(){return{}}},lines:{type:Object},linesComponent:{type:[Object,String],default:function(){return Tt}},linesClasses:{type:Object,default:function(){return{}}},linesWrappersClasses:{type:Object,default:function(){return{}}},movable:{type:Boolean,default:!0},resizable:{type:Boolean,default:!0},transitions:{type:Object},movingClass:{type:String},resizingClass:{type:String},previewClass:{type:String},boundingBoxClass:{type:String}},data:function(){return{moving:!1,resizing:!1}},computed:{classes:function(){return{stencil:c(Qt({movable:this.movable,moving:this.moving,resizing:this.resizing}),this.moving&&this.movingClass,this.resizing&&this.resizingClass),preview:c(Qt("preview"),this.previewClass),boundingBox:c(Qt("bounding-box"),this.boundingBoxClass)}},style:function(){var t=this.stencilCoordinates,e=t.height,i=t.width,n=t.left,s=t.top,o={width:"".concat(i,"px"),height:"".concat(e,"px"),transform:"translate(".concat(n,"px, ").concat(s,"px)")};return this.transitions&&this.transitions.enabled&&(o.transition="".concat(this.transitions.time,"ms ").concat(this.transitions.timingFunction)),o}},methods:{onMove:function(t){this.$emit("move",t),this.moving=!0},onMoveEnd:function(){this.$emit("move-end"),this.moving=!1},onResize:function(t){this.$emit("resize",t),this.resizing=!0},onResizeEnd:function(){this.$emit("resize-end"),this.resizing=!1},aspectRatios:function(){return{minimum:1,maximum:1}}}},undefined,false,undefined,!1,void 0,void 0,void 0);var Jt=l("vue-advanced-cropper"),te=W({render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{ref:"cropper",class:t.classes.cropper},[i("div",{ref:"stretcher",class:t.classes.stretcher}),t._v(" "),i("div",{class:t.classes.boundaries,style:t.boundariesStyle},[i("cropper-wrapper",{class:t.classes.cropperWrapper,attrs:{"wheel-resize":t.settings.resizeImage.wheel,"touch-resize":t.settings.resizeImage.touch,"touch-move":t.settings.moveImage.touch,"mouse-move":t.settings.moveImage.mouse},on:{move:t.onManipulateImage,resize:t.onManipulateImage}},[i("div",{class:t.classes.background,style:t.boundariesStyle}),t._v(" "),i("div",{class:t.classes.imageWrapper},[i("img",{ref:"image",class:t.classes.image,style:t.imageStyle,attrs:{crossorigin:t.imageAttributes.crossOrigin,src:t.imageAttributes.src},on:{mousedown:function(t){t.preventDefault()}}})]),t._v(" "),i("div",{class:t.classes.foreground,style:t.boundariesStyle}),t._v(" "),i(t.stencilComponent,t._b({directives:[{name:"show",rawName:"v-show",value:t.imageLoaded,expression:"imageLoaded"}],ref:"stencil",tag:"component",attrs:{image:t.image,coordinates:t.coordinates,"stencil-coordinates":t.stencilCoordinates,transitions:t.transitionsOptions},on:{resize:t.onResize,"resize-end":t.onResizeEnd,move:t.onMove,"move-end":t.onMoveEnd}},"component",t.stencilProps,!1)),t._v(" "),t.canvas?i("canvas",{ref:"canvas",style:{display:"none"}}):t._e(),t._v(" "),t.canvas?i("canvas",{ref:"sourceCanvas",style:{display:"none"}}):t._e()],1)],1)])},staticRenderFns:[]},undefined,{name:"Cropper",components:{CropperWrapper:Ut},props:{src:{type:String,default:null},stencilComponent:{type:[Object,String],default:function(){return Gt}},stencilProps:{type:Object,default:function(){return{}}},autoZoom:{type:Boolean,default:!1},imageClass:{type:String},boundariesClass:{type:String},backgroundClass:{type:String},foregroundClass:{type:String},minWidth:{type:[Number,String]},minHeight:{type:[Number,String]},maxWidth:{type:[Number,String]},maxHeight:{type:[Number,String]},debounce:{type:[Boolean,Number],default:500},transitions:{type:Boolean,default:!0},checkOrientation:{type:Boolean,default:!0},canvas:{type:[Object,Boolean],default:!0},crossOrigin:{type:[Boolean,String],default:void 0},transitionTime:{type:Number,default:300},imageRestriction:{type:String,default:"fit-area",validator:function(t){return-1!==B.indexOf(t)}},roundResult:{type:Boolean,default:!0},defaultSize:{type:[Function,Object]},defaultPosition:{type:[Function,Object],default:function(t){var e=t.imageSize,i=t.visibleArea,n=t.coordinates,s=i||e;return{left:(i?i.left:0)+s.width/2-n.width/2,top:(i?i.top:0)+s.height/2-n.height/2}}},defaultVisibleArea:{type:[Function,Object],default:function(t){var e=t.getAreaRestrictions,i=t.coordinates,n=t.imageSize,s=G(t.boundaries);if(i){var o={height:Math.max(i.height,n.height),width:Math.max(i.width,n.width)},r=tt({width:G(o)>s?o.width:o.height*s,height:G(o)>s?o.width/s:o.height},ot(e())),a={left:i.left+i.width/2-r.width/2,top:i.top+i.height/2-r.height/2,width:r.width,height:r.height},h=U(i,X(m({left:0,top:0},n))),c={};return!h.left&&!h.right&&a.width<=n.width&&(c.left=0,c.right=n.width),!h.top&&!h.bottom&&a.height<=n.height&&(c.top=0,c.bottom=n.height),st(a,c)}var l=G(n);return r={height:l>s?n.height:n.width/s,width:l>s?n.height*s:n.width},{left:n.width/2-r.width/2,top:n.height/2-r.height/2,width:r.width,height:r.height}}},defaultBoundaries:{type:[Function,String],validator:function(t){return!("string"==typeof t&&"fill"!==t&&"fit"!==t)}},priority:{type:String,default:"coordinates"},stencilSize:{type:[Object,Function]},resizeImage:{type:[Boolean,Object],default:!0},moveImage:{type:[Boolean,Object],default:!0},autoZoomAlgorithm:{type:Function},resizeAlgorithm:{type:Function,default:function(t){var e=t.event,i=t.coordinates,n=t.aspectRatio,s=t.positionRestrictions,o=t.sizeRestrictions,r=m(m({},i),{right:i.left+i.width,bottom:i.top+i.height}),a=e.params||{},h=m({},e.directions),c=a.allowedDirections||{left:!0,right:!0,bottom:!0,top:!0};o.widthFrozen&&(h.left=0,h.right=0),o.heightFrozen&&(h.top=0,h.bottom=0),D.forEach((function(t){c[t]||(h[t]=0)}));var l=N(r,h=At({coordinates:r,directions:h,sizeRestrictions:o,positionRestrictions:s})).width,d=N(r,h).height,u=a.preserveRatio?G(r):J(l/d,n);if(u){var f=a.respectDirection;if(f||(f=r.width>=r.height||1===u?"width":"height"),"width"===f){var g=l/u-r.height;if(c.top&&c.bottom){var p=h.top,v=h.bottom;h.bottom=xt(g,v,p),h.top=xt(g,p,v)}else c.bottom?h.bottom=g:c.top?h.top=g:c.right?h.right=0:c.left&&(h.left=0)}else if("height"===f){var b=r.width-d*u;if(c.left&&c.right){var w=h.left,y=h.right;h.left=-xt(b,w,y),h.right=-xt(b,y,w)}else c.left?h.left=-b:c.right?h.right=-b:c.top?h.top=0:c.bottom&&(h.bottom=0)}h=At({directions:h,coordinates:r,sizeRestrictions:o,positionRestrictions:s,preserveRatio:!0,compensate:a.compensate})}return l=N(r,h).width,d=N(r,h).height,(u=a.preserveRatio?G(r):J(l/d,n))&&Math.abs(u-l/d)>.001&&D.forEach((function(t){c[t]||(h[t]=0)})),ut({event:new C({left:-h.left,top:-h.top}),coordinates:{width:i.width+h.right+h.left,height:i.height+h.top+h.bottom,left:i.left,top:i.top},positionRestrictions:s})}},moveAlgorithm:{type:Function,default:ut},initStretcher:{type:Function,default:function(t){var e=t.stretcher,i=t.imageSize,n=G(i);e.style.width=i.width+"px",e.style.height=e.clientWidth/n+"px",e.style.width=e.clientWidth+"px"}},fitCoordinates:{type:Function,default:function(t){var e=t.visibleArea,i=t.coordinates,n=t.aspectRatio,s=t.sizeRestrictions,o=t.positionRestrictions,r=m(m({},i),dt({width:i.width,height:i.height,aspectRatio:n,sizeRestrictions:{maxWidth:e.width,maxHeight:e.height,minHeight:Math.min(e.height,s.minHeight),minWidth:Math.min(e.width,s.minWidth)}}));return r=st(r=V(r,Y(k(i),k(r))),ht(X(e),o))}},fitVisibleArea:{type:Function,default:function(t){var e=t.visibleArea,i=t.boundaries,n=t.getAreaRestrictions,s=t.coordinates,o=m({},e);o.height=o.width/G(i),o.top+=(e.height-o.height)/2,(s.height-o.height>0||s.width-o.width>0)&&(o=q(o,Math.max(s.height/o.height,s.width/o.width)));var r=Z(K(s,X(o=q(o,nt(o,n({visibleArea:o,type:"resize"}))))));return o.width<s.width&&(r.left=0),o.height<s.height&&(r.top=0),o=st(o=V(o,r),n({visibleArea:o,type:"move"}))}},areaRestrictionsAlgorithm:{type:Function,default:function(t){var e=t.visibleArea,i=t.boundaries,n=t.imageSize,s=t.imageRestriction,o=t.type,r={};return"fill-area"===s?r={left:0,top:0,right:n.width,bottom:n.height}:"fit-area"===s&&(G(i)>G(n)?(r={top:0,bottom:n.height},e&&"move"===o&&(e.width>n.width?(r.left=-(e.width-n.width)/2,r.right=n.width-r.left):(r.left=0,r.right=n.width))):(r={left:0,right:n.width},e&&"move"===o&&(e.height>n.height?(r.top=-(e.height-n.height)/2,r.bottom=n.height-r.top):(r.top=0,r.bottom=n.height)))),r}},sizeRestrictionsAlgorithm:{type:Function,default:function(t){return{minWidth:t.minWidth,minHeight:t.minHeight,maxWidth:t.maxWidth,maxHeight:t.maxHeight}}},positionRestrictionsAlgorithm:{type:Function,default:function(t){var e=t.imageSize,i={};return"none"!==t.imageRestriction&&(i={left:0,top:0,right:e.width,bottom:e.height}),i}},maxCanvasSize:{type:Number,validator:function(t){return b(t),!0}}},data:function(){return{transitionsActive:!1,imageLoaded:!1,imageAttributes:{width:null,height:null,crossOrigin:!1,src:null},customImageTransforms:{rotate:0,flip:{horizontal:!1,vertical:!1}},basicImageTransforms:{rotate:0,flip:{horizontal:!1,vertical:!1}},boundaries:{width:0,height:0},visibleArea:null,coordinates:n({},_)}},computed:{image:function(){return{src:this.imageAttributes.src,width:this.imageAttributes.width,height:this.imageAttributes.height,transforms:this.imageTransforms}},imageTransforms:function(){return{rotate:this.basicImageTransforms.rotate+this.customImageTransforms.rotate,flip:{horizontal:Boolean(this.basicImageTransforms.flip.horizontal^this.customImageTransforms.flip.horizontal),vertical:Boolean(this.basicImageTransforms.flip.vertical^this.customImageTransforms.flip.vertical)},translateX:this.visibleArea?this.visibleArea.left/this.coefficient:0,translateY:this.visibleArea?this.visibleArea.top/this.coefficient:0,scaleX:1/this.coefficient,scaleY:1/this.coefficient}},imageSize:function(){var t=function(t){return t*Math.PI/180}(this.imageTransforms.rotate);return{width:Math.abs(this.imageAttributes.width*Math.cos(t))+Math.abs(this.imageAttributes.height*Math.sin(t)),height:Math.abs(this.imageAttributes.width*Math.sin(t))+Math.abs(this.imageAttributes.height*Math.cos(t))}},initialized:function(){return Boolean(this.visibleArea&&this.imageLoaded)},settings:function(){var t=y(this.resizeImage,{touch:!0,wheel:{ratio:.1},adjustStencil:!0},{touch:!1,wheel:!1,adjustStencil:!1});return{moveImage:y(this.moveImage,{touch:!0,mouse:!0},{touch:!1,mouse:!1}),resizeImage:t}},coefficient:function(){return this.visibleArea?this.visibleArea.width/this.boundaries.width:0},areaRestrictions:function(){return this.imageLoaded?this.areaRestrictionsAlgorithm({imageSize:this.imageSize,imageRestriction:this.imageRestriction,boundaries:this.boundaries}):{}},transitionsOptions:function(){return{enabled:this.transitionsActive,timingFunction:"ease-in-out",time:350}},sizeRestrictions:function(){if(this.boundaries.width&&this.boundaries.height&&this.imageSize.width&&this.imageSize.height){var t=this.sizeRestrictionsAlgorithm({imageSize:this.imageSize,minWidth:b(this.minWidth)?0:z(this.minWidth),minHeight:b(this.minHeight)?0:z(this.minHeight),maxWidth:b(this.maxWidth)?1/0:z(this.maxWidth),maxHeight:b(this.maxHeight)?1/0:z(this.maxHeight)});if(t=function(t){var e=t.areaRestrictions,i=t.sizeRestrictions,n=(t.imageSize,t.boundaries),s=t.positionRestrictions,o=(t.imageRestriction,m(m({},i),{minWidth:void 0!==i.minWidth?i.minWidth:0,minHeight:void 0!==i.minHeight?i.minHeight:0,maxWidth:void 0!==i.maxWidth?i.maxWidth:1/0,maxHeight:void 0!==i.maxHeight?i.maxHeight:1/0}));void 0!==s.left&&void 0!==s.right&&(o.maxWidth=Math.min(o.maxWidth,s.right-s.left)),void 0!==s.bottom&&void 0!==s.top&&(o.maxHeight=Math.min(o.maxHeight,s.bottom-s.top));var r=ot(e),a=tt(n,r);return r.width<1/0&&(!o.maxWidth||o.maxWidth>a.width)&&(o.maxWidth=Math.min(o.maxWidth,a.width)),r.height<1/0&&(!o.maxHeight||o.maxHeight>a.height)&&(o.maxHeight=Math.min(o.maxHeight,a.height)),o.minWidth>o.maxWidth&&(o.minWidth=o.maxWidth,o.widthFrozen=!0),o.minHeight>o.maxHeight&&(o.minHeight=o.maxHeight,o.heightFrozen=!0),o}({sizeRestrictions:t,areaRestrictions:this.getAreaRestrictions({visibleArea:this.visibleArea,type:"resize"}),imageSize:this.imageSize,boundaries:this.boundaries,positionRestrictions:this.positionRestrictions,imageRestriction:this.imageRestriction,visibleArea:this.visibleArea,stencilSize:this.getStencilSize()}),this.visibleArea&&this.stencilSize){var e=this.getStencilSize(),i=ot(this.getAreaRestrictions({visibleArea:this.visibleArea,type:"resize"}));t.maxWidth=Math.min(t.maxWidth,i.width*e.width/this.boundaries.width),t.maxHeight=Math.min(t.maxHeight,i.height*e.height/this.boundaries.height),t.maxWidth<t.minWidth&&(t.minWidth=t.maxWidth),t.maxHeight<t.minHeight&&(t.minHeight=t.maxHeight)}return t}return{minWidth:0,minHeight:0,maxWidth:0,maxHeight:0}},positionRestrictions:function(){return this.positionRestrictionsAlgorithm({imageSize:this.imageSize,imageRestriction:this.imageRestriction})},classes:function(){return{cropper:Jt(),image:c(Jt("image"),this.imageClass),stencil:Jt("stencil"),boundaries:c(Jt("boundaries"),this.boundariesClass),stretcher:c(Jt("stretcher")),background:c(Jt("background"),this.backgroundClass),foreground:c(Jt("foreground"),this.foregroundClass),imageWrapper:c(Jt("image-wrapper")),cropperWrapper:c(Jt("cropper-wrapper"))}},stencilCoordinates:function(){if(this.initialized){var t=this.coordinates,e=t.width,i=t.height,n=t.left,s=t.top;return{width:e/this.coefficient,height:i/this.coefficient,left:(n-this.visibleArea.left)/this.coefficient,top:(s-this.visibleArea.top)/this.coefficient}}return this.defaultCoordinates()},boundariesStyle:function(){var t={width:this.boundaries.width?"".concat(Math.round(this.boundaries.width),"px"):"auto",height:this.boundaries.height?"".concat(Math.round(this.boundaries.height),"px"):"auto",transition:"opacity ".concat(this.transitionTime,"ms"),pointerEvents:this.imageLoaded?"all":"none"};return this.imageLoaded||(t.opacity="0"),t},imageStyle:function(){var t=this.imageAttributes.width>this.imageAttributes.height?{width:Math.min(1024,this.imageAttributes.width),height:Math.min(1024,this.imageAttributes.width)/(this.imageAttributes.width/this.imageAttributes.height)}:{height:Math.min(1024,this.imageAttributes.height),width:Math.min(1024,this.imageAttributes.height)*(this.imageAttributes.width/this.imageAttributes.height)},e={left:(t.width-this.imageSize.width)/(2*this.coefficient),top:(t.height-this.imageSize.height)/(2*this.coefficient)},i={left:(1-1/this.coefficient)*t.width/2,top:(1-1/this.coefficient)*t.height/2},s=n(n({},this.imageTransforms),{},{scaleX:this.imageTransforms.scaleX*(this.imageAttributes.width/t.width),scaleY:this.imageTransforms.scaleY*(this.imageAttributes.height/t.height)}),o={width:"".concat(t.width,"px"),height:"".concat(t.height,"px"),left:"0px",top:"0px",transform:"translate(".concat(-e.left-i.left-this.imageTransforms.translateX,"px, ").concat(-e.top-i.top-this.imageTransforms.translateY,"px)")+_t(s)};return this.transitionsOptions.enabled&&(o.transition="".concat(this.transitionsOptions.time,"ms ").concat(this.transitionsOptions.timingFunction)),o}},watch:{src:function(){this.onChangeImage()},stencilComponent:function(){var t=this;this.$nextTick((function(){t.resetCoordinates(),t.runAutoZoom("setCoordinates"),t.onChange()}))},minWidth:function(){this.onPropsChange()},maxWidth:function(){this.onPropsChange()},minHeight:function(){this.onPropsChange()},maxHeight:function(){this.onPropsChange()},imageRestriction:function(){this.reset()},stencilProps:function(t,e){["aspectRatio","minAspectRatio","maxAspectRatio"].find((function(i){return t[i]!==e[i]}))&&this.$nextTick(this.onPropsChange)}},created:function(){this.debouncedUpdate=u(this.update,this.debounce),this.debouncedDisableTransitions=u(this.disableTransitions,this.transitionsOptions.time),this.awaiting=!1},mounted:function(){this.$refs.image.addEventListener("load",this.onSuccessLoadImage),this.$refs.image.addEventListener("error",this.onFailLoadImage),this.onChangeImage(),window.addEventListener("resize",this.refresh),window.addEventListener("orientationchange",this.refresh)},destroyed:function(){window.removeEventListener("resize",this.refresh),window.removeEventListener("orientationchange",this.refresh),this.imageAttributes.revoke&&this.imageAttributes.src&&URL.revokeObjectURL(this.imageAttributes.src)},methods:{getResult:function(){var t=this.initialized?this.prepareResult(n({},this.coordinates)):this.defaultCoordinates(),e={rotate:this.imageTransforms.rotate%360,flip:n({},this.imageTransforms.flip)};if(this.src&&this.imageLoaded){var i=this;return{image:this.image,coordinates:t,visibleArea:this.visibleArea?n({},this.visibleArea):null,imageTransforms:e,get canvas(){return i.canvas?i.getCanvas():void 0}}}return{image:this.image,coordinates:t,visibleArea:this.visibleArea?n({},this.visibleArea):null,canvas:void 0,imageTransforms:e}},zoom:function(t,e){var i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=i.transitions,s=void 0===n||n;this.onManipulateImage(new S({},{factor:1/t,center:e}),{normalize:!1,transitions:s})},move:function(t,e){var i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=i.transitions,s=void 0===n||n;this.onManipulateImage(new S({left:t||0,top:e||0}),{normalize:!1,transitions:s})},setCoordinates:function(t){var e=this,i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=i.autoZoom,s=void 0===n||n,o=i.transitions,r=void 0===o||o;this.$nextTick((function(){e.imageLoaded?(e.transitionsActive||(r&&e.enableTransitions(),e.coordinates=e.applyTransform(t),s&&e.runAutoZoom("setCoordinates"),r&&e.debouncedDisableTransitions()),e.onChange()):e.delayedTransforms=t}))},refresh:function(){var t=this,e=this.$refs.image;if(this.src&&e)return this.initialized?this.updateVisibleArea().then((function(){t.onChange()})):this.resetVisibleArea().then((function(){t.onChange()}))},reset:function(){var t=this;return this.resetVisibleArea().then((function(){t.onChange()}))},awaitRender:function(t){var e=this;this.awaiting||(this.awaiting=!0,this.$nextTick((function(){t(),e.awaiting=!1})))},prepareResult:function(t){return this.roundResult?function(t){var e=t.coordinates,i=t.sizeRestrictions,n=t.positionRestrictions,s={width:Math.round(e.width),height:Math.round(e.height),left:Math.round(e.left),top:Math.round(e.top)};return s.width>i.maxWidth?s.width=Math.floor(e.width):s.width<i.minWidth&&(s.width=Math.ceil(e.width)),s.height>i.maxHeight?s.height=Math.floor(e.height):s.height<i.minHeight&&(s.height=Math.ceil(e.height)),st(s,n)}(n(n({},this.getPublicProperties()),{},{positionRestrictions:wt(this.positionRestrictions,this.visibleArea),coordinates:t})):t},processAutoZoom:function(t,e,i,s){var o=this.autoZoomAlgorithm;o||(o=this.stencilSize?ft:this.autoZoom?gt:pt);var r=o({event:{type:t,params:s},visibleArea:e,coordinates:i,boundaries:this.boundaries,aspectRatio:this.getAspectRatio(),positionRestrictions:this.positionRestrictions,getAreaRestrictions:this.getAreaRestrictions,sizeRestrictions:this.sizeRestrictions,stencilSize:this.getStencilSize()});return n(n({},r),{},{changed:!F(r.visibleArea,e)||!F(r.coordinates,i)})},runAutoZoom:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=e.transitions,n=void 0!==i&&i,o=s(e,["transitions"]),r=this.processAutoZoom(t,this.visibleArea,this.coordinates,o),a=r.visibleArea,h=r.coordinates,c=r.changed;n&&c&&this.enableTransitions(),this.visibleArea=a,this.coordinates=h,n&&c&&this.debouncedDisableTransitions()},normalizeEvent:function(t){return function(t){var e=t.event,i=t.visibleArea,n=t.coefficient;if("manipulateImage"===e.type)return m(m({},e),{move:{left:e.move&&e.move.left?n*e.move.left:0,top:e.move&&e.move.top?n*e.move.top:0},scale:{factor:e.scale&&e.scale.factor?e.scale.factor:1,center:e.scale&&e.scale.center?{left:e.scale.center.left*n+i.left,top:e.scale.center.top*n+i.top}:null}});if("resize"===e.type){var s=m(m({},e),{directions:m({},e.directions)});return D.forEach((function(t){s.directions[t]*=n})),s}if("move"===e.type){var o=m(m({},e),{directions:m({},e.directions)});return I.forEach((function(t){o.directions[t]*=n})),o}return e}(n(n({},this.getPublicProperties()),{},{event:t}))},getCanvas:function(){if(this.$refs.canvas){var t=this.$refs.canvas,e=this.$refs.image,i=0!==this.imageTransforms.rotate||this.imageTransforms.flip.horizontal||this.imageTransforms.flip.vertical?function(t,e,i){var n=i.rotate,s=i.flip,o={width:e.naturalWidth,height:e.naturalHeight},r=et(o,n),a=t.getContext("2d");t.height=r.height,t.width=r.width,a.save();var h=it(k(m({left:0,top:0},o)),n);return a.translate(-(h.left-r.width/2),-(h.top-r.height/2)),a.rotate(n*Math.PI/180),a.translate(s.horizontal?o.width:0,s.vertical?o.height:0),a.scale(s.horizontal?-1:1,s.vertical?-1:1),a.drawImage(e,0,0,o.width,o.height),a.restore(),t}(this.$refs.sourceCanvas,e,this.imageTransforms):e,s=n({minWidth:0,minHeight:0,maxWidth:1/0,maxHeight:1/0,maxArea:this.maxCanvasSize,imageSmoothingEnabled:!0,imageSmoothingQuality:"high"},this.canvas),o=function(t){return t.find((function(t){return e=t,!Number.isNaN(parseFloat(e))&&isFinite(e);var e}))},r=dt({sizeRestrictions:{minWidth:o([s.width,s.minWidth])||0,minHeight:o([s.height,s.minHeight])||0,maxWidth:o([s.width,s.maxWidth])||1/0,maxHeight:o([s.height,s.maxHeight])||1/0},width:this.coordinates.width,height:this.coordinates.height,aspectRatio:{minimum:this.coordinates.width/this.coordinates.height,maximum:this.coordinates.width/this.coordinates.height}});if(s.maxArea&&r.width*r.height>s.maxArea){var a=Math.sqrt(s.maxArea/(r.width*r.height));r={width:Math.round(a*r.width),height:Math.round(a*r.height)}}return function(t,e,i,n,s){t.width=n?n.width:i.width,t.height=n?n.height:i.height;var o=t.getContext("2d");s&&(s.imageSmoothingEnabled&&(o.imageSmoothingEnabled=s.imageSmoothingEnabled),s.imageSmoothingQuality&&(o.imageSmoothingQuality=s.imageSmoothingQuality)),o.clearRect(0,0,t.width,t.height),o.drawImage(e,i.left,i.top,i.width,i.height,0,0,t.width,t.height)}(t,i,this.coordinates,r,s),t}},update:function(){this.$emit("change",this.getResult())},applyTransform:function(t){var e=arguments.length>1&&void 0!==arguments[1]&&arguments[1],i=this.visibleArea&&e?rt(this.sizeRestrictions,this.visibleArea):this.sizeRestrictions,n=this.visibleArea&&e?wt(this.positionRestrictions,this.visibleArea):this.positionRestrictions;return mt({transform:t,coordinates:this.coordinates,imageSize:this.imageSize,sizeRestrictions:i,positionRestrictions:n,aspectRatio:this.getAspectRatio(),visibleArea:this.visibleArea})},resetCoordinates:function(){var t=this;if(this.$refs.image){this.$refs.cropper,this.$refs.image;var e=this.defaultSize;e||(e=this.stencilSize?bt:vt);var i=this.sizeRestrictions,s=(i.minWidth,i.minHeight,i.maxWidth,i.maxHeight,[v(e)?e({boundaries:this.boundaries,imageSize:this.imageSize,aspectRatio:this.getAspectRatio(),sizeRestrictions:this.sizeRestrictions,stencilSize:this.getStencilSize(),visibleArea:this.visibleArea}):e,function(e){var i=e.coordinates;return n({},v(t.defaultPosition)?t.defaultPosition({coordinates:i,imageSize:t.imageSize,visibleArea:t.visibleArea}):t.defaultPosition)}]);this.delayedTransforms&&s.push.apply(s,o(Array.isArray(this.delayedTransforms)?this.delayedTransforms:[this.delayedTransforms])),this.coordinates=this.applyTransform(s,!0),this.delayedTransforms=null}},clearImage:function(){var t=this;this.imageLoaded=!1,setTimeout((function(){var e=t.$refs.stretcher;e&&(e.style.height="auto",e.style.width="auto"),t.coordinates=t.defaultCoordinates(),t.boundaries={width:0,height:0}}),this.transitionTime)},enableTransitions:function(){this.transitions&&(this.transitionsActive=!0)},disableTransitions:function(){this.transitionsActive=!1},updateBoundaries:function(){var t=this,e=this.$refs.stretcher,i=this.$refs.cropper;return this.initStretcher({cropper:i,stretcher:e,imageSize:this.imageSize}),this.$nextTick().then((function(){var e={cropper:i,imageSize:t.imageSize};if(v(t.defaultBoundaries)?t.boundaries=t.defaultBoundaries(e):"fit"===t.defaultBoundaries?t.boundaries=function(t){var e=t.cropper,i=t.imageSize,n=e.clientHeight,s=e.clientWidth,o=n,r=i.width*n/i.height;return r>s&&(r=s,o=i.height*s/i.width),{width:r,height:o}}(e):t.boundaries=function(t){var e=t.cropper;return{width:e.clientWidth,height:e.clientHeight}}(e),!t.boundaries.width||!t.boundaries.height)throw new Error("It's impossible to fit the cropper in the current container")}))},resetVisibleArea:function(){var t=this;return this.updateBoundaries().then((function(){var e,i,n,s,o,r;"visible-area"!==t.priority&&(t.visibleArea=null,t.resetCoordinates()),t.visibleArea=v(t.defaultVisibleArea)?t.defaultVisibleArea({imageSize:t.imageSize,boundaries:t.boundaries,coordinates:"visible-area"!==t.priority?t.coordinates:null,getAreaRestrictions:t.getAreaRestrictions,stencilSize:t.getStencilSize()}):t.defaultVisibleArea,t.visibleArea=(e={visibleArea:t.visibleArea,boundaries:t.boundaries,getAreaRestrictions:t.getAreaRestrictions},i=e.visibleArea,n=e.boundaries,s=e.getAreaRestrictions,o=m({},i),r=G(n),o.width/o.height!==r&&(o.height=o.width/r),st(o,s({visibleArea:o,type:"move"}))),"visible-area"===t.priority?t.resetCoordinates():t.coordinates=t.fitCoordinates({visibleArea:t.visibleArea,coordinates:t.coordinates,aspectRatio:t.getAspectRatio(),positionRestrictions:t.positionRestrictions,sizeRestrictions:t.sizeRestrictions}),t.runAutoZoom("resetVisibleArea")})).catch((function(){t.visibleArea=null}))},updateVisibleArea:function(){var t=this;return this.updateBoundaries().then((function(){t.visibleArea=t.fitVisibleArea({imageSize:t.imageSize,boundaries:t.boundaries,visibleArea:t.visibleArea,coordinates:t.coordinates,getAreaRestrictions:t.getAreaRestrictions}),t.coordinates=t.fitCoordinates({visibleArea:t.visibleArea,coordinates:t.coordinates,aspectRatio:t.getAspectRatio(),positionRestrictions:t.positionRestrictions,sizeRestrictions:t.sizeRestrictions}),t.runAutoZoom("updateVisibleArea")})).catch((function(){t.visibleArea=null}))},onChange:function(){var t=!(arguments.length>0&&void 0!==arguments[0])||arguments[0];this.$listeners&&this.$listeners.change&&(t&&this.debounce?this.debouncedUpdate():this.update())},onChangeImage:function(){var t,e=this;if(this.imageLoaded=!1,this.delayedTransforms=null,this.src){if(function(t){if(p(t))return!1;var e=window.location,i=/(\w+:)?(?:\/\/)([\w.-]+)?(?::(\d+))?\/?/.exec(t)||[],n={protocol:i[1]||"",host:i[2]||"",port:i[3]||""},s=function(t){return t.port||("http"===(t.protocol||e.protocol)?80:433)};return!(!n.protocol&&!n.host&&!n.port||Boolean(n.protocol&&n.protocol==e.protocol&&n.host&&n.host==e.host&&n.host&&s(n)==s(e)))}(this.src)){var i=b(this.crossOrigin)?this.canvas:this.crossOrigin;!0===i&&(i="anonymous"),this.imageAttributes.crossOrigin=i}if(this.checkOrientation){var n=(t=this.src,new Promise((function(e){Bt(t).then((function(i){var n=Ft(i);e(i?{source:t,arrayBuffer:i,orientation:n}:{source:t,arrayBuffer:null,orientation:null})})).catch((function(i){console.warn(i),e({source:t,arrayBuffer:null,orientation:null})}))})));setTimeout((function(){n.then(e.onParseImage)}),this.transitionTime)}else setTimeout((function(){e.onParseImage({source:e.src})}),this.transitionTime)}else this.clearImage()},onFailLoadImage:function(){this.imageAttributes.src&&(this.clearImage(),this.$emit("error"))},onSuccessLoadImage:function(){var t=this,e=this.$refs.image;e&&!this.imageLoaded&&(this.imageAttributes.height=e.naturalHeight,this.imageAttributes.width=e.naturalWidth,this.imageLoaded=!0,this.reset().then((function(){t.$emit("ready"),t.onChange(!1)})))},onParseImage:function(t){var e=this,i=t.source,s=t.arrayBuffer,o=t.orientation;this.imageAttributes.revoke&&this.imageAttributes.src&&URL.revokeObjectURL(this.imageAttributes.src),this.imageAttributes.revoke=!1,s&&o&&o>1&&p(i)?g(i)?(this.imageAttributes.src=URL.createObjectURL(new Blob([s])),this.imageAttributes.revoke=!0):this.imageAttributes.src=function(t){for(var e=[],i=new Uint8Array(t);i.length>0;){var n=i.subarray(0,8192);e.push(String.fromCharCode.apply(null,Array.from?Array.from(n):n.slice())),i=i.subarray(8192)}return"data:image/jpeg;base64,"+btoa(e.join(""))}(s):this.imageAttributes.src=i,this.customImageTransforms={rotate:0,flip:{horizontal:!1,vertical:!1}},this.basicImageTransforms=n(n({},this.customImageTransforms),function(t){var e={flip:{horizontal:!1,vertical:!1},rotate:0};if(t)switch(t){case 2:e.flip.horizontal=!0;break;case 3:e.rotate=-180;break;case 4:e.flip.vertical=!0;break;case 5:e.rotate=90,e.flip.vertical=!0;break;case 6:e.rotate=90;break;case 7:e.rotate=90,e.flip.horizontal=!0;break;case 8:e.rotate=-90}return e}(o)),this.$nextTick((function(){var t=e.$refs.image;t&&t.complete&&(!function(t){return Boolean(t.naturalWidth)}(t)?e.onFailLoadImage():e.onSuccessLoadImage())}))},onResizeEnd:function(){this.runAutoZoom("resize",{transitions:!0})},onMoveEnd:function(){this.runAutoZoom("move",{transitions:!0})},onMove:function(t){var e=this;this.transitionsOptions.enabled||this.awaitRender((function(){e.coordinates=e.moveAlgorithm(n(n({},e.getPublicProperties()),{},{positionRestrictions:wt(e.positionRestrictions,e.visibleArea),coordinates:e.coordinates,event:e.normalizeEvent(t)})),e.onChange()}))},onResize:function(t){var e=this;this.transitionsOptions.enabled||this.stencilSize&&!this.autoZoom||this.awaitRender((function(){var i=e.sizeRestrictions,s=Math.min(e.coordinates.width,e.coordinates.height,20*e.coefficient);e.coordinates=e.resizeAlgorithm(n(n({},e.getPublicProperties()),{},{positionRestrictions:wt(e.positionRestrictions,e.visibleArea),sizeRestrictions:{maxWidth:Math.min(i.maxWidth,e.visibleArea.width),maxHeight:Math.min(i.maxHeight,e.visibleArea.height),minWidth:Math.max(i.minWidth,s),minHeight:Math.max(i.minHeight,s)},event:e.normalizeEvent(t)})),e.onChange(),e.ticking=!1}))},onManipulateImage:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!this.transitionsOptions.enabled){var i=e.transitions,s=void 0!==i&&i,o=e.normalize,r=void 0===o||o;s&&this.enableTransitions();var a=yt(n(n({},this.getPublicProperties()),{},{event:r?this.normalizeEvent(t):t,getAreaRestrictions:this.getAreaRestrictions,imageRestriction:this.imageRestriction,adjustStencil:!this.stencilSize&&this.settings.resizeImage.adjustStencil})),h=a.visibleArea,c=a.coordinates;this.visibleArea=h,this.coordinates=c,this.runAutoZoom("manipulateImage"),this.onChange(),s&&this.debouncedDisableTransitions()}},onPropsChange:function(){this.coordinates=this.applyTransform(this.coordinates,!0),this.onChange(!1)},getAreaRestrictions:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=t.visibleArea,i=t.type,n=void 0===i?"move":i;return this.areaRestrictionsAlgorithm({boundaries:this.boundaries,imageSize:this.imageSize,imageRestriction:this.imageRestriction,visibleArea:e,type:n})},getAspectRatio:function(t){var e,i,n=this.stencilProps,s=n.aspectRatio,o=n.minAspectRatio,r=n.maxAspectRatio;if(this.$refs.stencil.aspectRatios){var a=this.$refs.stencil.aspectRatios();e=a.minimum,i=a.maximum}if(b(e)&&(e=b(s)?o:s),b(i)&&(i=b(s)?r:s),!t&&(b(e)||b(i))){var h=this.getStencilSize(),c=h?G(h):null;b(e)&&(e=R(c)?c:void 0),b(i)&&(i=R(c)?c:void 0)}return{minimum:e,maximum:i}},getStencilSize:function(){if(this.stencilSize)return t={currentStencilSize:{width:this.stencilCoordinates.width,height:this.stencilCoordinates.height},stencilSize:this.stencilSize,boundaries:this.boundaries,coefficient:this.coefficient,coordinates:this.coordinates,aspectRatio:this.getAspectRatio(!0)},e=t.boundaries,i=t.stencilSize,n=t.aspectRatio,J(G(s=v(i)?i({boundaries:e,aspectRatio:n}):i),n)&&(s=dt({sizeRestrictions:{maxWidth:e.width,maxHeight:e.height,minWidth:0,minHeight:0},width:s.width,height:s.height,aspectRatio:{minimum:n.minimum,maximum:n.maximum}})),(s.width>e.width||s.height>e.height)&&(s=dt({sizeRestrictions:{maxWidth:e.width,maxHeight:e.height,minWidth:0,minHeight:0},width:s.width,height:s.height,aspectRatio:{minimum:G(s),maximum:G(s)}})),s;var t,e,i,n,s},getPublicProperties:function(){return{coefficient:this.coefficient,visibleArea:this.visibleArea,coordinates:this.coordinates,boundaries:this.boundaries,sizeRestrictions:this.sizeRestrictions,positionRestrictions:this.positionRestrictions,aspectRatio:this.getAspectRatio(),imageRestriction:this.imageRestriction}},defaultCoordinates:function(){return n({},_)},flip:function(t,e){var i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},s=i.transitions,o=void 0===s||s;if(!this.transitionsActive){o&&this.enableTransitions();var r=n({},this.imageTransforms.flip),a=Rt({flip:{horizontal:t?!r.horizontal:r.horizontal,vertical:e?!r.vertical:r.vertical},previousFlip:r,rotate:this.imageTransforms.rotate,visibleArea:this.visibleArea,coordinates:this.coordinates,imageSize:this.imageSize,positionRestrictions:this.positionRestrictions,sizeRestrictions:this.sizeRestrictions,getAreaRestrictions:this.getAreaRestrictions,aspectRatio:this.getAspectRatio()}),h=a.visibleArea,c=a.coordinates;t&&(this.customImageTransforms.flip.horizontal=!this.customImageTransforms.flip.horizontal),e&&(this.customImageTransforms.flip.vertical=!this.customImageTransforms.flip.vertical),this.visibleArea=h,this.coordinates=c,this.onChange(),o&&this.debouncedDisableTransitions()}},rotate:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=e.transitions,s=void 0===i||i;if(!this.transitionsActive){s&&this.enableTransitions();var o=n({},this.imageSize);this.customImageTransforms.rotate+=t;var r=zt({visibleArea:this.visibleArea,coordinates:this.coordinates,previousImageSize:o,imageSize:this.imageSize,angle:t,positionRestrictions:this.positionRestrictions,sizeRestrictions:this.sizeRestrictions,getAreaRestrictions:this.getAreaRestrictions,aspectRatio:this.getAspectRatio()}),a=r.visibleArea,h=r.coordinates,c=this.processAutoZoom("rotateImage",a,h);a=c.visibleArea,h=c.coordinates,this.visibleArea=a,this.coordinates=h,this.onChange(),s&&this.debouncedDisableTransitions()}}}},undefined,false,undefined,!1,void 0,void 0,void 0);vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("cropper",te),vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("rectangle-stencil",Gt),vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("circle-stencil",Kt),vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("simple-handler",Ct),vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("simple-line",Tt);
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-async-computed/dist/vue-async-computed.esm.js":
 /*!************************************************************************!*\
   !*** ./node_modules/vue-async-computed/dist/vue-async-computed.esm.js ***!
@@ -33696,122 +33886,62 @@ var render = function() {
     "div",
     { staticClass: "avatar-upload" },
     [
-      _c("input", {
-        attrs: { type: "file", id: "avatar-loader" },
-        on: {
-          change: function($event) {
-            $event.preventDefault()
-            return _vm.fileUpload(null)
+      _c(
+        "modal",
+        {
+          attrs: {
+            name: "avatar-crop",
+            classes: ["modal", "avatar-crop"],
+            "max-width": 600,
+            height: "auto",
+            adaptive: true
           }
-        }
-      }),
+        },
+        [
+          _c("cropper", {
+            ref: "cropper",
+            staticClass: "cropper",
+            attrs: { "stencil-component": "circle-stencil", src: _vm.avatarSrc }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn avatar-crop-button", on: { click: _vm.crop } },
+            [_vm._v("\n      Обрезать\n    ")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
-        _vm.$isEmpty(_vm.avatarSrc)
-          ? _c(
-              "label",
-              {
-                key: "unloaded",
-                staticClass:
-                  "avatar-upload__container avatar-upload__non-uploaded pointer",
-                attrs: { for: "avatar-loader" }
-              },
-              [
-                _c(
-                  "svg",
-                  {
-                    staticClass: "avatar-upload__logo",
-                    attrs: {
-                      width: "51",
-                      height: "66",
-                      viewBox: "0 0 51 66",
-                      fill: "none",
-                      xmlns: "http://www.w3.org/2000/svg"
-                    }
-                  },
-                  [
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M44.3201 17.8333C43.7455 17.8333 43.1944 18.0616 42.788 18.4679C42.3817 18.8743 42.1534 19.4254 42.1534 20V35.1667C42.1534 35.7413 41.9252 36.2924 41.5188 36.6987C41.1125 37.1051 40.5614 37.3333 39.9868 37.3333H9.65344C9.0788 37.3333 8.5277 37.1051 8.12137 36.6987C7.71504 36.2924 7.48677 35.7413 7.48677 35.1667V17.8333C7.48677 17.2587 7.71504 16.7076 8.12137 16.3013C8.5277 15.8949 9.0788 15.6667 9.65344 15.6667H13.9868C14.4592 15.6913 14.9268 15.5607 15.318 15.2946C15.7093 15.0286 16.0027 14.6418 16.1534 14.1933L17.3234 10.64C17.4688 10.2097 17.7457 9.83587 18.1151 9.57149C18.4844 9.30711 18.9275 9.16549 19.3818 9.16667H31.3201C31.8947 9.16667 32.4458 8.93839 32.8522 8.53206C33.2585 8.12574 33.4868 7.57464 33.4868 7C33.4868 6.42536 33.2585 5.87426 32.8522 5.46794C32.4458 5.06161 31.8947 4.83333 31.3201 4.83333H19.2734C17.9118 4.83588 16.5853 5.26598 15.4813 6.06293C14.3772 6.85988 13.5513 7.98343 13.1201 9.275L12.4268 11.4417H9.65344C7.92953 11.4417 6.27623 12.1265 5.05724 13.3455C3.83826 14.5645 3.15344 16.2178 3.15344 17.9417V35.275C3.15344 36.9989 3.83826 38.6522 5.05724 39.8712C6.27623 41.0902 7.92953 41.775 9.65344 41.775H39.9868C41.7107 41.775 43.364 41.0902 44.583 39.8712C45.8019 38.6522 46.4868 36.9989 46.4868 35.275V20.1083C46.5015 19.8148 46.4563 19.5214 46.354 19.2459C46.2517 18.9704 46.0945 18.7186 45.8918 18.5057C45.6891 18.2929 45.4453 18.1236 45.1751 18.008C44.9049 17.8924 44.614 17.833 44.3201 17.8333ZM24.8201 15.6667C23.106 15.6667 21.4304 16.175 20.0052 17.1273C18.5799 18.0796 17.4691 19.4331 16.8131 21.0167C16.1572 22.6004 15.9856 24.3429 16.32 26.0241C16.6544 27.7053 17.4798 29.2495 18.6918 30.4616C19.9039 31.6736 21.4482 32.4991 23.1293 32.8335C24.8105 33.1679 26.5531 32.9963 28.1367 32.3403C29.7203 31.6843 31.0739 30.5735 32.0262 29.1483C32.9785 27.723 33.4868 26.0474 33.4868 24.3333C33.4868 22.0348 32.5737 19.8304 30.9484 18.2051C29.323 16.5798 27.1186 15.6667 24.8201 15.6667ZM24.8201 28.6667C23.9631 28.6667 23.1252 28.4125 22.4126 27.9364C21.7 27.4602 21.1446 26.7834 20.8166 25.9916C20.4886 25.1998 20.4028 24.3285 20.57 23.4879C20.7372 22.6474 21.1499 21.8752 21.756 21.2692C22.362 20.6632 23.1341 20.2505 23.9747 20.0833C24.8153 19.9161 25.6866 20.0019 26.4784 20.3299C27.2702 20.6578 27.947 21.2133 28.4231 21.9259C28.8993 22.6385 29.1534 23.4763 29.1534 24.3333C29.1534 25.4826 28.6969 26.5848 27.8842 27.3975C27.0716 28.2101 25.9694 28.6667 24.8201 28.6667ZM48.6534 4.83333H46.4868V2.66667C46.4868 2.09203 46.2585 1.54093 45.8522 1.1346C45.4458 0.728273 44.8947 0.5 44.3201 0.5C43.7455 0.5 43.1944 0.728273 42.788 1.1346C42.3817 1.54093 42.1534 2.09203 42.1534 2.66667V4.83333H39.9868C39.4121 4.83333 38.861 5.06161 38.4547 5.46794C38.0484 5.87426 37.8201 6.42536 37.8201 7C37.8201 7.57464 38.0484 8.12574 38.4547 8.53206C38.861 8.93839 39.4121 9.16667 39.9868 9.16667H42.1534V11.3333C42.1534 11.908 42.3817 12.4591 42.788 12.8654C43.1944 13.2717 43.7455 13.5 44.3201 13.5C44.8947 13.5 45.4458 13.2717 45.8522 12.8654C46.2585 12.4591 46.4868 11.908 46.4868 11.3333V9.16667H48.6534C49.2281 9.16667 49.7792 8.93839 50.1855 8.53206C50.5918 8.12574 50.8201 7.57464 50.8201 7C50.8201 6.42536 50.5918 5.87426 50.1855 5.46794C49.7792 5.06161 49.2281 4.83333 48.6534 4.83333Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M2.80682 63.0837L3.5625 60.762H7.23651L7.99219 63.0837H10.299L6.78906 52.9019H4.01491L0.5 63.0837H2.80682ZM4.10938 59.0816L5.36222 55.2286H5.44176L6.6946 59.0816H4.10938Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M11.4007 63.0837H15.1593C17.0683 63.0837 18.1323 62.3032 18.1323 61.0006C18.1323 59.9964 17.3368 59.2009 15.9647 59.1015C17.0584 58.9126 17.7097 58.3358 17.7097 57.5106C17.7097 56.1881 16.5414 55.4474 14.6571 55.4474H11.4007V63.0837ZM13.3745 61.4978V59.8323H15.1593C15.7459 59.8323 16.1039 60.1654 16.1039 60.7073C16.1039 61.1995 15.7459 61.4978 15.1593 61.4978H13.3745ZM13.3745 58.5894V57.0681H14.6571C15.3134 57.0681 15.7161 57.3515 15.7161 57.8188C15.7161 58.301 15.3333 58.5894 14.7019 58.5894H13.3745Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M21.5607 63.2279C22.6892 63.2279 23.4201 62.7357 23.7929 62.0248H23.8526V63.0837H25.8611V57.9332C25.8611 56.1135 24.3199 55.3479 22.6196 55.3479C20.7901 55.3479 19.587 56.2229 19.2936 57.615L21.2525 57.7741C21.3966 57.267 21.849 56.8941 22.6097 56.8941C23.3306 56.8941 23.7432 57.257 23.7432 57.8834V57.9133C23.7432 58.4055 23.2212 58.4701 21.8938 58.5993C20.3824 58.7386 19.0252 59.2457 19.0252 60.9509C19.0252 62.4623 20.104 63.2279 21.5607 63.2279ZM22.1672 61.7663C21.5159 61.7663 21.0486 61.463 21.0486 60.8813C21.0486 60.2847 21.5408 59.9914 22.2865 59.887C22.7489 59.8224 23.5046 59.713 23.7581 59.5439V60.3543C23.7581 61.1547 23.0969 61.7663 22.1672 61.7663Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M26.667 57.1128H29.1081V63.0837H31.1266V57.1128H33.5875V55.4474H26.667V57.1128Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M36.6915 63.2279C37.8201 63.2279 38.5509 62.7357 38.9238 62.0248H38.9834V63.0837H40.9919V57.9332C40.9919 56.1135 39.4508 55.3479 37.7505 55.3479C35.9209 55.3479 34.7178 56.2229 34.4245 57.615L36.3833 57.7741C36.5275 57.267 36.9799 56.8941 37.7405 56.8941C38.4614 56.8941 38.8741 57.257 38.8741 57.8834V57.9133C38.8741 58.4055 38.352 58.4701 37.0246 58.5993C35.5133 58.7386 34.156 59.2457 34.156 60.9509C34.156 62.4623 35.2348 63.2279 36.6915 63.2279ZM37.2981 61.7663C36.6468 61.7663 36.1794 61.463 36.1794 60.8813C36.1794 60.2847 36.6716 59.9914 37.4174 59.887C37.8797 59.8224 38.6354 59.713 38.889 59.5439V60.3543C38.889 61.1547 38.2277 61.7663 37.2981 61.7663Z",
-                        fill: "#B4B4B4"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("path", {
-                      attrs: {
-                        d:
-                          "M42.5511 65.9474H44.669V61.8607H44.7336C45.0269 62.4971 45.6682 63.208 46.9012 63.208C48.6413 63.208 49.9985 61.8309 49.9985 59.2755C49.9985 56.6505 48.5816 55.3479 46.9062 55.3479C45.6285 55.3479 45.017 56.1086 44.7336 56.73H44.6391V55.4474H42.5511V65.9474ZM44.6242 59.2655C44.6242 57.9033 45.2009 57.0333 46.23 57.0333C47.279 57.0333 47.8359 57.9431 47.8359 59.2655C47.8359 60.5979 47.2691 61.5226 46.23 61.5226C45.2109 61.5226 44.6242 60.6278 44.6242 59.2655Z",
-                        fill: "#B4B4B4"
-                      }
-                    })
-                  ]
-                )
-              ]
-            )
-          : _c(
-              "div",
-              {
-                key: "loaded",
-                staticClass: "avatar-upload__container avatar-upload__uploaded"
-              },
-              [
-                _c("img", {
-                  staticClass: "avatar-upload__img",
-                  attrs: { src: _vm.avatarSrc }
-                }),
-                _vm._v(" "),
-                _c(
+      _c(
+        "div",
+        { staticClass: "avatar-upload-block" },
+        [
+          _c("input", {
+            attrs: { type: "file", id: "avatar-loader" },
+            on: {
+              change: function($event) {
+                $event.preventDefault()
+                return _vm.fileUpload(null)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
+            _vm.$isEmpty(_vm.avatarSrc)
+              ? _c(
                   "label",
                   {
+                    key: "unloaded",
                     staticClass:
-                      "avatar-upload__container avatar-upload__uploaded-overflow",
+                      "avatar-upload__container avatar-upload__non-uploaded pointer",
                     attrs: { for: "avatar-loader" }
                   },
                   [
                     _c(
                       "svg",
                       {
+                        staticClass: "avatar-upload__logo",
                         attrs: {
                           width: "51",
                           height: "66",
@@ -33880,9 +34010,104 @@ var render = function() {
                     )
                   ]
                 )
-              ]
-            )
-      ])
+              : _c(
+                  "div",
+                  {
+                    key: "loaded",
+                    staticClass:
+                      "avatar-upload__container avatar-upload__uploaded"
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "avatar-upload__img",
+                      attrs: { src: _vm.avatarSrc }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass:
+                          "avatar-upload__container avatar-upload__uploaded-overflow",
+                        attrs: { for: "avatar-loader" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "51",
+                              height: "66",
+                              viewBox: "0 0 51 66",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M44.3201 17.8333C43.7455 17.8333 43.1944 18.0616 42.788 18.4679C42.3817 18.8743 42.1534 19.4254 42.1534 20V35.1667C42.1534 35.7413 41.9252 36.2924 41.5188 36.6987C41.1125 37.1051 40.5614 37.3333 39.9868 37.3333H9.65344C9.0788 37.3333 8.5277 37.1051 8.12137 36.6987C7.71504 36.2924 7.48677 35.7413 7.48677 35.1667V17.8333C7.48677 17.2587 7.71504 16.7076 8.12137 16.3013C8.5277 15.8949 9.0788 15.6667 9.65344 15.6667H13.9868C14.4592 15.6913 14.9268 15.5607 15.318 15.2946C15.7093 15.0286 16.0027 14.6418 16.1534 14.1933L17.3234 10.64C17.4688 10.2097 17.7457 9.83587 18.1151 9.57149C18.4844 9.30711 18.9275 9.16549 19.3818 9.16667H31.3201C31.8947 9.16667 32.4458 8.93839 32.8522 8.53206C33.2585 8.12574 33.4868 7.57464 33.4868 7C33.4868 6.42536 33.2585 5.87426 32.8522 5.46794C32.4458 5.06161 31.8947 4.83333 31.3201 4.83333H19.2734C17.9118 4.83588 16.5853 5.26598 15.4813 6.06293C14.3772 6.85988 13.5513 7.98343 13.1201 9.275L12.4268 11.4417H9.65344C7.92953 11.4417 6.27623 12.1265 5.05724 13.3455C3.83826 14.5645 3.15344 16.2178 3.15344 17.9417V35.275C3.15344 36.9989 3.83826 38.6522 5.05724 39.8712C6.27623 41.0902 7.92953 41.775 9.65344 41.775H39.9868C41.7107 41.775 43.364 41.0902 44.583 39.8712C45.8019 38.6522 46.4868 36.9989 46.4868 35.275V20.1083C46.5015 19.8148 46.4563 19.5214 46.354 19.2459C46.2517 18.9704 46.0945 18.7186 45.8918 18.5057C45.6891 18.2929 45.4453 18.1236 45.1751 18.008C44.9049 17.8924 44.614 17.833 44.3201 17.8333ZM24.8201 15.6667C23.106 15.6667 21.4304 16.175 20.0052 17.1273C18.5799 18.0796 17.4691 19.4331 16.8131 21.0167C16.1572 22.6004 15.9856 24.3429 16.32 26.0241C16.6544 27.7053 17.4798 29.2495 18.6918 30.4616C19.9039 31.6736 21.4482 32.4991 23.1293 32.8335C24.8105 33.1679 26.5531 32.9963 28.1367 32.3403C29.7203 31.6843 31.0739 30.5735 32.0262 29.1483C32.9785 27.723 33.4868 26.0474 33.4868 24.3333C33.4868 22.0348 32.5737 19.8304 30.9484 18.2051C29.323 16.5798 27.1186 15.6667 24.8201 15.6667ZM24.8201 28.6667C23.9631 28.6667 23.1252 28.4125 22.4126 27.9364C21.7 27.4602 21.1446 26.7834 20.8166 25.9916C20.4886 25.1998 20.4028 24.3285 20.57 23.4879C20.7372 22.6474 21.1499 21.8752 21.756 21.2692C22.362 20.6632 23.1341 20.2505 23.9747 20.0833C24.8153 19.9161 25.6866 20.0019 26.4784 20.3299C27.2702 20.6578 27.947 21.2133 28.4231 21.9259C28.8993 22.6385 29.1534 23.4763 29.1534 24.3333C29.1534 25.4826 28.6969 26.5848 27.8842 27.3975C27.0716 28.2101 25.9694 28.6667 24.8201 28.6667ZM48.6534 4.83333H46.4868V2.66667C46.4868 2.09203 46.2585 1.54093 45.8522 1.1346C45.4458 0.728273 44.8947 0.5 44.3201 0.5C43.7455 0.5 43.1944 0.728273 42.788 1.1346C42.3817 1.54093 42.1534 2.09203 42.1534 2.66667V4.83333H39.9868C39.4121 4.83333 38.861 5.06161 38.4547 5.46794C38.0484 5.87426 37.8201 6.42536 37.8201 7C37.8201 7.57464 38.0484 8.12574 38.4547 8.53206C38.861 8.93839 39.4121 9.16667 39.9868 9.16667H42.1534V11.3333C42.1534 11.908 42.3817 12.4591 42.788 12.8654C43.1944 13.2717 43.7455 13.5 44.3201 13.5C44.8947 13.5 45.4458 13.2717 45.8522 12.8654C46.2585 12.4591 46.4868 11.908 46.4868 11.3333V9.16667H48.6534C49.2281 9.16667 49.7792 8.93839 50.1855 8.53206C50.5918 8.12574 50.8201 7.57464 50.8201 7C50.8201 6.42536 50.5918 5.87426 50.1855 5.46794C49.7792 5.06161 49.2281 4.83333 48.6534 4.83333Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M2.80682 63.0837L3.5625 60.762H7.23651L7.99219 63.0837H10.299L6.78906 52.9019H4.01491L0.5 63.0837H2.80682ZM4.10938 59.0816L5.36222 55.2286H5.44176L6.6946 59.0816H4.10938Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M11.4007 63.0837H15.1593C17.0683 63.0837 18.1323 62.3032 18.1323 61.0006C18.1323 59.9964 17.3368 59.2009 15.9647 59.1015C17.0584 58.9126 17.7097 58.3358 17.7097 57.5106C17.7097 56.1881 16.5414 55.4474 14.6571 55.4474H11.4007V63.0837ZM13.3745 61.4978V59.8323H15.1593C15.7459 59.8323 16.1039 60.1654 16.1039 60.7073C16.1039 61.1995 15.7459 61.4978 15.1593 61.4978H13.3745ZM13.3745 58.5894V57.0681H14.6571C15.3134 57.0681 15.7161 57.3515 15.7161 57.8188C15.7161 58.301 15.3333 58.5894 14.7019 58.5894H13.3745Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M21.5607 63.2279C22.6892 63.2279 23.4201 62.7357 23.7929 62.0248H23.8526V63.0837H25.8611V57.9332C25.8611 56.1135 24.3199 55.3479 22.6196 55.3479C20.7901 55.3479 19.587 56.2229 19.2936 57.615L21.2525 57.7741C21.3966 57.267 21.849 56.8941 22.6097 56.8941C23.3306 56.8941 23.7432 57.257 23.7432 57.8834V57.9133C23.7432 58.4055 23.2212 58.4701 21.8938 58.5993C20.3824 58.7386 19.0252 59.2457 19.0252 60.9509C19.0252 62.4623 20.104 63.2279 21.5607 63.2279ZM22.1672 61.7663C21.5159 61.7663 21.0486 61.463 21.0486 60.8813C21.0486 60.2847 21.5408 59.9914 22.2865 59.887C22.7489 59.8224 23.5046 59.713 23.7581 59.5439V60.3543C23.7581 61.1547 23.0969 61.7663 22.1672 61.7663Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M26.667 57.1128H29.1081V63.0837H31.1266V57.1128H33.5875V55.4474H26.667V57.1128Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M36.6915 63.2279C37.8201 63.2279 38.5509 62.7357 38.9238 62.0248H38.9834V63.0837H40.9919V57.9332C40.9919 56.1135 39.4508 55.3479 37.7505 55.3479C35.9209 55.3479 34.7178 56.2229 34.4245 57.615L36.3833 57.7741C36.5275 57.267 36.9799 56.8941 37.7405 56.8941C38.4614 56.8941 38.8741 57.257 38.8741 57.8834V57.9133C38.8741 58.4055 38.352 58.4701 37.0246 58.5993C35.5133 58.7386 34.156 59.2457 34.156 60.9509C34.156 62.4623 35.2348 63.2279 36.6915 63.2279ZM37.2981 61.7663C36.6468 61.7663 36.1794 61.463 36.1794 60.8813C36.1794 60.2847 36.6716 59.9914 37.4174 59.887C37.8797 59.8224 38.6354 59.713 38.889 59.5439V60.3543C38.889 61.1547 38.2277 61.7663 37.2981 61.7663Z",
+                                fill: "#B4B4B4"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M42.5511 65.9474H44.669V61.8607H44.7336C45.0269 62.4971 45.6682 63.208 46.9012 63.208C48.6413 63.208 49.9985 61.8309 49.9985 59.2755C49.9985 56.6505 48.5816 55.3479 46.9062 55.3479C45.6285 55.3479 45.017 56.1086 44.7336 56.73H44.6391V55.4474H42.5511V65.9474ZM44.6242 59.2655C44.6242 57.9033 45.2009 57.0333 46.23 57.0333C47.279 57.0333 47.8359 57.9431 47.8359 59.2655C47.8359 60.5979 47.2691 61.5226 46.23 61.5226C45.2109 61.5226 44.6242 60.6278 44.6242 59.2655Z",
+                                fill: "#B4B4B4"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
@@ -35656,331 +35881,66 @@ var render = function() {
     "div",
     { staticClass: "banner-upload" },
     [
-      _c("input", {
-        attrs: { type: "file", id: "banner-loader" },
-        on: {
-          change: function($event) {
-            $event.preventDefault()
-            return _vm.fileUpload(null)
+      _c(
+        "modal",
+        {
+          attrs: {
+            name: "banner-crop",
+            classes: ["modal", "avatar-crop"],
+            "max-width": 600,
+            height: "auto",
+            adaptive: true
           }
-        }
-      }),
+        },
+        [
+          _c("cropper", {
+            ref: "cropper",
+            staticClass: "cropper",
+            attrs: {
+              src: _vm.loadedImgSrc,
+              "stencil-props": {
+                handlers: {},
+                scalable: false
+              },
+              "stencil-size": {
+                width: 1920,
+                height: 400
+              },
+              "image-restriction": "stencil"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn avatar-crop-button", on: { click: _vm.crop } },
+            [_vm._v("\n      Обрезать\n    ")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
-        _vm.$isEmpty(_vm.bannerSrc)
-          ? _c(
-              "label",
-              {
-                key: "unloaded",
-                staticClass:
-                  "banner-upload__container banner-upload__non-uploaded pointer",
-                attrs: { for: "banner-loader" }
-              },
-              [
-                _vm.$store.getters.windowWidth < 680
-                  ? _c(
-                      "svg",
-                      {
-                        staticClass: "banner-upload__logo",
-                        attrs: {
-                          width: "202",
-                          height: "32",
-                          viewBox: "0 0 202 32",
-                          fill: "none",
-                          xmlns: "http://www.w3.org/2000/svg"
-                        }
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M31.1988 13.5988C30.7745 13.5988 30.3675 13.7674 30.0675 14.0675C29.7674 14.3675 29.5988 14.7745 29.5988 15.1988V26.3988C29.5988 26.8232 29.4303 27.2301 29.1302 27.5302C28.8301 27.8303 28.4232 27.9988 27.9988 27.9988H5.59883C5.17448 27.9988 4.76752 27.8303 4.46746 27.5302C4.1674 27.2301 3.99883 26.8232 3.99883 26.3988V13.5988C3.99883 13.1745 4.1674 12.7675 4.46746 12.4675C4.76752 12.1674 5.17448 11.9988 5.59883 11.9988H8.79883C9.14773 12.017 9.49301 11.9205 9.78192 11.7241C10.0708 11.5276 10.2875 11.242 10.3988 10.9108L11.2628 8.28683C11.3702 7.96903 11.5747 7.69301 11.8474 7.49778C12.1202 7.30254 12.4474 7.19796 12.7828 7.19883H21.5988C22.0232 7.19883 22.4301 7.03026 22.7302 6.7302C23.0303 6.43014 23.1988 6.02317 23.1988 5.59883C23.1988 5.17448 23.0303 4.76752 22.7302 4.46746C22.4301 4.1674 22.0232 3.99883 21.5988 3.99883H12.7028C11.6973 4.00071 10.7178 4.31832 9.90246 4.90684C9.08715 5.49535 8.47724 6.32505 8.15883 7.27883L7.64683 8.87883H5.59883C4.32579 8.87883 3.10489 9.38454 2.20472 10.2847C1.30454 11.1849 0.798828 12.4058 0.798828 13.6788V26.4788C0.798828 27.7519 1.30454 28.9728 2.20472 29.8729C3.10489 30.7731 4.32579 31.2788 5.59883 31.2788H27.9988C29.2719 31.2788 30.4928 30.7731 31.3929 29.8729C32.2931 28.9728 32.7988 27.7519 32.7988 26.4788V15.2788C32.8097 15.0621 32.7763 14.8454 32.7008 14.6419C32.6253 14.4385 32.5091 14.2525 32.3595 14.0954C32.2098 13.9382 32.0297 13.8132 31.8302 13.7278C31.6307 13.6424 31.4159 13.5986 31.1988 13.5988ZM16.7988 11.9988C15.533 11.9988 14.2957 12.3742 13.2432 13.0774C12.1907 13.7807 11.3704 14.7802 10.886 15.9497C10.4016 17.1191 10.2749 18.4059 10.5218 19.6474C10.7687 20.8889 11.3783 22.0293 12.2733 22.9243C13.1684 23.8194 14.3088 24.4289 15.5503 24.6759C16.7917 24.9228 18.0786 24.7961 19.248 24.3117C20.4175 23.8273 21.417 23.007 22.1202 21.9545C22.8235 20.902 23.1988 19.6646 23.1988 18.3988C23.1988 16.7014 22.5245 15.0736 21.3243 13.8733C20.1241 12.6731 18.4962 11.9988 16.7988 11.9988ZM16.7988 21.5988C16.1659 21.5988 15.5472 21.4112 15.021 21.0595C14.4948 20.7079 14.0846 20.2081 13.8424 19.6234C13.6002 19.0387 13.5368 18.3953 13.6603 17.7745C13.7838 17.1538 14.0886 16.5836 14.5361 16.1361C14.9836 15.6886 15.5538 15.3838 16.1745 15.2603C16.7953 15.1368 17.4387 15.2002 18.0234 15.4424C18.6081 15.6846 19.1079 16.0948 19.4595 16.621C19.8112 17.1472 19.9988 17.7659 19.9988 18.3988C19.9988 19.2475 19.6617 20.0615 19.0616 20.6616C18.4615 21.2617 17.6475 21.5988 16.7988 21.5988ZM34.3988 3.99883H32.7988V2.39883C32.7988 1.97448 32.6303 1.56752 32.3302 1.26746C32.0301 0.967399 31.6232 0.798828 31.1988 0.798828C30.7745 0.798828 30.3675 0.967399 30.0675 1.26746C29.7674 1.56752 29.5988 1.97448 29.5988 2.39883V3.99883H27.9988C27.5745 3.99883 27.1675 4.1674 26.8675 4.46746C26.5674 4.76752 26.3988 5.17448 26.3988 5.59883C26.3988 6.02317 26.5674 6.43014 26.8675 6.7302C27.1675 7.03026 27.5745 7.19883 27.9988 7.19883H29.5988V8.79883C29.5988 9.22318 29.7674 9.63014 30.0675 9.9302C30.3675 10.2303 30.7745 10.3988 31.1988 10.3988C31.6232 10.3988 32.0301 10.2303 32.3302 9.9302C32.6303 9.63014 32.7988 9.22318 32.7988 8.79883V7.19883H34.3988C34.8232 7.19883 35.2301 7.03026 35.5302 6.7302C35.8303 6.43014 35.9988 6.02317 35.9988 5.59883C35.9988 5.17448 35.8303 4.76752 35.5302 4.46746C35.2301 4.1674 34.8232 3.99883 34.3988 3.99883Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M56.1313 24.1748C58.8688 24.1748 60.8625 22.6061 60.8563 20.4436C60.8625 18.8436 59.8625 17.6936 58.0688 17.4373V17.3373C59.4563 17.0373 60.3875 16.0061 60.3813 14.5686C60.3875 12.6186 58.725 11.0248 56.1688 11.0248C53.6813 11.0248 51.7563 12.5061 51.7062 14.6498H53.9375C53.975 13.5748 54.975 12.9061 56.1562 12.9061C57.35 12.9061 58.1437 13.6311 58.1375 14.7061C58.1437 15.8248 57.2188 16.5686 55.8937 16.5686H54.7625V18.3561H55.8937C57.5125 18.3561 58.475 19.1686 58.4688 20.3248C58.475 21.4561 57.4938 22.2311 56.125 22.2311C54.8375 22.2311 53.8438 21.5623 53.7875 20.5186H51.4375C51.5 22.6811 53.4313 24.1748 56.1313 24.1748Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M65.4723 24.1936C66.9785 24.1936 67.8785 23.4873 68.291 22.6811H68.366V23.9998H70.541V17.5748C70.541 15.0373 68.4723 14.2748 66.641 14.2748C64.6223 14.2748 63.0723 15.1748 62.5723 16.9248L64.6848 17.2248C64.9098 16.5686 65.5473 16.0061 66.6535 16.0061C67.7035 16.0061 68.2785 16.5436 68.2785 17.4873V17.5248C68.2785 18.1748 67.5973 18.2061 65.9035 18.3873C64.041 18.5873 62.2598 19.1436 62.2598 21.3061C62.2598 23.1936 63.641 24.1936 65.4723 24.1936ZM66.0598 22.5311C65.116 22.5311 64.441 22.0998 64.441 21.2686C64.441 20.3998 65.1973 20.0373 66.2098 19.8936C66.8035 19.8123 67.991 19.6623 68.2848 19.4248V20.5561C68.2848 21.6248 67.4223 22.5311 66.0598 22.5311Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M78.8492 14.3998H72.4992V23.9998H74.7117V16.2561H78.8492V14.3998Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M80.3465 27.5998H82.609V22.4873H82.7027C83.059 23.1873 83.8027 24.1686 85.4527 24.1686C87.7152 24.1686 89.409 22.3748 89.409 19.2123C89.409 16.0123 87.6652 14.2748 85.4465 14.2748C83.7527 14.2748 83.0465 15.2936 82.7027 15.9873H82.5715V14.3998H80.3465V27.5998ZM82.5652 19.1998C82.5652 17.3373 83.3652 16.1311 84.8215 16.1311C86.3277 16.1311 87.1027 17.4123 87.1027 19.1998C87.1027 20.9998 86.3152 22.3123 84.8215 22.3123C83.3777 22.3123 82.5652 21.0623 82.5652 19.1998Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M92.1094 27.5998C93.8719 27.5998 94.8906 26.6936 95.4344 25.1623L99.2906 14.4123L96.8719 14.3998L94.6531 21.6498H94.5531L92.3406 14.3998H89.9406L93.4219 24.1998L93.2281 24.7186C92.8094 25.8123 92.1469 25.8873 91.1594 25.5998L90.6344 27.3623C90.9406 27.4873 91.4906 27.5998 92.1094 27.5998Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M100.013 21.3686C100.069 23.1498 101.7 24.1873 103.919 24.1873C106.194 24.1873 107.838 23.1061 107.838 21.3373C107.838 20.0436 106.957 19.1561 105.819 19.0873V18.9873C106.919 18.6936 107.619 18.0061 107.619 16.9686C107.619 15.3498 106.219 14.2748 103.969 14.2748C101.869 14.2748 100.288 15.3623 100.257 17.0373H102.488C102.513 16.3936 103.175 15.9436 104.075 15.9436C104.975 15.9436 105.519 16.4248 105.519 17.1373C105.519 17.7936 105.019 18.2811 104.082 18.2811H102.613V19.8873H104.082C105.025 19.8873 105.644 20.4186 105.644 21.1936C105.644 22.0686 104.875 22.4936 103.907 22.4936C102.95 22.4936 102.3 22.0811 102.257 21.3686H100.013Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M111.484 20.9373V14.3998H109.302V23.9998H111.634L115.465 17.4561V23.9998H117.652V14.3998H115.327L111.484 20.9373Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M118.584 16.2561H121.69V23.9998H123.878V16.2561H126.984V14.3998H118.584V16.2561Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M130.65 17.5248V14.3998H128.469V23.9998H132.831C135.275 23.9998 136.681 22.6498 136.687 20.7623C136.681 18.8248 135.275 17.5248 132.831 17.5248H130.65ZM130.65 19.3811H132.831C133.812 19.3811 134.519 19.9623 134.519 20.7936C134.519 21.5873 133.812 22.1436 132.831 22.1436H130.65V19.3811Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M150.052 10.8498C149.59 11.1998 148.859 11.1936 147.865 11.1936C147.584 11.1936 147.29 11.1936 146.971 11.1998C143.665 11.2436 141.965 13.4436 141.965 17.9561V18.8186C141.965 22.3311 143.74 24.1873 146.534 24.1873C149.327 24.1873 151.09 22.3248 151.09 19.3623C151.09 16.4873 149.415 14.8311 147.034 14.8311C145.571 14.8311 144.465 15.4623 143.865 16.6373H143.759C143.984 14.2436 144.884 13.1623 147.034 13.1123C148.94 13.0686 150.009 13.0373 150.84 12.3123L150.052 10.8498ZM146.546 22.3748C145.127 22.3748 144.259 21.2373 144.259 19.4248C144.277 17.6373 145.134 16.6123 146.534 16.6123C147.934 16.6123 148.796 17.6373 148.796 19.4248C148.796 21.2436 147.94 22.3748 146.546 22.3748Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M155.461 24.1936C156.967 24.1936 157.867 23.4873 158.279 22.6811H158.354V23.9998H160.529V17.5748C160.529 15.0373 158.461 14.2748 156.629 14.2748C154.611 14.2748 153.061 15.1748 152.561 16.9248L154.673 17.2248C154.898 16.5686 155.536 16.0061 156.642 16.0061C157.692 16.0061 158.267 16.5436 158.267 17.4873V17.5248C158.267 18.1748 157.586 18.2061 155.892 18.3873C154.029 18.5873 152.248 19.1436 152.248 21.3061C152.248 23.1936 153.629 24.1936 155.461 24.1936ZM156.048 22.5311C155.104 22.5311 154.429 22.0998 154.429 21.2686C154.429 20.3998 155.186 20.0373 156.198 19.8936C156.792 19.8123 157.979 19.6623 158.273 19.4248V20.5561C158.273 21.6248 157.411 22.5311 156.048 22.5311Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M164.669 14.3998H162.487V23.9998H164.669V20.1186H168.387V23.9998H170.562V14.3998H168.387V18.2623H164.669V14.3998Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M174.716 14.3998H172.535V23.9998H174.716V20.1186H178.435V23.9998H180.61V14.3998H178.435V18.2623H174.716V14.3998Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M186.832 24.1873C189.069 24.1873 190.607 23.0936 191.007 21.4248L188.894 21.1873C188.588 21.9998 187.838 22.4248 186.863 22.4248C185.401 22.4248 184.432 21.4623 184.413 19.8186H191.101V19.1248C191.101 15.7561 189.076 14.2748 186.713 14.2748C183.963 14.2748 182.169 16.2936 182.169 19.2561C182.169 22.2686 183.938 24.1873 186.832 24.1873ZM184.419 18.2936C184.488 17.0686 185.394 16.0373 186.744 16.0373C188.044 16.0373 188.919 16.9873 188.932 18.2936H184.419Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M192.698 27.5998H194.96V22.4873H195.054C195.411 23.1873 196.154 24.1686 197.804 24.1686C200.067 24.1686 201.76 22.3748 201.76 19.2123C201.76 16.0123 200.017 14.2748 197.798 14.2748C196.104 14.2748 195.398 15.2936 195.054 15.9873H194.923V14.3998H192.698V27.5998ZM194.917 19.1998C194.917 17.3373 195.717 16.1311 197.173 16.1311C198.679 16.1311 199.454 17.4123 199.454 19.1998C199.454 20.9998 198.667 22.3123 197.173 22.3123C195.729 22.3123 194.917 21.0623 194.917 19.1998Z",
-                            fill: "#B4B4B4"
-                          }
-                        })
-                      ]
-                    )
-                  : _c(
-                      "svg",
-                      {
-                        staticClass: "banner-upload__logo",
-                        attrs: {
-                          width: "253",
-                          height: "40",
-                          viewBox: "0 0 253 40",
-                          fill: "none",
-                          xmlns: "http://www.w3.org/2000/svg"
-                        }
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M38.9981 16.998C38.4676 16.998 37.9589 17.2088 37.5838 17.5838C37.2088 17.9589 36.9981 18.4676 36.9981 18.998V32.998C36.9981 33.5285 36.7873 34.0372 36.4123 34.4123C36.0372 34.7873 35.5285 34.998 34.9981 34.998H6.99805C6.46761 34.998 5.95891 34.7873 5.58383 34.4123C5.20876 34.0372 4.99805 33.5285 4.99805 32.998V16.998C4.99805 16.4676 5.20876 15.9589 5.58383 15.5838C5.95891 15.2088 6.46761 14.998 6.99805 14.998H10.998C11.4342 15.0208 11.8658 14.9002 12.2269 14.6546C12.5881 14.409 12.8589 14.052 12.998 13.638L14.078 10.358C14.2122 9.9608 14.4678 9.61578 14.8088 9.37173C15.1497 9.12768 15.5588 8.99696 15.978 8.99805H26.9981C27.5285 8.99805 28.0372 8.78733 28.4123 8.41226C28.7873 8.03719 28.9981 7.52848 28.9981 6.99805C28.9981 6.46761 28.7873 5.95891 28.4123 5.58383C28.0372 5.20876 27.5285 4.99805 26.9981 4.99805H15.878C14.6211 5.0004 13.3967 5.39741 12.3776 6.13306C11.3584 6.8687 10.5961 7.90583 10.198 9.09805L9.55805 11.098H6.99805C5.40675 11.098 3.88062 11.7302 2.75541 12.8554C1.63019 13.9806 0.998047 15.5067 0.998047 17.098V33.098C0.998047 34.6893 1.63019 36.2155 2.75541 37.3407C3.88062 38.4659 5.40675 39.098 6.99805 39.098H34.9981C36.5894 39.098 38.1155 38.4659 39.2407 37.3407C40.3659 36.2155 40.9981 34.6893 40.9981 33.098V19.098C41.0116 18.8271 40.9699 18.5562 40.8755 18.3019C40.7811 18.0476 40.6359 17.8152 40.4488 17.6187C40.2617 17.4223 40.0367 17.266 39.7872 17.1593C39.5378 17.0526 39.2693 16.9977 38.9981 16.998ZM20.998 14.998C19.4158 14.998 17.8691 15.4672 16.5535 16.3463C15.2379 17.2253 14.2125 18.4748 13.607 19.9366C13.0015 21.3984 12.8431 23.0069 13.1518 24.5588C13.4604 26.1106 14.2224 27.5361 15.3412 28.6549C16.46 29.7737 17.8855 30.5356 19.4373 30.8443C20.9892 31.153 22.5977 30.9946 24.0595 30.3891C25.5213 29.7836 26.7708 28.7582 27.6498 27.4426C28.5289 26.127 28.9981 24.5803 28.9981 22.998C28.9981 20.8763 28.1552 18.8415 26.6549 17.3412C25.1546 15.8409 23.1198 14.998 20.998 14.998ZM20.998 26.998C20.2069 26.998 19.4336 26.7635 18.7758 26.3239C18.118 25.8844 17.6053 25.2597 17.3025 24.5288C16.9998 23.7979 16.9206 22.9936 17.0749 22.2177C17.2292 21.4418 17.6102 20.729 18.1696 20.1696C18.729 19.6102 19.4418 19.2292 20.2177 19.0749C20.9936 18.9206 21.7979 18.9998 22.5288 19.3025C23.2597 19.6053 23.8844 20.118 24.3239 20.7758C24.7635 21.4336 24.9981 22.2069 24.9981 22.998C24.9981 24.0589 24.5766 25.0763 23.8265 25.8265C23.0763 26.5766 22.0589 26.998 20.998 26.998ZM42.9981 4.99805H40.9981V2.99805C40.9981 2.46761 40.7873 1.95891 40.4123 1.58383C40.0372 1.20876 39.5285 0.998047 38.9981 0.998047C38.4676 0.998047 37.9589 1.20876 37.5838 1.58383C37.2088 1.95891 36.9981 2.46761 36.9981 2.99805V4.99805H34.9981C34.4676 4.99805 33.9589 5.20876 33.5838 5.58383C33.2088 5.95891 32.9981 6.46761 32.9981 6.99805C32.9981 7.52848 33.2088 8.03719 33.5838 8.41226C33.9589 8.78733 34.4676 8.99805 34.9981 8.99805H36.9981V10.998C36.9981 11.5285 37.2088 12.0372 37.5838 12.4123C37.9589 12.7873 38.4676 12.998 38.9981 12.998C39.5285 12.998 40.0372 12.7873 40.4123 12.4123C40.7873 12.0372 40.9981 11.5285 40.9981 10.998V8.99805H42.9981C43.5285 8.99805 44.0372 8.78733 44.4123 8.41226C44.7873 8.03719 44.9981 7.52848 44.9981 6.99805C44.9981 6.46761 44.7873 5.95891 44.4123 5.58383C44.0372 5.20876 43.5285 4.99805 42.9981 4.99805Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M70.1636 30.218C73.5854 30.218 76.0776 28.2571 76.0698 25.554C76.0776 23.554 74.8276 22.1165 72.5854 21.7962V21.6712C74.3198 21.2962 75.4839 20.0071 75.4761 18.2102C75.4839 15.7727 73.4058 13.7805 70.2104 13.7805C67.1011 13.7805 64.6948 15.6321 64.6323 18.3118H67.4214C67.4683 16.968 68.7183 16.1321 70.1948 16.1321C71.687 16.1321 72.6792 17.0383 72.6714 18.3821C72.6792 19.7805 71.5229 20.7102 69.8667 20.7102H68.4526V22.9446H69.8667C71.8901 22.9446 73.0933 23.9602 73.0854 25.4055C73.0933 26.8196 71.8667 27.7883 70.1558 27.7883C68.5464 27.7883 67.3042 26.9524 67.2339 25.6477H64.2964C64.3745 28.3508 66.7886 30.218 70.1636 30.218Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M81.8398 30.2415C83.7227 30.2415 84.8477 29.3587 85.3633 28.3508H85.457V29.9993H88.1758V21.968C88.1758 18.7962 85.5898 17.843 83.3008 17.843C80.7773 17.843 78.8398 18.968 78.2148 21.1555L80.8555 21.5305C81.1367 20.7102 81.9336 20.0071 83.3164 20.0071C84.6289 20.0071 85.3477 20.679 85.3477 21.8587V21.9055C85.3477 22.718 84.4961 22.7571 82.3789 22.9837C80.0508 23.2337 77.8242 23.929 77.8242 26.6321C77.8242 28.9915 79.5508 30.2415 81.8398 30.2415ZM82.5742 28.1633C81.3945 28.1633 80.5508 27.6243 80.5508 26.5852C80.5508 25.4993 81.4961 25.0462 82.7617 24.8665C83.5039 24.7649 84.9883 24.5774 85.3555 24.2805V25.6946C85.3555 27.0305 84.2773 28.1633 82.5742 28.1633Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M98.561 17.9993H90.6235V29.9993H93.3892V20.3196H98.561V17.9993Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M100.433 34.4993H103.261V28.1087H103.378C103.823 28.9837 104.753 30.2102 106.815 30.2102C109.644 30.2102 111.761 27.968 111.761 24.0149C111.761 20.0149 109.581 17.843 106.808 17.843C104.69 17.843 103.808 19.1165 103.378 19.9837H103.214V17.9993H100.433V34.4993ZM103.206 23.9993C103.206 21.6712 104.206 20.1633 106.026 20.1633C107.909 20.1633 108.878 21.7649 108.878 23.9993C108.878 26.2493 107.894 27.8899 106.026 27.8899C104.222 27.8899 103.206 26.3274 103.206 23.9993Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M115.136 34.4993C117.339 34.4993 118.613 33.3665 119.292 31.4524L124.113 18.0149L121.089 17.9993L118.316 27.0618H118.191L115.425 17.9993H112.425L116.777 30.2493L116.535 30.8977C116.011 32.2649 115.183 32.3587 113.949 31.9993L113.292 34.2024C113.675 34.3587 114.363 34.4993 115.136 34.4993Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M125.016 26.7102C125.086 28.9368 127.125 30.2337 129.898 30.2337C132.742 30.2337 134.797 28.8821 134.797 26.6712C134.797 25.054 133.695 23.9446 132.273 23.8587V23.7337C133.648 23.3665 134.523 22.5071 134.523 21.2102C134.523 19.1868 132.773 17.843 129.961 17.843C127.336 17.843 125.359 19.2024 125.32 21.2962H128.109C128.141 20.4915 128.969 19.929 130.094 19.929C131.219 19.929 131.898 20.5305 131.898 21.4212C131.898 22.2415 131.273 22.8508 130.102 22.8508H128.266V24.8587H130.102C131.281 24.8587 132.055 25.5227 132.055 26.4915C132.055 27.5852 131.094 28.1165 129.883 28.1165C128.687 28.1165 127.875 27.6008 127.82 26.7102H125.016Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M139.354 26.1712V17.9993H136.627V29.9993H139.541L144.331 21.8196V29.9993H147.065V17.9993H144.159L139.354 26.1712Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M148.229 20.3196H152.112V29.9993H154.847V20.3196H158.729V17.9993H148.229V20.3196Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M163.312 21.9055V17.9993H160.585V29.9993H166.039C169.093 29.9993 170.851 28.3118 170.859 25.9524C170.851 23.5305 169.093 21.9055 166.039 21.9055H163.312ZM163.312 24.2258H166.039C167.265 24.2258 168.148 24.9524 168.148 25.9915C168.148 26.9837 167.265 27.679 166.039 27.679H163.312V24.2258Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M187.565 13.5618C186.987 13.9993 186.073 13.9915 184.831 13.9915C184.479 13.9915 184.112 13.9915 183.713 13.9993C179.581 14.054 177.456 16.804 177.456 22.4446V23.5227C177.456 27.9133 179.674 30.2337 183.166 30.2337C186.659 30.2337 188.862 27.9055 188.862 24.2024C188.862 20.6087 186.768 18.5383 183.791 18.5383C181.963 18.5383 180.581 19.3274 179.831 20.7962H179.698C179.979 17.804 181.104 16.4524 183.791 16.3899C186.174 16.3352 187.51 16.2962 188.549 15.3899L187.565 13.5618ZM183.182 27.968C181.409 27.968 180.323 26.5462 180.323 24.2805C180.346 22.0462 181.416 20.7649 183.166 20.7649C184.916 20.7649 185.995 22.0462 185.995 24.2805C185.995 26.554 184.924 27.968 183.182 27.968Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M194.325 30.2415C196.208 30.2415 197.333 29.3587 197.849 28.3508H197.942V29.9993H200.661V21.968C200.661 18.7962 198.075 17.843 195.786 17.843C193.263 17.843 191.325 18.968 190.7 21.1555L193.341 21.5305C193.622 20.7102 194.419 20.0071 195.802 20.0071C197.114 20.0071 197.833 20.679 197.833 21.8587V21.9055C197.833 22.718 196.981 22.7571 194.864 22.9837C192.536 23.2337 190.31 23.929 190.31 26.6321C190.31 28.9915 192.036 30.2415 194.325 30.2415ZM195.06 28.1633C193.88 28.1633 193.036 27.6243 193.036 26.5852C193.036 25.4993 193.981 25.0462 195.247 24.8665C195.989 24.7649 197.474 24.5774 197.841 24.2805V25.6946C197.841 27.0305 196.763 28.1633 195.06 28.1633Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M205.835 17.9993H203.109V29.9993H205.835V25.1477H210.484V29.9993H213.203V17.9993H210.484V22.8274H205.835V17.9993Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M218.394 17.9993H215.668V29.9993H218.394V25.1477H223.043V29.9993H225.762V17.9993H223.043V22.8274H218.394V17.9993Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M233.539 30.2337C236.336 30.2337 238.258 28.8665 238.758 26.7805L236.118 26.4837C235.735 27.4993 234.797 28.0305 233.579 28.0305C231.75 28.0305 230.539 26.8274 230.516 24.7727H238.875V23.9055C238.875 19.6946 236.344 17.843 233.391 17.843C229.954 17.843 227.711 20.3665 227.711 24.0696C227.711 27.8352 229.922 30.2337 233.539 30.2337ZM230.524 22.8665C230.61 21.3352 231.743 20.0462 233.43 20.0462C235.055 20.0462 236.149 21.2337 236.164 22.8665H230.524Z",
-                            fill: "#B4B4B4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M240.872 34.4993H243.7V28.1087H243.817C244.263 28.9837 245.192 30.2102 247.255 30.2102C250.083 30.2102 252.2 27.968 252.2 24.0149C252.2 20.0149 250.02 17.843 247.247 17.843C245.13 17.843 244.247 19.1165 243.817 19.9837H243.653V17.9993H240.872V34.4993ZM243.645 23.9993C243.645 21.6712 244.645 20.1633 246.466 20.1633C248.349 20.1633 249.317 21.7649 249.317 23.9993C249.317 26.2493 248.333 27.8899 246.466 27.8899C244.661 27.8899 243.645 26.3274 243.645 23.9993Z",
-                            fill: "#B4B4B4"
-                          }
-                        })
-                      ]
-                    )
-              ]
-            )
-          : _c(
-              "div",
-              {
-                key: "loaded",
-                staticClass:
-                  "banner-upload__container banner-upload__uploaded pointer"
-              },
-              [
-                _c("img", {
-                  staticClass: "banner-upload__img",
-                  attrs: { src: _vm.bannerSrc }
-                }),
-                _vm._v(" "),
-                _c(
+      _c(
+        "div",
+        { staticClass: "banner-upload-block" },
+        [
+          _c("input", {
+            attrs: { type: "file", id: "banner-loader" },
+            on: {
+              change: function($event) {
+                $event.preventDefault()
+                return _vm.fileUpload(null)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
+            _vm.$isEmpty(_vm.bannerSrc)
+              ? _c(
                   "label",
                   {
-                    staticClass: "banner-upload__uploaded-overflow pointer",
+                    key: "unloaded",
+                    staticClass:
+                      "banner-upload__container banner-upload__non-uploaded pointer",
                     attrs: { for: "banner-loader" }
                   },
                   [
@@ -36271,9 +36231,319 @@ var render = function() {
                         )
                   ]
                 )
-              ]
-            )
-      ])
+              : _c(
+                  "div",
+                  {
+                    key: "loaded",
+                    staticClass:
+                      "banner-upload__container banner-upload__uploaded pointer"
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "banner-upload__img",
+                      attrs: { src: _vm.bannerSrc }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "banner-upload__uploaded-overflow pointer",
+                        attrs: { for: "banner-loader" }
+                      },
+                      [
+                        _vm.$store.getters.windowWidth < 680
+                          ? _c(
+                              "svg",
+                              {
+                                staticClass: "banner-upload__logo",
+                                attrs: {
+                                  width: "202",
+                                  height: "32",
+                                  viewBox: "0 0 202 32",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M31.1988 13.5988C30.7745 13.5988 30.3675 13.7674 30.0675 14.0675C29.7674 14.3675 29.5988 14.7745 29.5988 15.1988V26.3988C29.5988 26.8232 29.4303 27.2301 29.1302 27.5302C28.8301 27.8303 28.4232 27.9988 27.9988 27.9988H5.59883C5.17448 27.9988 4.76752 27.8303 4.46746 27.5302C4.1674 27.2301 3.99883 26.8232 3.99883 26.3988V13.5988C3.99883 13.1745 4.1674 12.7675 4.46746 12.4675C4.76752 12.1674 5.17448 11.9988 5.59883 11.9988H8.79883C9.14773 12.017 9.49301 11.9205 9.78192 11.7241C10.0708 11.5276 10.2875 11.242 10.3988 10.9108L11.2628 8.28683C11.3702 7.96903 11.5747 7.69301 11.8474 7.49778C12.1202 7.30254 12.4474 7.19796 12.7828 7.19883H21.5988C22.0232 7.19883 22.4301 7.03026 22.7302 6.7302C23.0303 6.43014 23.1988 6.02317 23.1988 5.59883C23.1988 5.17448 23.0303 4.76752 22.7302 4.46746C22.4301 4.1674 22.0232 3.99883 21.5988 3.99883H12.7028C11.6973 4.00071 10.7178 4.31832 9.90246 4.90684C9.08715 5.49535 8.47724 6.32505 8.15883 7.27883L7.64683 8.87883H5.59883C4.32579 8.87883 3.10489 9.38454 2.20472 10.2847C1.30454 11.1849 0.798828 12.4058 0.798828 13.6788V26.4788C0.798828 27.7519 1.30454 28.9728 2.20472 29.8729C3.10489 30.7731 4.32579 31.2788 5.59883 31.2788H27.9988C29.2719 31.2788 30.4928 30.7731 31.3929 29.8729C32.2931 28.9728 32.7988 27.7519 32.7988 26.4788V15.2788C32.8097 15.0621 32.7763 14.8454 32.7008 14.6419C32.6253 14.4385 32.5091 14.2525 32.3595 14.0954C32.2098 13.9382 32.0297 13.8132 31.8302 13.7278C31.6307 13.6424 31.4159 13.5986 31.1988 13.5988ZM16.7988 11.9988C15.533 11.9988 14.2957 12.3742 13.2432 13.0774C12.1907 13.7807 11.3704 14.7802 10.886 15.9497C10.4016 17.1191 10.2749 18.4059 10.5218 19.6474C10.7687 20.8889 11.3783 22.0293 12.2733 22.9243C13.1684 23.8194 14.3088 24.4289 15.5503 24.6759C16.7917 24.9228 18.0786 24.7961 19.248 24.3117C20.4175 23.8273 21.417 23.007 22.1202 21.9545C22.8235 20.902 23.1988 19.6646 23.1988 18.3988C23.1988 16.7014 22.5245 15.0736 21.3243 13.8733C20.1241 12.6731 18.4962 11.9988 16.7988 11.9988ZM16.7988 21.5988C16.1659 21.5988 15.5472 21.4112 15.021 21.0595C14.4948 20.7079 14.0846 20.2081 13.8424 19.6234C13.6002 19.0387 13.5368 18.3953 13.6603 17.7745C13.7838 17.1538 14.0886 16.5836 14.5361 16.1361C14.9836 15.6886 15.5538 15.3838 16.1745 15.2603C16.7953 15.1368 17.4387 15.2002 18.0234 15.4424C18.6081 15.6846 19.1079 16.0948 19.4595 16.621C19.8112 17.1472 19.9988 17.7659 19.9988 18.3988C19.9988 19.2475 19.6617 20.0615 19.0616 20.6616C18.4615 21.2617 17.6475 21.5988 16.7988 21.5988ZM34.3988 3.99883H32.7988V2.39883C32.7988 1.97448 32.6303 1.56752 32.3302 1.26746C32.0301 0.967399 31.6232 0.798828 31.1988 0.798828C30.7745 0.798828 30.3675 0.967399 30.0675 1.26746C29.7674 1.56752 29.5988 1.97448 29.5988 2.39883V3.99883H27.9988C27.5745 3.99883 27.1675 4.1674 26.8675 4.46746C26.5674 4.76752 26.3988 5.17448 26.3988 5.59883C26.3988 6.02317 26.5674 6.43014 26.8675 6.7302C27.1675 7.03026 27.5745 7.19883 27.9988 7.19883H29.5988V8.79883C29.5988 9.22318 29.7674 9.63014 30.0675 9.9302C30.3675 10.2303 30.7745 10.3988 31.1988 10.3988C31.6232 10.3988 32.0301 10.2303 32.3302 9.9302C32.6303 9.63014 32.7988 9.22318 32.7988 8.79883V7.19883H34.3988C34.8232 7.19883 35.2301 7.03026 35.5302 6.7302C35.8303 6.43014 35.9988 6.02317 35.9988 5.59883C35.9988 5.17448 35.8303 4.76752 35.5302 4.46746C35.2301 4.1674 34.8232 3.99883 34.3988 3.99883Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M56.1313 24.1748C58.8688 24.1748 60.8625 22.6061 60.8563 20.4436C60.8625 18.8436 59.8625 17.6936 58.0688 17.4373V17.3373C59.4563 17.0373 60.3875 16.0061 60.3813 14.5686C60.3875 12.6186 58.725 11.0248 56.1688 11.0248C53.6813 11.0248 51.7563 12.5061 51.7062 14.6498H53.9375C53.975 13.5748 54.975 12.9061 56.1562 12.9061C57.35 12.9061 58.1437 13.6311 58.1375 14.7061C58.1437 15.8248 57.2188 16.5686 55.8937 16.5686H54.7625V18.3561H55.8937C57.5125 18.3561 58.475 19.1686 58.4688 20.3248C58.475 21.4561 57.4938 22.2311 56.125 22.2311C54.8375 22.2311 53.8438 21.5623 53.7875 20.5186H51.4375C51.5 22.6811 53.4313 24.1748 56.1313 24.1748Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M65.4723 24.1936C66.9785 24.1936 67.8785 23.4873 68.291 22.6811H68.366V23.9998H70.541V17.5748C70.541 15.0373 68.4723 14.2748 66.641 14.2748C64.6223 14.2748 63.0723 15.1748 62.5723 16.9248L64.6848 17.2248C64.9098 16.5686 65.5473 16.0061 66.6535 16.0061C67.7035 16.0061 68.2785 16.5436 68.2785 17.4873V17.5248C68.2785 18.1748 67.5973 18.2061 65.9035 18.3873C64.041 18.5873 62.2598 19.1436 62.2598 21.3061C62.2598 23.1936 63.641 24.1936 65.4723 24.1936ZM66.0598 22.5311C65.116 22.5311 64.441 22.0998 64.441 21.2686C64.441 20.3998 65.1973 20.0373 66.2098 19.8936C66.8035 19.8123 67.991 19.6623 68.2848 19.4248V20.5561C68.2848 21.6248 67.4223 22.5311 66.0598 22.5311Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M78.8492 14.3998H72.4992V23.9998H74.7117V16.2561H78.8492V14.3998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M80.3465 27.5998H82.609V22.4873H82.7027C83.059 23.1873 83.8027 24.1686 85.4527 24.1686C87.7152 24.1686 89.409 22.3748 89.409 19.2123C89.409 16.0123 87.6652 14.2748 85.4465 14.2748C83.7527 14.2748 83.0465 15.2936 82.7027 15.9873H82.5715V14.3998H80.3465V27.5998ZM82.5652 19.1998C82.5652 17.3373 83.3652 16.1311 84.8215 16.1311C86.3277 16.1311 87.1027 17.4123 87.1027 19.1998C87.1027 20.9998 86.3152 22.3123 84.8215 22.3123C83.3777 22.3123 82.5652 21.0623 82.5652 19.1998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M92.1094 27.5998C93.8719 27.5998 94.8906 26.6936 95.4344 25.1623L99.2906 14.4123L96.8719 14.3998L94.6531 21.6498H94.5531L92.3406 14.3998H89.9406L93.4219 24.1998L93.2281 24.7186C92.8094 25.8123 92.1469 25.8873 91.1594 25.5998L90.6344 27.3623C90.9406 27.4873 91.4906 27.5998 92.1094 27.5998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M100.013 21.3686C100.069 23.1498 101.7 24.1873 103.919 24.1873C106.194 24.1873 107.838 23.1061 107.838 21.3373C107.838 20.0436 106.957 19.1561 105.819 19.0873V18.9873C106.919 18.6936 107.619 18.0061 107.619 16.9686C107.619 15.3498 106.219 14.2748 103.969 14.2748C101.869 14.2748 100.288 15.3623 100.257 17.0373H102.488C102.513 16.3936 103.175 15.9436 104.075 15.9436C104.975 15.9436 105.519 16.4248 105.519 17.1373C105.519 17.7936 105.019 18.2811 104.082 18.2811H102.613V19.8873H104.082C105.025 19.8873 105.644 20.4186 105.644 21.1936C105.644 22.0686 104.875 22.4936 103.907 22.4936C102.95 22.4936 102.3 22.0811 102.257 21.3686H100.013Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M111.484 20.9373V14.3998H109.302V23.9998H111.634L115.465 17.4561V23.9998H117.652V14.3998H115.327L111.484 20.9373Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M118.584 16.2561H121.69V23.9998H123.878V16.2561H126.984V14.3998H118.584V16.2561Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M130.65 17.5248V14.3998H128.469V23.9998H132.831C135.275 23.9998 136.681 22.6498 136.687 20.7623C136.681 18.8248 135.275 17.5248 132.831 17.5248H130.65ZM130.65 19.3811H132.831C133.812 19.3811 134.519 19.9623 134.519 20.7936C134.519 21.5873 133.812 22.1436 132.831 22.1436H130.65V19.3811Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M150.052 10.8498C149.59 11.1998 148.859 11.1936 147.865 11.1936C147.584 11.1936 147.29 11.1936 146.971 11.1998C143.665 11.2436 141.965 13.4436 141.965 17.9561V18.8186C141.965 22.3311 143.74 24.1873 146.534 24.1873C149.327 24.1873 151.09 22.3248 151.09 19.3623C151.09 16.4873 149.415 14.8311 147.034 14.8311C145.571 14.8311 144.465 15.4623 143.865 16.6373H143.759C143.984 14.2436 144.884 13.1623 147.034 13.1123C148.94 13.0686 150.009 13.0373 150.84 12.3123L150.052 10.8498ZM146.546 22.3748C145.127 22.3748 144.259 21.2373 144.259 19.4248C144.277 17.6373 145.134 16.6123 146.534 16.6123C147.934 16.6123 148.796 17.6373 148.796 19.4248C148.796 21.2436 147.94 22.3748 146.546 22.3748Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M155.461 24.1936C156.967 24.1936 157.867 23.4873 158.279 22.6811H158.354V23.9998H160.529V17.5748C160.529 15.0373 158.461 14.2748 156.629 14.2748C154.611 14.2748 153.061 15.1748 152.561 16.9248L154.673 17.2248C154.898 16.5686 155.536 16.0061 156.642 16.0061C157.692 16.0061 158.267 16.5436 158.267 17.4873V17.5248C158.267 18.1748 157.586 18.2061 155.892 18.3873C154.029 18.5873 152.248 19.1436 152.248 21.3061C152.248 23.1936 153.629 24.1936 155.461 24.1936ZM156.048 22.5311C155.104 22.5311 154.429 22.0998 154.429 21.2686C154.429 20.3998 155.186 20.0373 156.198 19.8936C156.792 19.8123 157.979 19.6623 158.273 19.4248V20.5561C158.273 21.6248 157.411 22.5311 156.048 22.5311Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M164.669 14.3998H162.487V23.9998H164.669V20.1186H168.387V23.9998H170.562V14.3998H168.387V18.2623H164.669V14.3998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M174.716 14.3998H172.535V23.9998H174.716V20.1186H178.435V23.9998H180.61V14.3998H178.435V18.2623H174.716V14.3998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M186.832 24.1873C189.069 24.1873 190.607 23.0936 191.007 21.4248L188.894 21.1873C188.588 21.9998 187.838 22.4248 186.863 22.4248C185.401 22.4248 184.432 21.4623 184.413 19.8186H191.101V19.1248C191.101 15.7561 189.076 14.2748 186.713 14.2748C183.963 14.2748 182.169 16.2936 182.169 19.2561C182.169 22.2686 183.938 24.1873 186.832 24.1873ZM184.419 18.2936C184.488 17.0686 185.394 16.0373 186.744 16.0373C188.044 16.0373 188.919 16.9873 188.932 18.2936H184.419Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M192.698 27.5998H194.96V22.4873H195.054C195.411 23.1873 196.154 24.1686 197.804 24.1686C200.067 24.1686 201.76 22.3748 201.76 19.2123C201.76 16.0123 200.017 14.2748 197.798 14.2748C196.104 14.2748 195.398 15.2936 195.054 15.9873H194.923V14.3998H192.698V27.5998ZM194.917 19.1998C194.917 17.3373 195.717 16.1311 197.173 16.1311C198.679 16.1311 199.454 17.4123 199.454 19.1998C199.454 20.9998 198.667 22.3123 197.173 22.3123C195.729 22.3123 194.917 21.0623 194.917 19.1998Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                })
+                              ]
+                            )
+                          : _c(
+                              "svg",
+                              {
+                                staticClass: "banner-upload__logo",
+                                attrs: {
+                                  width: "253",
+                                  height: "40",
+                                  viewBox: "0 0 253 40",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M38.9981 16.998C38.4676 16.998 37.9589 17.2088 37.5838 17.5838C37.2088 17.9589 36.9981 18.4676 36.9981 18.998V32.998C36.9981 33.5285 36.7873 34.0372 36.4123 34.4123C36.0372 34.7873 35.5285 34.998 34.9981 34.998H6.99805C6.46761 34.998 5.95891 34.7873 5.58383 34.4123C5.20876 34.0372 4.99805 33.5285 4.99805 32.998V16.998C4.99805 16.4676 5.20876 15.9589 5.58383 15.5838C5.95891 15.2088 6.46761 14.998 6.99805 14.998H10.998C11.4342 15.0208 11.8658 14.9002 12.2269 14.6546C12.5881 14.409 12.8589 14.052 12.998 13.638L14.078 10.358C14.2122 9.9608 14.4678 9.61578 14.8088 9.37173C15.1497 9.12768 15.5588 8.99696 15.978 8.99805H26.9981C27.5285 8.99805 28.0372 8.78733 28.4123 8.41226C28.7873 8.03719 28.9981 7.52848 28.9981 6.99805C28.9981 6.46761 28.7873 5.95891 28.4123 5.58383C28.0372 5.20876 27.5285 4.99805 26.9981 4.99805H15.878C14.6211 5.0004 13.3967 5.39741 12.3776 6.13306C11.3584 6.8687 10.5961 7.90583 10.198 9.09805L9.55805 11.098H6.99805C5.40675 11.098 3.88062 11.7302 2.75541 12.8554C1.63019 13.9806 0.998047 15.5067 0.998047 17.098V33.098C0.998047 34.6893 1.63019 36.2155 2.75541 37.3407C3.88062 38.4659 5.40675 39.098 6.99805 39.098H34.9981C36.5894 39.098 38.1155 38.4659 39.2407 37.3407C40.3659 36.2155 40.9981 34.6893 40.9981 33.098V19.098C41.0116 18.8271 40.9699 18.5562 40.8755 18.3019C40.7811 18.0476 40.6359 17.8152 40.4488 17.6187C40.2617 17.4223 40.0367 17.266 39.7872 17.1593C39.5378 17.0526 39.2693 16.9977 38.9981 16.998ZM20.998 14.998C19.4158 14.998 17.8691 15.4672 16.5535 16.3463C15.2379 17.2253 14.2125 18.4748 13.607 19.9366C13.0015 21.3984 12.8431 23.0069 13.1518 24.5588C13.4604 26.1106 14.2224 27.5361 15.3412 28.6549C16.46 29.7737 17.8855 30.5356 19.4373 30.8443C20.9892 31.153 22.5977 30.9946 24.0595 30.3891C25.5213 29.7836 26.7708 28.7582 27.6498 27.4426C28.5289 26.127 28.9981 24.5803 28.9981 22.998C28.9981 20.8763 28.1552 18.8415 26.6549 17.3412C25.1546 15.8409 23.1198 14.998 20.998 14.998ZM20.998 26.998C20.2069 26.998 19.4336 26.7635 18.7758 26.3239C18.118 25.8844 17.6053 25.2597 17.3025 24.5288C16.9998 23.7979 16.9206 22.9936 17.0749 22.2177C17.2292 21.4418 17.6102 20.729 18.1696 20.1696C18.729 19.6102 19.4418 19.2292 20.2177 19.0749C20.9936 18.9206 21.7979 18.9998 22.5288 19.3025C23.2597 19.6053 23.8844 20.118 24.3239 20.7758C24.7635 21.4336 24.9981 22.2069 24.9981 22.998C24.9981 24.0589 24.5766 25.0763 23.8265 25.8265C23.0763 26.5766 22.0589 26.998 20.998 26.998ZM42.9981 4.99805H40.9981V2.99805C40.9981 2.46761 40.7873 1.95891 40.4123 1.58383C40.0372 1.20876 39.5285 0.998047 38.9981 0.998047C38.4676 0.998047 37.9589 1.20876 37.5838 1.58383C37.2088 1.95891 36.9981 2.46761 36.9981 2.99805V4.99805H34.9981C34.4676 4.99805 33.9589 5.20876 33.5838 5.58383C33.2088 5.95891 32.9981 6.46761 32.9981 6.99805C32.9981 7.52848 33.2088 8.03719 33.5838 8.41226C33.9589 8.78733 34.4676 8.99805 34.9981 8.99805H36.9981V10.998C36.9981 11.5285 37.2088 12.0372 37.5838 12.4123C37.9589 12.7873 38.4676 12.998 38.9981 12.998C39.5285 12.998 40.0372 12.7873 40.4123 12.4123C40.7873 12.0372 40.9981 11.5285 40.9981 10.998V8.99805H42.9981C43.5285 8.99805 44.0372 8.78733 44.4123 8.41226C44.7873 8.03719 44.9981 7.52848 44.9981 6.99805C44.9981 6.46761 44.7873 5.95891 44.4123 5.58383C44.0372 5.20876 43.5285 4.99805 42.9981 4.99805Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M70.1636 30.218C73.5854 30.218 76.0776 28.2571 76.0698 25.554C76.0776 23.554 74.8276 22.1165 72.5854 21.7962V21.6712C74.3198 21.2962 75.4839 20.0071 75.4761 18.2102C75.4839 15.7727 73.4058 13.7805 70.2104 13.7805C67.1011 13.7805 64.6948 15.6321 64.6323 18.3118H67.4214C67.4683 16.968 68.7183 16.1321 70.1948 16.1321C71.687 16.1321 72.6792 17.0383 72.6714 18.3821C72.6792 19.7805 71.5229 20.7102 69.8667 20.7102H68.4526V22.9446H69.8667C71.8901 22.9446 73.0933 23.9602 73.0854 25.4055C73.0933 26.8196 71.8667 27.7883 70.1558 27.7883C68.5464 27.7883 67.3042 26.9524 67.2339 25.6477H64.2964C64.3745 28.3508 66.7886 30.218 70.1636 30.218Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M81.8398 30.2415C83.7227 30.2415 84.8477 29.3587 85.3633 28.3508H85.457V29.9993H88.1758V21.968C88.1758 18.7962 85.5898 17.843 83.3008 17.843C80.7773 17.843 78.8398 18.968 78.2148 21.1555L80.8555 21.5305C81.1367 20.7102 81.9336 20.0071 83.3164 20.0071C84.6289 20.0071 85.3477 20.679 85.3477 21.8587V21.9055C85.3477 22.718 84.4961 22.7571 82.3789 22.9837C80.0508 23.2337 77.8242 23.929 77.8242 26.6321C77.8242 28.9915 79.5508 30.2415 81.8398 30.2415ZM82.5742 28.1633C81.3945 28.1633 80.5508 27.6243 80.5508 26.5852C80.5508 25.4993 81.4961 25.0462 82.7617 24.8665C83.5039 24.7649 84.9883 24.5774 85.3555 24.2805V25.6946C85.3555 27.0305 84.2773 28.1633 82.5742 28.1633Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M98.561 17.9993H90.6235V29.9993H93.3892V20.3196H98.561V17.9993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M100.433 34.4993H103.261V28.1087H103.378C103.823 28.9837 104.753 30.2102 106.815 30.2102C109.644 30.2102 111.761 27.968 111.761 24.0149C111.761 20.0149 109.581 17.843 106.808 17.843C104.69 17.843 103.808 19.1165 103.378 19.9837H103.214V17.9993H100.433V34.4993ZM103.206 23.9993C103.206 21.6712 104.206 20.1633 106.026 20.1633C107.909 20.1633 108.878 21.7649 108.878 23.9993C108.878 26.2493 107.894 27.8899 106.026 27.8899C104.222 27.8899 103.206 26.3274 103.206 23.9993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M115.136 34.4993C117.339 34.4993 118.613 33.3665 119.292 31.4524L124.113 18.0149L121.089 17.9993L118.316 27.0618H118.191L115.425 17.9993H112.425L116.777 30.2493L116.535 30.8977C116.011 32.2649 115.183 32.3587 113.949 31.9993L113.292 34.2024C113.675 34.3587 114.363 34.4993 115.136 34.4993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M125.016 26.7102C125.086 28.9368 127.125 30.2337 129.898 30.2337C132.742 30.2337 134.797 28.8821 134.797 26.6712C134.797 25.054 133.695 23.9446 132.273 23.8587V23.7337C133.648 23.3665 134.523 22.5071 134.523 21.2102C134.523 19.1868 132.773 17.843 129.961 17.843C127.336 17.843 125.359 19.2024 125.32 21.2962H128.109C128.141 20.4915 128.969 19.929 130.094 19.929C131.219 19.929 131.898 20.5305 131.898 21.4212C131.898 22.2415 131.273 22.8508 130.102 22.8508H128.266V24.8587H130.102C131.281 24.8587 132.055 25.5227 132.055 26.4915C132.055 27.5852 131.094 28.1165 129.883 28.1165C128.687 28.1165 127.875 27.6008 127.82 26.7102H125.016Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M139.354 26.1712V17.9993H136.627V29.9993H139.541L144.331 21.8196V29.9993H147.065V17.9993H144.159L139.354 26.1712Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M148.229 20.3196H152.112V29.9993H154.847V20.3196H158.729V17.9993H148.229V20.3196Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M163.312 21.9055V17.9993H160.585V29.9993H166.039C169.093 29.9993 170.851 28.3118 170.859 25.9524C170.851 23.5305 169.093 21.9055 166.039 21.9055H163.312ZM163.312 24.2258H166.039C167.265 24.2258 168.148 24.9524 168.148 25.9915C168.148 26.9837 167.265 27.679 166.039 27.679H163.312V24.2258Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M187.565 13.5618C186.987 13.9993 186.073 13.9915 184.831 13.9915C184.479 13.9915 184.112 13.9915 183.713 13.9993C179.581 14.054 177.456 16.804 177.456 22.4446V23.5227C177.456 27.9133 179.674 30.2337 183.166 30.2337C186.659 30.2337 188.862 27.9055 188.862 24.2024C188.862 20.6087 186.768 18.5383 183.791 18.5383C181.963 18.5383 180.581 19.3274 179.831 20.7962H179.698C179.979 17.804 181.104 16.4524 183.791 16.3899C186.174 16.3352 187.51 16.2962 188.549 15.3899L187.565 13.5618ZM183.182 27.968C181.409 27.968 180.323 26.5462 180.323 24.2805C180.346 22.0462 181.416 20.7649 183.166 20.7649C184.916 20.7649 185.995 22.0462 185.995 24.2805C185.995 26.554 184.924 27.968 183.182 27.968Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M194.325 30.2415C196.208 30.2415 197.333 29.3587 197.849 28.3508H197.942V29.9993H200.661V21.968C200.661 18.7962 198.075 17.843 195.786 17.843C193.263 17.843 191.325 18.968 190.7 21.1555L193.341 21.5305C193.622 20.7102 194.419 20.0071 195.802 20.0071C197.114 20.0071 197.833 20.679 197.833 21.8587V21.9055C197.833 22.718 196.981 22.7571 194.864 22.9837C192.536 23.2337 190.31 23.929 190.31 26.6321C190.31 28.9915 192.036 30.2415 194.325 30.2415ZM195.06 28.1633C193.88 28.1633 193.036 27.6243 193.036 26.5852C193.036 25.4993 193.981 25.0462 195.247 24.8665C195.989 24.7649 197.474 24.5774 197.841 24.2805V25.6946C197.841 27.0305 196.763 28.1633 195.06 28.1633Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M205.835 17.9993H203.109V29.9993H205.835V25.1477H210.484V29.9993H213.203V17.9993H210.484V22.8274H205.835V17.9993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M218.394 17.9993H215.668V29.9993H218.394V25.1477H223.043V29.9993H225.762V17.9993H223.043V22.8274H218.394V17.9993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M233.539 30.2337C236.336 30.2337 238.258 28.8665 238.758 26.7805L236.118 26.4837C235.735 27.4993 234.797 28.0305 233.579 28.0305C231.75 28.0305 230.539 26.8274 230.516 24.7727H238.875V23.9055C238.875 19.6946 236.344 17.843 233.391 17.843C229.954 17.843 227.711 20.3665 227.711 24.0696C227.711 27.8352 229.922 30.2337 233.539 30.2337ZM230.524 22.8665C230.61 21.3352 231.743 20.0462 233.43 20.0462C235.055 20.0462 236.149 21.2337 236.164 22.8665H230.524Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M240.872 34.4993H243.7V28.1087H243.817C244.263 28.9837 245.192 30.2102 247.255 30.2102C250.083 30.2102 252.2 27.968 252.2 24.0149C252.2 20.0149 250.02 17.843 247.247 17.843C245.13 17.843 244.247 19.1165 243.817 19.9837H243.653V17.9993H240.872V34.4993ZM243.645 23.9993C243.645 21.6712 244.645 20.1633 246.466 20.1633C248.349 20.1633 249.317 21.7649 249.317 23.9993C249.317 26.2493 248.333 27.8899 246.466 27.8899C244.661 27.8899 243.645 26.3274 243.645 23.9993Z",
+                                    fill: "#B4B4B4"
+                                  }
+                                })
+                              ]
+                            )
+                      ]
+                    )
+                  ]
+                )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
@@ -37658,11 +37928,13 @@ var render = function() {
           { staticClass: "profile-settings__uploaders" },
           [
             _c("settings-banner-upload", {
+              ref: "banner-upload",
               attrs: { banner: _vm.user.banner },
               on: { fileUpload: _vm.bannerUpload }
             }),
             _vm._v(" "),
             _c("avatar-upload", {
+              ref: "avatar-upload",
               attrs: { avatar: _vm.user.avatar },
               on: { fileUpload: _vm.avatarUpload }
             })

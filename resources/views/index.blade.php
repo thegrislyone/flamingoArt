@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="yandex-verification" content="abc11bf9124776d9" />
 
+  <!-- plugins css -->
+  <link rel="stylesheet" href="/css/plugins/swiper.min.css">
+  <link rel="stylesheet" href="/css/plugins/advanced-cropper.css">
+
   <!-- common css -->
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/adaptation.css">
-
-  <!-- plugins css -->
-  <link rel="stylesheet" href="/css/plugins/swiper.min.css">
 
   <!-- favicon -->
   <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/png">

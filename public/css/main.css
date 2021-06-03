@@ -2007,6 +2007,9 @@ img {
 }
 /* avatar upload */
 .avatar-upload {
+
+}
+.avatar-upload-block {
   position: relative;
 }
 .avatar-upload__container {
@@ -2043,6 +2046,12 @@ img {
 .avatar-upload__img {
   width: 100%;
   height: 100%;
+}
+.avatar-crop {
+  padding: 15px;
+}
+.avatar-crop-button {
+  margin-top: 15px;
 }
 /* settins-form */
 .settings-form__headline {

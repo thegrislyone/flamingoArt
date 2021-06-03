@@ -20,11 +20,13 @@
       <div class="profile-settings__uploaders">
 
         <settings-banner-upload
+          ref="banner-upload"
           :banner="user.banner"
           @fileUpload="bannerUpload"
         />
 
         <avatar-upload
+          ref="avatar-upload"
           :avatar="user.avatar"
           @fileUpload="avatarUpload"
         />
@@ -441,6 +443,19 @@ export default {
       formData.append('avatar', file)
 
       this.$http.post('/api/auth/set-user-avatar', formData)
+        .then(response => {
+          const data = response.data
+
+          if (data.notification) {
+            this.$root.showNotification(data.notification)
+          }
+
+          if (data.user) {
+            this.$store.commit('setUser', data.user)
+            this.$refs['avatar-upload'].avatarSrc = data.user.avatar
+          }
+
+        })
 
     },
     bannerUpload(file) {
@@ -450,6 +465,18 @@ export default {
       formData.append('banner', file)
 
       this.$http.post('/api/auth/set-user-banner', formData)
+        .then(response => {
+          const data = response.data
+
+          if (data.notification) {
+            this.$root.showNotification(data.notification)
+          }
+
+          if (data.user) {
+            this.$store.commit('setUser', data.user)
+            this.$refs['banner-upload'].bannerSrc = data.user.banner
+          }
+        })
 
     },
     emailConfirm() {
