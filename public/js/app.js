@@ -5205,6 +5205,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     headline: String,
@@ -5524,7 +5525,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       passwordShow: false,
-      value: '',
+      value: this.formData.value,
       isError: false,
       isSuccess: false,
       isLoading: false
@@ -6978,6 +6979,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormGroup_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormGroup.vue */ "./resources/js/components/FormGroup.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -7010,16 +7014,126 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    FormGroup: _FormGroup_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
-      formType: ''
+      validationError: '',
+      formType: '',
+      login: '',
+      password: '',
+      email: '',
+      loginForm: {
+        name: 'login',
+        requireServerValidation: true,
+        "class": 'sign-form__field',
+        type: 'text',
+        placeholder: 'Логин',
+        minLength: 2,
+        maxLength: 32,
+        value: this.$store.getters.user.login
+      }
     };
+  },
+  computed: {
+    user: function user() {
+      return this.$store.getters.user;
+    }
+  },
+  validations: {
+    login: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(2),
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(32)
+    }
+  },
+  created: function created() {
+    this.login = this.user.login;
   },
   methods: {
     showModal: function showModal(type) {
       this.formType = type;
       this.$modal.show('settingsForm');
+    },
+    setValidationError: function setValidationError(error) {
+      this.validationError = error;
+    },
+    apply: function apply() {
+      var _this = this;
+
+      if (this.formType == 'nickname') {
+        if (this.$v.login.$invalid) {
+          return;
+        }
+
+        this.$http.post('/api/auth/set-user-login', {
+          login: this.login
+        }).then(function (response) {
+          var data = response.data;
+
+          if (data.notification) {
+            _this.$root.showNotification(data.notification);
+
+            _this.$modal.hide('settingsForm');
+
+            _this.$store.commit('setUser', data.user);
+          }
+        });
+      }
+    },
+    dataCheck: function dataCheck(value, name, isClientError) {
+      var _this2 = this;
+
+      if (isClientError) return;
+      this.formError = false;
+      this.$refs[name].isSuccess = false;
+      this.$refs[name].isError = false;
+      this.$refs[name].isLoading = true;
+      var request = {};
+      request[name] = value;
+      this.$http.post('/api/auth/data-check', request).then(function (response) {
+        var data = response.data;
+
+        if ('errors' in data && _this2.login != _this2.user.login) {
+          _this2.formError = true;
+          _this2.validationError = data.errors[0];
+          _this2.$refs[name].isSuccess = false;
+          _this2.$refs[name].isError = true;
+          _this2.$refs[name].isLoading = false;
+        } else if ('success' in data || _this2.login == _this2.user.login) {
+          _this2.$refs[name].isSuccess = true;
+          _this2.$refs[name].isError = false;
+          _this2.$refs[name].isLoading = false;
+        }
+      });
     }
   }
 });
@@ -8899,6 +9013,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -9058,7 +9179,9 @@ __webpack_require__.r(__webpack_exports__);
       this.activeConfirm = null;
 
       if (this.activeConfirmType == 'nickname') {
-        this.$refs['formModal'].showModal('nickname');
+        if (this.getIsAllowen('nickname')) {
+          this.$refs['formModal'].showModal('nickname');
+        }
       }
     },
     socialUpdate: function socialUpdate() {
@@ -33685,7 +33808,8 @@ var render = function() {
         classes: ["modal", "delete-confirmation"],
         width: 300,
         scrollable: true,
-        height: "auto"
+        height: "auto",
+        adaptive: true
       },
       on: { closed: _vm.close }
     },
@@ -36096,13 +36220,64 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.onSubmit($event)
+                  return _vm.apply($event)
                 }
               }
             },
             [
               _vm.formType == "nickname"
-                ? _c("div", [_vm._v("\n        fgdgdfgdg\n      ")])
+                ? _c(
+                    "div",
+                    [
+                      _c(
+                        "h2",
+                        { staticClass: "settings-form-modal__headline" },
+                        [_vm._v("Изменить никнейм")]
+                      ),
+                      _vm._v(" "),
+                      _c("form-group", {
+                        ref: _vm.loginForm.name,
+                        attrs: { formData: _vm.loginForm, v: _vm.$v.login },
+                        on: {
+                          error: _vm.setValidationError,
+                          clearErrors: function($event) {
+                            return _vm.setValidationError("")
+                          },
+                          validateInput: _vm.dataCheck
+                        },
+                        model: {
+                          value: _vm.$v.login.$model,
+                          callback: function($$v) {
+                            _vm.$set(_vm.$v.login, "$model", $$v)
+                          },
+                          expression: "$v.login.$model"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "sign-form__validation-error" },
+                        [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(_vm.validationError) +
+                              "\n        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn center settings-form-modal__btn",
+                          attrs: { type: "button" },
+                          on: { click: _vm.apply }
+                        },
+                        [_vm._v("\n          Подтвердить\n        ")]
+                      )
+                    ],
+                    1
+                  )
                 : _vm._e()
             ]
           )
@@ -37683,9 +37858,38 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              { staticClass: "settings-form__group settings-form__password" },
+              [
+                _c("h3", { staticClass: "settings-form__headline" }, [
+                  _vm._v("Пароль")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "settings-form__field settings-form__mail" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "settings-form__icon settings-form__icon-password"
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn",
+                        attrs: { type: "button" },
+                        on: { click: function($event) {} }
+                      },
+                      [_vm._v("Изменить пароль")]
+                    )
+                  ]
+                )
+              ]
+            ),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(0)
           ]
         )
       ])
@@ -37694,28 +37898,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "settings-form__group settings-form__password" },
-      [
-        _c("h3", { staticClass: "settings-form__headline" }, [
-          _vm._v("Пароль")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "settings-form__field settings-form__mail" }, [
-          _c("i", {
-            staticClass: "settings-form__icon settings-form__icon-password"
-          }),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn" }, [_vm._v("Изменить пароль")])
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37733,7 +37915,9 @@ var staticRenderFns = [
             staticClass: "settings-form__icon settings-form__icon-auth"
           }),
           _vm._v(" "),
-          _c("button", { staticClass: "btn" }, [_vm._v("Включить")])
+          _c("button", { staticClass: "btn", attrs: { type: "button" } }, [
+            _vm._v("Включить")
+          ])
         ])
       ]
     )

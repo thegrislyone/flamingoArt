@@ -79,3 +79,4 @@ Route::post('auth/set-user-socials', 'App\Http\Controllers\Auth\AuthController@s
 
 Route::post('auth/set-user-avatar', 'App\Http\Controllers\Auth\AuthController@setAvatar');
 Route::post('auth/set-user-banner', 'App\Http\Controllers\Auth\AuthController@setBanner');
+Route::post('auth/set-user-login', 'App\Http\Controllers\Auth\AuthController@setLogin');

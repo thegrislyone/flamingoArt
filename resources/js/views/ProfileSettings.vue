@@ -195,7 +195,11 @@
         
             <i class="settings-form__icon settings-form__icon-password"></i>
 
-            <button class="btn">Изменить пароль</button>
+            <button 
+              type="button"
+              class="btn"
+              @click=""
+            >Изменить пароль</button>
 
           </div>
 
@@ -209,7 +213,10 @@
         
             <i class="settings-form__icon settings-form__icon-auth"></i>
 
-            <button class="btn">Включить</button>
+            <button 
+              type="button"
+              class="btn"
+            >Включить</button>
 
           </div>
 
@@ -407,7 +414,9 @@ export default {
       this.activeConfirm = null
       
       if (this.activeConfirmType == 'nickname') {
-        this.$refs['formModal'].showModal('nickname')
+        if (this.getIsAllowen('nickname')) {
+          this.$refs['formModal'].showModal('nickname')
+        }
       }
 
     },

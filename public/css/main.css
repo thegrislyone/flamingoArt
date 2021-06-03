@@ -387,6 +387,10 @@ h6 {}
 .pointer {
   cursor: pointer;
 }
+.center {
+  display: block;
+  margin: 0 auto;
+}
 img[lazy=loading] {
   /*your style here*/
 }
@@ -1302,7 +1306,7 @@ img {
   border-radius: 32px !important;
   background-color: rgba(18, 18, 18, 0.6) !important;
   backdrop-filter: blur(120px) !important;
-  padding: 80px 24px 60px 24px;
+  padding: 80px 24px 64px 24px;
   /* Note: backdrop-filter has minimal browser support */
 
   border-radius: 32px !important;
@@ -2204,4 +2208,16 @@ img {
 .settings-form__unconfirmed-email-button {
   display: block;
   margin-top: 24px;
+}
+.settings-form-modal__headline {
+  font-size: 30px;
+  margin-bottom: 64px;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 36px;
+  text-align: center;
+  letter-spacing: -0.022em;
+}
+.settings-form-modal__btn {
+  margin-top: 25px;
 }

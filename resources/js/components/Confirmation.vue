@@ -5,6 +5,7 @@
     :width="300"
     :scrollable="true"
     :height="'auto'"
+    :adaptive="true"
     @closed="close"
   >
 

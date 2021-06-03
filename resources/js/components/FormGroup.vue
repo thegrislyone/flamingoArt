@@ -118,7 +118,7 @@ export default {
 
       passwordShow: false,
 
-      value: '',
+      value: this.formData.value,
 
       isError: false,
       isSuccess: false,
@@ -141,6 +141,7 @@ export default {
     }
   },
   created() {
+    
   },
   methods: {
     getError() {

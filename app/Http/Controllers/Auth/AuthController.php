@@ -407,6 +407,32 @@ class AuthController extends Controller
         
     }
 
+    public function setLogin(Request $request) {
+
+        $login = $request['login'];
+
+        User::find(Auth::user()->id)->update([
+            'login' => $login,
+            'login_changed_at' => now()
+        ]);
+
+        $user = $this->getUserInfo();
+        $user['login'] = $login;
+        $user['login_changed_at'] = now();
+
+        $status = [
+            'notification' => [
+                'type' => 'success',
+                'title' => 'Никнейм изменён'
+            ],
+            'status' => true,
+            'user' => $user
+        ];
+
+        return response()->json($status, 200);
+
+    }
+
     /**
      * * Not-api method that packing user-info json-object
      * * returns user info
