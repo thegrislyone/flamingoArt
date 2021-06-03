@@ -8,7 +8,8 @@
   <!-- plugins css -->
   <link rel="stylesheet" href="/css/plugins/swiper.min.css">
   <link rel="stylesheet" href="/css/plugins/advanced-cropper.css">
-
+  <link rel="stylesheet" href="/css/plugins/vue-js-modal.css">
+  
   <!-- common css -->
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/adaptation.css">

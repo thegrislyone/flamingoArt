@@ -220,6 +220,10 @@ body {
 
 /* COMPONENTS */
 
+.vm--modal {
+  height: auto !important;
+}
+
 input[type=file] {
   position: absolute;
   left: -9999px;

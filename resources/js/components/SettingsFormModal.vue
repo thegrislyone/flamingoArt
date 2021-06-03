@@ -271,6 +271,9 @@ export default {
           this.$router.push('/profile-settings')
         })
       }
+
+      this.$modal.hide('settingsForm')
+
     }
   }
 }

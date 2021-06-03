@@ -5114,6 +5114,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -7332,6 +7333,8 @@ __webpack_require__.r(__webpack_exports__);
           _this3.$router.push('/profile-settings');
         });
       }
+
+      this.$modal.hide('settingsForm');
     }
   }
 });
@@ -33894,6 +33897,7 @@ var render = function() {
             classes: ["modal", "avatar-crop"],
             "max-width": 600,
             height: "auto",
+            scrollable: true,
             adaptive: true
           }
         },

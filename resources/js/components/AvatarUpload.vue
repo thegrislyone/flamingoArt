@@ -6,6 +6,7 @@
       :classes="['modal', 'avatar-crop']"
       :max-width="600"
       :height="'auto'"
+      :scrollable="true"
       :adaptive="true"
     >
       <cropper
