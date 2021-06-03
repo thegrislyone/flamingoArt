@@ -92,7 +92,7 @@
                 Подтвердите свой почтовый ящик на сайте <a href="{{ route('index') }}" style="color: inherit;cursor: pointer;text-decoration: underline;">flamingo-art.ru</a>
             </div>
 
-            <a class="btn-link" style="color: inherit;cursor: pointer;" href="{{ route('password-change-redirect', ['user' => $user,'token' => $token]) }}"><button class="btn" style="display: block; outline: none; border: none; background: #DA71FF; border-radius: 54px; padding: 12px 70px; font-weight: 500; font-size: 22px; line-height: 27px; letter-spacing: -0.011em; color: #000000; margin: 0 auto; margin-bottom: 124px; cursor: pointer; text-decoration: none;">Подтвердить</button></a>
+            <a class="btn-link" style="color: inherit;cursor: pointer;" href="{{ route('confirm-email', ['user' => $user,'token' => $token]) }}"><button class="btn" style="display: block; outline: none; border: none; background: #DA71FF; border-radius: 54px; padding: 12px 70px; font-weight: 500; font-size: 22px; line-height: 27px; letter-spacing: -0.011em; color: #000000; margin: 0 auto; margin-bottom: 124px; cursor: pointer; text-decoration: none;">Подтвердить</button></a>
 
             <div class="line" style="background-color: #2A2A2A; height: 1px; width: 100%; margin-bottom: 40px;"></div>
 
