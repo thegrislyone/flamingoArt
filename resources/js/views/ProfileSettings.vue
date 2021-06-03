@@ -76,7 +76,7 @@
               placeholder="vkontakte"
               @focus="showError = false"
               @blur="showError = true"
-              v-model="$v.social.vkLink.$model"
+              v-model.trim="$v.social.vkLink.$model"
               v-debounce:5000ms.lock="socialUpdate"
             >
 
@@ -97,7 +97,7 @@
               placeholder="facebook"
               @focus="showError = false"
               @blur="showError = true"
-              v-model="$v.social.facebookLink.$model"
+              v-model.trim="$v.social.facebookLink.$model"
               v-debounce:5000ms.lock="socialUpdate"
             >
 
@@ -118,7 +118,7 @@
               placeholder="twitter"
               @focus="showError = false"
               @blur="showError = true"
-              v-model="$v.social.twitterLink.$model"
+              v-model.trim="$v.social.twitterLink.$model"
               v-debounce:5000ms.lock="socialUpdate"
             >
 
@@ -139,7 +139,7 @@
               placeholder="instagram"
               @focus="showError = false"
               @blur="showError = true"
-              v-model="$v.social.instagramLink.$model"
+              v-model.trim="$v.social.instagramLink.$model"
               v-debounce:5000ms.lock="socialUpdate"
             >
 
@@ -318,12 +318,22 @@ export default {
 
     for (const index in this.social) {
 
-      const isLink = (value) => value.indexOf('https://') >= 0 || !value
-
+      const isVkLink = (value) => value.indexOf('https://vk.com') == 0 || !value
+      const isFacebookLink = (value) => value.indexOf('https://www.facebook.com') == 0 || !value
+      const isTwitterLink = (value) => value.indexOf('https://twitter.com') == 0 || !value
+      const isInstagramLink = (value) => value.indexOf('https://www.instagram.com') == 0 || !value
 
       form[index] = {}
 
-      form[index]['linkValidator'] = isLink
+      if (index == 'vkLink') {
+        form[index]['linkValidator'] = isVkLink
+      } else if (index == 'facebookLink') {
+        form[index]['linkValidator'] = isFacebookLink
+      } else if (index == 'twitterLink') {
+        form[index]['linkValidator'] = isTwitterLink
+      } else if (index == 'instagramLink') {
+        form[index]['linkValidator'] = isInstagramLink
+      }
 
     }
 

@@ -9303,12 +9303,33 @@ __webpack_require__.r(__webpack_exports__);
     var form = {};
 
     for (var index in this.social) {
-      var isLink = function isLink(value) {
-        return value.indexOf('https://') >= 0 || !value;
+      var isVkLink = function isVkLink(value) {
+        return value.indexOf('https://vk.com') == 0 || !value;
+      };
+
+      var isFacebookLink = function isFacebookLink(value) {
+        return value.indexOf('https://www.facebook.com') == 0 || !value;
+      };
+
+      var isTwitterLink = function isTwitterLink(value) {
+        return value.indexOf('https://twitter.com') == 0 || !value;
+      };
+
+      var isInstagramLink = function isInstagramLink(value) {
+        return value.indexOf('https://www.instagram.com') == 0 || !value;
       };
 
       form[index] = {};
-      form[index]['linkValidator'] = isLink;
+
+      if (index == 'vkLink') {
+        form[index]['linkValidator'] = isVkLink;
+      } else if (index == 'facebookLink') {
+        form[index]['linkValidator'] = isFacebookLink;
+      } else if (index == 'twitterLink') {
+        form[index]['linkValidator'] = isTwitterLink;
+      } else if (index == 'instagramLink') {
+        form[index]['linkValidator'] = isInstagramLink;
+      }
     }
 
     return {
@@ -38023,9 +38044,10 @@ var render = function() {
                       directives: [
                         {
                           name: "model",
-                          rawName: "v-model",
+                          rawName: "v-model.trim",
                           value: _vm.$v.social.vkLink.$model,
-                          expression: "$v.social.vkLink.$model"
+                          expression: "$v.social.vkLink.$model",
+                          modifiers: { trim: true }
                         },
                         {
                           name: "debounce",
@@ -38042,9 +38064,14 @@ var render = function() {
                         focus: function($event) {
                           _vm.showError = false
                         },
-                        blur: function($event) {
-                          _vm.showError = true
-                        },
+                        blur: [
+                          function($event) {
+                            _vm.showError = true
+                          },
+                          function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        ],
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38052,7 +38079,7 @@ var render = function() {
                           _vm.$set(
                             _vm.$v.social.vkLink,
                             "$model",
-                            $event.target.value
+                            $event.target.value.trim()
                           )
                         }
                       }
@@ -38081,9 +38108,10 @@ var render = function() {
                       directives: [
                         {
                           name: "model",
-                          rawName: "v-model",
+                          rawName: "v-model.trim",
                           value: _vm.$v.social.facebookLink.$model,
-                          expression: "$v.social.facebookLink.$model"
+                          expression: "$v.social.facebookLink.$model",
+                          modifiers: { trim: true }
                         },
                         {
                           name: "debounce",
@@ -38100,9 +38128,14 @@ var render = function() {
                         focus: function($event) {
                           _vm.showError = false
                         },
-                        blur: function($event) {
-                          _vm.showError = true
-                        },
+                        blur: [
+                          function($event) {
+                            _vm.showError = true
+                          },
+                          function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        ],
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38110,7 +38143,7 @@ var render = function() {
                           _vm.$set(
                             _vm.$v.social.facebookLink,
                             "$model",
-                            $event.target.value
+                            $event.target.value.trim()
                           )
                         }
                       }
@@ -38139,9 +38172,10 @@ var render = function() {
                       directives: [
                         {
                           name: "model",
-                          rawName: "v-model",
+                          rawName: "v-model.trim",
                           value: _vm.$v.social.twitterLink.$model,
-                          expression: "$v.social.twitterLink.$model"
+                          expression: "$v.social.twitterLink.$model",
+                          modifiers: { trim: true }
                         },
                         {
                           name: "debounce",
@@ -38158,9 +38192,14 @@ var render = function() {
                         focus: function($event) {
                           _vm.showError = false
                         },
-                        blur: function($event) {
-                          _vm.showError = true
-                        },
+                        blur: [
+                          function($event) {
+                            _vm.showError = true
+                          },
+                          function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        ],
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38168,7 +38207,7 @@ var render = function() {
                           _vm.$set(
                             _vm.$v.social.twitterLink,
                             "$model",
-                            $event.target.value
+                            $event.target.value.trim()
                           )
                         }
                       }
@@ -38199,9 +38238,10 @@ var render = function() {
                       directives: [
                         {
                           name: "model",
-                          rawName: "v-model",
+                          rawName: "v-model.trim",
                           value: _vm.$v.social.instagramLink.$model,
-                          expression: "$v.social.instagramLink.$model"
+                          expression: "$v.social.instagramLink.$model",
+                          modifiers: { trim: true }
                         },
                         {
                           name: "debounce",
@@ -38218,9 +38258,14 @@ var render = function() {
                         focus: function($event) {
                           _vm.showError = false
                         },
-                        blur: function($event) {
-                          _vm.showError = true
-                        },
+                        blur: [
+                          function($event) {
+                            _vm.showError = true
+                          },
+                          function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        ],
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38228,7 +38273,7 @@ var render = function() {
                           _vm.$set(
                             _vm.$v.social.instagramLink,
                             "$model",
-                            $event.target.value
+                            $event.target.value.trim()
                           )
                         }
                       }
