@@ -224,6 +224,8 @@ export default {
 
             if (data.notification) {
               this.$root.showNotification(data.notification)
+              this.$modal.hide('settingsForm')
+              this.$router.push('/profile-settings')
             }
 
           })
@@ -264,7 +266,8 @@ export default {
         })
     },
     close() {
-      if (this.formType == 'password') {
+
+      if (this.formType == 'password' && this.$route.query['password-update-token'] != undefined) {
         this.$http.post('/api/auth/password/password-change', {
           password: null
         }).then(() => {

@@ -7295,6 +7295,10 @@ __webpack_require__.r(__webpack_exports__);
 
           if (data.notification) {
             _this.$root.showNotification(data.notification);
+
+            _this.$modal.hide('settingsForm');
+
+            _this.$router.push('/profile-settings');
           }
         });
       }
@@ -7328,7 +7332,7 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {
       var _this3 = this;
 
-      if (this.formType == 'password') {
+      if (this.formType == 'password' && this.$route.query['password-update-token'] != undefined) {
         this.$http.post('/api/auth/password/password-change', {
           password: null
         }).then(function () {
