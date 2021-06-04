@@ -142,7 +142,7 @@ export default {
 
       this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.searchValue)
       
-      let url = new URL(window.location.origin + '/api/items/get-search-tips')
+      let url = new URL(window.location.origin + '/api/search/get-search-tips')
       url.searchParams.set('search-query', this.searchValue)
 
       this.$http.get(url)

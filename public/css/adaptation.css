@@ -246,6 +246,9 @@
     border-radius: 20px;
     font-size: 14px;
   }
+  .profile-tab:not(.btn) {
+    color: #fff;
+  }
   .profile-card__information {
     order: 2;
   }

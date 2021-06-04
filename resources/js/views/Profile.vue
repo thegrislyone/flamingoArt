@@ -219,7 +219,7 @@ export default {
 
       // get my-items
 
-      this.$http.get('/api/auth/get-author?author_id=' + this.authorId)
+      this.$http.get('/api/user/get-author?author_id=' + this.authorId)
         .then(response => {
           const data = response.data
 
@@ -238,7 +238,7 @@ export default {
       this.user = this.$store.getters.user
     }
 
-    const url = new URL(`${window.location.origin}/api/items/user-items`)
+    const url = new URL(`${window.location.origin}/api/user/user-items`)
 
     if (this.isForeign) {
       url.searchParams.set('author_id', this.authorId)

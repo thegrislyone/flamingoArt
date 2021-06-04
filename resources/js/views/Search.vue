@@ -77,7 +77,7 @@ export default {
   },
   created() {
 
-    let url = new URL(window.location.origin + '/api/items/get-search-results')
+    let url = new URL(window.location.origin + '/api/search/get-search-results')
     url.searchParams.set('search-query', this.searchValue)
 
     this.$http.get(url)

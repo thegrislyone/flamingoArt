@@ -98,7 +98,7 @@
                 'item__buy_hidden': purchaseConfirmationShow
               }"
             >
-              <button class="btn" @click="buy">Купить</button>
+              <button v-if="!isAuthor" class="btn" @click="buy">Купить</button>
               <span class="item__price">{{ item.price }} ₽</span>
             </div>
 
@@ -307,7 +307,7 @@ export default {
 
         const itemId = this.item.id
 
-        this.$http.get('/api/items/add-to-favorite?item_id=' + itemId)
+        this.$http.get('/api/items/favorite/add-to-favorite?item_id=' + itemId)
           .then(response => {
             const data = response.data
 
@@ -322,7 +322,7 @@ export default {
 
         const itemId = this.item.id
 
-        this.$http.get('/api/items/remove-from-favorite?item_id=' + itemId)
+        this.$http.get('/api/items/favorite/remove-from-favorite?item_id=' + itemId)
           .then(response => {
             const data = response.data
 

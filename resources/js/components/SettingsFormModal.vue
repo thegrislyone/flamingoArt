@@ -191,7 +191,7 @@ export default {
           return
         }
 
-        this.$http.post('/api/auth/set-user-login', {
+        this.$http.post('/api/user/set-user-login', {
           login: this.login
         })
           .then(response => {
@@ -246,7 +246,7 @@ export default {
       let request = {}
       request[name] = value
 
-      this.$http.post('/api/auth/data-check', request)
+      this.$http.post('/api/user/data-check', request)
         .then(response => {
           const data = response.data
 

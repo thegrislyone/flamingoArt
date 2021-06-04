@@ -443,7 +443,7 @@ export default {
         return
       }
 
-      this.$http.post('/api/auth/set-user-socials', this.social)
+      this.$http.post('/api/user/set-user-socials', this.social)
 
     },
     avatarUpload(file) {
@@ -452,7 +452,7 @@ export default {
 
       formData.append('avatar', file)
 
-      this.$http.post('/api/auth/set-user-avatar', formData)
+      this.$http.post('/api/user/set-user-avatar', formData)
         .then(response => {
           const data = response.data
 
@@ -474,7 +474,7 @@ export default {
 
       formData.append('banner', file)
 
-      this.$http.post('/api/auth/set-user-banner', formData)
+      this.$http.post('/api/user/set-user-banner', formData)
         .then(response => {
           const data = response.data
 

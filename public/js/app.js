@@ -6792,7 +6792,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.$http.get('/api/tags/tags-popular-increase?search-query=' + this.searchValue);
-      var url = new URL(window.location.origin + '/api/items/get-search-tips');
+      var url = new URL(window.location.origin + '/api/search/get-search-tips');
       url.searchParams.set('search-query', this.searchValue);
       this.$http.get(url).then(function (response) {
         var data = response.data;
@@ -7270,7 +7270,7 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
 
-        this.$http.post('/api/auth/set-user-login', {
+        this.$http.post('/api/user/set-user-login', {
           login: this.login
         }).then(function (response) {
           var data = response.data;
@@ -7313,7 +7313,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs[name].isLoading = true;
       var request = {};
       request[name] = value;
-      this.$http.post('/api/auth/data-check', request).then(function (response) {
+      this.$http.post('/api/user/data-check', request).then(function (response) {
         var data = response.data;
 
         if ('errors' in data && _this2.login != _this2.user.login) {
@@ -7663,7 +7663,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$refs[name][0].isLoading = true;
       var request = {};
       request[name] = value;
-      this.$http.post('/api/auth/data-check', request).then(function (response) {
+      this.$http.post('/api/user/data-check', request).then(function (response) {
         var data = response.data;
 
         if ('errors' in data) {
@@ -8040,7 +8040,7 @@ __webpack_require__.r(__webpack_exports__);
     getUsers: function getUsers() {
       var _this = this;
 
-      this.$http.get('/api/auth/get-users').then(function (response) {
+      this.$http.get('/api/user/get-users').then(function (response) {
         var data = response.data;
         _this.users = data;
       });
@@ -8048,7 +8048,7 @@ __webpack_require__.r(__webpack_exports__);
     ban: function ban(id) {
       var _this2 = this;
 
-      this.$http.get('/api/auth/ban-user?user_id=' + id).then(function (response) {
+      this.$http.get('/api/user/ban-user?user_id=' + id).then(function (response) {
         _this2.getUsers();
       });
     }
@@ -8399,7 +8399,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.isInFavorite) {
         var itemId = this.item.id;
-        this.$http.get('/api/items/add-to-favorite?item_id=' + itemId).then(function (response) {
+        this.$http.get('/api/items/favorite/add-to-favorite?item_id=' + itemId).then(function (response) {
           var data = response.data;
 
           if (data.notification) {
@@ -8410,7 +8410,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else {
         var _itemId = this.item.id;
-        this.$http.get('/api/items/remove-from-favorite?item_id=' + _itemId).then(function (response) {
+        this.$http.get('/api/items/favorite/remove-from-favorite?item_id=' + _itemId).then(function (response) {
           var data = response.data;
 
           if (data.notification) {
@@ -8919,7 +8919,7 @@ __webpack_require__.r(__webpack_exports__);
     if (this.isForeign) {
       this.profileLoading = true; // get my-items
 
-      this.$http.get('/api/auth/get-author?author_id=' + this.authorId).then(function (response) {
+      this.$http.get('/api/user/get-author?author_id=' + this.authorId).then(function (response) {
         var data = response.data;
         _this.user = data;
         console.log(_this.user);
@@ -8930,7 +8930,7 @@ __webpack_require__.r(__webpack_exports__);
       this.user = this.$store.getters.user;
     }
 
-    var url = new URL("".concat(window.location.origin, "/api/items/user-items"));
+    var url = new URL("".concat(window.location.origin, "/api/user/user-items"));
 
     if (this.isForeign) {
       url.searchParams.set('author_id', this.authorId);
@@ -9429,14 +9429,14 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.$http.post('/api/auth/set-user-socials', this.social);
+      this.$http.post('/api/user/set-user-socials', this.social);
     },
     avatarUpload: function avatarUpload(file) {
       var _this = this;
 
       var formData = new FormData();
       formData.append('avatar', file);
-      this.$http.post('/api/auth/set-user-avatar', formData).then(function (response) {
+      this.$http.post('/api/user/set-user-avatar', formData).then(function (response) {
         var data = response.data;
 
         if (data.notification) {
@@ -9455,7 +9455,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var formData = new FormData();
       formData.append('banner', file);
-      this.$http.post('/api/auth/set-user-banner', formData).then(function (response) {
+      this.$http.post('/api/user/set-user-banner', formData).then(function (response) {
         var data = response.data;
 
         if (data.notification) {
@@ -9591,7 +9591,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    var url = new URL(window.location.origin + '/api/items/get-search-results');
+    var url = new URL(window.location.origin + '/api/search/get-search-results');
     url.searchParams.set('search-query', this.searchValue);
     this.$http.get(url).then(function (response) {
       var data = response.data;
@@ -37523,11 +37523,13 @@ var render = function() {
                         }
                       },
                       [
-                        _c(
-                          "button",
-                          { staticClass: "btn", on: { click: _vm.buy } },
-                          [_vm._v("Купить")]
-                        ),
+                        !_vm.isAuthor
+                          ? _c(
+                              "button",
+                              { staticClass: "btn", on: { click: _vm.buy } },
+                              [_vm._v("Купить")]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c("span", { staticClass: "item__price" }, [
                           _vm._v(_vm._s(_vm.item.price) + " ₽")

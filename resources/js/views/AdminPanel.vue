@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getUsers() {
-      this.$http.get('/api/auth/get-users')
+      this.$http.get('/api/user/get-users')
         .then(response => {
           const data = response.data
 
@@ -88,7 +88,7 @@ export default {
     },
     ban(id) {
 
-      this.$http.get('/api/auth/ban-user?user_id=' + id)
+      this.$http.get('/api/user/ban-user?user_id=' + id)
         .then(response => {
           this.getUsers()
         })
