@@ -18,15 +18,17 @@ class CreateChatTables extends Migration
             $table->id();
             $table->timestamps();
             $table->text('channel');
-            $table->integer('users');
-        });
-
-        Schema::create('chat_users', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            // $table->integer('users');
             $table->integer('user_first');
             $table->integer('user_second');
         });
+
+        // Schema::create('chat_users', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->timestamps();
+        //     $table->integer('user_first');
+        //     $table->integer('user_second');
+        // });
 
         Schema::create('messages', function (Blueprint $table) {
             $table->id();

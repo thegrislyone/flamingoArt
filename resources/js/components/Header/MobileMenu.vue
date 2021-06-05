@@ -57,7 +57,7 @@
           <div
             class="mobile-menu__menu-item"
           >
-            <button class="pointer" @click="goTo('')">Сообщения</button>
+            <button class="pointer" @click="goTo('/chat')">Сообщения</button>
           </div>
           <div
             class="mobile-menu__menu-item"

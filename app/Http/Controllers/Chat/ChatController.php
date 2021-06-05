@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Chat\Messages;
 use App\Models\Chat\Chats;
-use App\Models\Chat\ChatUsers;
 
 use App\Models\User;
 
@@ -19,6 +18,40 @@ use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
+
+    public function getUserChats(Request $request) {
+
+        $user = Auth::user()->id;
+
+        $chats = Chats::where('user_first', '=', $user)->orWhere('user_second', '=', $user)->get(['channel', 'created_at', 'id', 'user_second', 'user_first'])->toArray();
+
+        $chats = array_map(function($chat) use ($user) {
+
+            if ($chat['user_first'] == $user) {
+
+                $chat['user'] = User::find($chat['user_second']);
+
+            } elseif ($chat['user_second'] == $user) {
+                $chat['user'] = User::find($chat['user_first']);
+            }
+            
+            // $chat['user'] = User::find($chat['user_second']);
+            // unset($chat['user_second']);
+
+            $chat['last_message'] = Messages::where('chat', '=', $chat['id'])->get()->toArray();
+            $chat['last_message'] = end($chat['last_message']);
+
+            $chat['unreaded_messages'] = count(Messages::where('chat', '=', $chat['id'])->where('checked', '=', 0)->get()->toArray());
+
+            return $chat;
+
+        }, $chats);
+
+        
+        
+        return $chats;
+
+    }
     
     public function getChat(Request $request) {
 
@@ -27,87 +60,48 @@ class ChatController extends Controller
 
         $chat = $this->findChatByInterlocutors($from, $to);
 
-        return $chat->only('id', 'channel');
+        $chat = $chat->only('channel', 'created_at', 'id', 'user_second', 'user_first');
+
+        if ($chat['user_first'] == $from) {
+
+            $chat['user'] = User::find($chat['user_second']);
+
+        } elseif ($chat['user_second'] == $from) {
+            $chat['user'] = User::find($chat['user_first']);
+        }
+
+        unset($chat['user_second']);
+        unset($chat['user_first']);
+
+        $chat['last_message'] = Messages::where('chat', '=', $chat['id'])->get()->toArray();
+        $chat['last_message'] = end($chat['last_message']);
+
+        return $chat;
     }
 
     public function findChatByInterlocutors($first, $second) {
 
         $channel;
 
-        if (ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()) {
-
-            // return "есть";
+        if (Chats::where('user_first', '=', $first)->where('user_second', '=', $second)->first()) {
             
-            $channel = ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()['id'];
+            $channel = Chats::where('user_first', '=', $first)->where('user_second', '=', $second)->first();
         
-        } elseif (ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()) {
-
-            // return "есть, но перевернуто";
+        } elseif (Chats::where('user_first', '=', $second)->where('user_second', '=', $first)->first()) {
             
-            $channel = ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()['id'];
+            $channel = Chats::where('user_first', '=', $second)->where('user_second', '=', $first)->first();
         
         } else {
-            
-            // return "нет";
 
-            $channel = ChatUsers::create([
+            $channel = Chats::create([
+                'channel' => Str::random(16),
                 'user_first' => $first,
                 'user_second' => $second
-            ])['id'];
-
-            Chats::create([
-                'channel' => Str::random(16),
-                'users' => $channel
             ]);
             
         }
 
-        $chat = Chats::where('users', '=', $channel)->first();
-
-        return $chat;
+        return $channel;
     }
-
-    // public function sendMessage(Request $request) {
-
-    //     $message = $request['message'];
-    //     $author = $request['author'];
-    //     $destination = $request['interlocutor'];
-
-    //     $chat = $this->findChatByInterlocutors($author, $destination);
-
-    //     $message_id = Messages::create([
-    //         'message_text' => $message,
-    //         'chat' => $chat['id'],
-    //         'interlocutors' => $chat['interlocutors']
-    //     ]);
-
-    //     $chat_room = $this->findChatByInterlocutors($author, $destination)['room_id'];
-
-    //     event(new MessageSend($message, $author, $destination, $message_id, $chat_room));
-        
-    // }
-
-    // public function getMessages(Request $request) {
-
-    //     $author_id = $request['author'];
-    //     $interlocutor_id = $request['interlocutor'];
-
-    //     $channel = $this->findChatByInterlocutors($author_id, $interlocutor_id)['id'];
-
-    //     $messages = Messages::where('chat', '=', $channel)->get();
-
-    //     foreach ($messages as $message) {
-    //         $interlocutors_id = $message['interlocutors'];
-    //         $interlocutors = ChatUsers::find($interlocutors_id);
-    //         $message['author'] = $interlocutors['user_first'];
-    //         $message['interlocutor'] = $interlocutors['user_second'];
-    //     }
-
-    //     $response = [
-    //         'messages' => $messages
-    //     ];
-
-    //     return response()->json($response, 200);
-    // }
 
 }

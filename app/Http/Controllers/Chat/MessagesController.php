@@ -26,7 +26,8 @@ class MessagesController extends Controller
             'message_text' => $message_text,
             'chat' => $chat_id,
             'from' => $from,
-            'to' => $to
+            'to' => $to,
+            'checked' => false
         ])->only('chat', 'created_at', 'from', 'id', 'message_text', 'to');
 
         $message['channel'] = Chats::find($chat_id)->channel;
@@ -43,48 +44,21 @@ class MessagesController extends Controller
         $second = $request['to'];
         $chat_id = $request['chat_id'];
 
-        $messages = Messages::where('chat', '=', $chat_id)->get(['chat', 'created_at', 'from', 'id', 'message_text', 'to']);
+        $messages = Messages::where('chat', '=', $chat_id)->get(['chat', 'created_at', 'from', 'id', 'message_text', 'to', 'checked']);
 
         return response()->json($messages, 200);
 
     }
 
+    public function checkMessage(Request $request) {
 
-    // public function findChatByInterlocutors($first, $second) {
+        $message_id = $request['message_id'];
 
-    //     $chat_id;
+        Messages::find($message_id)->update(['checked' => true]);
 
-    //     if (ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()) {
+        return true;
 
-    //         // return "есть";
-            
-    //         $chat_id = ChatUsers::where('user_first', '=', $first)->where('user_second', '=', $second)->first()['id'];
-        
-    //     } elseif (ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()) {
+    }
 
-    //         // return "есть, но перевернуто";
-            
-    //         $chat_id = ChatUsers::where('user_first', '=', $second)->where('user_second', '=', $first)->first()['id'];
-        
-    //     } else {
-            
-    //         // return "нет";
-
-    //         $chat_id = ChatUsers::create([
-    //             'user_first' => $first,
-    //             'user_second' => $second
-    //         ])['id'];
-
-    //         Chats::create([
-    //             'chat_id' => Str::random(16),
-    //             'users' => $chat_id
-    //         ]);
-            
-    //     }
-
-    //     $chat = Chats::where('users', '=', $chat_id)->first();
-
-    //     return $chat;
-    // }
 
 }
