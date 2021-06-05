@@ -13,7 +13,7 @@ import VueLazyload from 'vue-lazyload'
 import { createPopper } from '@popperjs/core'
 import VueMoment from 'vue-moment'
 import VTooltip from 'v-tooltip'
-
+import vuePusher from 'vue-pusher'
 //properties
 import { empty, exist } from './properties/'
 
@@ -53,6 +53,13 @@ Vue.use(VueLazyload, {
   })
 Vue.use(VueMoment)
 Vue.use(VTooltip)
+Vue.use(vuePusher, {
+    api_key: '7e4e4873e6401ef6ec49',
+    options: {
+        cluster: 'eu',
+        encrypted: true,
+    }
+})
 
 const app = new Vue({
     el: '#app',

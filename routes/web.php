@@ -128,3 +128,10 @@ Route::get('/admin-panel', function () {
     }
     return view('index');
 });
+
+Route::get('/chat', function () {
+    if (Auth::check()) {
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});

@@ -68,7 +68,7 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
-  {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
   @isset ($userInfo)
 
