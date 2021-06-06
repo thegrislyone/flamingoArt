@@ -1,42 +1,61 @@
 <template>
   <div class="chat">
+
+    <div
+      v-if="loading"
+      class="preloader"
+    ></div>
+
+    <div
+      v-else-if="$isEmpty(chatsList)"
+      class="chat__empty"
+    >
+      Ваш список сообщений пуст
+    </div>
+
+    <template v-else>
     
-    <div 
-      v-if="windowWidth < 1024"
-      class="chat-mobile"
-    >
+      <div 
+        v-if="windowWidth < 1024"
+        class="chat-mobile"
+      >
 
-      <chats-list
-        v-if="chats && !interlocutor"
-        class="chats-list_mobile"
-        :list="chats"
-        @chat-selected="chatSelected"
-      />
+        <chats-list
+          v-if="!interlocutor"
+          class="chats-list_mobile"
+          :list="chatsList"
+          @chat-selected="chatSelected"
+        />
 
-      <chat-page
-        v-else-if="chats && activeChat"
-        :mobile="true"
-        :active="activeChat"
-        class="chats-page_mobile"
-        @back="back"
-      />
+        <chat-page
+          v-else
+          :mobile="true"
+          :activeChat="activeChat"
+          class="chats-page_mobile"
+          @back="back"
+        />
 
-    </div>
+      </div>
 
-    <div 
-      v-else
-      class="chat-desctop"
-    >
+      <div 
+        v-else
+        class="chat-desctop"
+      >
 
-      <chats-list
-        v-if="chats"
-        class="chats-list_desctop"
-        :list="chats"
-      />
+        <chats-list
+          class="chats-list_desctop"
+          :list="chatsList"
+          @chat-selected="chatSelected"
+        />
 
-      Компьютерная
+        <chat-page
+          :activeChat="activeChat"
+          class="chats-page_desctop"
+        />
 
-    </div>
+      </div>
+
+    </template>
 
   </div>
 </template>
@@ -54,15 +73,10 @@ export default {
   data() {
     return {
 
-      chats: null,
-      activeChat: null,
+      loading: true,
 
-      messages: [],
-
-      messageText: '',
-
-      pusher: null,
-      channel: null
+      chatsList: [],
+      activeChat: {},
 
     }
   },
@@ -77,28 +91,45 @@ export default {
       return this.$store.getters.windowWidth
     }
   },
+  watch: {
+    windowWidth() {
+      
+    }
+  },
   created() {
 
-    if (this.author == this.interlocutor) {
-      this.$router.push('/')
-    }
-
-    this.getChatsList()
-
-    if (this.interlocutor) {
-      this.getChat()
-    }
+    this.init()
 
   },
   methods: {
+    init() {
+
+      if (this.author == this.interlocutor) {
+        this.$router.push('/')
+      }
+      
+      this.loading = true
+
+      if (this.interlocutor) {
+        this.$http.get('/api/chat/chat-init?to=' + this.interlocutor)
+          .then(() => {
+            this.getChatsList(true)
+          })
+      } else {
+        this.getChatsList(true)
+      }
+
+    },
     chatSelected(interlocutor) {
       
       this.$router.push('/chat?interlocutor_id=' + interlocutor)
 
-      this.getChat()
+      // this.activeChat = {}
+
+      this.getActiveChat()
 
     },
-    getChatsList() {
+    getChatsList(init = false) {
 
       const url_string = window.location.origin + '/api/chat/get-user-chats'
       let url = new URL(url_string)
@@ -108,12 +139,42 @@ export default {
 
           const data = response.data
 
-          this.chats = data
+          this.chatsList = data
+
+          // if (this.interlocutor) {
+
+          //   const finded = data.find((chat) => {
+          //     if (this.interlocutor == chat.id) {
+          //       return true
+          //     }
+          //     return false
+          //   })
+
+          //   if (!finded) {
+          //     this.$router.push('/chat')
+          //     this.loading = false
+          //     return
+          //   }
+
+          // }
+
+          if (init) {
+
+            if ((this.interlocutor || this.windowWidth >= 1024)) {
+              if (!this.interlocutor) {
+                this.$router.push('/chat?interlocutor_id=' + this.chatsList[0].user.id)
+              }
+              this.getActiveChat()
+            }
+
+            this.loading = false
+
+          }
 
         })
 
     },
-    getChat() {
+    getActiveChat() {
 
       const url_string = window.location.origin + '/api/chat/get-chat-channel'
       let url = new URL(url_string)
@@ -127,6 +188,7 @@ export default {
           this.activeChat = data
 
         })
+
     },
     back() {
       this.activeChat = null

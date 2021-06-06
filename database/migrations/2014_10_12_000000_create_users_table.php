@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('is_admin')->nullable();
             $table->string('name')->nullable();
             $table->string('email')->unique();
+            $table->text('common_notifications_channel');
             $table->timestamp('email_verified_at')->nullable();
             $table->text('email_verify_token')->nullable();
             $table->string('password');

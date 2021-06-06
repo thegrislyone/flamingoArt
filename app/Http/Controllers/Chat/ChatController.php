@@ -79,6 +79,17 @@ class ChatController extends Controller
         return $chat;
     }
 
+    public function chatInit(Request $request) {
+
+        $to = $request['to'];
+        $from = Auth::user()['id'];
+
+        $chat = $this->findChatByInterlocutors($from, $to);
+
+        return true;
+
+    }
+
     public function findChatByInterlocutors($first, $second) {
 
         $channel;

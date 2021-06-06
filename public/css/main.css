@@ -2247,6 +2247,9 @@ img {
 .chat {
 
 }
+.chat__empty {
+  padding: 15px;
+}
 
 /* chat-mobile */
 
@@ -2308,6 +2311,17 @@ img {
 }
 .chat-page__message:not(:last-child) {
   margin-bottom: 16px;
+}
+/* chat-desctop */
+.chat-desctop {
+  display: flex;
+  justify-content: center;
+}
+.chats-list_desctop {
+  width: 400px;
+}
+.chats-page_desctop {
+  width: 528px;
 }
 /* chats-list */
 .chat-list-item {

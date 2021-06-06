@@ -4,9 +4,17 @@
     ref="chatPage"
   >
 
-    <template>
+    <div
+      v-if="$isEmpty(activeChat)"
+      class="preloader"
+    ></div>
 
-      <div class="chat-page__mobile-header">
+    <template v-else>
+
+      <div 
+        v-if="mobile"
+        class="chat-page__mobile-header"
+      >
 
         <i 
           class="chat-page__back pointer"
@@ -15,13 +23,13 @@
 
         <router-link 
           class="chat-page__profile-link"
-          :to="'/profile/' + active.user.id"
+          :to="'/profile/' + activeChat.user.id"
         >
 
           <div class="chat-page__avatar-block">
             <img 
-              v-if="active.user.avatar" 
-              :src="active.user.avatar"
+              v-if="activeChat.user.avatar" 
+              :src="activeChat.user.avatar"
               class="chat-page__avatar"
             >
             <img 
@@ -32,7 +40,7 @@
           </div>
 
           <div class="chat-page__nickname">
-            {{ active.user.login }}
+            {{ activeChat.user.login }}
           </div>
 
         </router-link>
@@ -54,8 +62,6 @@
 
     </template>
 
-    
-
   </div>
 </template>
 
@@ -73,7 +79,7 @@ export default {
       type: Boolean,
       default: false
     },
-    active: {
+    activeChat: {
       type: Object,
       require: true
     }
@@ -83,12 +89,7 @@ export default {
 
       renewMessages: null,
 
-      chat: null,
-      chats: null,
-
       messages: [],
-
-      messageText: '',
 
       pusher: null,
       channel: null
@@ -106,40 +107,25 @@ export default {
       return this.$store.getters.windowWidth
     },
   },
+  watch: {
+    activeChat() {
+
+      if (!this.$isEmpty(this.activeChat)) {
+
+        this.setChat()
+
+        this.getMessages(true)
+
+      }
+
+    }
+  },
   created() {
     
     this.renewMessages = debounce(this.getMessages, 400)
 
-    this.chat = this.active
-
-    this.setChat()
-
-    this.getMessages(true)
-
-    // this.getChat()
-
   },
   methods: {
-
-    getChat() {
-
-      const url_string = window.location.origin + '/api/chat/get-chat-channel'
-      let url = new URL(url_string)
-      url.searchParams.set('to', this.interlocutor)
-
-      this.$http.get(url)
-        .then(response => {
-
-          const data = response.data
-
-          this.chat = data
-
-          this.setChat()
-          
-          this.getMessages(true)
-
-        })
-    },
     setChat() {
       
       /* pusher init */
@@ -150,12 +136,14 @@ export default {
         cluster: 'eu'
       })
 
-      this.channel = this.pusher.subscribe(this.chat.channel)
+      this.channel = this.pusher.subscribe(this.activeChat.channel)
 
       this.channel.bind('message-get', data => {
         this.messages.push(data)
         setTimeout(() => {
-          this.$refs.chatPage.scrollTop = this.$refs.chatPage.scrollHeight
+          if (this.$refs.chatPage) {
+            this.$refs.chatPage.scrollTop = this.$refs.chatPage.scrollHeight
+          }
         }, 5)
       })
 
@@ -168,7 +156,7 @@ export default {
 
       url.searchParams.set('first', this.author)
       url.searchParams.set('second', this.interlocutor)
-      url.searchParams.set('chat_id', this.chat.id)
+      url.searchParams.set('chat_id', this.activeChat.id)
 
       this.$http.get(url.href)
         .then(response => {
@@ -191,7 +179,7 @@ export default {
         message: messageText,
         from: this.author,
         to: this.interlocutor,
-        chat_id: this.chat.id
+        chat_id: this.activeChat.id
       }
       
       this.$http.post('/api/chat/messages/send-message', request)
@@ -199,10 +187,7 @@ export default {
 
           const data = response.data
           
-
         })
-
-      this.message = ''
 
     },
     back() {

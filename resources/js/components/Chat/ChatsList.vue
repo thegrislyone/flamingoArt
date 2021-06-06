@@ -1,13 +1,22 @@
 <template>
   <div class="chats-list">
-    
-    <chat-list-item
-      v-for="item in list"
-      :key="item.id"
-      :data="item"
-      @chat-selected="chatSelected"
-    />
 
+    <div
+      v-if="$isEmpty(list)"
+      class="preloader"
+    ></div>
+
+    <template v-else>
+
+      <chat-list-item
+        v-for="item in list"
+        :key="item.id"
+        :data="item"
+        @chat-selected="chatSelected"
+      />
+      
+    </template>
+  
   </div>
 </template>
 

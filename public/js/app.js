@@ -5383,6 +5383,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5396,7 +5402,7 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean,
       "default": false
     },
-    active: {
+    activeChat: {
       type: Object,
       require: true
     }
@@ -5404,10 +5410,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       renewMessages: null,
-      chat: null,
-      chats: null,
       messages: [],
-      messageText: '',
       pusher: null,
       channel: null
     };
@@ -5423,60 +5426,52 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.windowWidth;
     }
   },
+  watch: {
+    activeChat: function activeChat() {
+      if (!this.$isEmpty(this.activeChat)) {
+        this.setChat();
+        this.getMessages(true);
+      }
+    }
+  },
   created: function created() {
     this.renewMessages = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_0__["debounce"])(this.getMessages, 400);
-    this.chat = this.active;
-    this.setChat();
-    this.getMessages(true); // this.getChat()
   },
   methods: {
-    getChat: function getChat() {
-      var _this = this;
-
-      var url_string = window.location.origin + '/api/chat/get-chat-channel';
-      var url = new URL(url_string);
-      url.searchParams.set('to', this.interlocutor);
-      this.$http.get(url).then(function (response) {
-        var data = response.data;
-        _this.chat = data;
-
-        _this.setChat();
-
-        _this.getMessages(true);
-      });
-    },
     setChat: function setChat() {
-      var _this2 = this;
+      var _this = this;
 
       /* pusher init */
       Pusher.logToConsole = true;
       this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
         cluster: 'eu'
       });
-      this.channel = this.pusher.subscribe(this.chat.channel);
+      this.channel = this.pusher.subscribe(this.activeChat.channel);
       this.channel.bind('message-get', function (data) {
-        _this2.messages.push(data);
+        _this.messages.push(data);
 
         setTimeout(function () {
-          _this2.$refs.chatPage.scrollTop = _this2.$refs.chatPage.scrollHeight;
+          if (_this.$refs.chatPage) {
+            _this.$refs.chatPage.scrollTop = _this.$refs.chatPage.scrollHeight;
+          }
         }, 5);
       });
     },
     getMessages: function getMessages() {
-      var _this3 = this;
+      var _this2 = this;
 
       var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var url_string = window.location.origin + '/api/chat/messages/get-chat-messages';
       var url = new URL(url_string);
       url.searchParams.set('first', this.author);
       url.searchParams.set('second', this.interlocutor);
-      url.searchParams.set('chat_id', this.chat.id);
+      url.searchParams.set('chat_id', this.activeChat.id);
       this.$http.get(url.href).then(function (response) {
         var data = response.data;
-        _this3.messages = data;
+        _this2.messages = data;
       }).then(function () {
         if (init) {
-          _this3.$refs.chatPage.scrollTop = _this3.$refs.chatPage.scrollHeight;
+          _this2.$refs.chatPage.scrollTop = _this2.$refs.chatPage.scrollHeight;
         }
       });
     },
@@ -5485,12 +5480,11 @@ __webpack_require__.r(__webpack_exports__);
         message: messageText,
         from: this.author,
         to: this.interlocutor,
-        chat_id: this.chat.id
+        chat_id: this.activeChat.id
       };
       this.$http.post('/api/chat/messages/send-message', request).then(function (response) {
         var data = response.data;
       });
-      this.message = '';
     },
     back: function back() {
       this.$emit('back');
@@ -5510,6 +5504,15 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ChatListItem_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChatListItem.vue */ "./resources/js/components/Chat/ChatListItem.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8556,6 +8559,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8565,12 +8587,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      chats: null,
-      activeChat: null,
-      messages: [],
-      messageText: '',
-      pusher: null,
-      channel: null
+      loading: true,
+      chatsList: [],
+      activeChat: {}
     };
   },
   computed: {
@@ -8584,41 +8603,79 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.windowWidth;
     }
   },
+  watch: {
+    windowWidth: function windowWidth() {}
+  },
   created: function created() {
-    if (this.author == this.interlocutor) {
-      this.$router.push('/');
-    }
-
-    this.getChatsList();
-
-    if (this.interlocutor) {
-      this.getChat();
-    }
+    this.init();
   },
   methods: {
-    chatSelected: function chatSelected(interlocutor) {
-      this.$router.push('/chat?interlocutor_id=' + interlocutor);
-      this.getChat();
-    },
-    getChatsList: function getChatsList() {
+    init: function init() {
       var _this = this;
 
+      if (this.author == this.interlocutor) {
+        this.$router.push('/');
+      }
+
+      this.loading = true;
+
+      if (this.interlocutor) {
+        this.$http.get('/api/chat/chat-init?to=' + this.interlocutor).then(function () {
+          _this.getChatsList(true);
+        });
+      } else {
+        this.getChatsList(true);
+      }
+    },
+    chatSelected: function chatSelected(interlocutor) {
+      this.$router.push('/chat?interlocutor_id=' + interlocutor); // this.activeChat = {}
+
+      this.getActiveChat();
+    },
+    getChatsList: function getChatsList() {
+      var _this2 = this;
+
+      var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var url_string = window.location.origin + '/api/chat/get-user-chats';
       var url = new URL(url_string);
       this.$http.get(url.href).then(function (response) {
         var data = response.data;
-        _this.chats = data;
+        _this2.chatsList = data; // if (this.interlocutor) {
+        //   const finded = data.find((chat) => {
+        //     if (this.interlocutor == chat.id) {
+        //       return true
+        //     }
+        //     return false
+        //   })
+        //   if (!finded) {
+        //     this.$router.push('/chat')
+        //     this.loading = false
+        //     return
+        //   }
+        // }
+
+        if (init) {
+          if (_this2.interlocutor || _this2.windowWidth >= 1024) {
+            if (!_this2.interlocutor) {
+              _this2.$router.push('/chat?interlocutor_id=' + _this2.chatsList[0].user.id);
+            }
+
+            _this2.getActiveChat();
+          }
+
+          _this2.loading = false;
+        }
       });
     },
-    getChat: function getChat() {
-      var _this2 = this;
+    getActiveChat: function getActiveChat() {
+      var _this3 = this;
 
       var url_string = window.location.origin + '/api/chat/get-chat-channel';
       var url = new URL(url_string);
       url.searchParams.set('to', this.interlocutor);
       this.$http.get(url).then(function (response) {
         var data = response.data;
-        _this2.activeChat = data;
+        _this3.activeChat = data;
       });
     },
     back: function back() {
@@ -43478,63 +43535,69 @@ var render = function() {
     "div",
     { ref: "chatPage", staticClass: "chat-page" },
     [
-      [
-        _c(
-          "div",
-          { staticClass: "chat-page__mobile-header" },
-          [
-            _c("i", {
-              staticClass: "chat-page__back pointer",
-              on: { click: _vm.back }
-            }),
+      _vm.$isEmpty(_vm.activeChat)
+        ? _c("div", { staticClass: "preloader" })
+        : [
+            _vm.mobile
+              ? _c(
+                  "div",
+                  { staticClass: "chat-page__mobile-header" },
+                  [
+                    _c("i", {
+                      staticClass: "chat-page__back pointer",
+                      on: { click: _vm.back }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "chat-page__profile-link",
+                        attrs: { to: "/profile/" + _vm.activeChat.user.id }
+                      },
+                      [
+                        _c("div", { staticClass: "chat-page__avatar-block" }, [
+                          _vm.activeChat.user.avatar
+                            ? _c("img", {
+                                staticClass: "chat-page__avatar",
+                                attrs: { src: _vm.activeChat.user.avatar }
+                              })
+                            : _c("img", {
+                                staticClass: "chat-page__avatar",
+                                attrs: {
+                                  src: "/assets/images/unknown-user.png"
+                                }
+                              })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "chat-page__nickname" }, [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(_vm.activeChat.user.login) +
+                              "\n        "
+                          )
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
-              "router-link",
-              {
-                staticClass: "chat-page__profile-link",
-                attrs: { to: "/profile/" + _vm.active.user.id }
-              },
-              [
-                _c("div", { staticClass: "chat-page__avatar-block" }, [
-                  _vm.active.user.avatar
-                    ? _c("img", {
-                        staticClass: "chat-page__avatar",
-                        attrs: { src: _vm.active.user.avatar }
-                      })
-                    : _c("img", {
-                        staticClass: "chat-page__avatar",
-                        attrs: { src: "/assets/images/unknown-user.png" }
-                      })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "chat-page__nickname" }, [
-                  _vm._v(
-                    "\n          " +
-                      _vm._s(_vm.active.user.login) +
-                      "\n        "
-                  )
-                ])
-              ]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "chat-page__messages" },
-          _vm._l(_vm.messages, function(message) {
-            return _c("message", {
-              key: message.id,
-              staticClass: "chat-page__message",
-              attrs: { data: message }
-            })
-          }),
-          1
-        ),
-        _vm._v(" "),
-        _c("message-input", { on: { "message-send": _vm.messageSend } })
-      ]
+              "div",
+              { staticClass: "chat-page__messages" },
+              _vm._l(_vm.messages, function(message) {
+                return _c("message", {
+                  key: message.id,
+                  staticClass: "chat-page__message",
+                  attrs: { data: message }
+                })
+              }),
+              1
+            ),
+            _vm._v(" "),
+            _c("message-input", { on: { "message-send": _vm.messageSend } })
+          ]
     ],
     2
   )
@@ -43564,14 +43627,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "chats-list" },
-    _vm._l(_vm.list, function(item) {
-      return _c("chat-list-item", {
-        key: item.id,
-        attrs: { data: item },
-        on: { "chat-selected": _vm.chatSelected }
-      })
-    }),
-    1
+    [
+      _vm.$isEmpty(_vm.list)
+        ? _c("div", { staticClass: "preloader" })
+        : _vm._l(_vm.list, function(item) {
+            return _c("chat-list-item", {
+              key: item.id,
+              attrs: { data: item },
+              on: { "chat-selected": _vm.chatSelected }
+            })
+          })
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -46866,43 +46933,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "chat" }, [
-    _vm.windowWidth < 1024
-      ? _c(
-          "div",
-          { staticClass: "chat-mobile" },
-          [
-            _vm.chats && !_vm.interlocutor
-              ? _c("chats-list", {
-                  staticClass: "chats-list_mobile",
-                  attrs: { list: _vm.chats },
-                  on: { "chat-selected": _vm.chatSelected }
-                })
-              : _vm.chats && _vm.activeChat
-              ? _c("chat-page", {
-                  staticClass: "chats-page_mobile",
-                  attrs: { mobile: true, active: _vm.activeChat },
-                  on: { back: _vm.back }
-                })
-              : _vm._e()
-          ],
-          1
-        )
-      : _c(
-          "div",
-          { staticClass: "chat-desctop" },
-          [
-            _vm.chats
-              ? _c("chats-list", {
-                  staticClass: "chats-list_desctop",
-                  attrs: { list: _vm.chats }
-                })
-              : _vm._e(),
-            _vm._v("\n\n    Компьютерная\n\n  ")
-          ],
-          1
-        )
-  ])
+  return _c(
+    "div",
+    { staticClass: "chat" },
+    [
+      _vm.loading
+        ? _c("div", { staticClass: "preloader" })
+        : _vm.$isEmpty(_vm.chatsList)
+        ? _c("div", { staticClass: "chat__empty" }, [
+            _vm._v("\n    Ваш список сообщений пуст\n  ")
+          ])
+        : [
+            _vm.windowWidth < 1024
+              ? _c(
+                  "div",
+                  { staticClass: "chat-mobile" },
+                  [
+                    !_vm.interlocutor
+                      ? _c("chats-list", {
+                          staticClass: "chats-list_mobile",
+                          attrs: { list: _vm.chatsList },
+                          on: { "chat-selected": _vm.chatSelected }
+                        })
+                      : _c("chat-page", {
+                          staticClass: "chats-page_mobile",
+                          attrs: { mobile: true, activeChat: _vm.activeChat },
+                          on: { back: _vm.back }
+                        })
+                  ],
+                  1
+                )
+              : _c(
+                  "div",
+                  { staticClass: "chat-desctop" },
+                  [
+                    _c("chats-list", {
+                      staticClass: "chats-list_desctop",
+                      attrs: { list: _vm.chatsList },
+                      on: { "chat-selected": _vm.chatSelected }
+                    }),
+                    _vm._v(" "),
+                    _c("chat-page", {
+                      staticClass: "chats-page_desctop",
+                      attrs: { activeChat: _vm.activeChat }
+                    })
+                  ],
+                  1
+                )
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -37,6 +37,7 @@ class CreateChatTables extends Migration
             $table->text('chat');
             $table->integer('from');
             $table->integer('to');
+            $table->boolean('checked');
         });
 
     }
