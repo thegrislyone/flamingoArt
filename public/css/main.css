@@ -972,6 +972,13 @@ img[lazy=loading] {
 
   color: rgba(255, 255, 255, 0.6);
 }
+.mobile-menu__messages {
+  display: flex;
+  align-items: center;
+}
+.mobile-menu__messages button {
+  margin-right: 8px;
+}
 .mobile-menu__menu-items_not-auth {
   margin-bottom: 64px;
 }
@@ -2319,6 +2326,11 @@ img {
 }
 .chats-list_desctop {
   width: 400px;
+  padding-top: 24px;
+}
+.chats-list_desctop-line {
+  border: 2px solid #181818;
+  margin: 24px 32px 24px 16px;
 }
 .chats-page_desctop {
   width: 528px;

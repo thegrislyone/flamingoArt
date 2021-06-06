@@ -55,9 +55,12 @@
             <button class="pointer" @click="goTo('/profile')">Мой профиль</button>
           </div>
           <div
-            class="mobile-menu__menu-item"
+            class="mobile-menu__menu-item mobile-menu__messages"
           >
             <button class="pointer" @click="goTo('/chat')">Сообщения</button>
+
+            <div v-if="$store.getters.unreadedMessages" class="chat-list-item__new-messages">{{ $store.getters.unreadedMessages }}</div>
+            
           </div>
           <div
             class="mobile-menu__menu-item"

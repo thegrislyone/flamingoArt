@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import axios from 'axios'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -11,9 +13,13 @@ export default new Vuex.Store({
     windowParameters: {
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth
-    }
+    },
+
+    chatsList: []
+
   },
   getters: {
+
     isAuthorizate: state => state.user && Object.keys(state.user).length,
     user: state => state.user,
 
@@ -21,7 +27,19 @@ export default new Vuex.Store({
       if (Object.keys(state.user).length) {
         return state.user.favorites
       }
-      return []
+      return null
+    },
+
+    unreadedMessages: state => {
+
+      let amount = 0
+
+      state.chatsList.forEach(chat => {
+        amount += chat.unreaded_messages
+      })
+
+      return amount
+
     },
 
     windowParameters: state => state.windowParameters,
@@ -29,6 +47,25 @@ export default new Vuex.Store({
     windowHeight: state => state.windowParameters.windowHeight,
   },
   actions: {
+    async getChatsList({commit}) {
+
+      console.log('метод вызывается')
+
+      const url_string = window.location.origin + '/api/chat/get-user-chats'
+      let url = new URL(url_string)
+
+      await axios.get(url.href)
+        .then(response => {
+
+          const data = response.data
+
+          console.log(data)
+
+          commit('setChatsList', data)
+
+        })
+
+    },
     windowResize({commit}) {
       commit('windowParametersChange', {
         width: window.innerWidth,
@@ -37,6 +74,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setChatsList(state, data) {
+      state.chatsList = data
+    },
     setFavorites(state, data) {
       state.user.favorites = data
     },

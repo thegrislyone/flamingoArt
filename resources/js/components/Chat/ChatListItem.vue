@@ -43,7 +43,7 @@
         v-if="data.last_message.to == author && !data.last_message.checked"
         class="chat-list-item__new-messages"
       >
-        {{ data.unreaded_messages | quantityPrettify }}
+        {{ data.unreaded_messages }}
       </div>
 
     </div>
@@ -57,15 +57,6 @@ export default {
     data: {
       type: Object,
       require: true
-    }
-  },
-  filters: {
-    quantityPrettify(value) {
-
-      if (!value) return ''
-
-      return (Number(value) > 9) ? '9+' : value
-
     }
   },
   computed: {

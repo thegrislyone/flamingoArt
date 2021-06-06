@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Chat\Messages;
 use App\Models\Chat\Chats;
+use App\Models\User;
 
 use App\Events\MessageSend;
+use App\Events\NotificationSend;
 
 class MessagesController extends Controller
 {
@@ -33,6 +35,11 @@ class MessagesController extends Controller
         $message['channel'] = Chats::find($chat_id)->channel;
 
         event(new MessageSend($message));
+
+        event(new NotificationSend([
+            'type' => 'message',
+            'data' => $message
+        ], User::find($to)->common_notifications_channel));
 
         return $message;
 

@@ -170,6 +170,7 @@ export default {
           if (init) {
             this.$refs.chatPage.scrollTop = this.$refs.chatPage.scrollHeight
           }
+          this.$store.dispatch('getChatsList')
         })
 
     },

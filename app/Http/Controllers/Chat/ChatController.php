@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Chat\Messages;
 use App\Models\Chat\Chats;
-
 use App\Models\User;
 
 use App\Events\MessageSend;

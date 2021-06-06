@@ -48,6 +48,10 @@
           @chat-selected="chatSelected"
         />
 
+        <div class="chats-list_desctop-line">
+
+        </div>
+
         <chat-page
           :activeChat="activeChat"
           class="chats-page_desctop"
@@ -75,12 +79,14 @@ export default {
 
       loading: true,
 
-      chatsList: [],
       activeChat: {},
 
     }
   },
   computed: {
+    chatsList() {
+      return this.$store.state.chatsList
+    },
     author() {
       return Number(this.$store.getters.user.id)
     },
@@ -93,7 +99,9 @@ export default {
   },
   watch: {
     windowWidth() {
-      
+      if (this.windowWidth >= 1024 && !this.interlocutor) {
+        this.chatSelected(this.chatsList[0].user.id)
+      }
     }
   },
   created() {
@@ -129,49 +137,22 @@ export default {
       this.getActiveChat()
 
     },
-    getChatsList(init = false) {
+    async getChatsList(init = false) {
 
-      const url_string = window.location.origin + '/api/chat/get-user-chats'
-      let url = new URL(url_string)
+      await this.$store.dispatch('getChatsList')
 
-      this.$http.get(url.href)
-        .then(response => {
+      if (init) {
 
-          const data = response.data
-
-          this.chatsList = data
-
-          // if (this.interlocutor) {
-
-          //   const finded = data.find((chat) => {
-          //     if (this.interlocutor == chat.id) {
-          //       return true
-          //     }
-          //     return false
-          //   })
-
-          //   if (!finded) {
-          //     this.$router.push('/chat')
-          //     this.loading = false
-          //     return
-          //   }
-
-          // }
-
-          if (init) {
-
-            if ((this.interlocutor || this.windowWidth >= 1024)) {
-              if (!this.interlocutor) {
-                this.$router.push('/chat?interlocutor_id=' + this.chatsList[0].user.id)
-              }
-              this.getActiveChat()
-            }
-
-            this.loading = false
-
+        if ((this.interlocutor || this.windowWidth >= 1024)) {
+          if (!this.interlocutor) {
+            this.$router.push('/chat?interlocutor_id=' + this.chatsList[0].user.id)
           }
+          this.getActiveChat()
+        }
 
-        })
+        this.loading = false
+
+      }
 
     },
     getActiveChat() {
