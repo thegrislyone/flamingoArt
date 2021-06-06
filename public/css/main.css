@@ -2421,6 +2421,8 @@ img {
   letter-spacing: -0.014em;
   max-width: 65%;
   display: inline-block;
+  text-align: left;
+  word-break: break-all;
 }
 .message_own {
   color: #000000;
