@@ -37,7 +37,7 @@
     
     <div class="main">
       
-      <router-view :key="$route.fullPath"></router-view>
+      <router-view :key="($route.name == 'chat') ? 'chat' : $route.fullPath"></router-view>
 
         <transition name="fade">
           <div 
@@ -68,7 +68,7 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
-  {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
   @isset ($userInfo)
 

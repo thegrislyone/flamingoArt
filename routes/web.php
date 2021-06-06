@@ -22,7 +22,7 @@ if (!function_exists('getUserInfo')) {
 
     function getUserInfo() {
 
-        $userInformation = Auth::user()->only('id', 'name', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');
+        $userInformation = Auth::user()->only('id', 'name', 'common_notifications_channel', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');
         // $userInfo['favorites'] = [];
         $favorites = [];
     
@@ -73,7 +73,7 @@ Route::get('/', function () {
 
     if (Auth::check()) {
 
-        return view('index')->with('user', getUserInfo());
+        return view('index')->with('userInfo', getUserInfo());
     }
 
     return view('index');
@@ -123,6 +123,13 @@ Route::get('/search', function () {
 });
 
 Route::get('/admin-panel', function () {
+    if (Auth::check()) {
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
+Route::get('/chat', function () {
     if (Auth::check()) {
         return view('index')->with('userInfo', getUserInfo());
     }

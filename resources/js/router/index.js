@@ -12,6 +12,7 @@ import UploadItem from '../views/UploadItem.vue'
 import Search from '../views/Search.vue'
 import AdminPanel from '../views/AdminPanel.vue'
 import ProfileSettings from '../views/ProfileSettings.vue'
+import Chat from '../views/Chat.vue'
 
 Vue.use(VueRouter)
 
@@ -84,6 +85,12 @@ const routes = [
         next({ name: 'index' })
       }
     }
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    meta: { requiresAuth: true },
+    component: Chat
   },
   {
     path: "*",

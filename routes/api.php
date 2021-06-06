@@ -96,3 +96,19 @@ Route::post('user/set-user-banner', 'App\Http\Controllers\User\UserController@se
 Route::post('user/set-user-login', 'App\Http\Controllers\User\UserController@setLogin');
 
 Route::get('user/user-items','App\Http\Controllers\User\UserController@getUserItems');
+
+/* 
+    ! MESSAGES CONTROLLER
+*/
+
+Route::post('chat/messages/send-message','App\Http\Controllers\Chat\MessagesController@sendMessage');
+Route::get('chat/messages/get-chat-messages','App\Http\Controllers\Chat\MessagesController@getChatMessages');
+Route::post('chat/messages/check-message','App\Http\Controllers\Chat\MessagesController@checkMessage');
+
+/* 
+    ! CHAT CONTROLLER
+*/
+
+Route::get('chat/get-user-chats','App\Http\Controllers\Chat\ChatController@getUserChats');
+Route::get('chat/get-chat-channel','App\Http\Controllers\Chat\ChatController@getChat');
+Route::get('chat/chat-init','App\Http\Controllers\Chat\ChatController@chatInit');

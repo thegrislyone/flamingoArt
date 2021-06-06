@@ -13,7 +13,7 @@ import VueLazyload from 'vue-lazyload'
 import { createPopper } from '@popperjs/core'
 import VueMoment from 'vue-moment'
 import VTooltip from 'v-tooltip'
-
+import vuePusher from 'vue-pusher'
 //properties
 import { empty, exist } from './properties/'
 
@@ -27,6 +27,7 @@ import Notification from './components/Notification.vue'
 
 //components
 import VModal from 'vue-js-modal'
+import TextareaAutosize from 'vue-textarea-autosize'
 
 //class prototype inicialization
 Vue.prototype.$http = axios
@@ -53,6 +54,14 @@ Vue.use(VueLazyload, {
   })
 Vue.use(VueMoment)
 Vue.use(VTooltip)
+Vue.use(vuePusher, {
+    api_key: '7e4e4873e6401ef6ec49',
+    options: {
+        cluster: 'eu',
+        encrypted: true,
+    }
+})
+Vue.use(TextareaAutosize)
 
 const app = new Vue({
     el: '#app',
@@ -61,6 +70,10 @@ const app = new Vue({
     store,
     data() {
         return {
+
+            pusher: null,
+            channel: null,
+
             notification: {},
             theme: this.$cookies.get('theme'),
             cookieAgreementShow: false
@@ -76,6 +89,8 @@ const app = new Vue({
         if (!this.$cookies.get('cookie_agreement_set')) {
             this.cookieAgreementShow = true
         }
+
+        this.notificationsInit()
 
         window.addEventListener('resize', this.onResize)
 
@@ -93,6 +108,31 @@ const app = new Vue({
         document.querySelector('#app').classList.add('app_' + this.theme)
     },
     methods: {
+        notificationsInit() {
+
+            Pusher.logToConsole = true;
+
+            this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+                cluster: 'eu'
+            })
+
+            this.channel = this.pusher.subscribe(this.$store.getters.user.common_notifications_channel)
+
+            this.channel.bind('notification-get', async data => {
+
+                console.log(data)
+                
+                if (data.notification.type == 'message') {
+
+                    this.$eventBus.$emit('message-get', data.data)
+
+                    await this.$store.dispatch('getChatsList')
+
+                }
+
+            })
+
+        },
         cookieAgreementClose() {
             this.$cookies.set('cookie_agreement_set', 1, "1y")
             this.cookieAgreementShow = false
