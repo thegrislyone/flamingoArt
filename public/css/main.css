@@ -2261,7 +2261,12 @@ img {
 /* chat-mobile */
 
 .chat-page {
-  height: calc(100vh - 64px);
+  /* height: calc(100vh - 64px); */
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow-y: auto;
 }
 .chat-page::-webkit-scrollbar {
