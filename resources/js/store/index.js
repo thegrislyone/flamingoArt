@@ -35,7 +35,9 @@ export default new Vuex.Store({
       let amount = 0
 
       state.chatsList.forEach(chat => {
-        amount += chat.unreaded_messages
+        if (chat.last_message.from != state.user.id) {
+          amount += chat.unreaded_messages
+        }
       })
 
       return amount

@@ -91,6 +91,7 @@ const app = new Vue({
         }
 
         this.notificationsInit()
+        this.$store.dispatch('getChatsList')
 
         window.addEventListener('resize', this.onResize)
 

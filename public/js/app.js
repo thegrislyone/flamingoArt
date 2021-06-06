@@ -73149,6 +73149,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
     }
 
     this.notificationsInit();
+    this.$store.dispatch('getChatsList');
     window.addEventListener('resize', this.onResize);
   },
   mounted: function mounted() {
@@ -75194,7 +75195,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     unreadedMessages: function unreadedMessages(state) {
       var amount = 0;
       state.chatsList.forEach(function (chat) {
-        amount += chat.unreaded_messages;
+        if (chat.last_message.from != state.user.id) {
+          amount += chat.unreaded_messages;
+        }
       });
       return amount;
     },

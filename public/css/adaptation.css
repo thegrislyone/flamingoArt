@@ -151,6 +151,7 @@
   .chat-page {
     position: static;
     height: calc(100vh - 64px);
+    z-index: 0;
     overflow-y: auto;
   }
   .chat-page__messages {
