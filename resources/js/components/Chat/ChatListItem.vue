@@ -1,5 +1,6 @@
 <template>
   <div 
+    v-if="data.last_message || (data.user_first == author && windowWidth >= 1024)"
     class="chat-list-item pointer"
     @click="openChat"
   >
@@ -66,6 +67,9 @@ export default {
     interlocutor() {
       return Number(this.$route.query.interlocutor_id)
     },
+    windowWidth() {
+      return this.$store.getters.windowWidth
+    }
   },
   methods: {
     openChat() {

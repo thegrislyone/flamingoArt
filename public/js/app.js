@@ -5290,6 +5290,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     data: {
@@ -5303,6 +5304,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     interlocutor: function interlocutor() {
       return Number(this.$route.query.interlocutor_id);
+    },
+    windowWidth: function windowWidth() {
+      return this.$store.getters.windowWidth;
     }
   },
   methods: {
@@ -5435,33 +5439,36 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     activeChat: function activeChat() {
       if (!this.$isEmpty(this.activeChat)) {
+        if (this.channel) {
+          this.channel.unbind('message-get', this.messageGet);
+        }
+
         this.setChat();
         this.getMessages(true);
       }
     }
   },
   created: function created() {
+    Pusher.logToConsole = true;
+    this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+      cluster: 'eu'
+    });
     this.renewMessages = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_0__["debounce"])(this.getMessages, 400);
   },
   methods: {
     setChat: function setChat() {
+      this.channel = this.pusher.subscribe(this.activeChat.channel);
+      this.channel.bind('message-get', this.messageGet);
+    },
+    messageGet: function messageGet(data) {
       var _this = this;
 
-      /* pusher init */
-      Pusher.logToConsole = true;
-      this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
-        cluster: 'eu'
-      });
-      this.channel = this.pusher.subscribe(this.activeChat.channel);
-      this.channel.bind('message-get', function (data) {
-        _this.messages.push(data);
-
-        setTimeout(function () {
-          if (_this.$refs.chatPage) {
-            _this.$refs.chatPage.scrollTop = _this.$refs.chatPage.scrollHeight;
-          }
-        }, 5);
-      });
+      this.messages.push(data);
+      setTimeout(function () {
+        if (_this.$refs.chatPage) {
+          _this.$refs.chatPage.scrollTop = _this.$refs.chatPage.scrollHeight;
+        }
+      }, 5);
     },
     getMessages: function getMessages() {
       var _this2 = this;
@@ -5484,6 +5491,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     messageSend: function messageSend(messageText) {
+      var _this3 = this;
+
       var request = {
         message: messageText,
         from: this.author,
@@ -5492,6 +5501,8 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$http.post('/api/chat/messages/send-message', request).then(function (response) {
         var data = response.data;
+
+        _this3.$emit('message-send');
       });
     },
     back: function back() {
@@ -8535,6 +8546,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -44240,58 +44252,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "chat-list-item pointer", on: { click: _vm.openChat } },
-    [
-      _c("div", { staticClass: "chat-list-item__avatar-block" }, [
-        _vm.data.user.avatar
-          ? _c("img", {
-              staticClass: "chat-list-item__avatar",
-              attrs: { src: _vm.data.user.avatar }
-            })
-          : _c("img", {
-              staticClass: "chat-list-item__avatar",
-              attrs: { src: "/assets/images/unknown-user.png" }
-            })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "chat-list-item__info-block" }, [
-        _c("div", { staticClass: "chat-list-item__nickname" }, [
-          _vm._v("\n      " + _vm._s(_vm.data.user.login) + "\n    ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "chat-list-item__last-message" }, [
-          _vm._v(
-            "\n      " +
-              _vm._s(_vm.data.last_message.message_text || "Нет сообщений") +
-              "\n    "
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      !(
-        _vm.data.last_message.from == _vm.author &&
-        _vm.data.last_message.checked
-      )
-        ? _c("div", { staticClass: "chat-list-item__checked-indicator" }, [
-            _vm.data.last_message.from == _vm.author &&
-            !_vm.data.last_message.checked
-              ? _c("div", { staticClass: "chat-list-item__unchecked" })
-              : _vm._e(),
+  return _vm.data.last_message ||
+    (_vm.data.user_first == _vm.author && _vm.windowWidth >= 1024)
+    ? _c(
+        "div",
+        { staticClass: "chat-list-item pointer", on: { click: _vm.openChat } },
+        [
+          _c("div", { staticClass: "chat-list-item__avatar-block" }, [
+            _vm.data.user.avatar
+              ? _c("img", {
+                  staticClass: "chat-list-item__avatar",
+                  attrs: { src: _vm.data.user.avatar }
+                })
+              : _c("img", {
+                  staticClass: "chat-list-item__avatar",
+                  attrs: { src: "/assets/images/unknown-user.png" }
+                })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "chat-list-item__info-block" }, [
+            _c("div", { staticClass: "chat-list-item__nickname" }, [
+              _vm._v("\n      " + _vm._s(_vm.data.user.login) + "\n    ")
+            ]),
             _vm._v(" "),
-            _vm.data.last_message.to == _vm.author &&
-            !_vm.data.last_message.checked
-              ? _c("div", { staticClass: "chat-list-item__new-messages" }, [
-                  _vm._v(
-                    "\n      " + _vm._s(_vm.data.unreaded_messages) + "\n    "
-                  )
-                ])
-              : _vm._e()
-          ])
-        : _vm._e()
-    ]
-  )
+            _c("div", { staticClass: "chat-list-item__last-message" }, [
+              _vm._v(
+                "\n      " +
+                  _vm._s(
+                    _vm.data.last_message.message_text || "Нет сообщений"
+                  ) +
+                  "\n    "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          !(
+            _vm.data.last_message.from == _vm.author &&
+            _vm.data.last_message.checked
+          )
+            ? _c("div", { staticClass: "chat-list-item__checked-indicator" }, [
+                _vm.data.last_message.from == _vm.author &&
+                !_vm.data.last_message.checked
+                  ? _c("div", { staticClass: "chat-list-item__unchecked" })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.data.last_message.to == _vm.author &&
+                !_vm.data.last_message.checked
+                  ? _c("div", { staticClass: "chat-list-item__new-messages" }, [
+                      _vm._v(
+                        "\n      " +
+                          _vm._s(_vm.data.unreaded_messages) +
+                          "\n    "
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47780,7 +47799,8 @@ var render = function() {
                     _vm._v(" "),
                     _c("chat-page", {
                       staticClass: "chats-page_desctop",
-                      attrs: { activeChat: _vm.activeChat }
+                      attrs: { activeChat: _vm.activeChat },
+                      on: { "message-send": _vm.getChatsList }
                     })
                   ],
                   1

@@ -55,6 +55,7 @@
         <chat-page
           :activeChat="activeChat"
           class="chats-page_desctop"
+          @message-send="getChatsList"
         />
 
       </div>

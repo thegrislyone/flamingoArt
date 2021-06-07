@@ -112,6 +112,10 @@ export default {
 
       if (!this.$isEmpty(this.activeChat)) {
 
+        if (this.channel) {
+          this.channel.unbind('message-get', this.messageGet)
+        }
+
         this.setChat()
 
         this.getMessages(true)
@@ -121,31 +125,33 @@ export default {
     }
   },
   created() {
+
+    Pusher.logToConsole = true;
+
+    this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
+      cluster: 'eu'
+    })
     
     this.renewMessages = debounce(this.getMessages, 400)
 
   },
   methods: {
     setChat() {
-      
-      /* pusher init */
-
-      Pusher.logToConsole = true;
-
-      this.pusher = new Pusher('7e4e4873e6401ef6ec49', {
-        cluster: 'eu'
-      })
 
       this.channel = this.pusher.subscribe(this.activeChat.channel)
 
-      this.channel.bind('message-get', data => {
-        this.messages.push(data)
-        setTimeout(() => {
-          if (this.$refs.chatPage) {
-            this.$refs.chatPage.scrollTop = this.$refs.chatPage.scrollHeight
-          }
-        }, 5)
-      })
+      this.channel.bind('message-get', this.messageGet)
+
+    },
+    messageGet(data) {
+
+      this.messages.push(data)
+
+      setTimeout(() => {
+        if (this.$refs.chatPage) {
+          this.$refs.chatPage.scrollTop = this.$refs.chatPage.scrollHeight
+        }
+      }, 5)
 
     },
     getMessages(init = false) {
@@ -187,6 +193,8 @@ export default {
         .then(response => {
 
           const data = response.data
+
+          this.$emit('message-send')
           
         })
 
