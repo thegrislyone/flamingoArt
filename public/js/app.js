@@ -75411,6 +75411,12 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       state.user.favorites = data;
     },
     setUser: function setUser(state, value) {
+      if (value && value.id) {
+        window.dataLayer.push({
+          'user_id': value.id
+        });
+      }
+
       state.user = value;
     },
     windowParametersChange: function windowParametersChange(state, _ref3) {

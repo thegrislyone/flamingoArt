@@ -83,6 +83,9 @@ export default new Vuex.Store({
       state.user.favorites = data
     },
     setUser(state, value) {
+      if (value && value.id) {
+        window.dataLayer.push({'user_id': value.id })
+      }
       state.user = value
     },
     windowParametersChange(state, {width, height}) {
