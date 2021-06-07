@@ -1475,10 +1475,14 @@ img {
 }
 
 /* PROFILE */
-
+.profile-banner {
+  margin-top: -64px;
+}
 .profile-banner,
 .profile-banner__img {
   width: 100%;
+  max-height: 400px;
+  min-height: 200px;
 }
 .profile-block {
   display: flex;
