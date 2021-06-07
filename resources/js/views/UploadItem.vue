@@ -219,7 +219,6 @@ export default {
 
           this.$router.push('/profile')
 
-          console.log(data)
         })
 
     }

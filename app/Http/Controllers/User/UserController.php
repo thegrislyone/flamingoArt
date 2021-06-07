@@ -185,7 +185,7 @@ class UserController extends Controller
             'avatar' => '/' . implode('/', $avatarSrcArray)
         ]);
 
-        $user = Auth::user();
+        $user = $this->getUserInfo();
         $user['avatar'] = '/' . implode('/', $avatarSrcArray);
 
         $status = [
@@ -222,7 +222,7 @@ class UserController extends Controller
             'banner' => '/' . implode('/', $bannerSrcArray)
         ]);
 
-        $user = Auth::user();
+        $user = $this->getUserInfo();
         $user['banner'] = '/' . implode('/', $bannerSrcArray);
 
         $status = [

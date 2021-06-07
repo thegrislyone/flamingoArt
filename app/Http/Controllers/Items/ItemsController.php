@@ -198,38 +198,38 @@ class ItemsController extends Controller
 
         // set tags
 
-        foreach (explode(',', $itemTags) as $tag) {
-            echo !!TagsModel::where('name', '=', $tag);
-        }
+        if (!!$itemTags) {
 
-        foreach (explode(',', $itemTags) as $tag) {
+            foreach (explode(',', $itemTags) as $tag) {
 
-            $searchedTag = TagsModel::where('name', '=', $tag)->first();
-
-            if ($searchedTag === null) {
-
-                $createdTag = TagsModel::create([
-                    'name' => $tag,
-                    'popularity' => 0,
-                    'background_color' => null,
-                    'background_img' => null
-                ]);
-
-                UserTagsModel::create([
-                    'item_id'=> $item['id'],
-                    'user_id'=> $userId,
-                    'tag_id'=> $createdTag['id']
-                ]);
-
-            } else {
-
-                UserTagsModel::create([
-                    'item_id'=> $item['id'],
-                    'user_id'=> $userId,
-                    'tag_id'=> $searchedTag['id']
-                ]);
-
+                $searchedTag = TagsModel::where('name', '=', $tag)->first();
+    
+                if ($searchedTag === null) {
+    
+                    $createdTag = TagsModel::create([
+                        'name' => $tag,
+                        'popularity' => 0,
+                        'background_color' => null,
+                        'background_img' => null
+                    ]);
+    
+                    UserTagsModel::create([
+                        'item_id'=> $item['id'],
+                        'user_id'=> $userId,
+                        'tag_id'=> $createdTag['id']
+                    ]);
+    
+                } else {
+    
+                    UserTagsModel::create([
+                        'item_id'=> $item['id'],
+                        'user_id'=> $userId,
+                        'tag_id'=> $searchedTag['id']
+                    ]);
+    
+                }
             }
+
         }
 
         $item->tags = $item['id'];

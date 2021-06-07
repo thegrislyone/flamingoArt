@@ -53,7 +53,7 @@
           class="header__desctop-menu-item pointer no-select"
           @click="desctopMenuItemSelect(desctopItem)"
         >
-          {{ desctopItem.caption }}
+          <span>{{ desctopItem.caption }}</span>
         </button>
       </div>
 

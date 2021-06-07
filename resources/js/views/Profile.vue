@@ -98,11 +98,19 @@
         </div>
 
       </div>
-      <div class="profile-block__my-items">
+      <div 
+        class="profile-block__my-items"
+        :class="{
+          'profile-block__my-items_margin': isForeign && user.banner
+        }"
+      >
 
         <div 
           v-if="!isForeign"
           class="profile-tabs"
+          :class="{
+            'profile-tabs_no-banner': !user.banner
+          }"
         >
           <template>
             <span 
@@ -142,7 +150,17 @@
               :outOfItems="true"
             />
 
-            <div v-else-if="!itemsList.length && itemsMode == 'my-items'" key="no-items">У вас нет выложенных работ</div>
+            <div v-else-if="!itemsList.length && itemsMode == 'my-items'" key="no-items">
+
+              <template v-if="!isForeign">
+                У вас нет выложенных работ
+              </template>
+
+              <template v-else>
+                У этого пользователя нет выложенных работ
+              </template>
+              
+            </div>
 
             <div v-else-if="!itemsList.length && itemsMode == 'favorites'" key="no-favorites">У вас нет работ, добавленных в избранное</div>
 

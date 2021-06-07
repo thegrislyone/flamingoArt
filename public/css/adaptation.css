@@ -141,7 +141,7 @@
     font-size: 18px;
   }
   .upload-item__price {
-    width: 210px;
+    width: 210px !important;
   }
   .price-input__auction {
     display: inline-flex;
@@ -161,6 +161,7 @@
   .message-input-wrapper {
     padding-left: 0;
     padding-right: 0;
+    padding-bottom: 24px;
   }
 }
 
@@ -230,6 +231,12 @@
   /* PROFILE */
   .profile-block_no-banner {
     padding-top: 40px;
+  }
+  .profile-block__my-items_margin {
+    margin-top: 32px;
+  }
+  .profile-tabs_no-banner {
+    margin-top: 0;
   }
   .profile-block__profile {
     flex-shrink: 0;

@@ -5291,11 +5291,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     data: {
       type: Object,
       require: true
+    }
+  },
+  filters: {
+    amountPrettify: function amountPrettify(value) {
+      if (!value) return '';
+      return Number(value) > 9 ? '9+' : value;
     }
   },
   computed: {
@@ -5545,6 +5557,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5554,6 +5571,11 @@ __webpack_require__.r(__webpack_exports__);
     list: {
       type: Array,
       require: true
+    }
+  },
+  computed: {
+    windowWidth: function windowWidth() {
+      return this.$store.getters.windowWidth;
     }
   },
   methods: {
@@ -9543,6 +9565,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -10533,8 +10573,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.sendLoading = false;
 
         _this.$router.push('/profile');
-
-        console.log(data);
       });
     }
   }
@@ -44261,7 +44299,14 @@ var render = function() {
     (_vm.data.user_first == _vm.author && _vm.windowWidth >= 1024)
     ? _c(
         "div",
-        { staticClass: "chat-list-item pointer", on: { click: _vm.openChat } },
+        {
+          staticClass: "chat-list-item pointer",
+          class: {
+            "chat-list-item_active":
+              _vm.windowWidth >= 1024 && _vm.data.user.id == _vm.interlocutor
+          },
+          on: { click: _vm.openChat }
+        },
         [
           _c("div", { staticClass: "chat-list-item__avatar-block" }, [
             _vm.data.user.avatar
@@ -44280,15 +44325,25 @@ var render = function() {
               _vm._v("\n      " + _vm._s(_vm.data.user.login) + "\n    ")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "chat-list-item__last-message" }, [
-              _vm._v(
-                "\n      " +
-                  _vm._s(
-                    _vm.data.last_message.message_text || "Нет сообщений"
-                  ) +
-                  "\n    "
-              )
-            ])
+            _c(
+              "div",
+              { staticClass: "chat-list-item__last-message" },
+              [
+                _vm.data.last_message.message_text
+                  ? [
+                      _c("span", { staticClass: "chat-list-item__your-prfx" }, [
+                        _vm._v("Вы:")
+                      ]),
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.data.last_message.message_text) +
+                          "\n      "
+                      )
+                    ]
+                  : [_vm._v("Нет сообщений")]
+              ],
+              2
+            )
           ]),
           _vm._v(" "),
           !(
@@ -44298,7 +44353,9 @@ var render = function() {
             ? _c("div", { staticClass: "chat-list-item__checked-indicator" }, [
                 _vm.data.last_message.from == _vm.author &&
                 !_vm.data.last_message.checked
-                  ? _c("div", { staticClass: "chat-list-item__unchecked" })
+                  ? _c("img", {
+                      attrs: { src: "/assets/images/i-chat-unchecked.svg" }
+                    })
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.data.last_message.to == _vm.author &&
@@ -44306,7 +44363,9 @@ var render = function() {
                   ? _c("div", { staticClass: "chat-list-item__new-messages" }, [
                       _vm._v(
                         "\n      " +
-                          _vm._s(_vm.data.unreaded_messages) +
+                          _vm._s(
+                            _vm._f("amountPrettify")(_vm.data.unreaded_messages)
+                          ) +
                           "\n    "
                       )
                     ])
@@ -44438,13 +44497,21 @@ var render = function() {
     [
       _vm.$isEmpty(_vm.list)
         ? _c("div", { staticClass: "preloader" })
-        : _vm._l(_vm.list, function(item) {
-            return _c("chat-list-item", {
-              key: item.id,
-              attrs: { data: item },
-              on: { "chat-selected": _vm.chatSelected }
+        : [
+            _vm.windowWidth < 1024
+              ? _c("h2", { staticClass: "chats-list__headline" }, [
+                  _vm._v("Сообщения")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.list, function(item) {
+              return _c("chat-list-item", {
+                key: item.id,
+                attrs: { data: item },
+                on: { "chat-selected": _vm.chatSelected }
+              })
             })
-          })
+          ]
     ],
     2
   )
@@ -45205,11 +45272,7 @@ var render = function() {
                         }
                       }
                     },
-                    [
-                      _vm._v(
-                        "\n        " + _vm._s(desctopItem.caption) + "\n      "
-                      )
-                    ]
+                    [_c("span", [_vm._v(_vm._s(desctopItem.caption))])]
                   )
                 }),
                 0
@@ -48378,12 +48441,23 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "profile-block__my-items" },
+                {
+                  staticClass: "profile-block__my-items",
+                  class: {
+                    "profile-block__my-items_margin":
+                      _vm.isForeign && _vm.user.banner
+                  }
+                },
                 [
                   !_vm.isForeign
                     ? _c(
                         "div",
-                        { staticClass: "profile-tabs" },
+                        {
+                          staticClass: "profile-tabs",
+                          class: {
+                            "profile-tabs_no-banner": !_vm.user.banner
+                          }
+                        },
                         [
                           [
                             _c(
@@ -48458,9 +48532,24 @@ var render = function() {
                             }
                           })
                         : !_vm.itemsList.length && _vm.itemsMode == "my-items"
-                        ? _c("div", { key: "no-items" }, [
-                            _vm._v("У вас нет выложенных работ")
-                          ])
+                        ? _c(
+                            "div",
+                            { key: "no-items" },
+                            [
+                              !_vm.isForeign
+                                ? [
+                                    _vm._v(
+                                      "\n              У вас нет выложенных работ\n            "
+                                    )
+                                  ]
+                                : [
+                                    _vm._v(
+                                      "\n              У этого пользователя нет выложенных работ\n            "
+                                    )
+                                  ]
+                            ],
+                            2
+                          )
                         : !_vm.itemsList.length && _vm.itemsMode == "favorites"
                         ? _c("div", { key: "no-favorites" }, [
                             _vm._v("У вас нет работ, добавленных в избранное")

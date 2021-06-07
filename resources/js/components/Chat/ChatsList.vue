@@ -8,6 +8,11 @@
 
     <template v-else>
 
+      <h2 
+        v-if="windowWidth < 1024"
+        class="chats-list__headline"
+      >Сообщения</h2>
+
       <chat-list-item
         v-for="item in list"
         :key="item.id"
@@ -30,6 +35,11 @@ export default {
     list: {
       type: Array,
       require: true
+    }
+  },
+  computed: {
+    windowWidth() {
+      return this.$store.getters.windowWidth
     }
   },
   methods: {

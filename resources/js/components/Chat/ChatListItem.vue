@@ -2,6 +2,9 @@
   <div 
     v-if="data.last_message || (data.user_first == author && windowWidth >= 1024)"
     class="chat-list-item pointer"
+    :class="{
+      'chat-list-item_active': windowWidth >= 1024 && data.user.id == interlocutor
+    }"
     @click="openChat"
   >
       
@@ -25,7 +28,10 @@
       </div>
 
       <div class="chat-list-item__last-message">
-        {{ data.last_message.message_text || 'Нет сообщений' }}
+        <template v-if="data.last_message.message_text">
+          <span class="chat-list-item__your-prfx">Вы:</span> {{ data.last_message.message_text }}
+        </template>
+        <template v-else>Нет сообщений</template>
       </div>
       
     </div>
@@ -35,16 +41,16 @@
       class="chat-list-item__checked-indicator"
     >
 
-      <div 
+      <img 
         v-if="data.last_message.from == author && !data.last_message.checked"
-        class="chat-list-item__unchecked"
-      ></div>
+        src="/assets/images/i-chat-unchecked.svg"
+      >
 
       <div 
         v-if="data.last_message.to == author && !data.last_message.checked"
         class="chat-list-item__new-messages"
       >
-        {{ data.unreaded_messages }}
+        {{ data.unreaded_messages | amountPrettify }}
       </div>
 
     </div>
@@ -58,6 +64,15 @@ export default {
     data: {
       type: Object,
       require: true
+    }
+  },
+  filters: {
+    amountPrettify(value) {
+
+      if (!value) return ''
+
+      return (Number(value) > 9) ? '9+' : value
+
     }
   },
   computed: {
