@@ -90,8 +90,10 @@ const app = new Vue({
             this.cookieAgreementShow = true
         }
 
-        this.notificationsInit()
-        this.$store.dispatch('getChatsList')
+        if (this.$store.getters.isAuthorizate) {
+            this.notificationsInit()
+            this.$store.dispatch('getChatsList')
+        }
 
         window.addEventListener('resize', this.onResize)
 

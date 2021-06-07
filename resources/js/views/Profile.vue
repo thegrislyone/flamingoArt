@@ -9,7 +9,12 @@
       <img :src="user.banner" class="profile-banner__img">
     </div>
 
-    <div class="profile-block">
+    <div 
+      class="profile-block"
+      :class="{
+        'profile-block_no-banner': !user.banner
+      }"
+    >
       <div class="profile-block__profile">
         
         <div 
@@ -225,7 +230,9 @@ export default {
           const data = response.data
 
           this.user = data
-          console.log(this.user)
+          
+          this.favorites = data.favorites
+          
         })
         .then(() => {
           this.profileLoading = false

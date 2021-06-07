@@ -26,7 +26,7 @@ class UserController extends Controller
 
         $authorId = $request['author_id'];  // get author id
 
-        $author = User::find($authorId);    // select user
+        $author = $this->getUserInfo($authorId);    // select user
 
         return response()->json($author, 200);
 
@@ -275,9 +275,14 @@ class UserController extends Controller
      * * returns user info
     */
 
-    public function getUserInfo() {
+    public function getUserInfo($user = null) {
         
-        $userInfo = Auth::user()->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        if (!$user) {
+            $userInfo = Auth::user()->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        } else {
+            $userInfo = User::find($user)->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        }
+        
 
         /* get user favorites */
 
