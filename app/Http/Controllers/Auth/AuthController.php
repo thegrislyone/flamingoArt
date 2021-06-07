@@ -112,7 +112,7 @@ class AuthController extends Controller
         $status = [
             'notification' => [
                 'type' => 'confirmEmail',
-                'title' => '<a href="#">Подтвердите почтовый ящик</a>, чтобы получить доступ ко всем функциям сайта.'
+                'title' => '<a href="/profile-settings?scroll=confirmEmail">Подтвердите почтовый ящик</a>, чтобы получить доступ ко всем функциям сайта.'
             ],
             'status' => true,
             'user' => $this->login($request->only('email', 'password'))['user']

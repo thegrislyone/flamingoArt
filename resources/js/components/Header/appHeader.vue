@@ -248,7 +248,7 @@ export default {
         },
         {
           caption: 'Избранное',
-          link: '',
+          link: '/profile?mode=favorites',
         },
         {
           caption: 'Мои сделки',
@@ -256,7 +256,7 @@ export default {
         },
         {
           caption: 'Настройки',
-          link: '',
+          link: '/profile-settings',
         },
         {
           caption: 'Помощь',

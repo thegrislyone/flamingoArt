@@ -156,7 +156,10 @@
 
         </div>
 
-        <div class="settings-form__group settings-form__email">
+        <div 
+          class="settings-form__group settings-form__email"
+          ref="email"
+        >
 
           <h3 class="settings-form__headline">Почта</h3>
 
@@ -356,7 +359,15 @@ export default {
     
   },
   mounted() {
+
     this.passwordChangeCheck()
+
+    if (this.$route.query['scroll'] != undefined && this.$route.query['scroll'] == 'confirmEmail') {
+      
+      this.$refs.email.scrollIntoView({block: "center", behavior: "smooth"})
+
+    }
+
   },
   methods: {
     showConfirmAction(type) {

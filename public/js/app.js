@@ -6398,13 +6398,13 @@ __webpack_require__.r(__webpack_exports__);
         link: '/profile'
       }, {
         caption: 'Избранное',
-        link: ''
+        link: '/profile?mode=favorites'
       }, {
         caption: 'Мои сделки',
         link: ''
       }, {
         caption: 'Настройки',
-        link: ''
+        link: '/profile-settings'
       }, {
         caption: 'Помощь',
         link: ''
@@ -9631,6 +9631,10 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    if (this.$route.query['mode'] != undefined && this.$route.query['mode'] == 'favorites') {
+      this.itemsMode = 'favorites';
+    }
+
     this.$eventBus.$on('login', this.login);
     this.favorites = this.$store.getters.favorites;
 
@@ -9731,6 +9735,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SettingsFormModal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/SettingsFormModal.vue */ "./resources/js/components/SettingsFormModal.vue");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_4__);
+//
+//
+//
 //
 //
 //
@@ -10091,6 +10098,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.passwordChangeCheck();
+
+    if (this.$route.query['scroll'] != undefined && this.$route.query['scroll'] == 'confirmEmail') {
+      this.$refs.email.scrollIntoView({
+        block: "center",
+        behavior: "smooth"
+      });
+    }
   },
   methods: {
     showConfirmAction: function showConfirmAction(type) {
@@ -45715,7 +45729,7 @@ var render = function() {
                       staticClass: "pointer",
                       on: {
                         click: function($event) {
-                          return _vm.goTo("")
+                          return _vm.goTo("/profile?mode=favorites")
                         }
                       }
                     },
@@ -45745,7 +45759,7 @@ var render = function() {
                       staticClass: "pointer",
                       on: {
                         click: function($event) {
-                          return _vm.goTo("")
+                          return _vm.goTo("/profile-settings")
                         }
                       }
                     },
@@ -48956,7 +48970,10 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "settings-form__group settings-form__email" },
+              {
+                ref: "email",
+                staticClass: "settings-form__group settings-form__email"
+              },
               [
                 _c("h3", { staticClass: "settings-form__headline" }, [
                   _vm._v("Почта")

@@ -159,7 +159,7 @@
               <template v-else>
                 У этого пользователя нет выложенных работ
               </template>
-              
+
             </div>
 
             <div v-else-if="!itemsList.length && itemsMode == 'favorites'" key="no-favorites">У вас нет работ, добавленных в избранное</div>
@@ -232,6 +232,10 @@ export default {
     }
   },
   created() {
+
+    if (this.$route.query['mode'] != undefined && this.$route.query['mode'] == 'favorites') {
+      this.itemsMode = 'favorites'
+    }
 
     this.$eventBus.$on('login', this.login)
 

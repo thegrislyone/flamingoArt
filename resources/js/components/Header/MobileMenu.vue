@@ -71,13 +71,13 @@
 
         <div class="mobile-menu__auth-menu">
           <div class="mobile-menu__auth-menu-item">
-            <button class="pointer" @click="goTo('')">Избранное</button>
+            <button class="pointer" @click="goTo('/profile?mode=favorites')">Избранное</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
             <button class="pointer" @click="goTo('')">Мои сделки</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
-            <button class="pointer" @click="goTo('')">Настройки</button>
+            <button class="pointer" @click="goTo('/profile-settings')">Настройки</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
             <button class="pointer" @click="goTo('')">Помощь</button>
