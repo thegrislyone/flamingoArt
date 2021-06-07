@@ -17,6 +17,19 @@
   <!-- favicon -->
   <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/png">
 
+  @isset ($userInfo)
+
+  <script type="text/javascript">
+
+    var userId = @json($userInfo['id']);
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({'user_id': userId });
+    
+  </script>
+
+  @endisset
+
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
