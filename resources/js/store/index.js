@@ -82,6 +82,9 @@ export default new Vuex.Store({
     setFavorites(state, data) {
       state.user.favorites = data
     },
+    setBoughtItems(state, data) {
+      state.user.bought_items = data
+    },
     setUser(state, value) {
       if (value && value.id) {
         window.dataLayer.push({'user_id': value.id })

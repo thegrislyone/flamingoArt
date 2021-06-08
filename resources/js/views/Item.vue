@@ -11,6 +11,7 @@
         :author="item.author.login"
         :price="item.price"
         @close="buyClose"
+        @purchase-confirm="buyItem"
       />
 
       <confirmation
@@ -98,7 +99,7 @@
                 'item__buy_hidden': purchaseConfirmationShow
               }"
             >
-              <button v-if="!isAuthor" class="btn" @click="buy">Купить</button>
+              <button v-if="!isAuthor && !isBought" class="btn" @click="buy">Купить</button>
               <span class="item__price">{{ item.price }} ₽</span>
             </div>
 
@@ -185,23 +186,26 @@ export default {
       deletingProcess: false
     }
   },
-  watch: {
-    // slidesAmount() {
-
-    //   console.log(this.slidesAmount)
-
-    //   this.slider.destroy(true, true)
-
-    //   this.sliderInit()
-      
-    // }
-  },
   computed: {
     id() {
       return this.$route.params.item_id
     },
     isAuthorized() {
       return this.$store.getters.isAuthorizate
+    },
+    isBought() {
+
+      if (this.$isEmpty(this.user)) {
+        return false
+      }
+
+      return this.user['bought_items'].find(item => {
+        if (item == this.id) {
+          return true
+        }
+        return false
+      })
+
     },
     isInFavorite() {
 
@@ -230,14 +234,7 @@ export default {
     },
     windowWidth() {
       return this.$store.getters.windowWidth
-    },
-    // slidesAmount() {
-    //   if (this.windowWidth < 640) return 2
-    //   else if (this.windowWidth > 640 && this.windowWidth < 960) return 3
-    //   else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4
-    //   else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5
-    //   else if (this.windowWidth > 1440) return 6
-    // }
+    }
   },
   created() {
 
@@ -267,9 +264,17 @@ export default {
   },
   methods: {
     buy() {
+      if (this.$isEmpty(this.user)) {
+        this.$root.showNotification({
+          type: 'error',
+          title: "Авторизуйтесь"
+        })
+        return
+      }
       this.purchaseConfirmationShow = true
     },
     buyClose() {
+      this.$modal.hide('purchase')
       this.purchaseConfirmationShow = false
     },
     sliderInit() {
@@ -300,6 +305,7 @@ export default {
       })
 
       this.slider.init()
+      
     },
     addOrRemoveFavorite() {
 
@@ -375,6 +381,7 @@ export default {
 
       const url_string = window.location.origin + '/api/items/delete-item'
       let url = new URL(url_string)
+
       url.searchParams.set('item_id', itemId)
       url.searchParams.set('request_from', userId)
       
@@ -385,6 +392,29 @@ export default {
 
           if (data.notification) {
             this.$router.push('/profile')
+            this.$root.showNotification(data.notification)
+          }
+
+        })
+
+    },
+    buyItem() {
+
+      const url_string = window.location.origin + '/api/items/buy-item'
+      const url = new URL(url_string)
+
+      const request = {
+        item_id: this.item.id
+      }
+
+      this.$http.post(url.href, request)
+        .then(response => {
+          
+          const data = response.data
+          
+          if (data.notification) {
+            this.buyClose()
+            this.$store.commit('setBoughtItems', data.bought_items)
             this.$root.showNotification(data.notification)
           }
 

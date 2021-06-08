@@ -24,7 +24,13 @@
 
       <div class="purchase-confirmation__buy-block">
         <div class="purchase-confirmation__price">Итого: {{ price }} ₽</div>
-        <button class="purchase-confirmation__buy btn">Купить</button>
+        <button 
+          class="purchase-confirmation__buy btn"
+          :class="{
+            'btn_loading': loading
+          }"
+          @click="purchaseConfirm"
+        >Купить</button>
       </div>
     
     </div>
@@ -39,13 +45,20 @@ export default {
     name: String,
     price: Number
   },
-  created() {
-    
+  data() {
+    return {
+      loading: false
+    }
   },
   mounted() {
     this.$modal.show('purchase')
   },
   methods: {
+    purchaseConfirm() {
+      this.loading = true
+      this.$emit('purchase-confirm')
+      // this.$emit('close')
+    },
     close() {
       this.$emit('close')
       this.$modal.hide('purchase')

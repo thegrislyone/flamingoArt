@@ -7169,17 +7169,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     author: String,
     name: String,
     price: Number
   },
-  created: function created() {},
+  data: function data() {
+    return {
+      loading: false
+    };
+  },
   mounted: function mounted() {
     this.$modal.show('purchase');
   },
   methods: {
+    purchaseConfirm: function purchaseConfirm() {
+      this.loading = true;
+      this.$emit('purchase-confirm'); // this.$emit('close')
+    },
     close: function close() {
       this.$emit('close');
       this.$modal.hide('purchase');
@@ -8071,7 +8085,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             title: "Войти",
             action: "",
             method: "POST"
-          }, "type", 'submit')]
+          }, "type", 'button')]
         }
       },
       regForm: {
@@ -8108,7 +8122,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             title: "Создать аккаунт",
             action: "",
             method: "POST",
-            type: 'submit'
+            type: 'button'
           }]
         }
       }
@@ -9026,6 +9040,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -9045,12 +9060,6 @@ __webpack_require__.r(__webpack_exports__);
       deletingProcess: false
     };
   },
-  watch: {// slidesAmount() {
-    //   console.log(this.slidesAmount)
-    //   this.slider.destroy(true, true)
-    //   this.sliderInit()
-    // }
-  },
   computed: {
     id: function id() {
       return this.$route.params.item_id;
@@ -9058,11 +9067,26 @@ __webpack_require__.r(__webpack_exports__);
     isAuthorized: function isAuthorized() {
       return this.$store.getters.isAuthorizate;
     },
-    isInFavorite: function isInFavorite() {
+    isBought: function isBought() {
       var _this = this;
 
+      if (this.$isEmpty(this.user)) {
+        return false;
+      }
+
+      return this.user['bought_items'].find(function (item) {
+        if (item == _this.id) {
+          return true;
+        }
+
+        return false;
+      });
+    },
+    isInFavorite: function isInFavorite() {
+      var _this2 = this;
+
       var favorite = this.$store.getters.favorites.find(function (favorite) {
-        if (favorite.id == _this.item.id) {
+        if (favorite.id == _this2.item.id) {
           return true;
         }
 
@@ -9077,10 +9101,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.user.id == this.item.author.id;
     },
     moreOfAuthor: function moreOfAuthor() {
-      var _this2 = this;
+      var _this3 = this;
 
       return this.item.author.items.filter(function (item) {
-        if (item.id != _this2.item.id) {
+        if (item.id != _this3.item.id) {
           return true;
         }
 
@@ -9089,37 +9113,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
-    } // slidesAmount() {
-    //   if (this.windowWidth < 640) return 2
-    //   else if (this.windowWidth > 640 && this.windowWidth < 960) return 3
-    //   else if (this.windowWidth > 960 && this.windowWidth < 1280) return 4
-    //   else if (this.windowWidth > 1280 && this.windowWidth < 1440) return 5
-    //   else if (this.windowWidth > 1440) return 6
-    // }
-
+    }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loading = true;
     this.$http.get('/api/items/single-item?item_id=' + this.id).then(function (response) {
       var data = response.data;
 
       if (data.errors) {} else {
-        _this3.item = data;
+        _this4.item = data;
       }
 
-      _this3.loading = false;
+      _this4.loading = false;
     }).then(function () {
-      _this3.sliderInit();
+      _this4.sliderInit();
     });
   },
   mounted: function mounted() {},
   methods: {
     buy: function buy() {
+      if (this.$isEmpty(this.user)) {
+        this.$root.showNotification({
+          type: 'error',
+          title: "Авторизуйтесь"
+        });
+        return;
+      }
+
       this.purchaseConfirmationShow = true;
     },
     buyClose: function buyClose() {
+      this.$modal.hide('purchase');
       this.purchaseConfirmationShow = false;
     },
     sliderInit: function sliderInit() {
@@ -9150,7 +9176,7 @@ __webpack_require__.r(__webpack_exports__);
       this.slider.init();
     },
     addOrRemoveFavorite: function addOrRemoveFavorite() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (!this.isInFavorite) {
         var itemId = this.item.id;
@@ -9158,9 +9184,9 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data;
 
           if (data.notification) {
-            _this4.$root.showNotification(data.notification);
+            _this5.$root.showNotification(data.notification);
 
-            _this4.$store.commit('setFavorites', data.favorites);
+            _this5.$store.commit('setFavorites', data.favorites);
           }
         });
       } else {
@@ -9169,9 +9195,9 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data;
 
           if (data.notification) {
-            _this4.$root.showNotification(data.notification);
+            _this5.$root.showNotification(data.notification);
 
-            _this4.$store.commit('setFavorites', data.favorites);
+            _this5.$store.commit('setFavorites', data.favorites);
           }
         });
       }
@@ -9200,7 +9226,7 @@ __webpack_require__.r(__webpack_exports__);
       this.deletingProcess = false;
     },
     deleteItem: function deleteItem() {
-      var _this5 = this;
+      var _this6 = this;
 
       var itemId = this.item.id;
       var userId = this.$store.getters.user.id;
@@ -9212,9 +9238,29 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
 
         if (data.notification) {
-          _this5.$router.push('/profile');
+          _this6.$router.push('/profile');
 
-          _this5.$root.showNotification(data.notification);
+          _this6.$root.showNotification(data.notification);
+        }
+      });
+    },
+    buyItem: function buyItem() {
+      var _this7 = this;
+
+      var url_string = window.location.origin + '/api/items/buy-item';
+      var url = new URL(url_string);
+      var request = {
+        item_id: this.item.id
+      };
+      this.$http.post(url.href, request).then(function (response) {
+        var data = response.data;
+
+        if (data.notification) {
+          _this7.buyClose();
+
+          _this7.$store.commit('setBoughtItems', data.bought_items);
+
+          _this7.$root.showNotification(data.notification);
         }
       });
     }
@@ -46314,9 +46360,17 @@ var render = function() {
             _vm._v("Итого: " + _vm._s(_vm.price) + " ₽")
           ]),
           _vm._v(" "),
-          _c("button", { staticClass: "purchase-confirmation__buy btn" }, [
-            _vm._v("Купить")
-          ])
+          _c(
+            "button",
+            {
+              staticClass: "purchase-confirmation__buy btn",
+              class: {
+                btn_loading: _vm.loading
+              },
+              on: { click: _vm.purchaseConfirm }
+            },
+            [_vm._v("Купить")]
+          )
         ])
       ])
     ]
@@ -48105,7 +48159,7 @@ var render = function() {
                     author: _vm.item.author.login,
                     price: _vm.item.price
                   },
-                  on: { close: _vm.buyClose }
+                  on: { close: _vm.buyClose, "purchase-confirm": _vm.buyItem }
                 })
               : _vm._e(),
             _vm._v(" "),
@@ -48220,7 +48274,7 @@ var render = function() {
                         }
                       },
                       [
-                        !_vm.isAuthor
+                        !_vm.isAuthor && !_vm.isBought
                           ? _c(
                               "button",
                               { staticClass: "btn", on: { click: _vm.buy } },
@@ -75546,6 +75600,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     setFavorites: function setFavorites(state, data) {
       state.user.favorites = data;
+    },
+    setBoughtItems: function setBoughtItems(state, data) {
+      state.user.bought_items = data;
     },
     setUser: function setUser(state, value) {
       if (value && value.id) {

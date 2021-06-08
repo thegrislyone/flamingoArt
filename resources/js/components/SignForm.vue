@@ -160,7 +160,7 @@ export default {
               title: "Войти",
               action: "",
               method: "POST",
-              type: 'submit'
+              type: 'button'
             }
           ]
         },
@@ -204,7 +204,7 @@ export default {
               title: "Создать аккаунт",
               action: "",
               method: "POST",
-              type: 'submit'
+              type: 'button'
             }
           ]
         },

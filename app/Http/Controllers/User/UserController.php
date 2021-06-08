@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Items\ItemsModel;
 use App\Models\Items\FavoritesModel;
+use App\Models\Items\PurchasesModel;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -294,6 +295,11 @@ class UserController extends Controller
         }
 
         $userInfo['favorites'] = $favorites;
+
+        $userInformation['bought_items'] = array_map(function($item) {
+            $item = $item['item_id'];
+            return $item;
+        }, PurchasesModel::where('user_id', '=', $userInformation['id'])->get(['item_id'])->toArray());
 
         if ($userInfo['is_admin']) {
             $userInfo['is_admin'] = true;

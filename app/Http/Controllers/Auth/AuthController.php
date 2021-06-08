@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Code;
 use App\Models\Items\FavoritesModel;
 use App\Models\Items\ItemsModel;
+use App\Models\Items\PurchasesModel;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -210,9 +211,13 @@ class AuthController extends Controller
      * * returns user info
     */
 
-    public function getUserInfo() {
+    public function getUserInfo($user = null) {
         
-        $userInfo = Auth::user()->only('id', 'name', 'common_notifications_channel', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        if (!$user) {
+            $userInfo = Auth::user()->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        } else {
+            $userInfo = User::find($user)->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        }
 
         /* get user favorites */
 
@@ -224,6 +229,11 @@ class AuthController extends Controller
         }
 
         $userInfo['favorites'] = $favorites;
+
+        $userInfo['bought_items'] = array_map(function($item) {
+            $item = $item['item_id'];
+            return $item;
+        }, PurchasesModel::where('user_id', '=', $userInfo['id'])->get(['item_id'])->toArray());
 
         if ($userInfo['is_admin']) {
             $userInfo['is_admin'] = true;

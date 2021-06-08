@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Items\FavoritesModel;
 use App\Models\Items\ItemsModel;
+use App\Models\Items\PurchasesModel;
 
 
 /*
@@ -20,10 +21,14 @@ use App\Models\Items\ItemsModel;
 
 if (!function_exists('getUserInfo')) {
 
-    function getUserInfo() {
+    function getUserInfo($user = null) {
 
-        $userInformation = Auth::user()->only('id', 'name', 'common_notifications_channel', 'avatar', 'login', 'banner', 'created_at', 'views', 'likes', 'is_admin', 'banned', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');
-        // $userInfo['favorites'] = [];
+        if (!$user) {
+            $userInformation = Auth::user()->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        } else {
+            $userInformation = User::find($user)->only('id', 'name', 'avatar', 'common_notifications_channel', 'login', 'banner', 'created_at', 'views', 'likes', 'banned', 'is_admin', 'vkontakte', 'facebook', 'twitter', 'instagram', 'email', 'email_verified_at', 'email_changed_at', 'password_changed_at', 'login_changed_at');  // selecting user info
+        }
+
         $favorites = [];
     
     
@@ -44,6 +49,11 @@ if (!function_exists('getUserInfo')) {
         }, $favorites);
     
         $userInformation['favorites'] = $favorites;
+
+        $userInformation['bought_items'] = array_map(function($item) {
+            $item = $item['item_id'];
+            return $item;
+        }, PurchasesModel::where('user_id', '=', $userInformation['id'])->get(['item_id'])->toArray());
     
         if ($userInformation['is_admin']) {
             $userInformation['is_admin'] = true;

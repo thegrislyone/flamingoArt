@@ -29,6 +29,13 @@ Route::put('items/transition-to-item','App\Http\Controllers\Items\ItemsControlle
 Route::delete('items/delete-item','App\Http\Controllers\Items\ItemsController@deleteItem');
 
 /*
+    ! PURCHASE CONTROLLER
+*/
+
+Route::post('items/buy-item','App\Http\Controllers\Items\PurchasesController@buyItem');
+Route::get('items/get-user-bought-items','App\Http\Controllers\Items\PurchasesController@getUserBoughtItems');
+
+/*
     ! SEARCH CONTROLLER
 */
 
