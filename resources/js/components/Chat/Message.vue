@@ -52,7 +52,8 @@ export default {
 
           const data = response.data
 
-          this.$parent.renewMessages()
+          // this.$parent.renewMessages()
+          this.$emit('renewMessages')
 
         })
 

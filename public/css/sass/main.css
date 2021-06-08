@@ -2977,6 +2977,7 @@ img[lazy=loading] {
   display: flex;
   justify-content: space-between;
   height: 50px;
+  align-items: center;
 }
 
 .message-input__field {
@@ -2989,5 +2990,14 @@ img[lazy=loading] {
   margin-left: 18px;
   flex-shrink: 0;
   width: 21px;
+}
+
+.message-input__send-button path {
+  fill: #696969;
+  transition: all 0.35s;
+}
+
+.message-input__send-button_input path {
+  fill: #DA71FF;
 }
 

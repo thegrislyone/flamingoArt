@@ -53,6 +53,7 @@
           :key="message.id"
           :data="message"
           class="chat-page__message"
+          @renewMessages="renewMessages"
         />
       </div>
 
