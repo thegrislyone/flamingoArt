@@ -74,7 +74,7 @@
             <button class="pointer" @click="goTo('/profile?mode=favorites')">Избранное</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
-            <button class="pointer" @click="goTo('/my-purchases')">Мои сделки</button>
+            <button class="pointer" @click="goTo('/my-deals')">Мои сделки</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
             <button class="pointer" @click="goTo('/profile-settings')">Настройки</button>

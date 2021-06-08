@@ -252,7 +252,7 @@ export default {
         },
         {
           caption: 'Мои сделки',
-          link: '/my-purchases',
+          link: '/my-deals',
         },
         {
           caption: 'Настройки',

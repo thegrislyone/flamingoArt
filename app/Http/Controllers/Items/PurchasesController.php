@@ -61,11 +61,14 @@ class PurchasesController extends Controller
         $user_id = Auth::user()->id;
 
         $sells = PurchasesModel::leftJoin('items', 'purchases.item_id', '=', 'items.id')->where('author', '=', $user_id)->get();
-        
+
         $sells = array_map(function($item) {
 
+            $item = PurchasesModel::where('item_id', '=', $item['id'])->first();
+
             $item['buyer'] = User::find($item['buyer_id']);
-            $item['author'] = Auth::user();
+            $item['item'] = ItemsModel::find($item['item_id']);
+            $item['author'] = User::find($item['item']['author']);
 
             return $item;
 
@@ -75,8 +78,11 @@ class PurchasesController extends Controller
 
         $purchases = array_map(function($item) {
 
-            $item['buyer'] = Auth::user();
-            $item['author'] = User::find($item['author']);
+            $item = PurchasesModel::where('item_id', '=', $item['id'])->first();
+
+            $item['buyer'] = User::find($item['buyer_id']);
+            $item['item'] = ItemsModel::find($item['item_id']);
+            $item['author'] = User::find($item['item']['id']);
 
             return $item;
 
@@ -89,6 +95,25 @@ class PurchasesController extends Controller
         ];
 
         return response()->json($data, 200);
+
+    }
+
+    public function downloadItem(Request $request) {
+
+        $item_id = $request['item_id'];
+
+        if (!count(PurchasesModel::where('item_id', '=', $item_id)->where('buyer_id', '=', Auth::user()->id)->get())) {
+            $status = [
+                'status' => false,
+                'title' => 'Ошибка доступа'
+            ];
+
+            return response()->json($status, 401);
+        }
+
+        $item = ItemsModel::find($item_id);
+
+        return response()->download(substr($item['thumbnail_original'], 1));
 
     }
 

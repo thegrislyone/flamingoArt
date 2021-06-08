@@ -34,6 +34,7 @@ Route::delete('items/delete-item','App\Http\Controllers\Items\ItemsController@de
 
 Route::post('items/buy-item','App\Http\Controllers\Items\PurchasesController@buyItem');
 Route::get('items/get-user-bought-items','App\Http\Controllers\Items\PurchasesController@getUserBoughtItems');
+Route::get('items/download-item','App\Http\Controllers\Items\PurchasesController@downloadItem');
 
 /*
     ! SEARCH CONTROLLER

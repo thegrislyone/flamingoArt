@@ -146,7 +146,7 @@ Route::get('/chat', function () {
     return view('index');
 });
 
-Route::get('/my-purchases', function () {
+Route::get('/my-deals', function () {
     if (Auth::check()) {
         return view('index')->with('userInfo', getUserInfo());
     }

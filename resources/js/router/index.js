@@ -13,7 +13,7 @@ import Search from '../views/Search.vue'
 import AdminPanel from '../views/AdminPanel.vue'
 import ProfileSettings from '../views/ProfileSettings.vue'
 import Chat from '../views/Chat.vue'
-import Purchases from '../views/Purchases.vue'
+import Deals from '../views/Deals.vue'
 
 Vue.use(VueRouter)
 
@@ -94,10 +94,10 @@ const routes = [
     component: Chat
   },
   {
-    path: '/my-purchases',
-    name: 'purchases',
+    path: '/my-deals',
+    name: 'deals',
     meta: { requiresAuth: true },
-    component: Purchases
+    component: Deals
   },
   {
     path: "*",
