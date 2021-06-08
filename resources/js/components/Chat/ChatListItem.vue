@@ -29,7 +29,7 @@
 
       <div class="chat-list-item__last-message">
         <template v-if="data.last_message.message_text">
-          <span class="chat-list-item__your-prfx">Вы:</span> {{ data.last_message.message_text }}
+          <span v-if="data.last_message.from == author" class="chat-list-item__your-prfx">Вы:</span> {{ data.last_message.message_text }}
         </template>
         <template v-else>Нет сообщений</template>
       </div>

@@ -44406,9 +44406,13 @@ var render = function() {
               [
                 _vm.data.last_message.message_text
                   ? [
-                      _c("span", { staticClass: "chat-list-item__your-prfx" }, [
-                        _vm._v("Вы:")
-                      ]),
+                      _vm.data.last_message.from == _vm.author
+                        ? _c(
+                            "span",
+                            { staticClass: "chat-list-item__your-prfx" },
+                            [_vm._v("Вы:")]
+                          )
+                        : _vm._e(),
                       _vm._v(
                         " " +
                           _vm._s(_vm.data.last_message.message_text) +
