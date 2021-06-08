@@ -53,7 +53,7 @@ if (!function_exists('getUserInfo')) {
         $userInformation['bought_items'] = array_map(function($item) {
             $item = $item['item_id'];
             return $item;
-        }, PurchasesModel::where('user_id', '=', $userInformation['id'])->get(['item_id'])->toArray());
+        }, PurchasesModel::where('buyer_id', '=', $userInformation['id'])->get(['item_id'])->toArray());
     
         if ($userInformation['is_admin']) {
             $userInformation['is_admin'] = true;
@@ -140,6 +140,13 @@ Route::get('/admin-panel', function () {
 });
 
 Route::get('/chat', function () {
+    if (Auth::check()) {
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
+Route::get('/my-purchases', function () {
     if (Auth::check()) {
         return view('index')->with('userInfo', getUserInfo());
     }

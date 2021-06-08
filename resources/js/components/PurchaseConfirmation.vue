@@ -55,9 +55,15 @@ export default {
   },
   methods: {
     purchaseConfirm() {
+
+      if (this.loading) {
+        return
+      }
+
       this.loading = true
+
       this.$emit('purchase-confirm')
-      // this.$emit('close')
+
     },
     close() {
       this.$emit('close')

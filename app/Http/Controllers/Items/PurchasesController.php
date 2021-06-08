@@ -29,13 +29,13 @@ class PurchasesController extends Controller
 
         PurchasesModel::create([
             'item_id' => $item_id,
-            'user_id' => $user_id
+            'buyer_id' => $user_id
         ]);
 
         $bought_items = array_map(function($item) {
             $item = $item['item_id'];
             return $item;
-        }, PurchasesModel::where('user_id', '=', $user_id)->get(['item_id'])->toArray());
+        }, PurchasesModel::where('buyer_id', '=', $user_id)->get(['item_id'])->toArray());
 
         $status = [
             'notification' => [
@@ -58,9 +58,37 @@ class PurchasesController extends Controller
 
     public function getUserBoughtItems(Request $request) {
 
-        $user_id = $request['user_id'];
+        $user_id = Auth::user()->id;
 
+        $sells = PurchasesModel::leftJoin('items', 'purchases.item_id', '=', 'items.id')->where('author', '=', $user_id)->get();
+        
+        $sells = array_map(function($item) {
 
+            $item['buyer'] = User::find($item['buyer_id']);
+            $item['author'] = Auth::user();
+
+            return $item;
+
+        }, $sells->toArray());
+
+        $purchases = PurchasesModel::where('buyer_id', '=', $user_id)->leftJoin('items', 'purchases.item_id', '=', 'items.id')->get();
+
+        $purchases = array_map(function($item) {
+
+            $item['buyer'] = Auth::user();
+            $item['author'] = User::find($item['author']);
+
+            return $item;
+
+        }, $purchases->toArray());
+        
+
+        $data = [
+            'sells' => $sells,
+            'purchases' => $purchases
+        ];
+
+        return response()->json($data, 200);
 
     }
 

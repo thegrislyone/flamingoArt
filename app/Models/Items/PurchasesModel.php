@@ -13,7 +13,7 @@ class PurchasesModel extends Model
     protected $filltable = [
         'id',
         'item_id',
-        'user_id'
+        'buyer_id'
     ];
 
     protected $guarded = [];

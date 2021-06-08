@@ -17,7 +17,7 @@ class CreatePurchaseTable extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('item_id');
-            $table->integer('user_id');
+            $table->integer('buyer_id');
         });
     }
 
