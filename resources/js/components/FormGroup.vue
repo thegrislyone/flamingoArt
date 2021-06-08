@@ -11,6 +11,8 @@
         :class="[formData.class, statusClass]"
         :type="(passwordShow) ? 'text' : 'password'"
         :placeholder="formData.placeholder"
+        @focus="focus"
+        @blur="blur"
         v-model="value"
         @input="input"
         v-debounce:400ms.lock="debounsedInput"
@@ -32,6 +34,8 @@
         :placeholder="formData.placeholder"
         :class="[formData.class, statusClass]"
         v-model="value"
+        @focus="focus"
+        @blur="blur"
         @input="input"
       ></textarea>
     </template>
@@ -52,6 +56,8 @@
         type="text"
         :placeholder="formData.placeholder"
         v-model="value"
+        @focus="focus"
+        @blur="blur"
         @input="input"
         v-debounce:400ms.lock="debounsedInput"
       >
@@ -109,12 +115,22 @@ export default {
       type: Object,
       require: true
     },
+    showValidationsError: {
+      type: Boolean,
+      default: true
+    },
+    showErrorsOnlyBlur: {
+      type: Boolean,
+      default: false
+    },
     v: {
       type: Object
     }
   },
   data() {
     return {
+
+      isFocus: false,
 
       passwordShow: false,
 
@@ -127,7 +143,7 @@ export default {
   },
   computed: {
     statusClass() {
-      if (!this.formData.class) {
+      if (!this.formData.class || !this.showValidationsError || (this.showValidationsError && this.isFocus)) {
         return ''
       }
       if (this.isSuccess) {
@@ -144,6 +160,18 @@ export default {
     console.log(this.v)
   },
   methods: {
+    focus() {
+
+      this.isFocus = true
+      this.$emit('focus')
+
+    },
+    blur() {
+
+      this.isFocus = false
+      this.$emit('blur')
+
+    },
     getError() {
 
       let message = ''

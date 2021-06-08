@@ -6051,6 +6051,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6062,12 +6068,21 @@ __webpack_require__.r(__webpack_exports__);
       type: Object,
       require: true
     },
+    showValidationsError: {
+      type: Boolean,
+      "default": true
+    },
+    showErrorsOnlyBlur: {
+      type: Boolean,
+      "default": false
+    },
     v: {
       type: Object
     }
   },
   data: function data() {
     return {
+      isFocus: false,
       passwordShow: false,
       value: this.formData.value || '',
       isError: false,
@@ -6077,7 +6092,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     statusClass: function statusClass() {
-      if (!this.formData["class"]) {
+      if (!this.formData["class"] || !this.showValidationsError || this.showValidationsError && this.isFocus) {
         return '';
       }
 
@@ -6096,6 +6111,14 @@ __webpack_require__.r(__webpack_exports__);
     console.log(this.v);
   },
   methods: {
+    focus: function focus() {
+      this.isFocus = true;
+      this.$emit('focus');
+    },
+    blur: function blur() {
+      this.isFocus = false;
+      this.$emit('blur');
+    },
     getError: function getError() {
       var message = '';
 
@@ -7966,6 +7989,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7980,6 +8008,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       validationError: '',
+      buttonClicked: false,
+      anyFocus: false,
       formError: false,
       authFormModel: {},
       regFormModel: {},
@@ -8055,7 +8085,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: {},
   validations: function validations() {
     var formModel = {};
     var activeForm = this.mode == 'auth' ? this.authForm : this.regForm;
@@ -8101,15 +8130,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       regFormModel: formModel
     };
   },
-  created: function created() {},
-  mounted: function mounted() {},
   methods: {
     setValidationError: function setValidationError(error) {
+      if (!error) {
+        this.buttonClicked = false;
+      }
+
       this.validationError = error;
     },
     formSubmit: function formSubmit() {
       var _this = this;
 
+      this.buttonClicked = true;
       var form = this.mode == 'auth' ? this.authForm : this.regForm;
       var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
       var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.$v.regFormModel;
@@ -44885,6 +44917,8 @@ var render = function() {
                       : _vm.value
                   },
                   on: {
+                    focus: _vm.focus,
+                    blur: _vm.blur,
                     input: _vm.input,
                     change: function($event) {
                       var $$a = _vm.value,
@@ -44933,6 +44967,8 @@ var render = function() {
                   },
                   domProps: { checked: _vm._q(_vm.value, null) },
                   on: {
+                    focus: _vm.focus,
+                    blur: _vm.blur,
                     input: _vm.input,
                     change: function($event) {
                       _vm.value = null
@@ -44964,6 +45000,8 @@ var render = function() {
                   },
                   domProps: { value: _vm.value },
                   on: {
+                    focus: _vm.focus,
+                    blur: _vm.blur,
                     input: [
                       function($event) {
                         if ($event.target.composing) {
@@ -45011,6 +45049,8 @@ var render = function() {
               attrs: { placeholder: _vm.formData.placeholder },
               domProps: { value: _vm.value },
               on: {
+                focus: _vm.focus,
+                blur: _vm.blur,
                 input: [
                   function($event) {
                     if ($event.target.composing) {
@@ -45066,6 +45106,8 @@ var render = function() {
               attrs: { type: "text", placeholder: _vm.formData.placeholder },
               domProps: { value: _vm.value },
               on: {
+                focus: _vm.focus,
+                blur: _vm.blur,
                 input: [
                   function($event) {
                     if ($event.target.composing) {
@@ -47337,6 +47379,7 @@ var render = function() {
                       refInFor: true,
                       attrs: {
                         formData: field,
+                        showErrorsOnlyBlur: true,
                         v: _vm.$v.regFormModel[field.name]
                       },
                       on: {
@@ -47344,7 +47387,13 @@ var render = function() {
                         clearErrors: function($event) {
                           return _vm.setValidationError("")
                         },
-                        validateInput: _vm.dataCheck
+                        validateInput: _vm.dataCheck,
+                        focus: function($event) {
+                          _vm.anyFocus = true
+                        },
+                        blur: function($event) {
+                          _vm.anyFocus = false
+                        }
                       },
                       model: {
                         value: _vm.$v.regFormModel[field.name].$model,
@@ -47360,13 +47409,16 @@ var render = function() {
                     })
                   }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "sign-form__validation-error" }, [
-                    _vm._v(
-                      "\n          " +
-                        _vm._s(_vm.validationError) +
-                        "\n        "
-                    )
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "sign-form__validation-error" },
+                    [
+                      !_vm.anyFocus
+                        ? [_vm._v(_vm._s(_vm.validationError))]
+                        : _vm._e()
+                    ],
+                    2
+                  ),
                   _vm._v(" "),
                   _c("form-group", {
                     staticClass: "sign-form__button",
@@ -47430,6 +47482,7 @@ var render = function() {
                         refInFor: true,
                         attrs: {
                           formData: field,
+                          showValidationsError: _vm.buttonClicked,
                           v: _vm.$v.authFormModel[field.name]
                         },
                         on: {
@@ -47453,17 +47506,21 @@ var render = function() {
                       })
                     }),
                     _vm._v(" "),
-                    _c("div", { staticClass: "sign-form__validation-error" }, [
-                      _vm._v(
-                        "\n          " +
-                          _vm._s(_vm.validationError) +
-                          "\n        "
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "sign-form__validation-error" },
+                      [
+                        _vm.buttonClicked
+                          ? [_vm._v(_vm._s(_vm.validationError))]
+                          : _vm._e()
+                      ],
+                      2
+                    ),
                     _vm._v(" "),
                     _c("form-group", {
                       staticClass: "sign-form__button",
-                      attrs: { formData: _vm.authForm.buttons }
+                      attrs: { formData: _vm.authForm.buttons },
+                      on: { buttonClick: _vm.formSubmit }
                     }),
                     _vm._v(" "),
                     _c("div", { staticClass: "sign-form__change-mode" }, [

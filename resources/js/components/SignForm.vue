@@ -23,15 +23,18 @@
             :ref="field.name"
             :key="key"
             :formData="field"
+            :showErrorsOnlyBlur="true"
             :v="$v.regFormModel[field.name]"
             @error="setValidationError"
             @clearErrors="setValidationError('')"
             @validateInput="dataCheck"
+            @focus="anyFocus = true"
+            @blur="anyFocus = false"
             v-model="$v.regFormModel[field.name].$model"
           />
 
           <div class="sign-form__validation-error">
-            {{ validationError }}
+            <template v-if="!anyFocus">{{ validationError }}</template>
           </div>
 
           <form-group
@@ -66,6 +69,7 @@
             :ref="field.name"
             :key="key"
             :formData="field"
+            :showValidationsError="buttonClicked"
             :v="$v.authFormModel[field.name]"
             @error="setValidationError"
             @clearErrors="setValidationError('')"
@@ -74,11 +78,12 @@
           />
 
           <div class="sign-form__validation-error">
-            {{ validationError }}
+            <template v-if="buttonClicked">{{ validationError }}</template>
           </div>
 
           <form-group
             class="sign-form__button"
+            @buttonClick="formSubmit"
             :formData="authForm.buttons"
           />
 
@@ -115,6 +120,8 @@ export default {
     return {
 
       validationError: '',
+      buttonClicked: false,
+      anyFocus: false,
       formError: false,
 
       authFormModel: {},
@@ -204,9 +211,6 @@ export default {
       }
     }
   },
-  computed: {
-
-  },
   validations() {
 
     let formModel = {}
@@ -245,15 +249,16 @@ export default {
     return (this.mode == 'auth') ? { authFormModel: formModel } : { regFormModel: formModel }
 
   },
-  created() {
-  },
-  mounted() {
-  },
   methods: {
     setValidationError(error) {
+      if (!error) {
+        this.buttonClicked = false
+      }
       this.validationError = error
     },
     formSubmit() {
+
+      this.buttonClicked = true
 
       const form = (this.mode == 'auth') ? this.authForm : this.regForm
       const formData = (this.mode == 'auth') ? this.authFormModel : this.regFormModel

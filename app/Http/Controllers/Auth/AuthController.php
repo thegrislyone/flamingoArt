@@ -194,7 +194,7 @@ class AuthController extends Controller
             $status = [
                 'notification' => [
                     'type' => 'success',
-                    'title' => 'Вы успешно вышли'
+                    'title' => 'Вы вышли'
                 ]
             ];
 
