@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="/css/plugins/vue-js-modal.css">
   
   <!-- common css -->
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/adaptation.css">
+  <link rel="stylesheet" href="/css/sass/main.css">
+  <link rel="stylesheet" href="/css/sass/adaptation.css">
 
   <!-- favicon -->
   <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/png">

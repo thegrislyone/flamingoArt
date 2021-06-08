@@ -1,0 +1,389 @@
+/*------------------------------------*\
+ *  # MAX-WIDTH: 320px
+ *\*------------------------------------
+
+@media (max-width: 320px)
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 560px
+ *\*------------------------------------
+
+@media (min-width: 560px)
+  /* HEADER
+  /* .header__logo {
+   *  display: block;
+   *}
+  /* .header__menu-block {
+   *  display: none;
+   *}
+  /* .search-short {
+   *  display: none;
+   *}
+  /* .sign-buttons {
+   *  display: block;
+   *}
+  /* .header__icons-bar {
+   *  display: flex;
+   *}
+  /* .search-full {
+   *  display: block;
+   *}
+  /* ITEMS LIST
+
+  .item-list__tiles
+    grid-template-columns: repeat(2, 1fr)
+
+  .tile
+    width: calc(50% - 8px)
+
+  /* PROFILE
+
+  .profile-card__edit-button
+    max-width: 256px
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 640px
+ *\*------------------------------------
+
+@media (min-width: 640px)
+  /* HEADER
+  /* .header__icons-bar {
+   *  display: flex;
+   *}
+   *.sign-buttons {
+   *  display: block;
+   *}
+
+  .header__search-block_wide
+    margin-left: 100px
+
+  /* UPLOAD-ITEM
+
+  .upload-item__button
+    width: auto
+
+  /* ITEM
+
+  .item__actions
+    align-items: center
+    flex-direction: row
+    justify-content: space-between
+
+  .item__actions_no-favorites
+    justify-content: flex-end
+
+  .item__to-favorite
+    margin-left: 8px
+
+  .item__buy
+    flex-direction: row-reverse
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 720px
+ *\*------------------------------------
+
+@media (min-width: 720px)
+  /* ITEMS LIST
+
+  .item-list__tiles
+    grid-template-columns: repeat(3, 1fr)
+
+  .tile
+    width: calc(31.9% - 2px)
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 960px
+ *\*------------------------------------
+
+@media (min-width: 960px)
+  /* ITEMS LIST
+
+  .item-list__tiles
+    grid-template-columns: repeat(4, 1fr)
+
+  .tile
+    width: calc(25% - 12px)
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 1024px
+ *\*------------------------------------
+
+@media (min-width: 1024px)
+  /* PROFILE
+
+  /* UPLOAD-ITEM
+
+  .upload-item
+    padding: 64px 192px
+
+  .upload__loaded-img
+    max-width: 700px
+
+  .upload__block
+    height: 420px
+    padding-top: 115px
+
+  .upload-item__block
+    gap: 48px
+
+  .upload__img
+    width: 70px
+
+  .upload__headline
+    font-size: 32px
+    margin: 22px 0 16px 0
+
+  .upload__subtext
+    font-size: 18px
+
+  .upload-item__price
+    width: 210px !important
+
+  .price-input__auction
+    display: inline-flex
+    margin-left: 24px
+
+  /* chat
+
+  .chat-page
+    position: static
+    height: calc(100vh - 64px)
+    z-index: 0
+    overflow-y: auto
+
+  .chat-page__messages
+    padding-left: 0
+    padding-right: 0
+
+  .message-input-wrapper
+    padding-left: 0
+    padding-right: 0
+    padding-bottom: 24px
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 1280px
+ *\*------------------------------------
+
+@media (min-width: 1280px)
+  /* HEADER
+  /* .header {
+   *  padding: 20px 82px;
+   *}
+  /* ITEMS LIST
+
+  .item-list__tiles
+    grid-template-columns: repeat(5, 1fr)
+
+  .tile
+    width: calc(20% - 14px)
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 1366px
+ *\*------------------------------------
+
+@media (min-width: 1366px)
+  /* HEADER
+
+  .header
+    padding: 20px 82px
+
+  .header__logo
+    display: block
+    margin-right: 27px
+
+  .feed-mobile, .header__menu-block
+    display: none
+
+  .header__feed-type
+    display: flex
+    margin-right: 32px
+
+  .header__icons-bar
+    display: flex
+    flex-grow: 1
+    padding-left: 100px
+
+  .search-short
+    display: none
+
+  .sign-buttons
+    display: block
+
+  .search-full
+    display: block
+    flex-grow: 1
+
+  .header__search-block
+    flex-grow: 1
+
+  .header__icons-bar
+    padding-left: 0
+
+  /* PROFILE
+
+  .profile-block_no-banner
+    padding-top: 40px
+
+  .profile-block__my-items_margin
+    margin-top: 32px
+
+  .profile-tabs_no-banner
+    margin-top: 0
+
+  .profile-block__profile
+    flex-shrink: 0
+    width: auto
+
+  .profile-block
+    flex-direction: row
+    align-items: flex-start
+    gap: 32px
+
+  .profile-card
+    padding: 25px
+    margin-top: -100px
+    width: 340px
+    backdrop-filter: blur(300px)
+    background-color: rgba(18, 18, 18, 0.4)
+
+  .profile-card_no-banner
+    margin-top: 0
+
+  .profile-card__avatar-block
+    order: 0
+    background-color: transparent
+
+  .profile-card__edit, .profile-card__nickname
+    order: 1
+
+  .profile-tab
+    padding: 6px 24px
+    line-height: 19px
+    border-radius: 20px
+    font-size: 14px
+
+    &:not(.btn)
+      color: #fff
+
+  .profile-card__information
+    order: 2
+
+  .profile-card__inf-wrd
+    display: none
+
+  .profile-card__information-block
+    height: auto
+
+  .profile-card__inf-social
+    margin-top: 25px
+
+  .profile .tile
+    width: calc(32% - 2px)
+
+  /* .upload-item__block {
+   *  width: 1136;
+   *}
+  /* .upload-item__block > * {
+   *  flex-grow: 1;
+   *}
+  /* UPLOAD-ITEM
+
+  .upload-item
+    padding: 0
+
+  .upload-item__block
+    flex-direction: row
+    padding: 64px 115px
+
+  .upload__block
+    width: 700px
+
+  .upload-item__form
+    width: 400px
+
+  .upload-item__block
+    gap: 32px
+
+  /* ITEM
+
+  .item__block
+    max-width: none
+    justify-content: center
+    flex-direction: row
+
+  .item__information-block
+    min-width: 440px
+    max-width: 440px
+    display: flex
+    flex-direction: column
+
+  .item__information
+    flex-grow: 1
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 1440px
+ *\*------------------------------------
+
+@media (min-width: 1440px)
+  /* HEADER
+  /* .header {
+   *  padding: 20px 112px;
+   *}
+  /* .header__feed-type {
+   *  gap: 48px;
+   *}
+
+  .header__search-block
+    flex-grow: 1
+
+  /* ITEMS-LIST
+
+  .item-list
+    padding: 15px 64px
+
+/*------------------------------------*\
+ *  # MIN-WIDTH: 1920px
+ *\*------------------------------------
+
+@media (min-width: 1920px)
+  .header
+    gap: 64px
+    padding: 20px 112px
+
+  .header__desctop-menu
+    right: 96px
+
+  .header__logo, .header__feed-type
+    margin-right: 0
+
+  .item-list
+    padding: 64px
+
+  /* HEADER
+
+  .header__icons-bar
+    gap: 32px
+    flex-grow: 1
+
+  .header__user-login
+    display: block
+
+  /* ITEMS LIST
+
+  .item-list__tiles
+    grid-template-columns: repeat(6, 1fr)
+
+  /* PROFILE
+
+  .profile .tile
+    width: calc(25% - 12px)
+
+  /* UPLOAD-ITEM
+
+  .upload__headline
+    color: #696969
+
+  /* SEARCH
+
+  .search-page
+    padding: 48px 64px
