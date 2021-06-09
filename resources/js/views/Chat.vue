@@ -144,7 +144,7 @@ export default {
 
       if (init) {
 
-        if ((this.interlocutor || this.windowWidth >= 1024)) {
+        if ((this.interlocutor || this.windowWidth >= 1024) && !this.$isEmpty(this.chatsList)) {
           if (!this.interlocutor) {
             this.$router.push('/chat?interlocutor_id=' + this.chatsList[0].user.id)
           }

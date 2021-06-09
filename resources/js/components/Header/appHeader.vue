@@ -167,13 +167,33 @@
         class="header__icons-bar"
       >
 
-        <div class="header__messages">
-          <img src="/assets/images/i-message.svg" alt="">
-        </div>
+        <button class="header__messages">
 
-        <div class="header__notifications">
-          <img src="/assets/images/i-notification.svg" alt="">
-        </div>
+          <router-link to="/chat">
+
+          <div v-if="$store.getters.unreadedMessages" 
+            class="chat-list-item__new-messages chat-list-item__new-messages_small header__new-messages"
+          >
+            {{ $store.getters.unreadedMessages | amountPrettify }}
+          </div>
+
+          <img src="/assets/images/i-message.svg">
+
+          </router-link>
+
+        </button>
+
+        <button class="header__notifications">
+
+          <div v-if="$store.getters.unreadedMessages" 
+            class="chat-list-item__new-messages chat-list-item__new-messages_small header__new-messages"
+          >
+            {{ $store.getters.unreadedMessages | amountPrettify }}
+          </div>
+          
+          <img src="/assets/images/i-notification.svg">
+
+        </button>
 
         <div class="user-area" @click="menuOpen">
 
@@ -280,6 +300,15 @@ export default {
           active: false
         }
       }
+    }
+  },
+  filters: {
+    amountPrettify(value) {
+
+      if (!value) return ''
+
+      return (Number(value) > 9) ? '9+' : value
+
     }
   },
   computed: {

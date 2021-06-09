@@ -59,7 +59,7 @@
           >
             <button class="pointer" @click="goTo('/chat')">Сообщения</button>
 
-            <div v-if="$store.getters.unreadedMessages" class="chat-list-item__new-messages">{{ $store.getters.unreadedMessages }}</div>
+            <div v-if="$store.getters.unreadedMessages" class="chat-list-item__new-messages">{{ $store.getters.unreadedMessages | amountPrettify }}</div>
             
           </div>
           <div
@@ -157,6 +157,15 @@ export default {
           link: ''
         }
       ]
+    }
+  },
+  filters: {
+    amountPrettify(value) {
+
+      if (!value) return ''
+
+      return (Number(value) > 9) ? '9+' : value
+
     }
   },
   computed: {

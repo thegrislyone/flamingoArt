@@ -1153,11 +1153,20 @@ img[lazy=loading]
 
 .header__icons-bar
   display: none
-  gap: 32px
   cursor: default
+  gap: 32px
   align-items: center
   flex-shrink: 0
   justify-content: flex-end
+
+.header__messages,
+.header__notifications
+  position: relative
+
+.header__new-messages
+  position: absolute
+  top: -8px
+  right: -8px
 
 .user-area
   display: flex
@@ -1774,6 +1783,17 @@ img[lazy=loading]
   gap: 0 24px
   align-items: center
 
+.item__bought
+  font-weight: 300
+  font-size: 24px
+  line-height: 29px
+  letter-spacing: -0.019em
+  color: #DA71FF
+  background-image: url(../assets/images/i-bought.svg)
+  background-position: 100% 9px
+  background-repeat: no-repeat
+  padding-right: 28px
+
 .item__buy_hidden
   visibility: hidden
 
@@ -1788,6 +1808,9 @@ img[lazy=loading]
   vertical-align: middle
   letter-spacing: -0.019em
   color: #DA71FF
+
+.item__price_bought
+  color: #B4B4B4
 
 .item__author-more
   margin-top: 16px
@@ -2410,6 +2433,12 @@ img[lazy=loading]
   display: flex
   align-items: center
   justify-content: center
+
+.chat-list-item__new-messages_small
+  width: 16px
+  height: 16px
+  font-size: 11px
+  line-height: 13px
 
 .chat-list-item__avatar-block
   flex-shrink: 0

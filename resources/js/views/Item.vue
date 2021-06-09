@@ -99,8 +99,22 @@
                 'item__buy_hidden': purchaseConfirmationShow
               }"
             >
+
               <button v-if="!isAuthor && !isBought" class="btn" @click="buy">Купить</button>
-              <span class="item__price">{{ item.price }} ₽</span>
+              
+              <router-link 
+                v-else-if="!isAuthor && isBought" 
+                class="item__bought"
+                to="/my-deals"
+              >Куплено</router-link>
+
+              <span 
+                class="item__price"
+                :class="{
+                  'item__price_bought': isBought
+                }"
+              >{{ item.price }} ₽</span>
+
             </div>
 
           </div>

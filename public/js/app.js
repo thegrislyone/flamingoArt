@@ -6564,6 +6564,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6610,6 +6630,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     };
+  },
+  filters: {
+    amountPrettify: function amountPrettify(value) {
+      if (!value) return '';
+      return Number(value) > 9 ? '9+' : value;
+    }
   },
   computed: {
     mobileFeedListShowFlag: function mobileFeedListShowFlag() {
@@ -6893,6 +6919,12 @@ __webpack_require__.r(__webpack_exports__);
         link: ''
       }]
     };
+  },
+  filters: {
+    amountPrettify: function amountPrettify(value) {
+      if (!value) return '';
+      return Number(value) > 9 ? '9+' : value;
+    }
   },
   computed: {
     isAuthorized: function isAuthorized() {
@@ -8924,7 +8956,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 if (init) {
-                  if (_this2.interlocutor || _this2.windowWidth >= 1024) {
+                  if ((_this2.interlocutor || _this2.windowWidth >= 1024) && !_this2.$isEmpty(_this2.chatsList)) {
                     if (!_this2.interlocutor) {
                       _this2.$router.push('/chat?interlocutor_id=' + _this2.chatsList[0].user.id);
                     }
@@ -9162,6 +9194,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Tag_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Tag.vue */ "./resources/js/components/Tag.vue");
 /* harmony import */ var _components_PurchaseConfirmation_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/PurchaseConfirmation.vue */ "./resources/js/components/PurchaseConfirmation.vue");
 /* harmony import */ var _components_Confirmation_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Confirmation.vue */ "./resources/js/components/Confirmation.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -46049,9 +46095,66 @@ var render = function() {
         _vm._v(" "),
         !_vm.$isEmpty(_vm.user)
           ? _c("div", { staticClass: "header__icons-bar" }, [
-              _vm._m(0),
+              _c(
+                "button",
+                { staticClass: "header__messages" },
+                [
+                  _c("router-link", { attrs: { to: "/chat" } }, [
+                    _vm.$store.getters.unreadedMessages
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "chat-list-item__new-messages chat-list-item__new-messages_small header__new-messages"
+                          },
+                          [
+                            _vm._v(
+                              "\n          " +
+                                _vm._s(
+                                  _vm._f("amountPrettify")(
+                                    _vm.$store.getters.unreadedMessages
+                                  )
+                                ) +
+                                "\n        "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("img", {
+                      attrs: { src: "/assets/images/i-message.svg" }
+                    })
+                  ])
+                ],
+                1
+              ),
               _vm._v(" "),
-              _vm._m(1),
+              _c("button", { staticClass: "header__notifications" }, [
+                _vm.$store.getters.unreadedMessages
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "chat-list-item__new-messages chat-list-item__new-messages_small header__new-messages"
+                      },
+                      [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(
+                              _vm._f("amountPrettify")(
+                                _vm.$store.getters.unreadedMessages
+                              )
+                            ) +
+                            "\n        "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: { src: "/assets/images/i-notification.svg" }
+                })
+              ]),
               _vm._v(" "),
               _c(
                 "div",
@@ -46116,26 +46219,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header__messages" }, [
-      _c("img", { attrs: { src: "/assets/images/i-message.svg", alt: "" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header__notifications" }, [
-      _c("img", {
-        attrs: { src: "/assets/images/i-notification.svg", alt: "" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -46286,7 +46370,11 @@ var render = function() {
                             { staticClass: "chat-list-item__new-messages" },
                             [
                               _vm._v(
-                                _vm._s(_vm.$store.getters.unreadedMessages)
+                                _vm._s(
+                                  _vm._f("amountPrettify")(
+                                    _vm.$store.getters.unreadedMessages
+                                  )
+                                )
                               )
                             ]
                           )
@@ -48843,12 +48931,29 @@ var render = function() {
                               { staticClass: "btn", on: { click: _vm.buy } },
                               [_vm._v("Купить")]
                             )
+                          : !_vm.isAuthor && _vm.isBought
+                          ? _c(
+                              "router-link",
+                              {
+                                staticClass: "item__bought",
+                                attrs: { to: "/my-deals" }
+                              },
+                              [_vm._v("Куплено")]
+                            )
                           : _vm._e(),
                         _vm._v(" "),
-                        _c("span", { staticClass: "item__price" }, [
-                          _vm._v(_vm._s(_vm.item.price) + " ₽")
-                        ])
-                      ]
+                        _c(
+                          "span",
+                          {
+                            staticClass: "item__price",
+                            class: {
+                              item__price_bought: _vm.isBought
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.item.price) + " ₽")]
+                        )
+                      ],
+                      1
                     )
                   ]
                 )
