@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 /*------------------------------------*\
  * *	#FONTS
  * *\*------------------------------------ */
@@ -311,6 +309,57 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* checkboxes */
+
+input[type=checkbox],
+input[type=radio] {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type=checkbox] + label,
+input[type=radio] + label {
+  position: relative;
+  padding: 3px 0 3px 23px;
+  transition: all 0.1s ease-in-out;
+}
+
+input[type=checkbox] + label:before,
+input[type=radio] + label:before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-sizing: border-box;
+  border-radius: 3px;
+  transition: all 0.1s ease-in-out;
+}
+
+input[type=checkbox] + label:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: url(/images/i-check2.svg?4e01a237bf931fe3a3d81e3eeeb7eba1) center center no-repeat;
+  background-size: 18px;
+  transition: all 0.1s ease-in-out;
+}
+
+input[type=checkbox]:not(:checked) + label:after {
+  opacity: 0;
+}
+
+input[type=checkbox]:checked + label:before {
+  border: 2px solid transparent;
 }
 
 /* Firefox */
@@ -1608,10 +1657,6 @@ img[lazy=loading] {
   background-position: 95% center;
 }
 
-.sign-form__field:not(:last-child) {
-  margin-bottom: 8px;
-}
-
 .sign-form__field input {
   height: 48px;
   /* -webkit-box-shadow: 0 0 0 1000px #1b1b1b inset !important;
@@ -1668,6 +1713,10 @@ img[lazy=loading] {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
+.sign-form__field_wrp:not(:last-child) {
+  margin-bottom: 8px;
+}
+
 /* AUTOCOMPLETE */
 
 .sign-form__field_loading {
@@ -1685,17 +1734,15 @@ img[lazy=loading] {
 }
 
 .sign-form__validation-error {
-  min-height: 60px;
   font-size: 16px;
   line-height: 130%;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* identical to box height, or 21px */
   text-align: center;
   letter-spacing: -0.011em;
-  /* Текст и иконки (Прозрачный)/Error */
   color: rgba(255, 94, 94, 0.4);
+  margin-top: 16px;
 }
 
 .sign-form__change-mode {
@@ -1710,6 +1757,74 @@ img[lazy=loading] {
   text-align: center;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
+}
+
+.sign-form__reset-password {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-form__socials {
+  margin-top: 32px;
+}
+
+.sign-form__social {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: -0.011em;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+.sign-form__social:first-child {
+  margin-bottom: 15px;
+}
+
+.sign-form__social-container {
+  transition: all 0.35s;
+}
+
+.sign-form__social-container:hover {
+  color: #FFFFFF;
+}
+
+.sign-form__social-container:hover .sign-form__social-icon path {
+  fill: #fff;
+}
+
+.sign-form__social-icon {
+  margin-right: 12px;
+}
+
+.sign-form__social-icon path {
+  fill: rgba(255, 255, 255, 0.4);
+  transition: all 0.35s;
+}
+
+.sign-form__confidentiality {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-form__checkbox-wrp {
+  margin-right: 15px;
+}
+
+.sign-form__conf-text {
+  width: 252px;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: -0.006em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sign-form__conf-text a {
+  text-decoration: underline;
 }
 
 .sign-form__link {
@@ -1728,8 +1843,18 @@ img[lazy=loading] {
   color: #da71ff;
 }
 
-.sign-form__button {
-  margin-bottom: 60px !important;
+.sign-form__button_auth {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.sign-form__button_reg {
+  margin-bottom: 32px;
+  margin-top: 56px;
+}
+
+.sign-form__button_error {
+  margin-top: 40px;
 }
 
 /* form-group */

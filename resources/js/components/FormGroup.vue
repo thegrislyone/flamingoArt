@@ -1,7 +1,7 @@
 <template>
   <div 
     class="form-group"
-    :class="[formData.class]"
+    :class="[formData.class + '_wrp']"
   >
 
     <template v-if="formData.type  == 'password'">

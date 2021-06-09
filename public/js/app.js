@@ -8206,6 +8206,99 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8219,6 +8312,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      confirmConfidentiality: false,
       validationError: '',
       buttonClicked: false,
       anyFocus: false,
@@ -8353,7 +8447,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     formSubmit: function formSubmit() {
       var _this = this;
 
-      console.log("жопа");
       this.buttonClicked = true;
       var form = this.mode == 'auth' ? this.authForm : this.regForm;
       var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
@@ -8371,7 +8464,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.setValidationError(ref[0].getError());
           }
         }
+      } else if (!this.confirmConfidentiality) {
+        this.setValidationError('Необходимо принять условия использования и политику конфиденциальности');
       } else {
+        this.setValidationError('');
         this.$http.post(form.submit, formData).then(function (response) {
           var data = response.data;
 
@@ -8419,6 +8515,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     changeMode: function changeMode(mode) {
       this.$emit('setMode', mode);
       this.setValidationError('');
+    },
+    authThroughSocials: function authThroughSocials(social) {
+      console.log(social);
     }
   }
 });
@@ -45471,7 +45570,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "form-group", class: [_vm.formData.class] },
+    { staticClass: "form-group", class: [_vm.formData.class + "_wrp"] },
     [
       _vm.formData.type == "password"
         ? [
@@ -48053,44 +48152,174 @@ var render = function() {
                     })
                   }),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "sign-form__validation-error" },
-                    [
-                      !_vm.anyFocus
-                        ? [_vm._v(_vm._s(_vm.validationError))]
-                        : _vm._e()
-                    ],
-                    2
-                  ),
+                  !_vm.anyFocus
+                    ? _c(
+                        "div",
+                        { staticClass: "sign-form__validation-error" },
+                        [[_vm._v(_vm._s(_vm.validationError))]],
+                        2
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("form-group", {
-                    staticClass: "sign-form__button",
+                    staticClass: "sign-form__button sign-form__button_reg",
+                    class: {
+                      "sign-form__button_error":
+                        _vm.validationError && !_vm.anyFocus
+                    },
                     attrs: { formData: _vm.regForm.buttons },
                     on: { buttonClick: _vm.formSubmit }
                   }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "sign-form__change-mode" }, [
-                    _vm._v("\n          Есть аккаунт? "),
-                    _c(
-                      "span",
-                      {
-                        staticClass: "sign-form__link sign-form__link_pink",
+                  _c("div", { staticClass: "sign-form__confidentiality" }, [
+                    _c("div", { staticClass: "sign-form__checkbox-wrp" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.confirmConfidentiality,
+                            expression: "confirmConfidentiality"
+                          }
+                        ],
+                        attrs: { type: "checkbox", id: "confidentiality" },
+                        domProps: {
+                          checked: Array.isArray(_vm.confirmConfidentiality)
+                            ? _vm._i(_vm.confirmConfidentiality, null) > -1
+                            : _vm.confirmConfidentiality
+                        },
                         on: {
-                          click: function($event) {
-                            return _vm.changeMode("auth")
+                          change: function($event) {
+                            var $$a = _vm.confirmConfidentiality,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (_vm.confirmConfidentiality = $$a.concat([
+                                    $$v
+                                  ]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.confirmConfidentiality = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.confirmConfidentiality = $$c
+                            }
                           }
                         }
-                      },
-                      [_vm._v("Войти")]
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "confidentiality" } })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "sign-form__conf-text" },
+                      [
+                        _vm._v("\n            Я принимаю "),
+                        _c("router-link", { attrs: { to: "#" } }, [
+                          _vm._v("Условия использования")
+                        ]),
+                        _vm._v(" и "),
+                        _c("router-link", { attrs: { to: "#" } }, [
+                          _vm._v("Политику конфиденциальности")
+                        ])
+                      ],
+                      1
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "sign-form__confirmation" }, [
-                    _vm._v("\n          Регистрируясь, вы принимаете условия"),
-                    _c("span", { staticClass: "sign-form__link" }, [
-                      _vm._v("Пользовательского соглашения")
-                    ])
+                  _c("div", { staticClass: "sign-form__socials" }, [
+                    _c(
+                      "div",
+                      { staticClass: "sign-form__social sign-form__vk" },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "sign-form__social-container",
+                            on: {
+                              click: function($event) {
+                                return _vm.authThroughSocials("vk")
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "sign-form__social-icon",
+                                attrs: {
+                                  width: "20",
+                                  height: "12",
+                                  viewBox: "0 0 20 12",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M19.2804 1.02984C19.414 0.580625 19.2804 0.25 18.6376 0.25H16.5107C15.969 0.25 15.7198 0.533906 15.5862 0.850156C15.5862 0.850156 14.5029 3.47719 12.9718 5.18062C12.477 5.67297 12.2495 5.83109 11.9787 5.83109C11.8451 5.83109 11.6393 5.67297 11.6393 5.22375V1.02984C11.6393 0.490781 11.4876 0.25 11.0398 0.25H7.69593C7.35648 0.25 7.15426 0.501563 7.15426 0.735156C7.15426 1.24547 7.91982 1.36406 7.99926 2.80156V5.92094C7.99926 6.60375 7.87648 6.72953 7.60565 6.72953C6.88343 6.72953 5.12843 4.09172 4.08843 1.07297C3.87898 0.487188 3.67315 0.25 3.12787 0.25H1.00093C0.394262 0.25 0.271484 0.533906 0.271484 0.850156C0.271484 1.41078 0.993707 4.19594 3.63343 7.87594C5.39204 10.388 7.86926 11.75 10.1226 11.75C11.4768 11.75 11.6429 11.4481 11.6429 10.927C11.6429 8.52641 11.5201 8.3 12.199 8.3C12.5132 8.3 13.0548 8.45813 14.3187 9.66922C15.7632 11.1067 16.0015 11.75 16.8104 11.75H18.9373C19.544 11.75 19.8509 11.4481 19.674 10.8516C19.2695 9.59734 16.5359 7.01703 16.4132 6.84453C16.099 6.44203 16.1893 6.26234 16.4132 5.90297C16.4168 5.89937 19.0132 2.2625 19.2804 1.02984Z"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Войти через Вконтакте")])
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "sign-form__social sign-form__google" },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "sign-form__social-container",
+                            on: {
+                              click: function($event) {
+                                return _vm.authThroughSocials("google")
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "sign-form__social-icon",
+                                attrs: {
+                                  width: "17",
+                                  height: "16",
+                                  viewBox: "0 0 17 16",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M16.271 8.18536C16.271 12.7077 13.2022 15.9261 8.67036 15.9261C4.32535 15.9261 0.816406 12.3849 0.816406 7.99999C0.816406 3.61505 4.32535 0.0738525 8.67036 0.0738525C10.7859 0.0738525 12.5657 0.856878 13.9369 2.14807L11.7993 4.22229C9.00288 1.49928 3.80281 3.54473 3.80281 7.99999C3.80281 10.7645 5.99115 13.005 8.67036 13.005C11.7803 13.005 12.9457 10.755 13.1294 9.58841H8.67036V6.8622H16.1474C16.2203 7.2681 16.271 7.65801 16.271 8.18536Z"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Войти через Google")])
+                          ]
+                        )
+                      ]
+                    )
                   ])
                 ],
                 2
@@ -48151,19 +48380,26 @@ var render = function() {
                       })
                     }),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "sign-form__validation-error" },
-                      [
-                        _vm.buttonClicked
-                          ? [_vm._v(_vm._s(_vm.validationError))]
-                          : _vm._e()
-                      ],
-                      2
-                    ),
+                    _vm.buttonClicked
+                      ? _c(
+                          "div",
+                          { staticClass: "sign-form__validation-error" },
+                          [
+                            _vm._v(
+                              "\n          " +
+                                _vm._s(_vm.validationError) +
+                                "\n        "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("form-group", {
-                      staticClass: "sign-form__button",
+                      staticClass: "sign-form__button sign-form__button_auth",
+                      class: {
+                        "sign-form__button_error":
+                          _vm.validationError && _vm.buttonClicked
+                      },
                       attrs: { formData: _vm.authForm.buttons },
                       on: { buttonClick: _vm.formSubmit }
                     }),
@@ -48188,6 +48424,94 @@ var render = function() {
                       _c("span", { staticClass: "sign-form__link" }, [
                         _vm._v("Забыли пароль?")
                       ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "sign-form__socials" }, [
+                      _c(
+                        "div",
+                        { staticClass: "sign-form__social sign-form__vk" },
+                        [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "sign-form__social-container",
+                              on: {
+                                click: function($event) {
+                                  return _vm.authThroughSocials("vk")
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass: "sign-form__social-icon",
+                                  attrs: {
+                                    width: "20",
+                                    height: "12",
+                                    viewBox: "0 0 20 12",
+                                    fill: "none",
+                                    xmlns: "http://www.w3.org/2000/svg"
+                                  }
+                                },
+                                [
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M19.2804 1.02984C19.414 0.580625 19.2804 0.25 18.6376 0.25H16.5107C15.969 0.25 15.7198 0.533906 15.5862 0.850156C15.5862 0.850156 14.5029 3.47719 12.9718 5.18062C12.477 5.67297 12.2495 5.83109 11.9787 5.83109C11.8451 5.83109 11.6393 5.67297 11.6393 5.22375V1.02984C11.6393 0.490781 11.4876 0.25 11.0398 0.25H7.69593C7.35648 0.25 7.15426 0.501563 7.15426 0.735156C7.15426 1.24547 7.91982 1.36406 7.99926 2.80156V5.92094C7.99926 6.60375 7.87648 6.72953 7.60565 6.72953C6.88343 6.72953 5.12843 4.09172 4.08843 1.07297C3.87898 0.487188 3.67315 0.25 3.12787 0.25H1.00093C0.394262 0.25 0.271484 0.533906 0.271484 0.850156C0.271484 1.41078 0.993707 4.19594 3.63343 7.87594C5.39204 10.388 7.86926 11.75 10.1226 11.75C11.4768 11.75 11.6429 11.4481 11.6429 10.927C11.6429 8.52641 11.5201 8.3 12.199 8.3C12.5132 8.3 13.0548 8.45813 14.3187 9.66922C15.7632 11.1067 16.0015 11.75 16.8104 11.75H18.9373C19.544 11.75 19.8509 11.4481 19.674 10.8516C19.2695 9.59734 16.5359 7.01703 16.4132 6.84453C16.099 6.44203 16.1893 6.26234 16.4132 5.90297C16.4168 5.89937 19.0132 2.2625 19.2804 1.02984Z"
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Войти через Вконтакте")])
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "sign-form__social sign-form__google" },
+                        [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "sign-form__social-container",
+                              on: {
+                                click: function($event) {
+                                  return _vm.authThroughSocials("google")
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass: "sign-form__social-icon",
+                                  attrs: {
+                                    width: "17",
+                                    height: "16",
+                                    viewBox: "0 0 17 16",
+                                    fill: "none",
+                                    xmlns: "http://www.w3.org/2000/svg"
+                                  }
+                                },
+                                [
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M16.271 8.18536C16.271 12.7077 13.2022 15.9261 8.67036 15.9261C4.32535 15.9261 0.816406 12.3849 0.816406 7.99999C0.816406 3.61505 4.32535 0.0738525 8.67036 0.0738525C10.7859 0.0738525 12.5657 0.856878 13.9369 2.14807L11.7993 4.22229C9.00288 1.49928 3.80281 3.54473 3.80281 7.99999C3.80281 10.7645 5.99115 13.005 8.67036 13.005C11.7803 13.005 12.9457 10.755 13.1294 9.58841H8.67036V6.8622H16.1474C16.2203 7.2681 16.271 7.65801 16.271 8.18536Z"
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Войти через Google")])
+                            ]
+                          )
+                        ]
+                      )
                     ])
                   ],
                   2
