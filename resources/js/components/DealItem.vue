@@ -78,7 +78,10 @@
     >
 
 
-      <button class="deals-item__download-button pointer">
+      <button 
+        class="deals-item__download-button pointer"
+        v-tooltip.bottom="'Загрузить'"
+      >
         <a :href="'/api/items/download-item?item_id=' + data.item.id" download>
           <img src="../../../public/assets/images/i-download.svg">
         </a>

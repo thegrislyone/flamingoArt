@@ -82,7 +82,7 @@ class PurchasesController extends Controller
 
             $item['buyer'] = User::find($item['buyer_id']);
             $item['item'] = ItemsModel::find($item['item_id']);
-            $item['author'] = User::find($item['item']['id']);
+            $item['author'] = User::find($item['item']['author']);
 
             return $item;
 

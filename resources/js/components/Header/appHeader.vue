@@ -204,11 +204,11 @@
         v-else
         class="sign-buttons"
       >
-        <button class="btn btn_no-bg" @click="openForm('auth')">
+        <button class="sign-buttons__btn btn btn_no-bg" @click="openForm('auth')">
           Войти
         </button> 
 
-        <button class="btn" @click="openForm('reg')">
+        <button class="sign-buttons__btn btn" @click="openForm('reg')">
           Регистрация
         </button>
 

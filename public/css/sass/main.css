@@ -1403,6 +1403,10 @@ img[lazy=loading] {
   text-align: right;
 }
 
+.sign-buttons__btn {
+  padding: 7px 32px 8px !important;
+}
+
 .header__user-login {
   font-weight: 600;
   font-size: 14px;
@@ -3031,12 +3035,33 @@ img[lazy=loading] {
   margin-right: 16px;
 }
 
+.purchases,
+.sells {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 166px;
+  bottom: 24px;
+  overflow-y: auto;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.purchases::-webkit-scrollbar,
+.sells::-webkit-scrollbar {
+  width: 0;
+}
+
 .deals-item {
   padding: 3px 20px;
   display: flex;
   align-content: center;
   justify-content: space-between;
   flex-direction: row;
+}
+
+.deals-item:not(:last-child) {
+  margin-bottom: 24px;
 }
 
 .deals-item__img-block {
@@ -3084,6 +3109,7 @@ img[lazy=loading] {
 
 .deals-item__justify-container > *:first-child {
   margin-right: 16px;
+  flex-shrink: 0;
 }
 
 .deals-item__price-purchase,

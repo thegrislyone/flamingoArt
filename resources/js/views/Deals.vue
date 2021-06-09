@@ -43,12 +43,18 @@
             key="purchases"
           >
 
-            <deal-item
-              v-for="purchase in purchases"
-              :key="purchase.id"
-              :mode="'purchase'"
-              :data="purchase"
-            />
+            <template v-if="$isEmpty(purchases)">
+              <span class="deals-item">У вас нет купленных работ</span>
+            </template>
+
+            <template v-else>
+              <deal-item
+                v-for="purchase in purchases"
+                :key="purchase.id"
+                :mode="'purchase'"
+                :data="purchase"
+              />
+            </template>
 
           </div>
 
@@ -58,12 +64,20 @@
             key="sells"
           >
 
-            <deal-item
-              v-for="purchase in sells"
-              :key="purchase.id"
-              :mode="'sell'"
-              :data="purchase"
-            />
+            <template v-if="$isEmpty(sells)">
+              <span class="deals-item">У вас нет проданных работ</span>
+            </template>
+
+            <template v-else>
+              <deal-item
+                v-for="purchase in sells"
+                :key="purchase.id"
+                :mode="'sell'"
+                :data="purchase"
+              />
+            </template>
+
+            
 
           </div>
 

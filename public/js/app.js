@@ -5906,6 +5906,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     mode: {
@@ -8170,6 +8173,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8317,6 +8321,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     formSubmit: function formSubmit() {
       var _this = this;
 
+      console.log("жопа");
       this.buttonClicked = true;
       var form = this.mode == 'auth' ? this.authForm : this.regForm;
       var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
@@ -8988,6 +8993,20 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_DealItem_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/DealItem.vue */ "./resources/js/components/DealItem.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -45226,24 +45245,40 @@ var render = function() {
     _vm._v(" "),
     _vm.mode == "purchase"
       ? _c("div", { staticClass: "deals-item__download-block" }, [
-          _c("button", { staticClass: "deals-item__download-button pointer" }, [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href: "/api/items/download-item?item_id=" + _vm.data.item.id,
-                  download: ""
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip.bottom",
+                  value: "Загрузить",
+                  expression: "'Загрузить'",
+                  modifiers: { bottom: true }
                 }
-              },
-              [
-                _c("img", {
+              ],
+              staticClass: "deals-item__download-button pointer"
+            },
+            [
+              _c(
+                "a",
+                {
                   attrs: {
-                    src: __webpack_require__(/*! ../../../public/assets/images/i-download.svg */ "./public/assets/images/i-download.svg")
+                    href:
+                      "/api/items/download-item?item_id=" + _vm.data.item.id,
+                    download: ""
                   }
-                })
-              ]
-            )
-          ])
+                },
+                [
+                  _c("img", {
+                    attrs: {
+                      src: __webpack_require__(/*! ../../../public/assets/images/i-download.svg */ "./public/assets/images/i-download.svg")
+                    }
+                  })
+                ]
+              )
+            ]
+          )
         ])
       : _vm._e()
   ])
@@ -46047,7 +46082,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn_no-bg",
+                  staticClass: "sign-buttons__btn btn btn_no-bg",
                   on: {
                     click: function($event) {
                       return _vm.openForm("auth")
@@ -46060,7 +46095,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn",
+                  staticClass: "sign-buttons__btn btn",
                   on: {
                     click: function($event) {
                       return _vm.openForm("reg")
@@ -47937,7 +47972,8 @@ var render = function() {
                   _vm._v(" "),
                   _c("form-group", {
                     staticClass: "sign-form__button",
-                    attrs: { formData: _vm.regForm.buttons }
+                    attrs: { formData: _vm.regForm.buttons },
+                    on: { buttonClick: _vm.formSubmit }
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "sign-form__change-mode" }, [
@@ -48560,25 +48596,41 @@ var render = function() {
                     ? _c(
                         "div",
                         { key: "purchases", staticClass: "purchases" },
-                        _vm._l(_vm.purchases, function(purchase) {
-                          return _c("deal-item", {
-                            key: purchase.id,
-                            attrs: { mode: "purchase", data: purchase }
-                          })
-                        }),
-                        1
+                        [
+                          _vm.$isEmpty(_vm.purchases)
+                            ? [
+                                _c("span", { staticClass: "deals-item" }, [
+                                  _vm._v("У вас нет купленных работ")
+                                ])
+                              ]
+                            : _vm._l(_vm.purchases, function(purchase) {
+                                return _c("deal-item", {
+                                  key: purchase.id,
+                                  attrs: { mode: "purchase", data: purchase }
+                                })
+                              })
+                        ],
+                        2
                       )
                     : _vm.showMode == "sells"
                     ? _c(
                         "div",
                         { key: "sells", staticClass: "sells" },
-                        _vm._l(_vm.sells, function(purchase) {
-                          return _c("deal-item", {
-                            key: purchase.id,
-                            attrs: { mode: "sell", data: purchase }
-                          })
-                        }),
-                        1
+                        [
+                          _vm.$isEmpty(_vm.sells)
+                            ? [
+                                _c("span", { staticClass: "deals-item" }, [
+                                  _vm._v("У вас нет проданных работ")
+                                ])
+                              ]
+                            : _vm._l(_vm.sells, function(purchase) {
+                                return _c("deal-item", {
+                                  key: purchase.id,
+                                  attrs: { mode: "sell", data: purchase }
+                                })
+                              })
+                        ],
+                        2
                       )
                     : _vm._e()
                 ])

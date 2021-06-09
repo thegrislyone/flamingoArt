@@ -39,6 +39,7 @@
 
           <form-group
             class="sign-form__button"
+            @buttonClick="formSubmit"
             :formData="regForm.buttons"
           />
 
@@ -257,6 +258,8 @@ export default {
       this.validationError = error
     },
     formSubmit() {
+
+      console.log("жопа")
 
       this.buttonClicked = true
 
