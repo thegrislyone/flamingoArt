@@ -45171,13 +45171,19 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "deals-item__author" }, [
-                  _vm._v(
-                    "\n          Автор: " +
-                      _vm._s(_vm.data.author.login) +
-                      "\n        "
-                  )
-                ])
+                _c(
+                  "div",
+                  { staticClass: "deals-item__author" },
+                  [
+                    _vm._v("\n          Автор: "),
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/profile/" + _vm.data.author.id } },
+                      [_vm._v(_vm._s(_vm.data.author.login))]
+                    )
+                  ],
+                  1
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "deals-item__justify-container" }, [

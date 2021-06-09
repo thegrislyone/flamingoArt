@@ -23,7 +23,7 @@
           </div>
 
           <div class="deals-item__author">
-            Автор: {{ data.author.login }}
+            Автор: <router-link :to="'/profile/' + data.author.id">{{ data.author.login }}</router-link>
           </div>
 
         </div>

@@ -296,10 +296,10 @@ class UserController extends Controller
 
         $userInfo['favorites'] = $favorites;
 
-        $userInformation['bought_items'] = array_map(function($item) {
+        $userInfo['bought_items'] = array_map(function($item) {
             $item = $item['item_id'];
             return $item;
-        }, PurchasesModel::where('buyer_id', '=', $userInformation['id'])->get(['item_id'])->toArray());
+        }, PurchasesModel::where('buyer_id', '=', $userInfo['id'])->get(['item_id'])->toArray());
 
         if ($userInfo['is_admin']) {
             $userInfo['is_admin'] = true;
