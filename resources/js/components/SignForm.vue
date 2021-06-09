@@ -1,11 +1,13 @@
 <template>
   <div class="sign-form">
+  
     <img 
       class="sign-form__close"
       src="/assets/images/i-close.svg" 
       alt=""
       @click="$modal.hide('signForm')"
     >
+
     <transition name="fade" mode="out-in">
 
       <!-- registration form -->

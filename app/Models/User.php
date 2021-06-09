@@ -28,7 +28,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'likes',
         'is_admin',
         'banned',
-
         'avatar',
         'banner',
 
