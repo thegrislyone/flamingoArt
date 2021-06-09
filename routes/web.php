@@ -73,11 +73,11 @@ if (!function_exists('getUserInfo')) {
 
 }
 
-Route::get('/', function () {
+// Route::get('/', function () {
     
-    return view('index')->with(['userInfo' => getUserInfo(), 'message' => 'Почта успешно подтверждена']);
+//     return view('index')->with(['userInfo' => getUserInfo(), 'message' => 'Почта успешно подтверждена']);
 
-})->name('email-confirmed');
+// })->name('email-confirmed');
 
 Route::get('/', function () {
 
@@ -151,4 +151,27 @@ Route::get('/my-deals', function () {
         return view('index')->with('userInfo', getUserInfo());
     }
     return view('index');
+});
+
+/* SOCIAL NETWORK AUTHENTIFICATION */
+
+// through vk
+
+Route::group([], function () {
+    Route::get('/vk/auth', 'App\Http\Controllers\Auth\SocialAuth@vkIndex');
+    Route::get('/vk/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@vkCallback');
+});
+
+// through google
+
+Route::group([], function () {
+    Route::get('/google/auth', 'App\Http\Controllers\Auth\SocialAuth@googleIndex');
+    Route::get('/google/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@googleCallback');
+});
+
+// through facebook
+
+Route::group([], function () {
+    Route::get('/facebook/auth', 'App\Http\Controllers\Auth\SocialAuth@facebookIndex');
+    Route::get('/facebook/auth/callback', 'App\Http\Controllers\Auth\SocialAuth@facebookCallback');
 });

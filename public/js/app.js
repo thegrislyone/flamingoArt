@@ -8301,6 +8301,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8321,6 +8364,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       formError: false,
       authFormModel: {},
       regFormModel: {},
+      nicknameFormModel: {},
       authForm: {
         submit: '/api/auth/login',
         fields: [{
@@ -8390,12 +8434,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             type: 'button'
           }]
         }
+      },
+      nicknameForm: {
+        submit: '',
+        fields: [{
+          name: 'login',
+          requireServerValidation: true,
+          "class": 'sign-form__field',
+          type: 'text',
+          placeholder: 'Логин',
+          minLength: 2,
+          maxLength: 32
+        }],
+        buttons: {
+          type: 'buttons',
+          left: [],
+          right: [],
+          center: [{
+            name: "create-account",
+            title: "Создать аккаунт",
+            action: "",
+            method: "POST",
+            type: 'button'
+          }]
+        }
       }
     };
   },
   validations: function validations() {
     var formModel = {};
-    var activeForm = this.mode == 'auth' ? this.authForm : this.regForm;
+    var activeForm = this.mode == 'auth' ? this.authForm : this.mode == 'reg' ? this.regForm : this.nicknameForm;
 
     var _iterator = _createForOfIteratorHelper(activeForm.fields),
         _step;
@@ -8408,8 +8476,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (this.mode == 'auth') {
           this.$set(this.authFormModel, name, '');
-        } else {
+        } else if (this.mode == 'reg') {
           this.$set(this.regFormModel, name, '');
+        } else {
+          this.$set(this.nicknameFormModel, name, '');
         }
 
         formModel[name].required = vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"];
@@ -8434,8 +8504,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     return this.mode == 'auth' ? {
       authFormModel: formModel
-    } : {
+    } : this.mode == 'reg' ? {
       regFormModel: formModel
+    } : {
+      nicknameFormModel: formModel
     };
   },
   methods: {
@@ -8450,9 +8522,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       this.buttonClicked = true;
-      var form = this.mode == 'auth' ? this.authForm : this.regForm;
-      var formData = this.mode == 'auth' ? this.authFormModel : this.regFormModel;
-      var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.$v.regFormModel;
+      var form = this.mode == 'auth' ? this.authForm : this.mode == 'reg' ? this.regForm : this.nicknameForm;
+      var formData = this.mode == 'auth' ? this.authFormModel : this.mode == 'reg' ? this.regFormModel : this.nicknameFormModel;
+      var validationForm = this.mode == 'auth' ? this.$v.authFormModel : this.mode == 'reg' ? this.$v.regFormModel : this.$v.nicknameFormModel;
 
       if (validationForm.$invalid || this.formError) {
         this.$v.$touch(); // print the nearest error
@@ -8462,12 +8534,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               key = _Object$entries$_i[0],
               ref = _Object$entries$_i[1];
 
-          if (ref[0].getError()) {
+          if (ref[0] && ref[0].getError()) {
             this.setValidationError(ref[0].getError());
           }
         }
-      } else if (!this.confirmConfidentiality) {
+      } else if (this.mode == 'reg' && !this.confirmConfidentiality) {
         this.setValidationError('Необходимо принять условия использования и политику конфиденциальности');
+      } else if (this.mode == 'nickname') {
+        var url_string = window.location.origin + this.nicknameForm.submit;
+        var url = new URL(url_string);
+        url.searchParams.set('login', this.nicknameFormModel.login);
+        window.location = url.href;
       } else {
         this.setValidationError('');
         this.$http.post(form.submit, formData).then(function (response) {
@@ -8519,7 +8596,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.setValidationError('');
     },
     authThroughSocials: function authThroughSocials(social) {
-      console.log(social);
+      this.setValidationError('');
+
+      if (social == 'vk') {
+        this.nicknameForm.submit = '/vk/auth';
+      } else if (social == 'google') {
+        this.nicknameForm.submit = '/google/auth';
+      }
+
+      this.$emit('setMode', 'nickname');
     }
   }
 });
@@ -48154,7 +48239,7 @@ var render = function() {
                     })
                   }),
                   _vm._v(" "),
-                  !_vm.anyFocus
+                  !_vm.anyFocus && _vm.validationError
                     ? _c(
                         "div",
                         { staticClass: "sign-form__validation-error" },
@@ -48382,7 +48467,7 @@ var render = function() {
                       })
                     }),
                     _vm._v(" "),
-                    _vm.buttonClicked
+                    _vm.buttonClicked && _vm.validationError
                       ? _c(
                           "div",
                           { staticClass: "sign-form__validation-error" },
@@ -48520,6 +48605,90 @@ var render = function() {
                 )
               ]
             )
+          : _vm.mode == "nickname"
+          ? _c("div", [
+              _c("h1", { staticClass: "sign-form__headline" }, [
+                _vm._v("Введите никнейм")
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  staticClass: "sign-form__form",
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.formSubmit($event)
+                    }
+                  }
+                },
+                [
+                  _vm._l(_vm.nicknameForm.fields, function(field, key) {
+                    return _c("form-group", {
+                      key: key,
+                      ref: field.name,
+                      refInFor: true,
+                      attrs: {
+                        formData: field,
+                        showErrorsOnlyBlur: true,
+                        v: _vm.$v.nicknameFormModel[field.name]
+                      },
+                      on: {
+                        error: _vm.setValidationError,
+                        clearErrors: function($event) {
+                          return _vm.setValidationError("")
+                        },
+                        validateInput: _vm.dataCheck,
+                        focus: function($event) {
+                          _vm.anyFocus = true
+                        },
+                        blur: function($event) {
+                          _vm.anyFocus = false
+                        }
+                      },
+                      model: {
+                        value: _vm.$v.nicknameFormModel[field.name].$model,
+                        callback: function($$v) {
+                          _vm.$set(
+                            _vm.$v.nicknameFormModel[field.name],
+                            "$model",
+                            $$v
+                          )
+                        },
+                        expression: "$v.nicknameFormModel[field.name].$model"
+                      }
+                    })
+                  }),
+                  _vm._v(" "),
+                  !_vm.anyFocus && _vm.validationError
+                    ? _c(
+                        "div",
+                        { staticClass: "sign-form__validation-error" },
+                        [[_vm._v(_vm._s(_vm.validationError))]],
+                        2
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("form-group", {
+                    staticClass: "sign-form__button sign-form__button_reg",
+                    class: {
+                      "sign-form__button_error":
+                        _vm.validationError && !_vm.anyFocus
+                    },
+                    attrs: { formData: _vm.regForm.buttons },
+                    on: { buttonClick: _vm.formSubmit }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "sign-form__confirmation" }, [
+                    _vm._v("\n          Регистрируясь, вы принимаете условия"),
+                    _c("span", { staticClass: "sign-form__link" }, [
+                      _vm._v("Пользовательского соглашения")
+                    ])
+                  ])
+                ],
+                2
+              )
+            ])
           : _vm._e()
       ])
     ],

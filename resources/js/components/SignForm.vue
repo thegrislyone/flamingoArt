@@ -1,6 +1,6 @@
 <template>
   <div class="sign-form">
-  
+
     <img 
       class="sign-form__close"
       src="/assets/images/i-close.svg" 
@@ -36,7 +36,7 @@
             v-model="$v.regFormModel[field.name].$model"
           />
 
-          <div v-if="!anyFocus" class="sign-form__validation-error">
+          <div v-if="!anyFocus && validationError" class="sign-form__validation-error">
             <template>{{ validationError }}</template>
           </div>
 
@@ -132,7 +132,7 @@
             v-model="$v.authFormModel[field.name].$model"
           />
 
-          <div v-if="buttonClicked" class="sign-form__validation-error">
+          <div v-if="buttonClicked && validationError" class="sign-form__validation-error">
             {{ validationError }}
           </div>
 
@@ -194,6 +194,49 @@
         </form>
 
       </div>
+
+      <div v-else-if="mode == 'nickname'">
+
+        <h1 class="sign-form__headline">Введите никнейм</h1>
+
+        <form class="sign-form__form" @submit.prevent="formSubmit">
+
+          <form-group
+            v-for="(field, key) in nicknameForm.fields"
+            :ref="field.name"
+            :key="key"
+            :formData="field"
+            :showErrorsOnlyBlur="true"
+            :v="$v.nicknameFormModel[field.name]"
+            @error="setValidationError"
+            @clearErrors="setValidationError('')"
+            @validateInput="dataCheck"
+            @focus="anyFocus = true"
+            @blur="anyFocus = false"
+            v-model="$v.nicknameFormModel[field.name].$model"
+          />
+
+          <div v-if="!anyFocus && validationError" class="sign-form__validation-error">
+            <template>{{ validationError }}</template>
+          </div>
+
+          <form-group
+            class="sign-form__button sign-form__button_reg"
+            :class="{
+              'sign-form__button_error': validationError && !anyFocus
+            }"
+            @buttonClick="formSubmit"
+            :formData="regForm.buttons"
+          />
+
+          <div class="sign-form__confirmation">
+            Регистрируясь, вы принимаете условия<span class="sign-form__link">Пользовательского соглашения</span>
+          </div>
+
+        </form>
+
+      </div>
+
     </transition>
   </div>
 </template>
@@ -224,6 +267,7 @@ export default {
 
       authFormModel: {},
       regFormModel: {},
+      nicknameFormModel: {},
 
       authForm: {
         submit: '/api/auth/login',
@@ -306,6 +350,34 @@ export default {
             }
           ]
         },
+      },
+      nicknameForm: {
+        submit: '',
+        fields: [
+          {
+            name: 'login',
+            requireServerValidation: true,
+            class: 'sign-form__field',
+            type: 'text',
+            placeholder: 'Логин',
+            minLength: 2,
+            maxLength: 32,
+          }
+        ],
+        buttons: {
+          type: 'buttons',
+          left: [],
+          right: [],
+          center: [
+            {
+              name: "create-account",
+              title: "Создать аккаунт",
+              action: "",
+              method: "POST",
+              type: 'button'
+            }
+          ]
+        },
       }
     }
   },
@@ -313,7 +385,7 @@ export default {
 
     let formModel = {}
 
-    const activeForm = (this.mode == 'auth') ? this.authForm : this.regForm
+    const activeForm = (this.mode == 'auth') ? this.authForm : (this.mode == 'reg') ? this.regForm : this.nicknameForm
 
     for (const field of activeForm.fields) {
 
@@ -323,8 +395,10 @@ export default {
 
       if (this.mode == 'auth') {
         this.$set(this.authFormModel, name, '')
-      } else {
+      } else if (this.mode == 'reg') {
         this.$set(this.regFormModel, name, '')
+      } else {
+        this.$set(this.nicknameFormModel, name, '')
       }
       
 
@@ -344,7 +418,7 @@ export default {
 
     }
 
-    return (this.mode == 'auth') ? { authFormModel: formModel } : { regFormModel: formModel }
+    return (this.mode == 'auth') ? { authFormModel: formModel } : (this.mode == 'reg') ? { regFormModel: formModel } : { nicknameFormModel: formModel }
 
   },
   methods: {
@@ -358,9 +432,9 @@ export default {
 
       this.buttonClicked = true
 
-      const form = (this.mode == 'auth') ? this.authForm : this.regForm
-      const formData = (this.mode == 'auth') ? this.authFormModel : this.regFormModel
-      const validationForm = (this.mode == 'auth') ? this.$v.authFormModel : this.$v.regFormModel
+      const form = (this.mode == 'auth') ? this.authForm : (this.mode == 'reg') ? this.regForm : this.nicknameForm
+      const formData = (this.mode == 'auth') ? this.authFormModel : (this.mode == 'reg') ? this.regFormModel : this.nicknameFormModel
+      const validationForm = (this.mode == 'auth') ? this.$v.authFormModel : (this.mode == 'reg') ? this.$v.regFormModel : this.$v.nicknameFormModel
 
       if (validationForm.$invalid || this.formError) {
 
@@ -369,13 +443,21 @@ export default {
         // print the nearest error
 
         for(let [key, ref] of Object.entries(this.$refs)) {
-          if (ref[0].getError()) {
+          if (ref[0] && ref[0].getError()) {
             this.setValidationError(ref[0].getError())
           }
         }
 
-      } else if (!this.confirmConfidentiality) {
+      } else if (this.mode == 'reg' && !this.confirmConfidentiality) {
         this.setValidationError('Необходимо принять условия использования и политику конфиденциальности')
+      } else if (this.mode == 'nickname') {
+
+        const url_string = window.location.origin + this.nicknameForm.submit
+        let url = new URL(url_string)
+        url.searchParams.set('login', this.nicknameFormModel.login)
+
+        window.location = url.href
+
       } else {
 
         this.setValidationError('')
@@ -446,7 +528,15 @@ export default {
     },
     authThroughSocials(social) {
 
-      console.log(social)
+      this.setValidationError('')
+
+      if (social == 'vk') {
+        this.nicknameForm.submit = '/vk/auth'
+      } else if (social == 'google') {
+        this.nicknameForm.submit = '/google/auth'
+      }
+
+      this.$emit('setMode', 'nickname')
 
     }
   }
