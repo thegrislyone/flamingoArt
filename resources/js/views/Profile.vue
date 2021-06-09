@@ -68,26 +68,29 @@
 
           <div class="profile-card__edit">
 
-            <button 
-              v-if="!isForeign"
-              class="btn profile-card__edit-button"
-              @click="$router.push('/profile-settings')"
-              :disabled="user.banned"
-            >
-              Редактировать
-            </button>
+            <div class="profile-card__author-btns">
 
-            <button 
-              v-if="!isForeign"
-              class="btn profile-card__edit-button profile-card__upload"
-              @click="$router.push('/upload-item')"
-              :disabled="user.banned"
-            >
-              Выложить работу
-            </button>
+              <button 
+                v-if="!isForeign"
+                class="btn profile-card__edit-button profile-card__upload"
+                @click="$router.push('/upload-item')"
+                :disabled="user.banned"
+              >
+                Загрузить работу
+              </button>
+
+              <button 
+                v-if="!isForeign"
+                class="btn profile-card__settings"
+                @click="$router.push('/profile-settings')"
+                :disabled="user.banned"
+              >
+              </button>
+
+            </div>
             
             <button
-              v-else-if="isAuthorizate"
+              v-if="isForeign && isAuthorizate"
               class="btn profile-card__edit-button"
               @click="goToChat"
             >

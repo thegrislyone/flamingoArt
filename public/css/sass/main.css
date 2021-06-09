@@ -2033,14 +2033,23 @@ img[lazy=loading] {
   width: 100%;
 }
 
-.profile-card__edit-button {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
+.profile-card__author-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
 }
 
-.profile-card__upload {
-  margin-top: 15px;
+.profile-card__settings {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 55%;
+  margin-left: 8px;
+  flex-shrink: 0;
+  background-image: url(/images/i-settings.svg?6b17b6da6d5952c95ae72ac138392633);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .profile-block__my-items {

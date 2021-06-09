@@ -10205,6 +10205,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -49735,42 +49738,42 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "profile-card__edit" }, [
-                      !_vm.isForeign
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn profile-card__edit-button",
+                      _c("div", { staticClass: "profile-card__author-btns" }, [
+                        !_vm.isForeign
+                          ? _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn profile-card__edit-button profile-card__upload",
+                                attrs: { disabled: _vm.user.banned },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.$router.push("/upload-item")
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              Загрузить работу\n            "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        !_vm.isForeign
+                          ? _c("button", {
+                              staticClass: "btn profile-card__settings",
                               attrs: { disabled: _vm.user.banned },
                               on: {
                                 click: function($event) {
                                   return _vm.$router.push("/profile-settings")
                                 }
                               }
-                            },
-                            [_vm._v("\n            Редактировать\n          ")]
-                          )
-                        : _vm._e(),
+                            })
+                          : _vm._e()
+                      ]),
                       _vm._v(" "),
-                      !_vm.isForeign
-                        ? _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn profile-card__edit-button profile-card__upload",
-                              attrs: { disabled: _vm.user.banned },
-                              on: {
-                                click: function($event) {
-                                  return _vm.$router.push("/upload-item")
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n            Выложить работу\n          "
-                              )
-                            ]
-                          )
-                        : _vm.isAuthorizate
+                      _vm.isForeign && _vm.isAuthorizate
                         ? _c(
                             "button",
                             {
