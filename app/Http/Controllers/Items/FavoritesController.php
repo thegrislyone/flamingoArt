@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Items\ItemsModel;
 use App\Models\Items\FavoritesModel;
+use App\Models\Notifications\NotificationsModel;
+use App\Models\User;
+
+use App\Events\NotificationSend;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +34,20 @@ class FavoritesController extends Controller
             'user_id' => $userId,
             'item_id' => $itemId
         ]);
+
+        /* create notification to author */
+
+        $notification = NotificationsModel::create([
+            'item_id' => $itemId,
+            'from' => $userId,
+            'to' => ItemsModel::find($itemId)['author'],
+            'type' => 'favorite'
+        ]);
+
+        event(new NotificationSend([
+            'type' => 'favorite',
+            'data' => $notification
+        ], User::find(ItemsModel::find($itemId)['author'])['common_notifications_channel']));
 
         /* increase favorited counter */
 

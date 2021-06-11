@@ -120,3 +120,10 @@ Route::post('chat/messages/check-message','App\Http\Controllers\Chat\MessagesCon
 Route::get('chat/get-user-chats','App\Http\Controllers\Chat\ChatController@getUserChats');
 Route::get('chat/get-chat-channel','App\Http\Controllers\Chat\ChatController@getChat');
 Route::get('chat/chat-init','App\Http\Controllers\Chat\ChatController@chatInit');
+
+/* 
+    ! NOTIFICATIONS CONTROLLER
+*/
+
+Route::get('notifications/get-notifications','App\Http\Controllers\Notifications\NotificationsController@getNotifications');
+Route::get('notifications/check-notification','App\Http\Controllers\Notifications\NotificationsController@checkNotification');

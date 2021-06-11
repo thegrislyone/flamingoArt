@@ -9,6 +9,9 @@ use App\Models\Items\ItemsModel;
 use App\Models\Items\PurchasesModel;
 use App\Models\Items\FavoritesModel;
 use App\Models\User;
+use App\Models\Notifications\NotificationsModel;
+
+use App\Events\NotificationSend;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +33,13 @@ class PurchasesController extends Controller
         PurchasesModel::create([
             'item_id' => $item_id,
             'buyer_id' => $user_id
+        ]);
+
+        NotificationsModel::create([
+            'item_id' => $item_id,
+            'from' => $user_id,
+            'to' => ItemsModel::find($item_id)['author'],
+            'type' => 'purchase'
         ]);
 
         $bought_items = array_map(function($item) {

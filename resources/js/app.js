@@ -91,8 +91,11 @@ const app = new Vue({
         }
 
         if (this.$store.getters.isAuthorizate) {
+
             this.notificationsInit()
+
             this.$store.dispatch('getChatsList')
+            this.$store.dispatch('getNotifications')
         }
 
         window.addEventListener('resize', this.onResize)
@@ -130,6 +133,12 @@ const app = new Vue({
                     this.$eventBus.$emit('message-get', data.data)
 
                     await this.$store.dispatch('getChatsList')
+
+                } else if (data.notification.type == 'favorite' || data.notification.type == 'purchase') {
+
+                    this.$eventBus.$emit('notification-get', data.data)
+
+                    await this.$store.dispatch('getNotifications')
 
                 }
 

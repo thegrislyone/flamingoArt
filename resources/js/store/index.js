@@ -15,7 +15,8 @@ export default new Vuex.Store({
       windowWidth: window.innerWidth
     },
 
-    chatsList: []
+    chatsList: [],
+    notifications: []
 
   },
   getters: {
@@ -44,14 +45,23 @@ export default new Vuex.Store({
 
     },
 
+    uncheckedNotifications: state => {
+
+      return state.notifications.filter(notification => {
+        if (!notification.checked) {
+          return true
+        }
+        return false
+      }).length
+
+    },
+
     windowParameters: state => state.windowParameters,
     windowWidth: state => state.windowParameters.windowWidth,
     windowHeight: state => state.windowParameters.windowHeight,
   },
   actions: {
     async getChatsList({commit}) {
-
-      console.log('метод вызывается')
 
       const url_string = window.location.origin + '/api/chat/get-user-chats'
       let url = new URL(url_string)
@@ -68,6 +78,23 @@ export default new Vuex.Store({
         })
 
     },
+    async getNotifications({commit}) {
+
+      const url_string = window.location.origin + '/api/notifications/get-notifications'
+      let url = new URL(url_string)
+
+      await axios.get(url.href)
+        .then(response => {
+
+          const data = response.data
+
+          console.log(data)
+
+          commit('setNotificatons', data)
+
+        })
+
+    },
     windowResize({commit}) {
       commit('windowParametersChange', {
         width: window.innerWidth,
@@ -76,6 +103,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setNotificatons(state, data) {
+      state.notifications = data
+    },
     setChatsList(state, data) {
       state.chatsList = data
     },

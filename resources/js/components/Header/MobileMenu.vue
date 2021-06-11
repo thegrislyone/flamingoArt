@@ -63,9 +63,12 @@
             
           </div>
           <div
-            class="mobile-menu__menu-item"
+            class="mobile-menu__menu-item mobile-menu__notifications"
           >
-            <button class="pointer" @click="goTo('')">Уведомления</button>
+            <button class="pointer" @click="goTo('/notifications')">Уведомления</button>
+
+            <div v-if="$store.getters.uncheckedNotifications" class="chat-list-item__new-messages">{{ $store.getters.uncheckedNotifications | amountPrettify }}</div>
+
           </div>
         </div>
 

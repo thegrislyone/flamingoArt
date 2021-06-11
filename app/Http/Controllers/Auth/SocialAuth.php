@@ -98,7 +98,8 @@ class SocialAuth extends Controller
                     'password' => Hash::make($password),
                     'views' => 0,
                     'likes' => 0,
-                    'avatar' => $userAvatar
+                    'avatar' => $userAvatar,
+                    'common_notifications_channel' => Str::random(32)
                 ]
             );
 

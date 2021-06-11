@@ -1,6 +1,8 @@
 <template>
   <div class="header-wrapper">
 
+    <!-- SIGN FORM -->
+
     <modal
       name="signForm"
       :classes="['modal','sign-in-form']"
@@ -17,12 +19,16 @@
       />
     </modal>
 
+    <!-- MOBILE MENU -->
+
     <MobileMenu
       :opened="menuOpened && windowWidth < 1366"
       @close="menuClose"
       @logout="logout"
       @formOpen="openForm"
     />
+
+    <!-- MOBILE FEED LIST -->
 
     <div 
       class="feed-mobile__list"
@@ -39,6 +45,8 @@
         }">{{ feed.title }}</span>
       </div>
     </div>
+
+    <!-- DESCTOP MENU -->
 
     <div
       v-if="menuOpened && windowWidth >= 1366"
@@ -63,6 +71,35 @@
       >
         Выйти
       </button>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+
+    <div 
+      v-if="notificationsShow"
+      class="header__notifications-menu"
+      v-click-outside="notificationsClose"
+    >
+
+      <h2 class="header__notifications-headline">Уведомления</h2>
+
+      <div class="header__notifications-container">
+        <notifications-item
+          v-for="(notification, index) in notificationsList"
+          :key="index"
+          :data="notification"
+          class="notifications-item_desctop-list"
+          @message-checked="renewNotifications"
+        />
+      </div>
+
+      <div 
+        class="notifications-item__show-all pointer"
+        @click="notificationsOpen"
+      >
+        Показать все
+      </div>
 
     </div>
 
@@ -183,12 +220,15 @@
 
         </button>
 
-        <button class="header__notifications">
+        <button 
+          class="header__notifications"
+          @click="notificationsOpen"
+        >
 
-          <div v-if="$store.getters.unreadedMessages" 
+          <div v-if="$store.getters.uncheckedNotifications" 
             class="chat-list-item__new-messages chat-list-item__new-messages_small header__new-messages"
           >
-            {{ $store.getters.unreadedMessages | amountPrettify }}
+            {{ $store.getters.uncheckedNotifications | amountPrettify }}
           </div>
           
           <img src="/assets/images/i-notification.svg">
@@ -246,16 +286,26 @@ import MobileMenu from './MobileMenu.vue'
 import Search from '../Search.vue'
 import SignForm from '../SignForm.vue'
 
+import NotificationsItem from '../NotificationsItem.vue'
+
+import { debounce } from 'vue-debounce'
+
 export default {
   components: {
 
     MobileMenu,
 
     Search,
-    SignForm
+    SignForm,
+
+    NotificationsItem
   },
   data() {
     return {
+
+      renewNotifications: null,
+
+      notificationsShow: false,
 
       menuOpened: false,
 
@@ -312,6 +362,9 @@ export default {
     }
   },
   computed: {
+    notificationsList() {
+      return this.$store.state.notifications
+    },
     mobileFeedListShowFlag() {
       return this.mobileFeedListShow && this.windowWidth < 1366
     },
@@ -363,11 +416,41 @@ export default {
     }
   },
   created() {
+
     if (this.$cookies.get('items-list-feed')) {
       this.feedChange(this.$cookies.get('items-list-feed'))
     }
+
+    this.renewNotifications = debounce(this.notificationsUpdate, 300)
+
   },
   methods: {
+
+    notificationsUpdate() {
+      this.$store.dispatch('getNotifications')
+    },
+
+    notificationsOpen() {
+
+      if (this.windowWidth >= 1366 && !this.notificationsShow) {
+
+        this.notificationsShow = true
+        
+      } else {
+
+        this.notificationsShow = false
+
+        this.$router.push('/notifications')
+
+      }
+
+    },
+
+    notificationsClose() {
+      
+      this.notificationsShow = false
+
+    },
 
     menuOpen() {
       if (this.windowWidth < 1366) {
