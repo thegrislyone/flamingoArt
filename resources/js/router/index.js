@@ -14,6 +14,7 @@ import AdminPanel from '../views/AdminPanel.vue'
 import ProfileSettings from '../views/ProfileSettings.vue'
 import Chat from '../views/Chat.vue'
 import Deals from '../views/Deals.vue'
+import Notifications from '../views/Notifications.vue'
 
 Vue.use(VueRouter)
 
@@ -98,6 +99,12 @@ const routes = [
     name: 'deals',
     meta: { requiresAuth: true },
     component: Deals
+  },
+  {
+    path: '/notifications',
+    name: 'notifications',
+    meta: { requiresAuth: true },
+    component: Notifications
   },
   {
     path: "*",

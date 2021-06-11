@@ -153,6 +153,13 @@ Route::get('/my-deals', function () {
     return view('index');
 });
 
+Route::get('/notifications', function () {
+    if (Auth::check()) {
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
 /* SOCIAL NETWORK AUTHENTIFICATION */
 
 // through vk

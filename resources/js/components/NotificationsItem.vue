@@ -27,7 +27,7 @@
       <div class="notifications-item__bottom-container">
 
         <div class="notifications-item__exp">
-          {{ '2 часа назад' }}
+          {{ past }}
         </div>
 
         <div
@@ -52,7 +52,39 @@ export default {
       require: true
     }
   },
+  computed: {
+    past() {
+
+      const date = new Date(this.data.created_at)
+      const now = new Date()
+
+      if (this.$moment(date).diff(now, 'days')) {
+
+        const days = this.$moment(date).diff(now, 'days') * -1
+
+        return days + ' ' + this.declOfNum(days, ['день', 'дня', 'дней'])
+
+      } else if (this.$moment(date).diff(now, 'hours')) {
+
+        const hours = this.$moment(date).diff(now, 'hours') * -1
+
+        return hours + ' ' + this.declOfNum(hours, ['час', 'часа', 'часов'])
+
+      } else if (this.$moment(date).diff(now, 'seconds')) {
+
+        const seconds = this.$moment(date).diff(now, 'seconds') * -1
+
+        return seconds + ' ' + this.declOfNum(seconds, ['секунда', 'секунды', 'секунд'])
+
+      } else {
+        return 'только что'
+      }
+
+    }
+  },
   created() {
+
+    console.log(this.past, "past")
     
     const url_string = window.location.origin + '/api/notifications/check-notification'
     let url = new URL(url_string)
@@ -69,6 +101,12 @@ export default {
 
       })
 
+  },
+  methods: {
+    declOfNum(number, titles) {  
+      const cases = [2, 0, 1, 1, 1, 2];  
+      return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  
+    }
   }
 }
 </script>

@@ -3422,3 +3422,31 @@ img[lazy=loading] {
   white-space: nowrap;
 }
 
+.notifications {
+  min-width: 320px;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 40px 0 24px;
+}
+
+.notifications__headline {
+  margin-left: 20px;
+  margin-bottom: 16px;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.014em;
+}
+
+.notifications__container {
+  position: fixed;
+  bottom: 24px;
+  top: 154px;
+  overflow-y: auto;
+}
+
+.notifications__container::-webkit-scrollbar {
+  width: 0;
+}
+
