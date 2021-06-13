@@ -156,6 +156,7 @@ class AuthController extends Controller
                     'type' => 'success',
                     'title' => 'Вы успешно авторизовались'
                 ],
+                'status' => true,
                 'user' => $this->getUserInfo()
             ];
 
@@ -169,7 +170,8 @@ class AuthController extends Controller
                 'notification' => [
                     'type' => 'error',
                     'title' => 'Пароль или логин введены неправильно'
-                ]
+                ],
+                'status' => false
             ];
 
             return $status;
