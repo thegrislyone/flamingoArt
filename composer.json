@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "darkaonline/l5-swagger": "^8.0",
         "dlnsk/h-rbac": "^0.4.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -23,7 +24,8 @@
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/vkontakte": "^4.2",
-        "tinify/tinify": "^1.5"
+        "tinify/tinify": "^1.5",
+        "zircote/swagger-php": "^3.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

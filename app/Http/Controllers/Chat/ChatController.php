@@ -18,6 +18,32 @@ use Illuminate\Support\Str;
 class ChatController extends Controller
 {
 
+    /**
+     * @OA\GET(
+     *      path="/api/chat/get-user-chats",
+     *      operationId="userChats",
+     *      tags={"Chat"},
+     *      summary="Returns user chats",
+     *      description="Returns user chats",
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="chats",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="array",
+     *                      @OA\Items(
+     *                          type="string",
+     *                      )
+     *                  )
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
+
     public function getUserChats(Request $request) {
 
         $user = Auth::user()->id;
@@ -51,6 +77,38 @@ class ChatController extends Controller
         return $chats;
 
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/chat/get-chat-channel",
+     *      operationId="getChat",
+     *      tags={"Chat"},
+     *      summary="Get chat",
+     *      description="Method that returns chat by user id",
+     *      @OA\Parameter(
+     *          name="to",
+     *          description="user id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="chat",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
     
     public function getChat(Request $request) {
 
@@ -77,6 +135,44 @@ class ChatController extends Controller
 
         return $chat;
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/chat/chat-init",
+     *      operationId="chatInit",
+     *      tags={"Chat"},
+     *      summary="Get chat",
+     *      description="Method that creating chat in DB",
+     *      @OA\Parameter(
+     *          name="to",
+     *          description="from",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="from",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="status",
+     *                  type="boolean",
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
 
     public function chatInit(Request $request) {
 

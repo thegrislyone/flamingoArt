@@ -16,6 +16,65 @@ use App\Events\NotificationSend;
 
 class MessagesController extends Controller
 {
+
+    /**
+     * @OA\POST(
+     *      path="/api/messages/send-message",
+     *      operationId="sendMessage",
+     *      tags={"Chat"},
+     *      summary="Send message",
+     *      description="Returns message",
+     *      @OA\Parameter(
+     *          name="to",
+     *          description="from",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="from",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="chat_id",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="message_text",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
     
     public function sendMessage(Request $request) {
         
@@ -45,6 +104,56 @@ class MessagesController extends Controller
 
     }
 
+    /**
+     * @OA\GET(
+     *      path="/api/messages/get-chat-messages",
+     *      operationId="geChatMessages",
+     *      tags={"Chat"},
+     *      summary="Get chat-messages",
+     *      description="Returns chat messages",
+     *      @OA\Parameter(
+     *          name="first",
+     *          description="from",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="to",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="chat_id",
+     *          description="to",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="messages",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
+
     public function getChatMessages(Request $request) {
         
         $first = $request['first'];
@@ -56,6 +165,35 @@ class MessagesController extends Controller
         return response()->json($messages, 200);
 
     }
+
+    /**
+     * @OA\POST(
+     *      path="/api/messages/check-message",
+     *      operationId="checkMessage",
+     *      tags={"Chat"},
+     *      summary="Check message",
+     *      description="Method that checks message and return status",
+     *      @OA\Parameter(
+     *          name="message_id",
+     *          description="from",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="status",
+     *                  type="boolen",
+     *              ),
+     *          )
+     *       )
+     *     )
+     */
 
     public function checkMessage(Request $request) {
 
