@@ -30,10 +30,65 @@ class AuthController extends Controller
 {
 
     /**
-     * * Method that registrating user
-     * @param request - get parameters for this api-address
-     * * returns status and registrated user
-    */
+     * @OA\POST(
+     *      path="/api/auth/register",
+     *      operationId="registerUser",
+     *      tags={"Auth"},
+     *      summary="Create new user, login him",
+     *      description="Returns success status and notification to show it to client",
+     *      @OA\Parameter(
+     *          name="login",
+     *          description="user login",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="user email",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          description="user password",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="notification",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *              @OA\Property(
+     *                  property="user",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *              @OA\Property(
+     *                  property="status",
+     *                  type="boolean"
+     *              )
+     *          )
+     *       )
+     *     )
+     */
 
     public function register(Request $request) {
 
@@ -124,10 +179,56 @@ class AuthController extends Controller
     }
 
     /**
-     * * Method, that returns items to use it in itemsList
-     * @param request - get parameters for this api-address
-     * * returns status and logged user
-    */
+     * @OA\POST(
+     *      path="/api/auth/login",
+     *      operationId="loginUser",
+     *      tags={"Auth"},
+     *      summary="Login user by credentials",
+     *      description="Returns success status and notification to show it to client",
+     *      @OA\Parameter(
+     *          name="login",
+     *          description="user login",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          description="user password",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="notification",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *              @OA\Property(
+     *                  property="user",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              ),
+     *              @OA\Property(
+     *                  property="status",
+     *                  type="boolean"
+     *              )
+     *          )
+     *       )
+     *     )
+     */
 
     public function loginRequest(Request $request) {
 
@@ -181,10 +282,27 @@ class AuthController extends Controller
     }
 
     /**
-     * * Method that logging user out
-     * @param request - get parameters for this api-address
-     * * returns status
-    */
+     * @OA\GET(
+     *      path="/api/auth/logout",
+     *      operationId="userLogout",
+     *      tags={"Auth"},
+     *      summary="Logout user",
+     *      description="Returns success status and notification to show it to client",
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="notification",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="string",
+     *                  )
+     *              )
+     *          )
+     *       )
+     *     )
+     */
 
     public function logout() {
 

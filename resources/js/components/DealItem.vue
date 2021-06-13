@@ -120,8 +120,6 @@ export default {
 
           const data = response.data
 
-          
-
         })
 
     }
