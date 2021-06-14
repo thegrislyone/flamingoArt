@@ -21,8 +21,8 @@ import { empty, exist } from './properties/'
 import { capitalize } from './filters/capitalize.filter'
 
 //common components
-import AppHeader from './components/Header/AppHeader.vue'
-import AppFooter from './components/Footer/AppFooter.vue'
+import AppHeader from './components/Header/appHeader.vue'
+import AppFooter from './components/Footer/appFooter.vue'
 import Notification from './components/Notification.vue'
 
 //components
