@@ -215,6 +215,10 @@ export default {
         .then(response => {
           const data = response.data
 
+          if (data.notification) {
+            this.$root.showNotification(data.notification)
+          }
+
           this.sendLoading = false
 
           this.$router.push('/profile')

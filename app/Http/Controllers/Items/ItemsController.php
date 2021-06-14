@@ -168,6 +168,18 @@ class ItemsController extends Controller
 
         // getting id of user who uploading the item
 
+        if ($this->isImageAlreadyExist($img)) {
+
+            return $status = [
+                'notification' => [
+                    'type' => 'error',
+                    'title' => 'Данное изображение уже было загружено'
+                ],
+                'status' => false
+            ];
+
+        }
+
         $userId = Auth::user()->only('id')['id'];
 
         $savedFile = Storage::put('public/items/originals', $request['img']);  // saving file, getting path
@@ -237,11 +249,42 @@ class ItemsController extends Controller
         $item->save();
 
         $status = [
+            'notification' => [
+                'type'=> 'success',
+                'title' => 'Работа загружена'
+            ],
             'status' => true
         ];
 
         return response()->json($status, 200);
         
+    }
+
+    public function isImageAlreadyExist($img) {
+        
+
+        $imgWidth = Image::make($img)->width();
+        $imgHeight = Image::make($img)->height();
+
+        $images = Storage::files('public/items/originals');
+
+        foreach ($images as $key=>$image) {
+
+            $imageSrc = explode('/', $image);
+            array_shift($imageSrc);
+            array_unshift($imageSrc, 'storage');
+            $imageSrc = implode('/', $imageSrc);
+
+            if (Image::make($imageSrc)->width() == $imgWidth && Image::make($imageSrc)->height() == $imgHeight) {
+                
+                return true;
+
+            }
+
+        }
+
+        return false;
+
     }
 
     /**
