@@ -262,10 +262,8 @@ class ItemsController extends Controller
 
     public function isImageAlreadyExist($img) {
         
-
-        $imgWidth = Image::make($img)->width();
-        $imgHeight = Image::make($img)->height();
-
+        $imageSize = Image::make($img)->filesize();
+        
         $images = Storage::files('public/items/originals');
 
         foreach ($images as $key=>$image) {
@@ -275,7 +273,7 @@ class ItemsController extends Controller
             array_unshift($imageSrc, 'storage');
             $imageSrc = implode('/', $imageSrc);
 
-            if (Image::make($imageSrc)->width() == $imgWidth && Image::make($imageSrc)->height() == $imgHeight) {
+            if (Image::make($imageSrc)->filesize() == $imageSize) {
                 
                 return true;
 
