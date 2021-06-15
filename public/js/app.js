@@ -48570,7 +48570,7 @@ var render = function() {
               _c(
                 "form",
                 {
-                  staticClass: "sign-form__form",
+                  staticClass: "sign-form__form sign-form__reg-form",
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -48804,7 +48804,7 @@ var render = function() {
                 _c(
                   "form",
                   {
-                    staticClass: "sign-form__form",
+                    staticClass: "sign-form__form sign-form__auth-form",
                     on: {
                       submit: function($event) {
                         $event.preventDefault()

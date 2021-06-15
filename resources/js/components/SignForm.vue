@@ -19,7 +19,7 @@
       >
         <h1 class="sign-form__form sign-form__headline">Регистрация</h1>
         
-        <form class="sign-form__form" @submit.prevent="formSubmit">
+        <form class="sign-form__form sign-form__reg-form" @submit.prevent="formSubmit">
 
           <form-group
             v-for="(field, key) in regForm.fields"
@@ -118,7 +118,7 @@
       >
         <h1 class="sign-form__headline">Вход</h1>
 
-        <form class="sign-form__form" @submit.prevent="formSubmit">
+        <form class="sign-form__form sign-form__auth-form" @submit.prevent="formSubmit">
           <form-group
             v-for="(field, key) in authForm.fields"
             :ref="field.name"
