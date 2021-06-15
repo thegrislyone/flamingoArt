@@ -464,10 +464,10 @@ h4 {
 
 .btn_loading {
   color: transparent;
-  background-image: url(/images/loader.gif?2f27f0451cef49811159185acae00b47);
+  background-image: url(/images/loader.gif?ec5134effef0be95ae4613427127518c);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 50px;
+  background-size: 40px;
 }
 
 .btn_no-bg {
@@ -856,8 +856,8 @@ img[lazy=loading] {
 /* loader */
 
 .preloader {
-  background: url(/images/loader.gif?2f27f0451cef49811159185acae00b47) no-repeat center center;
-  background-size: 70px;
+  background: url(/images/loader.gif?ec5134effef0be95ae4613427127518c) no-repeat center center;
+  background-size: 50px;
   width: 40px;
   height: 40px;
   margin: 0 auto;
@@ -934,8 +934,8 @@ img[lazy=loading] {
 }
 
 .search__tips-loading {
-  background-image: url(/images/loader.gif?2f27f0451cef49811159185acae00b47);
-  background-image: url(/images/loader.gif?2f27f0451cef49811159185acae00b47);
+  background-image: url(/images/loader.gif?ec5134effef0be95ae4613427127518c);
+  background-image: url(/images/loader.gif?ec5134effef0be95ae4613427127518c);
   width: 25px;
   height: 25px;
   background-size: 25px;
@@ -1778,7 +1778,7 @@ img[lazy=loading] {
 /* AUTOCOMPLETE */
 
 .sign-form__field_loading {
-  background-image: url(/images/loader.gif?2f27f0451cef49811159185acae00b47);
+  background-image: url(/images/loader.gif?ec5134effef0be95ae4613427127518c);
 }
 
 .sign-form__field_success {
