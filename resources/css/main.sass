@@ -1,4 +1,11 @@
 /*------------------------------------*\
+ *	#VARIABLES
+ *\*------------------------------------
+
+$pink: #DA71FF
+$gray: #696969
+
+/*------------------------------------*\
  *	#FONTS
  *\*------------------------------------
 
@@ -189,7 +196,7 @@ body
   font-size: 13px
   line-height: 140%
   letter-spacing: -0.003em
-  color: #696969
+  color: $gray
 
 /* COMPONENTS
 
@@ -386,7 +393,7 @@ h5, h6
 
 .btn
   padding: 10px 32px 11px
-  background: #DA71FF
+  background: $pink
   border-radius: 20px
   font-weight: 600
   font-size: 16px
@@ -581,7 +588,7 @@ img[lazy=loading]
   color: #fff
 
   a
-    color: #DA71FF
+    color: $pink
     text-decoration-line: underline
 
 /* tag
@@ -604,7 +611,7 @@ img[lazy=loading]
   padding: 2px 12px
 
 .tag:hover
-  background: #DA71FF
+  background: $pink
   color: rgb(32, 20, 20)
 
 /* tags-input
@@ -627,7 +634,7 @@ img[lazy=loading]
     background-color: transparent
 
 .tags-input__tag
-  background: #DA71FF
+  background: $pink
   border-radius: 6px
   padding: 1px 8px 2px
   font-size: 18px
@@ -654,7 +661,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 140%
   letter-spacing: -0.014em
-  color: #DA71FF
+  color: $pink
 
 .tags-input__popular-tag
   &:not(:last-child)
@@ -678,7 +685,7 @@ img[lazy=loading]
   transition: all .35s
 
 .switch__trace_selected
-  background: #DA71FF
+  background: $pink
 
 .switch__switcher
   background: #b4b4b4
@@ -694,7 +701,7 @@ img[lazy=loading]
 /* FILE LOADER
 
 .upload
-  border: 1px dashed #696969
+  border: 1px dashed $gray
   box-sizing: border-box
   border-radius: 12px
 
@@ -711,13 +718,13 @@ img[lazy=loading]
 
   &:hover
     .upload__headline
-      color: #DA71FF
+      color: $pink
 
     .upload__img path
-      fill: #DA71FF
+      fill: $pink
 
 .upload__headline
-  color: #696969
+  color: $gray
   font-size: 20px
   font-weight: 600
   letter-spacing: -0.022em
@@ -729,7 +736,7 @@ img[lazy=loading]
 
   path
     width: 35px
-    fill: #696969
+    fill: $gray
     transition: all .35s
 
 .upload__subtext
@@ -738,7 +745,7 @@ img[lazy=loading]
   line-height: 15px
   text-align: center
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
 
 .upload__loaded-block
   text-align: center
@@ -887,7 +894,7 @@ img[lazy=loading]
   transition: all .35s
 
 .search__tip:hover .search__tag
-  background: #DA71FF
+  background: $pink
   color: #000
 
 /* .search__result-text {
@@ -1297,7 +1304,7 @@ img[lazy=loading]
   transition: color .35s
 
 .notifications-item__show-all:hover
-  color: #DA71FF
+  color: $pink
 
 .notifications-item_desctop-list
   padding-right: 2
@@ -1622,7 +1629,7 @@ img[lazy=loading]
 .sign-form__link_pink
   text-decoration: none
   display: inline
-  color: #da71ff
+  color: $pink
 
 .sign-form__button_auth
   margin-bottom: 40px
@@ -1733,7 +1740,7 @@ img[lazy=loading]
   line-height: 19px
   text-align: center
   letter-spacing: -0.011em
-  color: #696969
+  color: $gray
   margin-bottom: 16px
   transition: all .35s
 
@@ -1785,6 +1792,13 @@ img[lazy=loading]
 
   > *:not(:last-child)
     margin-right: 20px
+
+  path
+    fill: $gray
+    transition: all .35s
+
+  a:hover path
+    fill: #fff
 
 .profile-card__edit
   margin: 10px 0 24px 0
@@ -1914,7 +1928,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 140%
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
   margin-bottom: 32px
   word-break: break-word
 
@@ -1934,7 +1948,7 @@ img[lazy=loading]
   display: flex
   align-items: center
   letter-spacing: -0.011em
-  color: #696969
+  color: $gray
 
   > *
     display: inline-block
@@ -1992,7 +2006,7 @@ img[lazy=loading]
   color: #B4B4B4
 
 .item__to-favorite_added
-  color: #DA71FF
+  color: $pink
   background-image: url(../assets/images/i-in-favorite.svg)
 
 .item__delete
@@ -2020,7 +2034,7 @@ img[lazy=loading]
   font-size: 24px
   line-height: 29px
   letter-spacing: -0.019em
-  color: #DA71FF
+  color: $pink
   background-image: url(../assets/images/i-bought.svg)
   background-position: 100% 9px
   background-repeat: no-repeat
@@ -2039,7 +2053,7 @@ img[lazy=loading]
   line-height: 29px
   vertical-align: middle
   letter-spacing: -0.019em
-  color: #DA71FF
+  color: $pink
 
 .item__price_bought
   color: #B4B4B4
@@ -2285,7 +2299,7 @@ img[lazy=loading]
   transition: all .2s
 
 .banner-upload__non-uploaded:hover .banner-upload__logo path
-  fill: #DA71FF
+  fill: $pink
 
 .banner-upload__img
   width: 100%
@@ -2331,7 +2345,7 @@ img[lazy=loading]
   transition: fill .2s
 
 .avatar-upload__container:hover .avatar-upload__logo path
-  fill: #DA71FF
+  fill: $pink
 
 .avatar-upload__img
   width: 100%
@@ -2379,7 +2393,7 @@ img[lazy=loading]
       font-size: 18px
       line-height: 22px
       letter-spacing: -0.014em
-      color: #696969
+      color: $gray
 
     &:focus
       background-color: #2A2A2A
@@ -2430,7 +2444,7 @@ img[lazy=loading]
   font-size: 20px
   line-height: 140%
   letter-spacing: -0.017em
-  color: #696969
+  color: $gray
   word-break: break-all
 
 .settings-form__edit-icon
@@ -2487,7 +2501,7 @@ img[lazy=loading]
     font-size: 18px
     line-height: 22px
     letter-spacing: -0.014em
-    color: #696969
+    color: $gray
 
   &:focus
     background-color: #2A2A2A
@@ -2718,7 +2732,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 22px
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
 
 /* message
 /* .message-wrapper {
@@ -2741,7 +2755,7 @@ img[lazy=loading]
 
 .message_own
   color: #000000
-  background: #DA71FF
+  background: $pink
 
 .message_not-own
   color: #E9E9E9
@@ -2776,11 +2790,11 @@ img[lazy=loading]
   width: 21px
 
 .message-input__send-button path
-  fill: #696969
+  fill: $gray
   transition: all .35s
 
 .message-input__send-button_input path
-  fill: #DA71FF
+  fill: $pink
 
 /* DEALS */
 
@@ -2863,7 +2877,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 22px
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
   margin-bottom: 4px
 
 .deals-item__justify-container
@@ -2879,7 +2893,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 22px
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
 
 .deals-item__download-block
   flex-shrink: 0
@@ -2890,7 +2904,7 @@ img[lazy=loading]
   align-self: center
 
 .deals-item__price-sells
-  color: #DA71FF
+  color: $pink
 
 
 /* DEALS */
@@ -2934,7 +2948,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 22px
   letter-spacing: -0.014em
-  color: #696969
+  color: $gray
   margin-right: 16px
   flex-shrink: 0
 
@@ -2943,7 +2957,7 @@ img[lazy=loading]
   font-size: 18px
   line-height: 22px
   letter-spacing: -0.014em
-  color: #DA71FF
+  color: $pink
   white-space: nowrap
   
 

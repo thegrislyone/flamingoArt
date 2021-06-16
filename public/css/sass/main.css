@@ -1,4 +1,8 @@
 /*------------------------------------*\
+ * *	#VARIABLES
+ * *\*------------------------------------ */
+
+/*------------------------------------*\
  * *	#FONTS
  * *\*------------------------------------ */
 
@@ -1944,7 +1948,7 @@ img[lazy=loading] {
 .sign-form__link_pink {
   text-decoration: none;
   display: inline;
-  color: #da71ff;
+  color: #DA71FF;
 }
 
 .sign-form__button_auth {
@@ -2136,6 +2140,15 @@ img[lazy=loading] {
 
 .profile-card__inf-social > *:not(:last-child) {
   margin-right: 20px;
+}
+
+.profile-card__inf-social path {
+  fill: #696969;
+  transition: all 0.35s;
+}
+
+.profile-card__inf-social a:hover path {
+  fill: #fff;
 }
 
 .profile-card__edit {

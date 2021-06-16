@@ -77,7 +77,7 @@
               @focus="showError = false"
               @blur="showError = true"
               v-model.trim="$v.social.vkLink.$model"
-              v-debounce:5000ms.lock="socialUpdate"
+              v-debounce:1500ms.lock="socialUpdate"
             >
 
           </div>
