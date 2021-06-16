@@ -30,6 +30,7 @@
       <button 
         v-if="!$isEmpty(avatarSrc)"
         class="delete-button"
+        v-tooltip.bottom="'Удалить аватар'"
         @click="deleteAvatar"
       ></button>
 

@@ -96,6 +96,7 @@
 
           <button 
             class="delete-button"
+            v-tooltip.bottom="'Удалить баннер'"
             @click="deleteBanner"
           ></button>
 

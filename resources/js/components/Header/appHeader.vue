@@ -140,7 +140,13 @@
 
       <div class="header__logo">
         <h1>
-          <router-link to="/">FlamingoArt</router-link>
+          <router-link 
+            to="/"
+            class="main-link"
+          >
+            <img src="/assets/images/i-logo.svg">
+            FlamingoArt
+          </router-link>
         </h1>
       </div>
 

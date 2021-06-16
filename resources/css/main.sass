@@ -1108,6 +1108,13 @@ img[lazy=loading]
   font-weight: bold
   flex-shrink: 0
 
+  .main-link
+    display: flex
+    align-items: center
+
+    img
+      margin-right: 11px
+
   h1
     font-size: 20px
     line-height: 24px
@@ -1323,6 +1330,7 @@ img[lazy=loading]
   letter-spacing: -0.006em
   color: rgba(255, 255, 255, 0.7)
   display: none
+  margin-right: 32px
 
 .header__user
   display: flex
@@ -2964,3 +2972,29 @@ img[lazy=loading]
 
 .notifications__container::-webkit-scrollbar
   width: 0
+
+/* ERROR-PAGE */
+
+.error-page
+  width: 100%
+  min-height: 100vh
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  background-color: #050505
+
+.error-page__link
+  font-size: 22px
+  line-height: 27px
+  text-align: center
+  letter-spacing: -0.006em
+  text-decoration-line: underline
+  color: #B4B4B4
+  margin-top: 100px
+  cursor: pointer
+  display: flex
+  align-items: center
+
+  img
+    margin-left: 8px

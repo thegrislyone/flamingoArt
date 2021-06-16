@@ -335,6 +335,10 @@
     padding-left: 100px;
   }
 
+  .header__user-login {
+    display: block;
+  }
+
   .search-short {
     display: none;
   }
@@ -553,11 +557,6 @@
   }
 
   .header__icons-bar > *:not(:last-child) {
-    margin-right: 32px;
-  }
-
-  .header__user-login {
-    display: block;
     margin-right: 32px;
   }
 

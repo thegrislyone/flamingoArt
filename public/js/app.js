@@ -5134,6 +5134,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6863,6 +6864,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7763,6 +7770,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-advanced-cropper */ "./node_modules/vue-advanced-cropper/dist/index.es.js");
+//
 //
 //
 //
@@ -45024,6 +45032,15 @@ var render = function() {
         [
           !_vm.$isEmpty(_vm.avatarSrc)
             ? _c("button", {
+                directives: [
+                  {
+                    name: "tooltip",
+                    rawName: "v-tooltip.bottom",
+                    value: "Удалить аватар",
+                    expression: "'Удалить аватар'",
+                    modifiers: { bottom: true }
+                  }
+                ],
                 staticClass: "delete-button",
                 on: { click: _vm.deleteAvatar }
               })
@@ -46910,7 +46927,14 @@ var render = function() {
           _c(
             "h1",
             [
-              _c("router-link", { attrs: { to: "/" } }, [_vm._v("FlamingoArt")])
+              _c(
+                "router-link",
+                { staticClass: "main-link", attrs: { to: "/" } },
+                [
+                  _c("img", { attrs: { src: "/assets/images/i-logo.svg" } }),
+                  _vm._v("\n          FlamingoArt\n        ")
+                ]
+              )
             ],
             1
           )
@@ -48114,6 +48138,15 @@ var render = function() {
                   },
                   [
                     _c("button", {
+                      directives: [
+                        {
+                          name: "tooltip",
+                          rawName: "v-tooltip.bottom",
+                          value: "Удалить баннер",
+                          expression: "'Удалить баннер'",
+                          modifiers: { bottom: true }
+                        }
+                      ],
                       staticClass: "delete-button",
                       on: { click: _vm.deleteBanner }
                     }),
