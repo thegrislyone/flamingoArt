@@ -93,6 +93,12 @@
           key="loaded"
           class="banner-upload__container banner-upload__uploaded pointer"
         >
+
+          <button 
+            class="delete-button"
+            @click="deleteBanner"
+          ></button>
+
           <img 
             :src="bannerSrc"
             class="banner-upload__img"
@@ -172,6 +178,19 @@ export default {
   },
   mounted() {
     this.eventsInit()
+  },
+  beforeDestroy() {
+
+    this.events.forEach(function(evt) {
+      this.loaderContainer.removeEventListener(evt, this.addDefaultEvent)
+    }.bind(this));
+
+    document.removeEventListener('dragenter', this.dragEnter)
+
+    document.removeEventListener('dragleave', this.dragLeave)
+
+    this.loaderContainer.removeEventListener('drop', this.drop)
+
   },
   methods: {
     eventsInit() {
@@ -267,6 +286,9 @@ export default {
         this.$modal.hide('banner-crop')
       }, this.file.type)
 
+    },
+    deleteBanner() {
+      this.$emit('fileUpload')
     }
   }
 }

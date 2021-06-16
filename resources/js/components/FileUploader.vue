@@ -91,6 +91,19 @@ export default {
     this.loaderContainer.addEventListener('drop', this.drop)
 
   },
+  beforeDestroy() {
+
+    this.events.forEach(function(evt) {
+      this.loaderContainer.removeEventListener(evt, this.addDefaultEvent)
+    }.bind(this));
+
+    document.addEventListener('dragenter', this.dragEnter)
+
+    document.removeEventListener('dragleave', this.dragLeave)
+
+    this.loaderContainer.removeEventListener('drop', this.drop)
+
+  },
   methods: {
     drop() {
       this.fileUpload(event.dataTransfer.files[0])

@@ -5127,6 +5127,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5150,6 +5157,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.avatarSrc = this.avatar;
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.events.forEach(function (evt) {
+      this.loaderContainer.removeEventListener(evt, this.addDefaultEvent);
+    }.bind(this));
+    document.removeEventListener('dragenter', this.dragEnter);
+    document.removeEventListener('dragleave', this.dragLeave);
+    this.loaderContainer.removeEventListener('drop', this.drop);
   },
   methods: {
     eventsInit: function eventsInit() {
@@ -5222,6 +5237,9 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$modal.hide('avatar-crop');
       }, this.file.type);
+    },
+    deleteAvatar: function deleteAvatar() {
+      this.$emit('fileUpload');
     }
   }
 });
@@ -6032,6 +6050,14 @@ __webpack_require__.r(__webpack_exports__);
     document.addEventListener('dragenter', this.dragEnter);
     document.addEventListener('dragleave', this.dragLeave);
     this.loaderContainer.addEventListener('drop', this.drop);
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.events.forEach(function (evt) {
+      this.loaderContainer.removeEventListener(evt, this.addDefaultEvent);
+    }.bind(this));
+    document.addEventListener('dragenter', this.dragEnter);
+    document.removeEventListener('dragleave', this.dragLeave);
+    this.loaderContainer.removeEventListener('drop', this.drop);
   },
   methods: {
     drop: function drop() {
@@ -7889,6 +7915,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -7911,6 +7943,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.eventsInit();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.events.forEach(function (evt) {
+      this.loaderContainer.removeEventListener(evt, this.addDefaultEvent);
+    }.bind(this));
+    document.removeEventListener('dragenter', this.dragEnter);
+    document.removeEventListener('dragleave', this.dragLeave);
+    this.loaderContainer.removeEventListener('drop', this.drop);
   },
   methods: {
     eventsInit: function eventsInit() {
@@ -7981,6 +8021,9 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$modal.hide('banner-crop');
       }, this.file.type);
+    },
+    deleteBanner: function deleteBanner() {
+      this.$emit('fileUpload');
     }
   }
 });
@@ -11035,7 +11078,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var formData = new FormData();
-      formData.append('avatar', file);
+
+      if (file) {
+        formData.append('avatar', file);
+      }
+
       this.$http.post('/api/user/set-user-avatar', formData).then(function (response) {
         var data = response.data;
 
@@ -11054,7 +11101,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var formData = new FormData();
-      formData.append('banner', file);
+
+      if (file) {
+        formData.append('banner', file);
+      }
+
       this.$http.post('/api/user/set-user-banner', formData).then(function (response) {
         var data = response.data;
 
@@ -44958,6 +45009,13 @@ var render = function() {
         "div",
         { staticClass: "avatar-upload-block" },
         [
+          !_vm.$isEmpty(_vm.avatarSrc)
+            ? _c("button", {
+                staticClass: "delete-button",
+                on: { click: _vm.deleteAvatar }
+              })
+            : _vm._e(),
+          _vm._v(" "),
           _c("input", {
             attrs: { type: "file", id: "avatar-loader" },
             on: {
@@ -48038,6 +48096,11 @@ var render = function() {
                       "banner-upload__container banner-upload__uploaded pointer"
                   },
                   [
+                    _c("button", {
+                      staticClass: "delete-button",
+                      on: { click: _vm.deleteBanner }
+                    }),
+                    _vm._v(" "),
                     _c("img", {
                       staticClass: "banner-upload__img",
                       attrs: { src: _vm.bannerSrc }

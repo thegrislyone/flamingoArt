@@ -26,6 +26,13 @@
     </modal>
 
     <div class="avatar-upload-block">
+
+      <button 
+        v-if="!$isEmpty(avatarSrc)"
+        class="delete-button"
+        @click="deleteAvatar"
+      ></button>
+
       <input 
         type="file"
         id="avatar-loader"
@@ -108,6 +115,19 @@ export default {
   },
   created() {
     this.avatarSrc = this.avatar
+  },
+  beforeDestroy() {
+
+    this.events.forEach(function(evt) {
+        this.loaderContainer.removeEventListener(evt, this.addDefaultEvent)
+      }.bind(this));
+
+    document.removeEventListener('dragenter', this.dragEnter)
+
+    document.removeEventListener('dragleave', this.dragLeave)
+
+    this.loaderContainer.removeEventListener('drop', this.drop)
+
   },
   methods: {
     eventsInit() {
@@ -209,6 +229,9 @@ export default {
         this.$modal.hide('avatar-crop')
       }, this.file.type)
 
+    },
+    deleteAvatar() {
+      this.$emit('fileUpload')
     }
   }
 }

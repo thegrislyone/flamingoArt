@@ -173,28 +173,66 @@ class UserController extends Controller
 
     public function setAvatar(Request $request) {
 
-        $avatar = $request['avatar'];
-
-        $avatarSrc = Storage::put('public/avatars', $avatar);
-
-        $avatarSrcArray = explode('/', $avatarSrc);
-        
-        array_shift($avatarSrcArray);
-        array_unshift($avatarSrcArray, 'storage');
-
-        User::find(Auth::user()->id)->update([
-            'avatar' => '/' . implode('/', $avatarSrcArray)
-        ]);
+        // delete old avatar
 
         $user = $this->getUserInfo();
-        $user['avatar'] = '/' . implode('/', $avatarSrcArray);
+
+        if ($user['avatar']) {
+
+            $src = explode('/', $user['avatar']);
+                
+            array_shift($src);
+            array_shift($src);
+
+            $src = 'public/' . implode('/', $src);
+
+            Storage::delete($src);    
+
+        }
+
+        // set new avatar
+        
+        if (isset($request['avatar'])) {
+
+            $avatar = $request['avatar'];
+
+            $avatarSrc = Storage::put('public/avatars', $avatar);
+
+            $avatarSrcArray = explode('/', $avatarSrc);
+            
+            array_shift($avatarSrcArray);
+            array_unshift($avatarSrcArray, 'storage');
+
+            User::find(Auth::user()->id)->update([
+                'avatar' => '/' . implode('/', $avatarSrcArray)
+            ]);
+
+        } else {
+
+            User::find(Auth::user()->id)->update([
+                'avatar' => NULL
+            ]);
+
+        }
+
+        
+
+        if (isset($request['avatar'])) {
+
+            $user['avatar'] = '/' . implode('/', $avatarSrcArray);
+
+        } else {
+
+            $user['avatar'] = NULL;
+
+        }
 
         $status = [
             'success' => true,
             'user' => $user,
             'notification' => [
                 'type' => 'success',
-                'title' => 'Аватар успешно загружен'
+                'title' => (isset($request['avatar'])) ? 'Аватар успешно загружен' : 'Аватар удалён'
             ]
         ];
 
@@ -210,28 +248,56 @@ class UserController extends Controller
 
     public function setBanner(Request $request) {
 
-        $banner = $request['banner'];
-
-        $bannerSrc = Storage::put('public/banners', $banner);
-
-        $bannerSrcArray = explode('/', $bannerSrc);
-        
-        array_shift($bannerSrcArray);
-        array_unshift($bannerSrcArray, 'storage');
-
-        User::find(Auth::user()->id)->update([
-            'banner' => '/' . implode('/', $bannerSrcArray)
-        ]);
-
         $user = $this->getUserInfo();
-        $user['banner'] = '/' . implode('/', $bannerSrcArray);
+
+        if ($user['banner']) {
+
+            $src = explode('/', $user['banner']);
+                
+            array_shift($src);
+            array_shift($src);
+
+            $src = 'public/' . implode('/', $src);
+
+            Storage::delete($src);
+
+        }
+
+        if (isset($request['banner'])) {
+
+            $banner = $request['banner'];
+
+            $bannerSrc = Storage::put('public/banners', $banner);
+
+            $bannerSrcArray = explode('/', $bannerSrc);
+            
+            array_shift($bannerSrcArray);
+            array_unshift($bannerSrcArray, 'storage');
+
+            User::find(Auth::user()->id)->update([
+                'banner' => '/' . implode('/', $bannerSrcArray)
+            ]);
+
+        } else {
+
+            User::find(Auth::user()->id)->update([
+                'banner' => NULL
+            ]);
+
+        }
+
+        if (isset($request['banner'])) {
+            $user['banner'] = '/' . implode('/', $bannerSrcArray);
+        } else {
+            $user['banner'] = NULL;
+        }
 
         $status = [
             'success' => true,
             'user' => $user,
             'notification' => [
                 'type' => 'success',
-                'title' => 'Баннер успешно загружен'
+                'title' => (isset($request['banner'])) ? 'Баннер успешно загружен' : 'Баннер удалён'
             ]
         ];
 

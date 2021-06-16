@@ -461,7 +461,9 @@ export default {
 
       let formData = new FormData()
 
-      formData.append('avatar', file)
+      if (file) {
+        formData.append('avatar', file)
+      }
 
       this.$http.post('/api/user/set-user-avatar', formData)
         .then(response => {
@@ -483,7 +485,9 @@ export default {
 
       let formData = new FormData()
 
-      formData.append('banner', file)
+      if (file) {
+        formData.append('banner', file)
+      }
 
       this.$http.post('/api/user/set-user-banner', formData)
         .then(response => {
