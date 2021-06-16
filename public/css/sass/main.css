@@ -1695,11 +1695,8 @@ img[lazy=loading] {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 16px;
   grid-template-columns: 1fr;
-}
-
-.item-list__tiles > *:not(:last-child) {
-  margin: 8px;
 }
 
 .tile {
