@@ -53,6 +53,19 @@
               <div class="item__views">{{ item.transitions }}</div>
             </div>
 
+            <router-link 
+              v-if="!moreOfAuthor.length"
+              :to="(isAuthor) ? '/profile' : '/profile/' + item.author.id"
+              class="item__author-no-items pointer"
+            >
+            
+              <img v-if="item.author.avatar" :src="item.author.avatar">
+              <img v-else src="/assets/images/unknown-user.png">
+
+              <span>{{ item.author.login }}</span>
+
+            </router-link>
+
           </div>
 
           <div 

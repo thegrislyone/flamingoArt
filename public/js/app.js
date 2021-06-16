@@ -9775,6 +9775,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -49771,38 +49784,70 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "item__information-block" }, [
-                _c("div", { staticClass: "item__information" }, [
-                  _c("h1", { staticClass: "item__name" }, [
-                    _vm._v(_vm._s(_vm.item.name))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__description" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.item.description) +
-                        "\n          "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "item__tags" },
-                    _vm._l(_vm.item.tags, function(tag) {
-                      return _c("tag", { key: tag.id, attrs: { tag: tag } })
-                    }),
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__statistics" }, [
-                    _c("div", { staticClass: "item__favorites-number" }, [
-                      _vm._v(_vm._s(_vm.item.favorited))
+                _c(
+                  "div",
+                  { staticClass: "item__information" },
+                  [
+                    _c("h1", { staticClass: "item__name" }, [
+                      _vm._v(_vm._s(_vm.item.name))
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "item__views" }, [
-                      _vm._v(_vm._s(_vm.item.transitions))
-                    ])
-                  ])
-                ]),
+                    _c("div", { staticClass: "item__description" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.item.description) +
+                          "\n          "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "item__tags" },
+                      _vm._l(_vm.item.tags, function(tag) {
+                        return _c("tag", { key: tag.id, attrs: { tag: tag } })
+                      }),
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "item__statistics" }, [
+                      _c("div", { staticClass: "item__favorites-number" }, [
+                        _vm._v(_vm._s(_vm.item.favorited))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__views" }, [
+                        _vm._v(_vm._s(_vm.item.transitions))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    !_vm.moreOfAuthor.length
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "item__author-no-items pointer",
+                            attrs: {
+                              to: _vm.isAuthor
+                                ? "/profile"
+                                : "/profile/" + _vm.item.author.id
+                            }
+                          },
+                          [
+                            _vm.item.author.avatar
+                              ? _c("img", {
+                                  attrs: { src: _vm.item.author.avatar }
+                                })
+                              : _c("img", {
+                                  attrs: {
+                                    src: "/assets/images/unknown-user.png"
+                                  }
+                                }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v(_vm._s(_vm.item.author.login))])
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
