@@ -47658,63 +47658,67 @@ var render = function() {
                       )
                     ]
                   : [
-                      _c(
-                        "div",
-                        { staticClass: "search__tip-tags" },
-                        _vm._l(_vm.tipsTags, function(tipTag) {
-                          return _c(
+                      _vm.tipsTags.length
+                        ? _c(
                             "div",
-                            {
-                              key: tipTag.id,
-                              staticClass: "search__tip pointer",
-                              on: {
-                                click: function($event) {
-                                  return _vm.clickTip(tipTag)
-                                }
-                              }
-                            },
-                            [
-                              _c("div", { staticClass: "search__tag" }, [
-                                _vm._v(
-                                  "\n              #" +
-                                    _vm._s(tipTag.name) +
-                                    "\n            "
-                                )
-                              ])
-                            ]
+                            { staticClass: "search__tip-tags" },
+                            _vm._l(_vm.tipsTags, function(tipTag) {
+                              return _c(
+                                "div",
+                                {
+                                  key: tipTag.id,
+                                  staticClass: "search__tip pointer",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.clickTip(tipTag)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "search__tag" }, [
+                                    _vm._v(
+                                      "\n              #" +
+                                        _vm._s(tipTag.name) +
+                                        "\n            "
+                                    )
+                                  ])
+                                ]
+                              )
+                            }),
+                            0
                           )
-                        }),
-                        0
-                      ),
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "search__tip-items" },
-                        _vm._l(_vm.tipsItems, function(tipItem) {
-                          return _c(
+                      _vm.tipsItems.length
+                        ? _c(
                             "div",
-                            {
-                              key: tipItem.id,
-                              staticClass: "search__tip pointer",
-                              on: {
-                                click: function($event) {
-                                  return _vm.clickTip(tipItem)
-                                }
-                              }
-                            },
-                            [
-                              _c("div", { staticClass: "search__item" }, [
-                                _vm._v(
-                                  "\n              " +
-                                    _vm._s(tipItem.name) +
-                                    "\n            "
-                                )
-                              ])
-                            ]
+                            { staticClass: "search__tip-items" },
+                            _vm._l(_vm.tipsItems, function(tipItem) {
+                              return _c(
+                                "div",
+                                {
+                                  key: tipItem.id,
+                                  staticClass: "search__tip pointer",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.clickTip(tipItem)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "search__item" }, [
+                                    _vm._v(
+                                      "\n              " +
+                                        _vm._s(tipItem.name) +
+                                        "\n            "
+                                    )
+                                  ])
+                                ]
+                              )
+                            }),
+                            0
                           )
-                        }),
-                        0
-                      )
+                        : _vm._e()
                     ]
               ],
               2
@@ -50301,7 +50305,8 @@ var render = function() {
                         ? _c(
                             "button",
                             {
-                              staticClass: "btn profile-card__edit-button",
+                              staticClass:
+                                "btn profile-card__edit-button profile-card__write center",
                               on: { click: _vm.goToChat }
                             },
                             [_vm._v("\n            Написать\n          ")]

@@ -69,6 +69,11 @@
     flex-direction: row
     justify-content: space-between
 
+    > *:not(:last-child)
+      margin-right: 32px
+      margin-bottom: 0 !important
+      
+
   .item__actions_no-favorites
     justify-content: flex-end
 
@@ -77,6 +82,10 @@
 
   .item__buy
     flex-direction: row-reverse
+
+    > *:not(:first-child)
+      margin-right: 32px
+      margin-bottom: 0 !important
 
 /*------------------------------------*\
  *  # MIN-WIDTH: 720px
@@ -186,7 +195,9 @@
     padding-top: 115px
 
   .upload-item__block
-    gap: 48px
+
+    > *:not(:last-child)
+      margin-bottom: 48px
 
   .upload__img
     width: 70px
@@ -299,7 +310,9 @@
   .profile-block
     flex-direction: row
     align-items: flex-start
-    gap: 32px
+
+    > *:not(:last-child)
+      margin-right: 32px
 
   .profile-card
     padding: 25px
@@ -342,12 +355,6 @@
   .profile .tile
     width: calc(32% - 2px)
 
-  /* .upload-item__block {
-   *  width: 1136;
-   *}
-  /* .upload-item__block > * {
-   *  flex-grow: 1;
-   *}
   /* UPLOAD-ITEM
 
   .upload-item
@@ -357,6 +364,10 @@
     flex-direction: row
     padding: 64px 115px
 
+    > *:not(:last-child)
+      margin-bottom: 0 !important
+      margin-right: 48px
+
   .upload__block
     width: 700px
 
@@ -364,7 +375,10 @@
     width: 400px
 
   .upload-item__block
-    gap: 32px
+
+    > *:not(:last-child)
+      margin-bottom: 0 !important
+      margin-right: 32px
 
   /* ITEM
 
@@ -372,6 +386,10 @@
     max-width: none
     justify-content: center
     flex-direction: row
+
+    > *:not(:last-child)
+      margin-bottom: 0 !important
+      margin-right: 32px
 
   .item__information-block
     min-width: 440px
@@ -392,13 +410,11 @@
  *\*------------------------------------
 
 @media (min-width: 1440px)
-  /* HEADER
-  /* .header {
-   *  padding: 20px 112px;
-   *}
-  /* .header__feed-type {
-   *  gap: 48px;
-   *}
+
+  .cookie-agreement > *
+    margin-bottom: 0 !important
+
+  /* HEADER */
 
   .header__search-block
     flex-grow: 1
@@ -414,8 +430,10 @@
 
 @media (min-width: 1920px)
   .header
-    gap: 64px
     padding: 20px 112px
+
+    > *:not(:last-child)
+      margin-right: 64px
 
   .header__desctop-menu
     right: 96px
@@ -429,11 +447,13 @@
   /* HEADER
 
   .header__icons-bar
-    gap: 32px
     flex-grow: 1
+    > *:not(:last-child)
+      margin-right: 32px
 
   .header__user-login
     display: block
+    margin-right: 32px
 
   /* ITEMS LIST
 

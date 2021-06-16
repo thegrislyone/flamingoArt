@@ -91,7 +91,7 @@
             
             <button
               v-if="isForeign && isAuthorizate"
-              class="btn profile-card__edit-button"
+              class="btn profile-card__edit-button profile-card__write center"
               @click="goToChat"
             >
               Написать

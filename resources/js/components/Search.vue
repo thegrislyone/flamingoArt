@@ -41,7 +41,7 @@
         </template>
 
         <template v-else>
-          <div class="search__tip-tags">
+          <div v-if="tipsTags.length" class="search__tip-tags">
 
             <div 
               v-for="tipTag in tipsTags"
@@ -58,7 +58,7 @@
 
           </div>
 
-          <div class="search__tip-items">
+          <div v-if="tipsItems.length" class="search__tip-items">
 
             <div 
               v-for="tipItem in tipsItems"

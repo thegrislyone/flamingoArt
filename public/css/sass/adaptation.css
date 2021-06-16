@@ -82,6 +82,11 @@
     justify-content: space-between;
   }
 
+  .item__actions > *:not(:last-child) {
+    margin-right: 32px;
+    margin-bottom: 0 !important;
+  }
+
   .item__actions_no-favorites {
     justify-content: flex-end;
   }
@@ -92,6 +97,11 @@
 
   .item__buy {
     flex-direction: row-reverse;
+  }
+
+  .item__buy > *:not(:first-child) {
+    margin-right: 32px;
+    margin-bottom: 0 !important;
   }
 }
 
@@ -224,8 +234,8 @@
     padding-top: 115px;
   }
 
-  .upload-item__block {
-    gap: 48px;
+  .upload-item__block > *:not(:last-child) {
+    margin-bottom: 48px;
   }
 
   .upload__img {
@@ -368,7 +378,10 @@
   .profile-block {
     flex-direction: row;
     align-items: flex-start;
-    gap: 32px;
+  }
+
+  .profile-block > *:not(:last-child) {
+    margin-right: 32px;
   }
 
   .profile-card {
@@ -425,14 +438,6 @@
     width: calc(32% - 2px);
   }
 
-  /* .upload-item__block {
-  * *  width: 1136;
-  * *} */
-
-  /* .upload-item__block > * {
-  * *  flex-grow: 1;
-  * *} */
-
   /* UPLOAD-ITEM */
 
   .upload-item {
@@ -444,6 +449,11 @@
     padding: 64px 115px;
   }
 
+  .upload-item__block > *:not(:last-child) {
+    margin-bottom: 0 !important;
+    margin-right: 48px;
+  }
+
   .upload__block {
     width: 700px;
   }
@@ -452,8 +462,9 @@
     width: 400px;
   }
 
-  .upload-item__block {
-    gap: 32px;
+  .upload-item__block > *:not(:last-child) {
+    margin-bottom: 0 !important;
+    margin-right: 32px;
   }
 
   /* ITEM */
@@ -462,6 +473,11 @@
     max-width: none;
     justify-content: center;
     flex-direction: row;
+  }
+
+  .item__block > *:not(:last-child) {
+    margin-bottom: 0 !important;
+    margin-right: 32px;
   }
 
   .item__information-block {
@@ -487,15 +503,11 @@
  * *\*------------------------------------ */
 
 @media (min-width: 1440px) {
+  .cookie-agreement > * {
+    margin-bottom: 0 !important;
+  }
+
   /* HEADER */
-
-  /* .header {
-  * *  padding: 20px 112px;
-  * *} */
-
-  /* .header__feed-type {
-  * *  gap: 48px;
-  * *} */
 
   .header__search-block {
     flex-grow: 1;
@@ -514,8 +526,11 @@
 
 @media (min-width: 1920px) {
   .header {
-    gap: 64px;
     padding: 20px 112px;
+  }
+
+  .header > *:not(:last-child) {
+    margin-right: 64px;
   }
 
   .header__desctop-menu {
@@ -534,12 +549,16 @@
   /* HEADER */
 
   .header__icons-bar {
-    gap: 32px;
     flex-grow: 1;
+  }
+
+  .header__icons-bar > *:not(:last-child) {
+    margin-right: 32px;
   }
 
   .header__user-login {
     display: block;
+    margin-right: 32px;
   }
 
   /* ITEMS LIST */
