@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/sass/adaptation.css">
 
   <!-- favicon -->
-  <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/png">
+  <link rel="shortcut icon" href="favicon.ico" type="image/png">
 
   @isset ($userInfo)
 
