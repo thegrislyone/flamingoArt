@@ -15,6 +15,7 @@ use App\Models\Items\FavoritesModel;
 
 use App\Models\Tags\TagsModel;
 use App\Models\Tags\UserTagsModel;
+use App\Models\UserRecomendationsModel;
 
 use App\Models\User;
 
@@ -39,7 +40,63 @@ class ItemsController extends Controller
         /* get items depending on feed type */
 
         if (!$feed || $feed == 'main') {
-            $items = ItemsModel::whereNull('banned')->simplePaginate(30)->toArray();
+
+            if (Auth::check() && count(UserRecomendationsModel::where('user_id', '=', Auth::user()->id)->get())) {
+
+                $recomendationsTags = UserRecomendationsModel::where('user_id', '=', Auth::user()->id)->get('tag_id');
+
+                $recomendationsTags = array_map(function($tag) {
+
+                    $tag = $tag['tag_id'];
+
+                    return $tag;
+
+                }, $recomendationsTags->toArray());
+
+                // return $recomendationsTags;
+
+                $connectedTags = UserTagsModel::whereIn('tag_id', $recomendationsTags)->get();
+
+                $connectedItems = [];
+
+                foreach ($connectedTags as $key=>$item) {
+
+                    array_push($connectedItems, $item['item_id']);
+
+                }
+
+                $connectedItems = array_unique($connectedItems);
+
+                $recomendedItems = ItemsModel::whereNull('banned')->whereIn('id', $connectedItems)->get()->toArray();
+
+                $items = ItemsModel::whereNull('banned')->whereNotIn('id', $connectedItems)->simplePaginate(5)->toArray();;
+
+                if ($request['page'] == '1') {
+                    $items['data'] = array_merge($recomendedItems, $items['data']);
+                }
+
+                // if (count($recomendedItems['data']) < 30) {
+
+                //     $fullCount = count(ItemsModel::whereNull('banned')->whereIn('id', $connectedItems)->get());
+                //     $pages = ceil($fullCount / 30);
+
+                //     if (count($items['data'])) {
+                //         $items['data'] = array_merge($items['data'], ItemsModel::whereNull('banned')->whereNotIn('id', $connectedItems)->paginate(30 - count($recomendedItems['data']), ['*'], 'page', $request['page'] - ($pages - 1))->toArray()['data']);
+                //     } else {
+                //         $items['data'] = array_merge($items['data'], ItemsModel::whereNull('banned')->whereNotIn('id', $connectedItems)->paginate(30, ['*'], 'page', $request['page'] - ($pages - 1))->toArray()['data']);
+                //     }
+
+                // } else {
+                //     return "3";
+                //     $items = $recomendedItems;
+                // }
+
+            } else {
+
+                $items = ItemsModel::whereNull('banned')->simplePaginate(30)->toArray();
+
+            }
+            
         } elseif ($feed == 'popular') {
             $items = ItemsModel::whereNull('banned')->orderBy('transitions', 'desc')->simplePaginate(30)->toArray();
         } elseif ($feed == 'new') {

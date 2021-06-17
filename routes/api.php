@@ -106,6 +106,13 @@ Route::post('user/set-user-login', 'App\Http\Controllers\User\UserController@set
 Route::get('user/user-items','App\Http\Controllers\User\UserController@getUserItems');
 
 /* 
+    ! RECOMENDATIONS CONTROLLER
+*/
+
+Route::post('user/recomendations/set-recomendation','App\Http\Controllers\User\UserRecomendations@setRecomendations');
+Route::get('user/recomendations/get-recomendation','App\Http\Controllers\User\UserRecomendations@getRecomendations');
+
+/* 
     ! MESSAGES CONTROLLER
 */
 

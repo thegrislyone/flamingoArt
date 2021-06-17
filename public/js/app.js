@@ -6870,6 +6870,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6884,6 +6934,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      activeFeed: '',
+      recomendations: null,
       renewNotifications: null,
       notificationsShow: false,
       menuOpened: false,
@@ -6908,16 +6960,21 @@ __webpack_require__.r(__webpack_exports__);
       searchOpened: false,
       feeds: {
         main: {
-          title: "Главная",
-          active: true
+          title: "Главная"
         },
         popular: {
-          title: "Популярное",
-          active: false
+          title: "Популярное"
         },
         "new": {
-          title: "Новое",
-          active: false
+          title: "Новое"
+        }
+      },
+      noRecomendationsFeeds: {
+        popular: {
+          title: "Популярное"
+        },
+        "new": {
+          title: "Новое"
         }
       }
     };
@@ -6929,18 +6986,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    isAuthorizate: function isAuthorizate() {
+      return this.$store.getters.isAuthorizate;
+    },
     notificationsList: function notificationsList() {
       return this.$store.state.notifications;
     },
     mobileFeedListShowFlag: function mobileFeedListShowFlag() {
       return this.mobileFeedListShow && this.windowWidth < 1366;
-    },
-    activeFeed: function activeFeed() {
-      for (var index in this.feeds) {
-        if (this.feeds[index].active) {
-          return this.feeds[index];
-        }
-      }
     },
     windowWidth: function windowWidth() {
       return this.$store.getters.windowWidth;
@@ -6981,13 +7034,43 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    if (this.$cookies.get('items-list-feed')) {
-      this.feedChange(this.$cookies.get('items-list-feed'));
-    }
-
+    // if (this.$cookies.get('items-list-feed')) {
+    //   this.activeFeed = this.$cookies.get('items-list-feed')
+    //   this.feedChange(this.$cookies.get('items-list-feed'))
+    // } else {
+    //   this.activeFeed = 'popular'
+    // }
+    this.getRecomendations();
+    this.$eventBus.$on('login', this.loginGetRecomendations);
     this.renewNotifications = Object(vue_debounce__WEBPACK_IMPORTED_MODULE_4__["debounce"])(this.notificationsUpdate, 300);
   },
   methods: {
+    loginGetRecomendations: function loginGetRecomendations() {
+      this.getRecomendations(true);
+    },
+    getRecomendations: function getRecomendations() {
+      var _this = this;
+
+      var login = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      this.$http.get('/api/user/recomendations/get-recomendation').then(function (response) {
+        var data = response.data;
+        _this.recomendations = data.recomendations;
+
+        if (_this.isAuthorizate && _this.recomendations) {
+          if (_this.$cookies.get('items-list-feed') && !login) {
+            _this.feedChange(_this.$cookies.get('items-list-feed'));
+          } else {
+            _this.feedChange('main');
+          }
+        } else {
+          if (_this.$cookies.get('items-list-feed') && _this.$cookies.get('items-list-feed') != 'main') {
+            _this.feedChange(_this.$cookies.get('items-list-feed'));
+          } else {
+            _this.feedChange('popular');
+          }
+        }
+      });
+    },
     notificationsUpdate: function notificationsUpdate() {
       this.$store.dispatch('getNotifications');
     },
@@ -7017,16 +7100,20 @@ __webpack_require__.r(__webpack_exports__);
       this.menuOpened = false;
     },
     feedChange: function feedChange(key) {
-      for (var index in this.feeds) {
-        if (this.feeds[index].active && key == index) {
-          this.mobileFeedListShow = false;
-          return;
-        }
-
-        this.feeds[index].active = false;
+      // let activeFeeds = (this.isAuthorizate && this.recomendations) ? this.feeds : this.noRecomendationsFeeds
+      // for (const index in activeFeeds) {
+      //   if (activeFeeds[index].active && key == index) {
+      //     this.mobileFeedListShow = false
+      //     return
+      //   }
+      //   activeFeeds[index].active = false
+      // }
+      // activeFeeds[key].active = true
+      if (this.activeFeed == key) {
+        return;
       }
 
-      this.feeds[key].active = true;
+      this.activeFeed = key;
       this.$eventBus.$emit('feed-change', key);
       this.$cookies.set('items-list-feed', key, "1d");
       this.mobileFeedListShow = false;
@@ -7046,17 +7133,19 @@ __webpack_require__.r(__webpack_exports__);
       this.menuClose();
     },
     logout: function logout() {
-      var _this = this;
+      var _this2 = this;
 
       this.menuClose();
       this.$http.get('/api/auth/logout').then(function (response) {
         var data = response.data;
 
-        _this.$store.commit('setUser', {});
+        _this2.$store.commit('setUser', {});
 
-        _this.$router.push('/');
+        _this2.$router.push('/');
 
-        _this.$root.showNotification(data.notification);
+        _this2.getRecomendations();
+
+        _this2.$root.showNotification(data.notification);
       });
     }
   }
@@ -10122,7 +10211,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       popularTags: null,
       tagsSlider: null,
-      items: null,
+      items: [],
       outOfItems: false,
       loadMoreItemsDebounced: null,
       listLoaded: false,
@@ -46788,32 +46877,60 @@ var render = function() {
               ],
               staticClass: "feed-mobile__list"
             },
-            _vm._l(_vm.feeds, function(feed, key) {
-              return _c(
-                "div",
-                {
-                  key: key,
-                  on: {
-                    click: function($event) {
-                      return _vm.feedChange(key)
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "feed-mobile__feed pointer",
-                      class: {
-                        "feed-mobile__feed_active": feed == _vm.activeFeed
-                      }
-                    },
-                    [_vm._v(_vm._s(feed.title))]
-                  )
-                ]
-              )
-            }),
-            0
+            [
+              _vm.recomendations
+                ? _vm._l(_vm.feeds, function(feed, key) {
+                    return _c(
+                      "div",
+                      {
+                        key: key,
+                        on: {
+                          click: function($event) {
+                            return _vm.feedChange(key)
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "feed-mobile__feed pointer",
+                            class: {
+                              "feed-mobile__feed_active": key == _vm.activeFeed
+                            }
+                          },
+                          [_vm._v(_vm._s(feed.title))]
+                        )
+                      ]
+                    )
+                  })
+                : _vm._l(_vm.noRecomendationsFeeds, function(feed, key) {
+                    return _c(
+                      "div",
+                      {
+                        key: key,
+                        on: {
+                          click: function($event) {
+                            return _vm.feedChange(key)
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "feed-mobile__feed pointer",
+                            class: {
+                              "feed-mobile__feed_active": key == _vm.activeFeed
+                            }
+                          },
+                          [_vm._v(_vm._s(feed.title))]
+                        )
+                      ]
+                    )
+                  })
+            ],
+            2
           )
         : _vm._e(),
       _vm._v(" "),
@@ -46945,16 +47062,18 @@ var render = function() {
                     }
                   },
                   [
-                    _vm._v(
-                      "\n        " + _vm._s(_vm.activeFeed.title) + "\n        "
-                    ),
+                    _vm.activeFeed
+                      ? [_vm._v(_vm._s(_vm.feeds[_vm.activeFeed].title))]
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("img", {
                       attrs: {
                         src: "/assets/images/i-arrow_white.svg",
                         alt: ""
                       }
                     })
-                  ]
+                  ],
+                  2
                 )
               ]
             )
@@ -46980,25 +47099,56 @@ var render = function() {
         _c(
           "div",
           { staticClass: "header__feed-type" },
-          _vm._l(_vm.feeds, function(feed, key) {
-            return _c(
-              "div",
-              {
-                key: key,
-                staticClass: "header__feed",
-                class: {
-                  header__feed_active: feed.active
-                },
-                on: {
-                  click: function($event) {
-                    return _vm.feedChange(key)
-                  }
-                }
-              },
-              [_vm._v("\n        " + _vm._s(feed.title) + "\n      ")]
-            )
-          }),
-          0
+          [
+            _vm.recomendations
+              ? _vm._l(_vm.feeds, function(feed, key) {
+                  return _c(
+                    "div",
+                    {
+                      key: key,
+                      staticClass: "header__feed",
+                      class: {
+                        header__feed_active: _vm.activeFeed == key
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.feedChange(key)
+                        }
+                      }
+                    },
+                    [_vm._v("\n          " + _vm._s(feed.title) + "\n        ")]
+                  )
+                })
+              : [
+                  _vm._l(_vm.noRecomendationsFeeds, function(feed, key) {
+                    return _c(
+                      "div",
+                      {
+                        key: key,
+                        staticClass: "header__feed",
+                        class: {
+                          header__feed_active: _vm.activeFeed == key
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.feedChange(key)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n          " + _vm._s(feed.title) + "\n        "
+                        )
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "header__feed" }, [
+                    _vm._v("\n          Помощь\n        ")
+                  ])
+                ]
+          ],
+          2
         ),
         _vm._v(" "),
         _c(

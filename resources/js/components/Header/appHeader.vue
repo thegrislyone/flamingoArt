@@ -35,15 +35,36 @@
       v-if="mobileFeedListShowFlag"
       v-click-outside="mobileFeedListHide"
     >
-      <div 
-        v-for="(feed, key) in feeds"
-        :key="key"
-        @click="feedChange(key)"
-      >
-        <span class="feed-mobile__feed pointer" :class="{
-          'feed-mobile__feed_active': feed == activeFeed
-        }">{{ feed.title }}</span>
-      </div>
+
+      <template v-if="recomendations">
+
+        <div 
+          v-for="(feed, key) in feeds"
+          :key="key"
+          @click="feedChange(key)"
+        >
+          <span class="feed-mobile__feed pointer" :class="{
+            'feed-mobile__feed_active': key == activeFeed
+          }">{{ feed.title }}</span>
+        </div>
+
+      </template>
+
+      <template v-else>
+
+        <div 
+          v-for="(feed, key) in noRecomendationsFeeds"
+          :key="key"
+          @click="feedChange(key)"
+        >
+          <span class="feed-mobile__feed pointer" :class="{
+            'feed-mobile__feed_active': key == activeFeed
+          }">{{ feed.title }}</span>
+        </div>
+
+      </template>
+
+      
     </div>
 
     <!-- DESCTOP MENU -->
@@ -132,7 +153,7 @@
           }"
           @click="mobileFeedListShow = true"
         >
-          {{ activeFeed.title }}
+          <template v-if="activeFeed">{{ feeds[activeFeed].title }}</template>
           <img src="/assets/images/i-arrow_white.svg" alt="">
         </div>
 
@@ -153,17 +174,46 @@
       <div 
         class="header__feed-type"
       >
-        <div 
-          v-for="(feed, key) in feeds"
-          :key="key"
-          class="header__feed"
-          :class="{
-            'header__feed_active': feed.active
-          }"
-          @click="feedChange(key)"
-        >
-          {{ feed.title }}
-        </div>
+
+        <template v-if="recomendations">
+
+          <div 
+            v-for="(feed, key) in feeds"
+            :key="key"
+            class="header__feed"
+            :class="{
+              'header__feed_active': activeFeed == key
+            }"
+            @click="feedChange(key)"
+          >
+            {{ feed.title }}
+          </div>
+
+        </template>
+        
+        <template v-else>
+
+          <div 
+            v-for="(feed, key) in noRecomendationsFeeds"
+            :key="key"
+            class="header__feed"
+            :class="{
+              'header__feed_active': activeFeed == key
+            }"
+            @click="feedChange(key)"
+          >
+            {{ feed.title }}
+          </div>
+
+          <div 
+            class="header__feed"
+          >
+            Помощь
+          </div>
+
+        </template>
+
+        
       </div>
       
       <div 
@@ -309,6 +359,10 @@ export default {
   data() {
     return {
 
+      activeFeed: '',
+
+      recomendations: null,
+
       renewNotifications: null,
 
       notificationsShow: false,
@@ -344,16 +398,21 @@ export default {
       searchOpened: false,
       feeds: {
         main: {
-          title: "Главная",
-          active: true
+          title: "Главная"
         },
         popular: {
-          title: "Популярное",
-          active: false
+          title: "Популярное"
         },
         new: {
-          title: "Новое",
-          active: false
+          title: "Новое"
+        }
+      },
+      noRecomendationsFeeds: {
+        popular: {
+          title: "Популярное"
+        },
+        new: {
+          title: "Новое"
         }
       }
     }
@@ -368,18 +427,14 @@ export default {
     }
   },
   computed: {
+    isAuthorizate() {
+      return this.$store.getters.isAuthorizate
+    },
     notificationsList() {
       return this.$store.state.notifications
     },
     mobileFeedListShowFlag() {
       return this.mobileFeedListShow && this.windowWidth < 1366
-    },
-    activeFeed() {
-      for (const index in this.feeds) {
-        if (this.feeds[index].active) {
-          return this.feeds[index]
-        }
-      }
     },
     windowWidth() {
       return this.$store.getters.windowWidth
@@ -423,14 +478,51 @@ export default {
   },
   created() {
 
-    if (this.$cookies.get('items-list-feed')) {
-      this.feedChange(this.$cookies.get('items-list-feed'))
-    }
+    // if (this.$cookies.get('items-list-feed')) {
+    //   this.activeFeed = this.$cookies.get('items-list-feed')
+    //   this.feedChange(this.$cookies.get('items-list-feed'))
+    // } else {
+    //   this.activeFeed = 'popular'
+    // }
+
+    this.getRecomendations()
+
+    this.$eventBus.$on('login', this.loginGetRecomendations)
 
     this.renewNotifications = debounce(this.notificationsUpdate, 300)
 
   },
   methods: {
+
+    loginGetRecomendations() {
+      this.getRecomendations(true)
+    },
+
+    getRecomendations(login = false) {
+      this.$http.get('/api/user/recomendations/get-recomendation')
+        .then(response => {
+
+          const data = response.data
+
+          this.recomendations = data.recomendations
+
+          if (this.isAuthorizate && this.recomendations) {
+            if (this.$cookies.get('items-list-feed') && !login) {
+              this.feedChange(this.$cookies.get('items-list-feed'))
+            } else {
+              this.feedChange('main')
+            }
+          } else {
+            if (this.$cookies.get('items-list-feed') && this.$cookies.get('items-list-feed') != 'main') {
+              this.feedChange(this.$cookies.get('items-list-feed'))
+            } else {
+              this.feedChange('popular')
+            }
+            
+          }
+
+        })
+    },
 
     notificationsUpdate() {
       this.$store.dispatch('getNotifications')
@@ -473,14 +565,22 @@ export default {
 
     feedChange(key) {
 
-      for (const index in this.feeds) {
-        if (this.feeds[index].active && key == index) {
-          this.mobileFeedListShow = false
-          return
-        }
-        this.feeds[index].active = false
+      // let activeFeeds = (this.isAuthorizate && this.recomendations) ? this.feeds : this.noRecomendationsFeeds
+
+      // for (const index in activeFeeds) {
+      //   if (activeFeeds[index].active && key == index) {
+      //     this.mobileFeedListShow = false
+      //     return
+      //   }
+      //   activeFeeds[index].active = false
+      // }
+      // activeFeeds[key].active = true
+
+      if (this.activeFeed == key) {
+        return
       }
-      this.feeds[key].active = true
+
+      this.activeFeed = key
       this.$eventBus.$emit('feed-change', key)
       this.$cookies.set('items-list-feed', key, "1d")
 
@@ -515,6 +615,8 @@ export default {
           this.$store.commit('setUser', {})
 
           this.$router.push('/')
+
+          this.getRecomendations()
 
           this.$root.showNotification(data.notification)
 

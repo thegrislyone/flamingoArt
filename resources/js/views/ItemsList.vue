@@ -82,7 +82,7 @@ export default {
       popularTags: null,
       tagsSlider: null,
 
-      items: null,
+      items: [],
       outOfItems: false,
       loadMoreItemsDebounced: null,
       listLoaded: false,
