@@ -50123,7 +50123,7 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm.item.price && !_vm.user.is_admin
+                    _vm.item.price
                       ? _c(
                           "div",
                           {
@@ -50133,7 +50133,7 @@ var render = function() {
                             }
                           },
                           [
-                            !_vm.isAuthor && !_vm.isBought
+                            !_vm.isAuthor && !_vm.isBought && !_vm.user.is_admin
                               ? _c(
                                   "button",
                                   {
@@ -50142,7 +50142,9 @@ var render = function() {
                                   },
                                   [_vm._v("Купить")]
                                 )
-                              : !_vm.isAuthor && _vm.isBought
+                              : !_vm.isAuthor &&
+                                _vm.isBought &&
+                                !_vm.user.is_admin
                               ? _c(
                                   "router-link",
                                   {

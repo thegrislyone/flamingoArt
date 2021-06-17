@@ -107,17 +107,17 @@
             </button>
 
             <div
-              v-if="item.price && !user.is_admin"
+              v-if="item.price"
               class="item__buy"
               :class="{
                 'item__buy_hidden': purchaseConfirmationShow
               }"
             >
 
-              <button v-if="!isAuthor && !isBought" class="btn" @click="buy">Купить</button>
+              <button v-if="!isAuthor && !isBought && !user.is_admin" class="btn" @click="buy">Купить</button>
               
               <router-link 
-                v-else-if="!isAuthor && isBought" 
+                v-else-if="!isAuthor && isBought && !user.is_admin" 
                 class="item__bought"
                 to="/my-deals"
               >Куплено</router-link>
