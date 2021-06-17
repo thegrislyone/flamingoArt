@@ -76,7 +76,7 @@
           >
 
             <button
-              v-if="isAuthorized && !isAuthor"
+              v-if="isAuthorized && !isAuthor && !user.is_admin"
               class="item__to-favorite pointer no-select"
               :class="{
                 'item__to-favorite_added': isInFavorite
@@ -107,7 +107,7 @@
             </button>
 
             <div
-              v-if="item.price"
+              v-if="item.price && !user.is_admin"
               class="item__buy"
               :class="{
                 'item__buy_hidden': purchaseConfirmationShow

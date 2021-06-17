@@ -50085,7 +50085,7 @@ var render = function() {
                     }
                   },
                   [
-                    _vm.isAuthorized && !_vm.isAuthor
+                    _vm.isAuthorized && !_vm.isAuthor && !_vm.user.is_admin
                       ? _c(
                           "button",
                           {
@@ -50123,7 +50123,7 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm.item.price
+                    _vm.item.price && !_vm.user.is_admin
                       ? _c(
                           "div",
                           {
