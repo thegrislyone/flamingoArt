@@ -2423,6 +2423,16 @@ img[lazy=loading] {
   margin-right: 24px;
 }
 
+.item__no-sell {
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: right;
+  letter-spacing: -0.017em;
+  color: #B4B4B4;
+  text-align: left;
+}
+
 .item__bought {
   font-weight: 300;
   font-size: 24px;

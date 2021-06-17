@@ -161,7 +161,7 @@ class ItemsController extends Controller
         $itemName = $request['name'];
         $itemTags = $request['tags'];
         $itemDescription = $request['description'];
-        $itemsPrice = intval($request['price']);
+        $itemsPrice = (!$request['price'] && $request['noSell']) ? NULL : intval($request['price']);
         $isAuction = $request['auction'];
 
         $img = $request['img'];

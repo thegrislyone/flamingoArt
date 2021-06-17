@@ -7466,6 +7466,9 @@ __webpack_require__.r(__webpack_exports__);
       } else if (this.$moment(date).diff(now, 'hours')) {
         var hours = this.$moment(date).diff(now, 'hours') * -1;
         return hours + ' ' + this.declOfNum(hours, ['час', 'часа', 'часов']);
+      } else if (this.$moment(date).diff(now, 'minutes')) {
+        var minutes = this.$moment(date).diff(now, 'minutes') * -1;
+        return minutes + ' ' + this.declOfNum(minutes, ['минута', 'минуты', 'минут']);
       } else if (this.$moment(date).diff(now, 'seconds')) {
         var seconds = this.$moment(date).diff(now, 'seconds') * -1;
         return seconds + ' ' + this.declOfNum(seconds, ['секунда', 'секунды', 'секунд']);
@@ -9796,6 +9799,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -11411,6 +11419,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 
 
 
@@ -11425,7 +11436,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   data: function data() {
     return {
-      auction: false,
       sendLoading: false,
       formData: {
         img: null,
@@ -11433,7 +11443,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         tags: [],
         description: '',
         price: '',
-        auction: false
+        noSell: false
       },
       fields: {
         name: {
@@ -11520,7 +11530,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     upload: function upload() {
       var _this = this;
 
-      if (this.$v.$invalid) {
+      var formModel = this.$v.formData;
+
+      if (formModel.img.$invalid || formModel.name.$invalid || formModel.price.$invalid && !this.formData.noSell) {
         this.$v.$touch();
         this.$root.showNotification({
           title: 'Заполните данные',
@@ -49958,45 +49970,54 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "item__buy",
-                        class: {
-                          item__buy_hidden: _vm.purchaseConfirmationShow
-                        }
-                      },
-                      [
-                        !_vm.isAuthor && !_vm.isBought
-                          ? _c(
-                              "button",
-                              { staticClass: "btn", on: { click: _vm.buy } },
-                              [_vm._v("Купить")]
-                            )
-                          : !_vm.isAuthor && _vm.isBought
-                          ? _c(
-                              "router-link",
-                              {
-                                staticClass: "item__bought",
-                                attrs: { to: "/my-deals" }
-                              },
-                              [_vm._v("Куплено")]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c(
-                          "span",
+                    _vm.item.price
+                      ? _c(
+                          "div",
                           {
-                            staticClass: "item__price",
+                            staticClass: "item__buy",
                             class: {
-                              item__price_bought: _vm.isBought
+                              item__buy_hidden: _vm.purchaseConfirmationShow
                             }
                           },
-                          [_vm._v(_vm._s(_vm.item.price) + " ₽")]
+                          [
+                            !_vm.isAuthor && !_vm.isBought
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn",
+                                    on: { click: _vm.buy }
+                                  },
+                                  [_vm._v("Купить")]
+                                )
+                              : !_vm.isAuthor && _vm.isBought
+                              ? _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "item__bought",
+                                    attrs: { to: "/my-deals" }
+                                  },
+                                  [_vm._v("Куплено")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "item__price",
+                                class: {
+                                  item__price_bought: _vm.isBought
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.item.price) + " ₽")]
+                            )
+                          ],
+                          1
                         )
-                      ],
-                      1
-                    )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "item__no-sell" }, [
+                      _vm._v("\n            Не продаётся\n          ")
+                    ])
                   ]
                 )
               ])
@@ -51268,7 +51289,7 @@ var render = function() {
               attrs: {
                 type: "number",
                 placeholder: "Введите цену",
-                disabled: _vm.formData.auction
+                disabled: _vm.formData.noSell
               },
               domProps: { value: _vm.formData.price },
               on: {
@@ -51285,25 +51306,35 @@ var render = function() {
               "div",
               { staticClass: "price-input__auction" },
               [
-                _c("span", [_vm._v("Аукцион")]),
+                _c("span", [_vm._v("Без продажи")]),
                 _vm._v(" "),
                 _c("switcher", {
-                  attrs: { value: _vm.formData.auction },
+                  attrs: { value: _vm.formData.noSell },
                   on: {
                     input: function($event) {
                       _vm.formData.price = ""
                     }
                   },
                   model: {
-                    value: _vm.formData.auction,
+                    value: _vm.formData.noSell,
                     callback: function($$v) {
-                      _vm.$set(_vm.formData, "auction", $$v)
+                      _vm.$set(_vm.formData, "noSell", $$v)
                     },
-                    expression: "formData.auction"
+                    expression: "formData.noSell"
                   }
                 }),
                 _vm._v(" "),
                 _c("img", {
+                  directives: [
+                    {
+                      name: "tooltip",
+                      rawName: "v-tooltip.bottom",
+                      value: "Опубликовать работу без возможности покупки",
+                      expression:
+                        "'Опубликовать работу без возможности покупки'",
+                      modifiers: { bottom: true }
+                    }
+                  ],
                   staticClass: "price-input__tip pointer",
                   attrs: { src: "/assets/images/i-tip.svg" }
                 })

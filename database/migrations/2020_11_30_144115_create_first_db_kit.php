@@ -16,7 +16,7 @@ class CreateFirstDbKit extends Migration
         Schema::create('items', function(Blueprint $table) {
             $table->id();
             $table->char('name', 50);
-            $table->float('price', 10, 2);
+            $table->float('price', 10, 2)->nullable();
             $table->timestamps();
             $table->text('description')->nullable();
             $table->text('thumbnail_items-list');

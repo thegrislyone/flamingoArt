@@ -42,21 +42,24 @@
             type="number" 
             placeholder="Введите цену"
             class="upload-item__field upload-item__price"
-            :disabled="formData.auction"
+            :disabled="formData.noSell"
             v-model="formData.price"
           >
 
           <div class="price-input__auction">
-            <span>Аукцион</span>
+            <span>Без продажи</span>
             <switcher
-              :value="formData.auction"
-              v-model="formData.auction"
+              :value="formData.noSell"
+              v-model="formData.noSell"
               @input="formData.price = ''"
             />
+
             <img 
               class="price-input__tip pointer"
               src="/assets/images/i-tip.svg"
+              v-tooltip.bottom="'Опубликовать работу без возможности покупки'"
             >
+
           </div>
           
         </div>
@@ -93,7 +96,6 @@ export default {
   },
   data() {
     return {
-      auction: false,
       sendLoading: false,
 
       formData: {
@@ -102,7 +104,7 @@ export default {
         tags: [],
         description: '',
         price: '',
-        auction: false
+        noSell: false
       },
       fields: {
         name: {
@@ -194,7 +196,9 @@ export default {
     },
     upload() {
 
-      if (this.$v.$invalid) {
+      const formModel = this.$v.formData
+
+      if (formModel.img.$invalid || formModel.name.$invalid || (formModel.price.$invalid && !this.formData.noSell)) {
         this.$v.$touch()
         this.$root.showNotification({
           title: 'Заполните данные', 

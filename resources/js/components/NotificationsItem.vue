@@ -70,6 +70,12 @@ export default {
 
         return hours + ' ' + this.declOfNum(hours, ['час', 'часа', 'часов'])
 
+      } else if (this.$moment(date).diff(now, 'minutes')) {
+
+        const minutes = this.$moment(date).diff(now, 'minutes') * -1
+
+        return minutes + ' ' + this.declOfNum(minutes, ['минута', 'минуты', 'минут'])
+
       } else if (this.$moment(date).diff(now, 'seconds')) {
 
         const seconds = this.$moment(date).diff(now, 'seconds') * -1

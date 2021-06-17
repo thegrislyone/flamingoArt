@@ -107,6 +107,7 @@
             </button>
 
             <div
+              v-if="item.price"
               class="item__buy"
               :class="{
                 'item__buy_hidden': purchaseConfirmationShow
@@ -128,6 +129,10 @@
                 }"
               >{{ item.price }} ₽</span>
 
+            </div>
+
+            <div class="item__no-sell">
+              Не продаётся
             </div>
 
           </div>
