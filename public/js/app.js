@@ -50166,11 +50166,9 @@ var render = function() {
                           ],
                           1
                         )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "item__no-sell" }, [
-                      _vm._v("\n            Не продаётся\n          ")
-                    ])
+                      : _c("div", { staticClass: "item__no-sell" }, [
+                          _vm._v("\n            Не продаётся\n          ")
+                        ])
                   ]
                 )
               ])

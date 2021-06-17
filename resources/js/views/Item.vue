@@ -131,7 +131,7 @@
 
             </div>
 
-            <div class="item__no-sell">
+            <div v-else class="item__no-sell">
               Не продаётся
             </div>
 
