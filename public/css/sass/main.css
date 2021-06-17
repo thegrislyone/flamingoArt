@@ -2393,6 +2393,7 @@ img[lazy=loading] {
   background-image: url(/images/i-favorite.svg?73e990dfc22f50a5c31a91d144c7b1e2);
   letter-spacing: -0.011em;
   color: #B4B4B4;
+  flex-shrink: 0;
 }
 
 .item__to-favorite_added {
@@ -2460,6 +2461,9 @@ img[lazy=loading] {
   vertical-align: middle;
   letter-spacing: -0.019em;
   color: #DA71FF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item__price_bought {
@@ -3160,7 +3164,7 @@ img[lazy=loading] {
 
 .chats-list_desctop {
   width: 400px;
-  padding-top: 24px;
+  padding-top: 24px !important;
   height: calc(100vh - 64px);
 }
 

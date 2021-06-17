@@ -2004,6 +2004,7 @@ img[lazy=loading]
   background-image: url(../assets/images/i-favorite.svg)
   letter-spacing: -0.011em
   color: #B4B4B4
+  flex-shrink: 0
 
 .item__to-favorite_added
   color: $pink
@@ -2063,6 +2064,9 @@ img[lazy=loading]
   vertical-align: middle
   letter-spacing: -0.019em
   color: $pink
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
 
 .item__price_bought
   color: #B4B4B4
@@ -2627,7 +2631,7 @@ img[lazy=loading]
 
 .chats-list_desctop
   width: 400px
-  padding-top: 24px
+  padding-top: 24px !important
   height: calc(100vh - 64px)
 
   &::-webkit-scrollbar
