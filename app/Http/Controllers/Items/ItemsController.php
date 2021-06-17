@@ -69,7 +69,7 @@ class ItemsController extends Controller
 
                 $recomendedItems = ItemsModel::whereNull('banned')->whereIn('id', $connectedItems)->get()->toArray();
 
-                $items = ItemsModel::whereNull('banned')->whereNotIn('id', $connectedItems)->simplePaginate(5)->toArray();;
+                $items = ItemsModel::whereNull('banned')->whereNotIn('id', $connectedItems)->simplePaginate(30)->toArray();;
 
                 if ($request['page'] == '1') {
                     $items['data'] = array_merge($recomendedItems, $items['data']);

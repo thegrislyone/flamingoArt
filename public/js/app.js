@@ -10211,7 +10211,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       popularTags: null,
       tagsSlider: null,
-      items: [],
+      items: null,
       outOfItems: false,
       loadMoreItemsDebounced: null,
       listLoaded: false,
@@ -10287,6 +10287,10 @@ __webpack_require__.r(__webpack_exports__);
     feedChange: function feedChange(feed) {
       var _this2 = this;
 
+      if (!this.listLoaded) {
+        return;
+      }
+
       this.items.data = [];
       this.page = 1;
       this.feed = feed;
@@ -10323,8 +10327,7 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           if (_this3.items) {
-            _this3.items.data.concat(data.data);
-
+            _this3.items.data = _this3.items.data.concat(data.data);
             _this3.items.meta = data.meta;
           } else {
             _this3.items = data;

@@ -82,7 +82,7 @@ export default {
       popularTags: null,
       tagsSlider: null,
 
-      items: [],
+      items: null,
       outOfItems: false,
       loadMoreItemsDebounced: null,
       listLoaded: false,
@@ -173,6 +173,10 @@ export default {
     },
     feedChange(feed) {
 
+      if (!this.listLoaded) {
+        return
+      }
+
       this.items.data = []
       this.page = 1
       this.feed = feed
@@ -214,7 +218,7 @@ export default {
             }
 
             if (this.items) {
-              this.items.data.concat(data.data)
+              this.items.data = this.items.data.concat(data.data)
               this.items.meta = data.meta
             } else {
               this.items = data
