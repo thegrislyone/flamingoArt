@@ -305,7 +305,7 @@ export default {
         return
       }
 
-      if (!this.user.email_changed_at) {
+      if (!this.user.email_verified_at) {
         this.$root.showNotification({
           'type': 'error',
           'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"

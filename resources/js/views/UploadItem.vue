@@ -184,7 +184,7 @@ export default {
 
   },
   mounted() {
-    if (!this.$store.getters.user.email_changed_at) {
+    if (!this.$store.getters.user.email_verified_at) {
       this.$root.showNotification({
         'type': 'error',
         'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"
