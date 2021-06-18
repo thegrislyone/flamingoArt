@@ -12,8 +12,6 @@
 
         <div class="help__menu-wrp">
 
-          <div v-if="windowWidth >= 1024">Помощь</div>
-
           <div v-if="windowWidth < 1024" :class="{ 'help__menu-item_active': mode == 'manual' }"><router-link to="/help?mode=manual">Руководство пользователя</router-link></div>
           <div :class="{ 'help__menu-item_active': mode == 'privacy' }"><router-link to="/help?mode=privacy">Политика конфиденциальности</router-link></div>
           <div :class="{ 'help__menu-item_active': mode == 'terms' }"><router-link to="/help?mode=terms">Условия использования</router-link></div>

@@ -9825,8 +9825,6 @@ var _documents_documents_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -50254,10 +50252,6 @@ var render = function() {
       !_vm.mode || _vm.windowWidth >= 1024
         ? _c("div", { staticClass: "help__menu" }, [
             _c("div", { staticClass: "help__menu-wrp" }, [
-              _vm.windowWidth >= 1024
-                ? _c("div", [_vm._v("Помощь")])
-                : _vm._e(),
-              _vm._v(" "),
               _vm.windowWidth < 1024
                 ? _c(
                     "div",
