@@ -10246,6 +10246,15 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
+      if (!this.user.email_changed_at) {
+        this.$root.showNotification({
+          'type': 'error',
+          'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"
+        });
+        this.$router.push('/');
+        return;
+      }
+
       this.purchaseConfirmationShow = true;
     },
     buyClose: function buyClose() {
@@ -11861,8 +11870,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formData: fieldsModel
     };
   },
-  created: function created() {
-    console.log(this.$v);
+  mounted: function mounted() {
+    if (!this.$store.getters.user.email_changed_at) {
+      this.$root.showNotification({
+        'type': 'error',
+        'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"
+      });
+      this.$router.push('/');
+    }
   },
   methods: {
     setImage: function setImage(image) {

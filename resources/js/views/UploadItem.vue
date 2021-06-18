@@ -183,8 +183,14 @@ export default {
     }
 
   },
-  created() {
-    console.log(this.$v)
+  mounted() {
+    if (!this.$store.getters.user.email_changed_at) {
+      this.$root.showNotification({
+        'type': 'error',
+        'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"
+      })
+      this.$router.push('/')
+    }
   },
   methods: {
     setImage(image) {

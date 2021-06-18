@@ -296,6 +296,7 @@ export default {
   },
   methods: {
     buy() {
+
       if (this.$isEmpty(this.user)) {
         this.$root.showNotification({
           type: 'error',
@@ -303,6 +304,16 @@ export default {
         })
         return
       }
+
+      if (!this.user.email_changed_at) {
+        this.$root.showNotification({
+          'type': 'error',
+          'title': "Подтвердите почту в настройках профиля, чтобы загружать свои работы"
+        })
+        this.$router.push('/')
+        return
+      }
+
       this.purchaseConfirmationShow = true
     },
     buyClose() {
