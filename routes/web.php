@@ -160,6 +160,13 @@ Route::get('/notifications', function () {
     return view('index');
 });
 
+Route::get('/help', function () {
+    if (Auth::check()) {
+        return view('index')->with('userInfo', getUserInfo());
+    }
+    return view('index');
+});
+
 /* SOCIAL NETWORK AUTHENTIFICATION */
 
 // through vk

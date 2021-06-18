@@ -15,6 +15,7 @@ import ProfileSettings from '../views/ProfileSettings.vue'
 import Chat from '../views/Chat.vue'
 import Deals from '../views/Deals.vue'
 import Notifications from '../views/Notifications.vue'
+import Help from '../views/Help.vue'
 
 Vue.use(VueRouter)
 
@@ -105,6 +106,11 @@ const routes = [
     name: 'notifications',
     meta: { requiresAuth: true },
     component: Notifications
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: Help
   },
   {
     path: "*",

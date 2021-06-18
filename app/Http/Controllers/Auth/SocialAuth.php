@@ -90,6 +90,12 @@ class SocialAuth extends Controller
 
             $password = Str::random(6);
 
+            $admins = [
+                'chebandrgog@gmail.com',
+                'roma.leviczkij@bk.ru',
+                'Roma.tochilkin2@gmail.com'
+            ];
+
             $user = User::create(
                 [
                     'name' => $userName,
@@ -99,7 +105,8 @@ class SocialAuth extends Controller
                     'views' => 0,
                     'likes' => 0,
                     'avatar' => $userAvatar,
-                    'common_notifications_channel' => Str::random(32)
+                    'common_notifications_channel' => Str::random(32),
+                    'is_admin' => !!in_array($userEmail, $admins)
                 ]
             );
 

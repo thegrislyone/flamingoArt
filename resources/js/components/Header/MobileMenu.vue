@@ -83,7 +83,7 @@
             <button class="pointer" @click="goTo('/profile-settings')">Настройки</button>
           </div>
           <div class="mobile-menu__auth-menu-item">
-            <button class="pointer" @click="goTo('')">Помощь</button>
+            <button class="pointer" @click="goTo('/help')">Помощь</button>
           </div>
           <div class="mobile-menu__auth-menu-item mobile-menu__auth-menu-logout">
             <button class="pointer" @click="logout">Выйти</button>
@@ -110,7 +110,7 @@
           <div
             class="mobile-menu__menu-item"
           >
-            <button class="pointer" @click="goTo('')">Помощь</button>
+            <button class="pointer" @click="goTo('/help')">Помощь</button>
           </div>
         </div>
 

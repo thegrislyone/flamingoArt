@@ -43,6 +43,34 @@
 
     </div>
 
+    <br><br>
+
+    <div v-if="feedbacks">
+      <table>
+        <thead>
+          <tr>
+            <td 
+              v-for="(feedbackHatItem, index) in feedbacksHat"
+              :key="index"
+            >{{ feedbackHatItem }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(feedback, index) in feedbacks"
+            :key="index"
+          >
+            <td
+              v-for="(item, key) in feedback"
+              :key="key"
+            >
+              {{ item }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <!--<div class="admin-panel__tags">
 
     </div>-->
@@ -56,7 +84,8 @@ export default {
     return {
       users: null,
       tags: null,
-      items: null
+      items: null,
+      feedbacks: null
     }
   },
   computed: {
@@ -70,11 +99,24 @@ export default {
 
       return hat
 
+    },
+    feedbacksHat() {
+
+      let hat = []
+
+      for (let item in this.feedbacks[0]) {
+        hat.push(item)
+      }
+
+      return hat
+
     }
   },
   created() {
 
     this.getUsers()
+
+    this.getFeedbacks()
 
   },
   methods: {
@@ -84,6 +126,14 @@ export default {
           const data = response.data
 
           this.users = data
+        })
+    },
+    getFeedbacks() {
+      this.$http.get('/api/feedbacks/get-feedbacks')
+        .then(response => {
+          const data = response.data
+
+          this.feedbacks = data
         })
     },
     ban(id) {

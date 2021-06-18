@@ -208,7 +208,7 @@
           <div 
             class="header__feed"
           >
-            Помощь
+            <router-link to="/help">Помощь</router-link>
           </div>
 
         </template>
@@ -390,7 +390,7 @@ export default {
         },
         {
           caption: 'Помощь',
-          link: '',
+          link: '/help',
         },
       ],
 

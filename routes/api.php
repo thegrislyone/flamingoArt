@@ -134,3 +134,16 @@ Route::get('chat/chat-init','App\Http\Controllers\Chat\ChatController@chatInit')
 
 Route::get('notifications/get-notifications','App\Http\Controllers\Notifications\NotificationsController@getNotifications');
 Route::get('notifications/check-notification','App\Http\Controllers\Notifications\NotificationsController@checkNotification');
+
+/* 
+    ! DOCUMENTS CONTROLLER
+*/
+
+Route::get('documents/download-privacy','App\Http\Controllers\Documents\DocumentsController@downloadPrivacy');
+
+/* 
+    ! FEEDBACKS CONTROLLER
+*/
+
+Route::post('feedbacks/send-feedback','App\Http\Controllers\User\FeedbacksController@sendFeedback');
+Route::get('feedbacks/get-feedbacks','App\Http\Controllers\User\FeedbacksController@getFeedbacks');
